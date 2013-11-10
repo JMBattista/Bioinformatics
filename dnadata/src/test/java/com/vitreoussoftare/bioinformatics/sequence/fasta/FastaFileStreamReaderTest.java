@@ -15,6 +15,9 @@ import com.vitreoussoftare.bioinformatics.sequence.fasta.FastaFileStreamReader;
  *
  */
 public class FastaFileStreamReaderTest {
+	
+	private static final String FASTA_PATH = "C:/Development/Code/Bioinformatics/dnadata/src/test/resources/fasta/";
+
 	/**
 	 * Shortened FASTA string for basic testing
 	 */
@@ -92,7 +95,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testCreate() throws FileNotFoundException {
-		FastaFileStreamReader.create("C:/Development/Code/Bioinformatics/dnadata/src/test/resources/SSUParc_Example.fasta");
+		FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
 	}
 	
 	/**
@@ -130,7 +133,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_simple() throws IOException {
-		FastaFileStreamReader reader = FastaFileStreamReader.create("C:/Development/Code/Bioinformatics/dnadata/src/test/resources/SSUParc_Simple.fasta");
+		FastaFileStreamReader reader = FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Simple.fasta");
 		
 		assertEquals(recordSimple, reader.readRecord());
 	}
@@ -141,7 +144,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_example1() throws IOException {
-		FastaFileStreamReader reader = FastaFileStreamReader.create("C:/Development/Code/Bioinformatics/dnadata/src/test/resources/SSUParc_Example.fasta");
+		FastaFileStreamReader reader = FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
 		
 		assertEquals(record1, reader.readRecord());
 	}
@@ -152,7 +155,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_example2() throws IOException {
-		FastaFileStreamReader reader = FastaFileStreamReader.create("C:/Development/Code/Bioinformatics/dnadata/src/test/resources/SSUParc_Example.fasta");
+		FastaFileStreamReader reader = FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
 		
 		assertEquals(record1, reader.readRecord());
 		assertEquals(record2, reader.readRecord());
@@ -164,7 +167,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_example3() throws IOException {
-		FastaFileStreamReader reader = FastaFileStreamReader.create("C:/Development/Code/Bioinformatics/dnadata/src/test/resources/SSUParc_Example.fasta");
+		FastaFileStreamReader reader = FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
 		
 		assertEquals(record1, reader.readRecord());
 		assertEquals(record2, reader.readRecord());
@@ -178,7 +181,7 @@ public class FastaFileStreamReaderTest {
 	@Test
 	public void testReadRecord_autoCloseable() throws IOException {
 		try (FastaFileStreamReader reader 
-				= FastaFileStreamReader.create("C:/Development/Code/Bioinformatics/dnadata/src/test/resources/SSUParc_Example.fasta"))
+				= FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta"))
 		{
 			assertEquals(record1, reader.readRecord());
 			assertEquals(record2, reader.readRecord());
@@ -194,7 +197,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_paged() throws IOException {
-		FastaFileStreamReader reader = FastaFileStreamReader.create("C:/Development/Code/Bioinformatics/dnadata/src/test/resources/SSUParc_Paged.fasta");
+		FastaFileStreamReader reader = FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Paged.fasta");
 		
 		while (reader.hasRecord())
 		{	
