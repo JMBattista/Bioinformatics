@@ -1,4 +1,4 @@
-package com.vitreoussoftare.bioinformatics.dnadata;
+package com.vitreoussoftare.bioinformatics.sequence;
 
 /**
  * The input contained invalid characters

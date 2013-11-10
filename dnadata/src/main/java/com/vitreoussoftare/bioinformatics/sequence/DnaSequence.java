@@ -1,4 +1,4 @@
-package com.vitreoussoftare.bioinformatics.dnadata;
+package com.vitreoussoftare.bioinformatics.sequence;
 
 /**
  * A DNA Sequence representation
@@ -6,7 +6,7 @@ package com.vitreoussoftare.bioinformatics.dnadata;
  *
  */
 public class DnaSequence {
-	private BasePair[] dnaSequence;
+	private byte[] sequence;
 
 	private DnaSequence()
 	{
@@ -14,16 +14,17 @@ public class DnaSequence {
 	/**
 	 * Create a DNA Sequence from a string in FASTA format 
 	 * @param dnaSequence The FASTA format sequence
+	 * @return The Sequence from the FASTA format string
 	 * @throws InvalidDnaFormatException One of the input characters is invalid
 	 */
 	public static DnaSequence fromFasta(String dnaSequence) throws InvalidDnaFormatException {
 		if (dnaSequence.length() == 0) throw new InvalidDnaFormatException("The DNA sequence was empty!");
 		
 		DnaSequence seq = new DnaSequence();
-		seq.dnaSequence = new BasePair[dnaSequence.length()];
+		seq.sequence = new byte[dnaSequence.length()];
 		for (int i = 0; i < dnaSequence.length(); i++)
 		{
-			seq.dnaSequence[i] = BasePair.create(dnaSequence.charAt(i));
+			seq.sequence[i] = BasePair.getValue(dnaSequence.charAt(i));
 		}
 		
 		return seq;
@@ -34,8 +35,8 @@ public class DnaSequence {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for (BasePair bp : dnaSequence) {
-			sb.append(bp);
+		for (byte bp : sequence) {
+			sb.append(BasePair.tostring(bp));
 		}
 		return sb.toString();
 	}

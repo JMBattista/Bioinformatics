@@ -1,8 +1,11 @@
-package com.vitreoussoftare.bioinformatics.dnadata;
+package com.vitreoussoftare.bioinformatics.sequence;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import com.vitreoussoftare.bioinformatics.sequence.BasePair;
+import com.vitreoussoftare.bioinformatics.sequence.InvalidDnaFormatException;
 
 /**
  * Tests the BasePair class
@@ -11,6 +14,19 @@ import org.junit.Test;
  */
 public class BasePairTest {
 
+	/** 
+	 * Test Equality for BasePair default values against byte codes
+	 * @throws InvalidDnaFormatException
+	 */
+	@Test
+	public void testEqualityByte_defaultValues() throws InvalidDnaFormatException {
+		assertEquals(BasePair.A, BasePair.getValue('A'));
+		assertEquals(BasePair.T, BasePair.getValue('T'));
+		assertEquals(BasePair.C, BasePair.getValue('C'));
+		assertEquals(BasePair.G, BasePair.getValue('G'));
+		assertEquals(BasePair.U, BasePair.getValue('U'));
+	}
+	
 	/** 
 	 * Test Equality for BasePair, with same start
 	 * @throws InvalidDnaFormatException
@@ -31,7 +47,7 @@ public class BasePairTest {
 		assertEquals(BasePair.T, BasePair.create('T'));
 		assertEquals(BasePair.C, BasePair.create('C'));
 		assertEquals(BasePair.G, BasePair.create('G'));
-		assertEquals(BasePair.N, BasePair.create('N'));
+		assertEquals(BasePair.U, BasePair.create('U'));
 	}
 	
 	/** 
@@ -136,16 +152,16 @@ public class BasePairTest {
 	 * @throws InvalidDnaFormatException
 	 */
 	@Test
-	public void testCreation_N() throws InvalidDnaFormatException {
-		assertEquals("N", BasePair.create('N').toString());
+	public void testCreation_U() throws InvalidDnaFormatException {
+		assertEquals("U", BasePair.create('U').toString());
 	}
 	
 	/**
 	 * @throws InvalidDnaFormatException
 	 */
 	@Test
-	public void testCreation_n() throws InvalidDnaFormatException {
-		assertEquals("N", BasePair.create('n').toString());
+	public void testCreation_u() throws InvalidDnaFormatException {
+		assertEquals("U", BasePair.create('u').toString());
 	}
 
 }

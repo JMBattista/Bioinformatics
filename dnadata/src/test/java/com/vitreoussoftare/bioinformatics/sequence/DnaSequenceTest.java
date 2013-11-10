@@ -1,9 +1,12 @@
-package com.vitreoussoftare.bioinformatics.dnadata;
+package com.vitreoussoftare.bioinformatics.sequence;
 
 import static org.junit.Assert.*;
 import junit.framework.Assert;
 
 import org.junit.Test;
+
+import com.vitreoussoftare.bioinformatics.sequence.DnaSequence;
+import com.vitreoussoftare.bioinformatics.sequence.InvalidDnaFormatException;
 
 /**
  * Test the Sequence class
@@ -31,7 +34,7 @@ public class DnaSequenceTest {
 	 */
 	@Test
 	public void testCreation_full() throws InvalidDnaFormatException {
-		final String basis = "AATTCCGGNN";
+		final String basis = "AATTCCGGUU";
 		
 		DnaSequence seq = DnaSequence.fromFasta(basis);
 		
