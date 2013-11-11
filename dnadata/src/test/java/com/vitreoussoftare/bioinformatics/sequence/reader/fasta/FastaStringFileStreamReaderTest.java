@@ -14,19 +14,37 @@ import com.vitreoussoftare.bioinformatics.sequence.reader.SequenceStringStreamRe
  * @author John
  *
  */
-public class FastaFileStreamReaderTest {
+public class FastaStringFileStreamReaderTest {
 	
+	/**
+	 * FASTA file with enough data that pages must be performed
+	 */
+	private static final String SSU_PARC_PAGED_FASTA = "SSUParc_Paged.fasta";
+
+	/**
+	 * FASTA file with only a small amount of data
+	 */
+	private static final String SSU_PARC_SIMPLE_FASTA = "SSUParc_Simple.fasta";
+
+	/**
+	 * FASTA file with three full records
+	 */
+	private static final String SSU_PARC_EXAMPLE_FASTA = "SSUParc_Example.fasta";
+
+	/**
+	 * The path where the FASTA test files can be found.
+	 */
 	private static final String FASTA_PATH = "C:/Development/Code/Bioinformatics/dnadata/src/test/resources/fasta/";
 
 	/**
 	 * Shortened FASTA string for basic testing
 	 */
-	private final String recordSimple = "AGGCUUAACACAUGCAAGUCGAACGAAGUUAGGAAGCUUGCUUCUGAUACUUAGUGGCGGACGGGUGAGUAAUGCUUAGG";
+	public static final String recordSimple = "AGGCUUAACACAUGCAAGUCGAACGAAGUUAGGAAGCUUGCUUCUGAUACUUAGUGGCGGACGGGUGAGUAAUGCUUAGG";
 	
 	/** 
 	 * First record in the example FASTA file
 	 */
-	private final String record1 = 
+	public static final String record1 = 
 			"AGGCUUAACACAUGCAAGUCGAACGAAGUUAGGAAGCUUGCUUCUGAUACUUAGUGGCGGACGGGUGAGUAAUGCUUAGG" +
 			"AAUCUGCCUAGUAGUGGGGGAUAACUUGGGGAAACCCAAGCUAAUACCGCAUACGACCUACGGGUGAAAGGGGGCUUUUA" +
 			"GCUCUCGCUAUUAGAUGAGCCUAAGUCGGAUUAGCUGGUUGGUGGGGUAAAGGCCUACCAAGGCGACGAUCUGUAGCUGG" +
@@ -50,7 +68,7 @@ public class FastaFileStreamReaderTest {
 	/**
 	 * Second record in the example FASTA file
 	 */
-	private final String record2 = 
+	public static final String record2 = 
 			"UUAAAAUGAGAGUUUGAUCCUGGCUCAGGACGAACGCUGGCGGCGUGCCUAAUACAUGCAAGUCGAACGAAACUUUCUUA" +
 			"CACCGAAUGCUUGCAUUCACUCGUAAGAAUGAGUGGCGUGGACGGGUGAGUAACACGUGGGUAACCUGCCUAAAAGAAGG" +
 			"GGAUAACACUUGGAAACAGGUGCUAAUACCGUAUAUCUCUAAGGAUCGCAUGAUCCUUAGAUGAAAGAUGGUUCUNGCUA" +
@@ -71,7 +89,7 @@ public class FastaFileStreamReaderTest {
 			"GAAUCGCUAGUAAUCGCGA";
 	
 	
-	private final String record3 =
+	public static final String record3 =
 			"GAUGAACGCUAGCGGCGUGCCUUAUGCAUGCAAGUCGAACGGUCUUAAGCAAUUAAGAUAGUGGCGAACGGGUGAGUAAC" +
 			"GCGUAAGUAACCUACCUCUAAGUGGGGGAUAGCUUCGGGAAACUGAAGGUAAUACCGCAUGUGGUGGGCCGACAUAUGUU" +
 			"GGUUCACUAAAGCCGUAAGGCGCUUGGUGAGGGGCUUGCGUCCGAUUAGCUAGUUGGUGGGGUAAUGGCCUACCAAGGCU" +
@@ -95,7 +113,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testCreate() throws FileNotFoundException {
-		FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
+		FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA);
 	}
 	
 	/**
@@ -133,7 +151,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_simple() throws IOException {
-		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Simple.fasta");
+		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_SIMPLE_FASTA);
 		
 		assertEquals(recordSimple, reader.readRecord());
 	}
@@ -144,7 +162,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_example1() throws IOException {
-		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
+		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA);
 		
 		assertEquals(record1, reader.readRecord());
 	}
@@ -155,7 +173,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_example2() throws IOException {
-		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
+		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA);
 		
 		assertEquals(record1, reader.readRecord());
 		assertEquals(record2, reader.readRecord());
@@ -167,7 +185,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_example3() throws IOException {
-		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
+		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA);
 		
 		assertEquals(record1, reader.readRecord());
 		assertEquals(record2, reader.readRecord());
@@ -181,7 +199,7 @@ public class FastaFileStreamReaderTest {
 	@Test
 	public void testReadRecord_autoCloseable() throws Exception {
 		try (SequenceStringStreamReader reader 
-				= FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta"))
+				= FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA))
 		{
 			assertEquals(record1, reader.readRecord());
 			assertEquals(record2, reader.readRecord());
@@ -197,7 +215,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_paged() throws IOException {
-		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Paged.fasta");
+		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_PAGED_FASTA);
 		
 		while (reader.hasRecord())
 		{	
@@ -205,6 +223,38 @@ public class FastaFileStreamReaderTest {
 			assertEquals(record2, reader.readRecord());
 			assertEquals(record3, reader.readRecord());
 		}
+	}
+
+	/**
+	 * Create a SequenceStringStreamReader for the Simple FASTA test file
+	 * @return the SequenceStringStreamReader
+	 * @throws FileNotFoundException the test file could not be found
+	 */
+	public static SequenceStringStreamReader getSimpleFastaReader()
+			throws FileNotFoundException {
+		return FastaStringFileStreamReader.create(FastaStringFileStreamReaderTest.FASTA_PATH + FastaStringFileStreamReaderTest.SSU_PARC_SIMPLE_FASTA);
+	}
+	
+
+	/**
+	 * Create a SequenceStringStreamReader for the Example FASTA test file
+	 * @return the SequenceStringStreamReader
+	 * @throws FileNotFoundException the test file could not be found
+	 */
+	public static SequenceStringStreamReader getExampleFastaReader()
+			throws FileNotFoundException {
+		return FastaStringFileStreamReader.create(FastaStringFileStreamReaderTest.FASTA_PATH + FastaStringFileStreamReaderTest.SSU_PARC_EXAMPLE_FASTA);
+	}
+	
+
+	/**
+	 * Create a SequenceStringStreamReader for the Paged FASTA test file
+	 * @return the SequenceStringStreamReader
+	 * @throws FileNotFoundException the test file could not be found
+	 */
+	public static SequenceStringStreamReader getPagedFastaReader()
+			throws FileNotFoundException {
+		return FastaStringFileStreamReader.create(FastaStringFileStreamReaderTest.FASTA_PATH + FastaStringFileStreamReaderTest.SSU_PARC_PAGED_FASTA);
 	}
 	
 }

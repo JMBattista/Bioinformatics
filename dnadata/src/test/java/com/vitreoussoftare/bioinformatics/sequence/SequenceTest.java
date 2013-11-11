@@ -65,4 +65,31 @@ public class SequenceTest {
 		// We expect an error here so don't do anything about it!
 		Sequence.fromFasta(basis);
 	}
+	
+	/**
+	 * Test that we can handle the full range of valid input
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testEquals_sameRef() throws InvalidDnaFormatException {
+		final String basis = "AATTCCGGUU";
+		
+		Sequence seq = Sequence.fromFasta(basis);
+		
+		assertEquals(seq, seq);
+	}
+	
+	/**
+	 * Test that we can handle the full range of valid input
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testEquals_diffRef() throws InvalidDnaFormatException {
+		final String basis = "AATTCCGGUU";
+		
+		Sequence seq1 = Sequence.fromFasta(basis);
+		Sequence seq2 = Sequence.fromFasta(basis);
+		
+		assertEquals(seq1, seq2);
+	}
 }
