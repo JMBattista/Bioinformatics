@@ -5,10 +5,10 @@ package com.vitreoussoftare.bioinformatics.sequence;
  * @author John
  *
  */
-public class DnaSequence {
+public class Sequence {
 	private byte[] sequence;
 
-	private DnaSequence()
+	private Sequence()
 	{
 	}
 	/**
@@ -17,10 +17,10 @@ public class DnaSequence {
 	 * @return The Sequence from the FASTA format string
 	 * @throws InvalidDnaFormatException One of the input characters is invalid
 	 */
-	public static DnaSequence fromFasta(String dnaSequence) throws InvalidDnaFormatException {
+	public static Sequence fromFasta(String dnaSequence) throws InvalidDnaFormatException {
 		if (dnaSequence.length() == 0) throw new InvalidDnaFormatException("The DNA sequence was empty!");
 		
-		DnaSequence seq = new DnaSequence();
+		Sequence seq = new Sequence();
 		seq.sequence = new byte[dnaSequence.length()];
 		for (int i = 0; i < dnaSequence.length(); i++)
 		{

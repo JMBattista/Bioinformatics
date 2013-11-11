@@ -1,4 +1,4 @@
-package com.vitreoussoftare.bioinformatics.sequence.fasta;
+package com.vitreoussoftare.bioinformatics.sequence.reader.fasta;
 
 import java.io.Closeable;
 import java.io.File;
@@ -6,12 +6,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import com.vitreoussoftare.bioinformatics.sequence.reader.SequenceStringStreamReader;
+
 /**
  * File stream reader for FASTA data files
  * @author John
  *
  */
-public final class FastaFileStreamReader implements AutoCloseable 
+public final class FastaStringFileStreamReader implements SequenceStringStreamReader 
 {
 	private static final int BUFFER_SIZE = 64 * 1024; // 64 KB read size
 	
@@ -28,7 +30,7 @@ public final class FastaFileStreamReader implements AutoCloseable
 	 * Create a FASTA File Stream Reader for the given file
 	 * @param file the file to run on
 	 */
-	private FastaFileStreamReader(FileReader file)
+	private FastaStringFileStreamReader(FileReader file)
 	{
 		this.file = file;
 		
@@ -49,6 +51,7 @@ public final class FastaFileStreamReader implements AutoCloseable
 	 * @return the record
 	 * @throws IOException something went wrong reading from the file 
 	 */
+	@Override
 	public String readRecord() throws IOException
 	{
 		StringBuilder sb = new StringBuilder();
@@ -102,10 +105,10 @@ public final class FastaFileStreamReader implements AutoCloseable
 	 * @return the input stream
 	 * @throws FileNotFoundException the specified file was not found
 	 */
-	public static FastaFileStreamReader create(String fileName) throws FileNotFoundException
+	public static SequenceStringStreamReader create(String fileName) throws FileNotFoundException
 	{
 		FileReader file = new FileReader(fileName);
-		return new FastaFileStreamReader(file);
+		return new FastaStringFileStreamReader(file);
 	}
 	
 	@Override
@@ -119,6 +122,7 @@ public final class FastaFileStreamReader implements AutoCloseable
 	 * @return boolean indicator
 	 * @throws IOException If the file cannot be accessed it may fail
 	 */
+	@Override
 	public boolean hasRecord() throws IOException {
 		// if we know we have data remaining say so
 		if (length > 0 && index < length)

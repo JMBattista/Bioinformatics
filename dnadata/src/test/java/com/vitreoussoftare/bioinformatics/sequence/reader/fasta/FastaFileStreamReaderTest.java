@@ -1,4 +1,4 @@
-package com.vitreoussoftare.bioinformatics.sequence.fasta;
+package com.vitreoussoftare.bioinformatics.sequence.reader.fasta;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import com.vitreoussoftare.bioinformatics.sequence.fasta.FastaFileStreamReader;
+import com.vitreoussoftare.bioinformatics.sequence.reader.SequenceStringStreamReader;
 
 /**
  * Test the FastaFileStreamReader class
@@ -95,7 +95,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testCreate() throws FileNotFoundException {
-		FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
+		FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
 	}
 	
 	/**
@@ -104,7 +104,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test(expected=FileNotFoundException.class)
 	public void testCreate_notFound() throws FileNotFoundException {
-		FastaFileStreamReader.create("Z:/bobtheexamplefileisnothere.fasta");
+		FastaStringFileStreamReader.create("Z:/bobtheexamplefileisnothere.fasta");
 	}
 	
 	/**
@@ -113,7 +113,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testCreate_notFoundAutoCloseable() throws FileNotFoundException {
-		try (FastaFileStreamReader reader = FastaFileStreamReader.create("Z:/bobtheexamplefileisnothere.fasta"))
+		try (SequenceStringStreamReader reader = FastaStringFileStreamReader.create("Z:/bobtheexamplefileisnothere.fasta"))
 		{
 			fail("This should not be reachable");
 		}
@@ -133,7 +133,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_simple() throws IOException {
-		FastaFileStreamReader reader = FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Simple.fasta");
+		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Simple.fasta");
 		
 		assertEquals(recordSimple, reader.readRecord());
 	}
@@ -144,7 +144,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_example1() throws IOException {
-		FastaFileStreamReader reader = FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
+		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
 		
 		assertEquals(record1, reader.readRecord());
 	}
@@ -155,7 +155,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_example2() throws IOException {
-		FastaFileStreamReader reader = FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
+		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
 		
 		assertEquals(record1, reader.readRecord());
 		assertEquals(record2, reader.readRecord());
@@ -167,7 +167,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_example3() throws IOException {
-		FastaFileStreamReader reader = FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
+		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta");
 		
 		assertEquals(record1, reader.readRecord());
 		assertEquals(record2, reader.readRecord());
@@ -176,12 +176,12 @@ public class FastaFileStreamReaderTest {
 	
 	/**
 	 * Read a third record from the reader
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
 	@Test
-	public void testReadRecord_autoCloseable() throws IOException {
-		try (FastaFileStreamReader reader 
-				= FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta"))
+	public void testReadRecord_autoCloseable() throws Exception {
+		try (SequenceStringStreamReader reader 
+				= FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Example.fasta"))
 		{
 			assertEquals(record1, reader.readRecord());
 			assertEquals(record2, reader.readRecord());
@@ -197,7 +197,7 @@ public class FastaFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_paged() throws IOException {
-		FastaFileStreamReader reader = FastaFileStreamReader.create(FASTA_PATH + "SSUParc_Paged.fasta");
+		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + "SSUParc_Paged.fasta");
 		
 		while (reader.hasRecord())
 		{	
