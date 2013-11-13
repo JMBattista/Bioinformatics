@@ -94,7 +94,7 @@ public class SequenceListTest {
 	 * @throws IOException 
 	 */
 	@Test
-	public void testStreamSource() throws InvalidDnaFormatException, IOException {
+	public void testStreamSource_single() throws InvalidDnaFormatException, IOException {
 		SequenceStreamReader reader = new SequenceFromFastaStringStreamReader(FastaStringFileStreamReaderTest.getSimpleFastaReader());
 		SequenceCollection sc = this.factory.getSequenceCollection(reader);
 		
@@ -102,5 +102,22 @@ public class SequenceListTest {
 		assertEquals(1,  sc.size());
 		assertEquals(sequenceFactory.fromString(FastaStringFileStreamReaderTest.recordSimple), sc.iterator().next());
 		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.recordSimple)));
+	}
+	
+	/**
+	 * Can it be created?
+	 * @throws InvalidDnaFormatException 
+	 * @throws IOException 
+	 */
+	@Test
+	public void testStreamSource_multiple() throws InvalidDnaFormatException, IOException {
+		SequenceStreamReader reader = new SequenceFromFastaStringStreamReader(FastaStringFileStreamReaderTest.getExampleFastaReader());
+		SequenceCollection sc = this.factory.getSequenceCollection(reader);
+		
+		assertNotNull(sc);
+		assertEquals(3,  sc.size());
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1)));
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.record2)));
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3)));
 	}
 }

@@ -11,10 +11,11 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
  */
 public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
 	static final byte NUCLEOTIDE_A = 0b00000010;
-	static final byte NUCLEOTIDE_T = 0b00000011;
-	static final byte NUCLEOTIDE_C = 0b00000100;
-	static final byte NUCLEOTIDE_G = 0b00000101;
-	static final byte NUCLEOTIDE_U = 0b00000111;
+	static final byte NUCLEOTIDE_T = 0b00000001;
+	static final byte NUCLEOTIDE_U = 0b00010000;
+	static final byte NUCLEOTIDE_C = 0b00001000;
+	static final byte NUCLEOTIDE_G = 0b00000100;
+	static final byte NUCLEOTIDE_N = 0b00011111;
 	
 	public static EncodingScheme instance = new AcceptUnknownDnaEncodingScheme();
 	
@@ -77,15 +78,18 @@ public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
 			case 't':
 			case 'T':
 				return NUCLEOTIDE_T;
+			case 'u':
+			case 'U':
+				return NUCLEOTIDE_U;
 			case 'c':
 			case 'C':
 				return NUCLEOTIDE_C;
 			case 'g':
 			case 'G':
 				return NUCLEOTIDE_G;
-			case 'u':
-			case 'U':
-				return NUCLEOTIDE_U;
+			case 'n':
+			case 'N':
+				return NUCLEOTIDE_N;
 			default:
 				throw new InvalidDnaFormatException("There was an invalid value for DnaSeqeucne " + nucleotide);
 		}
@@ -111,6 +115,25 @@ public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
 		// we should never hit default but it is necessary for compilation
 		default:
 			return "";
+		}	 
+	}
+
+	@Override
+	public char toChar(byte nucleotide) {
+		switch (nucleotide) {
+		case NUCLEOTIDE_A:
+			return 'A';
+		case NUCLEOTIDE_T:
+			return 'T';
+		case NUCLEOTIDE_C:
+			return 'C';
+		case NUCLEOTIDE_G:
+			return 'G';
+		case NUCLEOTIDE_U:
+			return 'U';
+		// we should never hit default but it is necessary for compilation
+		default:
+			return ' ';
 		}	 
 	}	
 }

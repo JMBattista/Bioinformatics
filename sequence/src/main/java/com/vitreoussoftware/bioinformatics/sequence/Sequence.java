@@ -1,6 +1,11 @@
 package com.vitreoussoftware.bioinformatics.sequence;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+
+import javax.management.RuntimeErrorException;
 
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 
@@ -38,6 +43,77 @@ public class Sequence {
 		return seq;
 	}
 	
+	/**
+	 * Return an iterator that proceeds from the back to the front of the sequence
+	 * @return the basepair iterator
+	 */
+	public Iterable<BasePair> reverse() {
+		return new Iterable<BasePair>() {
+
+			@Override
+			public void forEach(Consumer<? super BasePair> consumer) {
+				iterator().forEachRemaining(consumer);
+			}
+
+			@Override
+			public Iterator<BasePair> iterator() {
+				return new Iterator<BasePair>() {
+					int index = sequence.length-1;
+					@Override
+					public void forEachRemaining(Consumer<? super BasePair> consumer) {
+						int remaining = index;
+						
+						try {
+							while (remaining >= 0)
+							{
+								consumer.accept(basePair(remaining));
+								remaining--;
+							}
+						} catch (InvalidDnaFormatException e) {
+							// TODO Auto-generated catch block
+							throw new RuntimeException("We encountered a badly encoded set of base pairs inside sequence iterator");
+						}
+					}
+
+					@Override
+					public boolean hasNext() {
+						return index >= 0;
+					}
+
+					@Override
+					public BasePair next() {
+						try {
+							BasePair bp = basePair(index);
+							index--;
+							return bp;
+						} catch (InvalidDnaFormatException e) {
+							// TODO Auto-generated catch block
+							throw new RuntimeException("We encountered a badly encoded set of base pairs inside sequence iterator");
+						}
+					}
+
+					private BasePair basePair(int index)
+							throws InvalidDnaFormatException {
+						BasePair bp = BasePair.create(encodingScheme.toChar(sequence[index]), encodingScheme);
+						return bp;
+					}
+
+					@Override
+					public void remove() {
+						index--;
+					}
+					
+				};
+			}
+
+			@Override
+			public Spliterator<BasePair> spliterator() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -73,5 +149,4 @@ public class Sequence {
 			return false;
 		return true;
 	}
-
 }

@@ -18,10 +18,17 @@ public interface EncodingScheme {
 	byte getValue(char nucleotide) throws InvalidDnaFormatException;
 
 	/**
-	 * Return the string representation of the encoded nucleotide based on current eoncoding schema.
+	 * Return the string representation of the encoded nucleotide based on current encoding schema.
 	 * @param nucleotide the byte representation
 	 * @return the string representation
 	 */
 	String toString(byte nucleotide);
+
+	/**
+	 * Return the character representation of the encoded nucleotide based on the current encoding schema.
+	 * @param nucleotide the byte representation
+	 * @return the character representation
+	 */
+	char toChar(byte nucleotide);
 
 }

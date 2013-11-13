@@ -71,8 +71,12 @@ public final class BasePair {
 		return nucleotide == this.nucleotide;
 	}
 
-	@Override
+	
 	public String toString() {
 		return this.scheme.toString(this.nucleotide);
+	}
+
+	public char toChar() {
+		return this.scheme.toChar(this.nucleotide);
 	}	
 }
