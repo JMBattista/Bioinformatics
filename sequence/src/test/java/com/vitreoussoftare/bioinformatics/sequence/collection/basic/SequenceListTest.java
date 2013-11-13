@@ -13,6 +13,7 @@ import com.vitreoussoftare.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftare.bioinformatics.sequence.Sequence;
 import com.vitreoussoftare.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftare.bioinformatics.sequence.collection.SequenceCollectionFactory;
+import com.vitreoussoftare.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftare.bioinformatics.sequence.reader.SequenceStreamReader;
 import com.vitreoussoftare.bioinformatics.sequence.reader.SequenceStringStreamReader;
 import com.vitreoussoftare.bioinformatics.sequence.reader.fasta.FastaStringFileStreamReader;
@@ -27,12 +28,14 @@ import com.vitreoussoftare.bioinformatics.sequence.reader.fasta.SequenceFromFast
 public class SequenceListTest {
 
 	private SequenceCollectionFactory factory;
+	private FastaSequenceFactory sequenceFactory;
 
 	/**
-	 * Setup for test execution
+	 * Setup the test class
 	 */
 	@Before
 	public void setup() {
+		this.sequenceFactory = new FastaSequenceFactory();
 		this.factory = new SequenceListFactory();
 	}
 	
@@ -56,7 +59,7 @@ public class SequenceListTest {
 		SequenceCollection sc = this.factory.getSequenceCollection();
 		
 		assertNotNull(sc);
-		sc.add(Sequence.fromFasta("AATTCCGGUU"));
+		sc.add(sequenceFactory.fromString("AATTCCGGUU"));
 		assertEquals(1,  sc.size());
 	}
 	
@@ -67,7 +70,7 @@ public class SequenceListTest {
 	@Test
 	public void testContains_sameRef() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.factory.getSequenceCollection();
-		Sequence seq = Sequence.fromFasta("AATTCCGGUU");
+		Sequence seq = sequenceFactory.fromString("AATTCCGGUU");
 		sc.add(seq);
 		assertEquals(1,  sc.size());
 		assertTrue(sc.contains(seq));
@@ -80,9 +83,9 @@ public class SequenceListTest {
 	@Test
 	public void testContains_diffRef() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.factory.getSequenceCollection();
-		sc.add(Sequence.fromFasta("AATTCCGGUU"));
+		sc.add(sequenceFactory.fromString("AATTCCGGUU"));
 		assertEquals(1,  sc.size());
-		assertTrue(sc.contains(Sequence.fromFasta("AATTCCGGUU")));
+		assertTrue(sc.contains(sequenceFactory.fromString("AATTCCGGUU")));
 	}
 
 	/**
@@ -97,6 +100,7 @@ public class SequenceListTest {
 		
 		assertNotNull(sc);
 		assertEquals(1,  sc.size());
-		assertTrue(sc.contains(Sequence.fromFasta(FastaStringFileStreamReaderTest.recordSimple)));
+		assertEquals(sequenceFactory.fromString(FastaStringFileStreamReaderTest.recordSimple), sc.iterator().next());
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.recordSimple)));
 	}
 }

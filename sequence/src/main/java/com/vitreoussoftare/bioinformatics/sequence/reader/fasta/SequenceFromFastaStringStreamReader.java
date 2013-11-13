@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.vitreoussoftare.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftare.bioinformatics.sequence.Sequence;
+import com.vitreoussoftare.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftare.bioinformatics.sequence.reader.SequenceStreamReader;
 import com.vitreoussoftare.bioinformatics.sequence.reader.SequenceStringStreamReader;
 
@@ -14,6 +15,7 @@ import com.vitreoussoftare.bioinformatics.sequence.reader.SequenceStringStreamRe
  */
 public class SequenceFromFastaStringStreamReader implements SequenceStreamReader {
 	private final SequenceStringStreamReader reader;
+	private FastaSequenceFactory factory;
 	
 	/**
 	 * Process Sequence Strings into encoded sequences
@@ -22,6 +24,7 @@ public class SequenceFromFastaStringStreamReader implements SequenceStreamReader
 	public SequenceFromFastaStringStreamReader(SequenceStringStreamReader reader)
 	{
 		this.reader = reader;
+		this.factory = new FastaSequenceFactory();
 	}
 	
 	@Override
@@ -36,7 +39,7 @@ public class SequenceFromFastaStringStreamReader implements SequenceStreamReader
 
 	@Override
 	public Sequence readRecord() throws IOException, InvalidDnaFormatException {
-		return Sequence.fromFasta(this.reader.readRecord());
+		return this.factory.fromString(this.reader.readRecord());
 	}
 
 }

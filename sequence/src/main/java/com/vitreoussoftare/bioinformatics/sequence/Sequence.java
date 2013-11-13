@@ -2,43 +2,60 @@ package com.vitreoussoftare.bioinformatics.sequence;
 
 import java.util.Arrays;
 
+import com.vitreoussoftare.bioinformatics.sequence.encoding.EncodingScheme;
+
 /**
  * A DNA Sequence representation
  * @author John
  *
  */
-public class Sequence {
+public class Sequence {		
 	private byte[] sequence;
+	private final EncodingScheme encodingScheme;
 
-	private Sequence()
+	private Sequence(EncodingScheme encodingSheme)
 	{
+		this.encodingScheme = encodingSheme;
 	}
+	
 	/**
-	 * Create a DNA Sequence from a string in FASTA format 
-	 * @param dnaSequence The FASTA format sequence
-	 * @return The Sequence from the FASTA format string
-	 * @throws InvalidDnaFormatException One of the input characters is invalid
+	 * Create a new Sequence from a string and the given encoding scheme
+	 * @param sequence the string sequence to encode
+	 * @param encodingSheme the scheme to use for encoding
+	 * @return the encoded sequence
+	 * @throws InvalidDnaFormatException if the input doesn't match the scheme
 	 */
-	public static Sequence fromFasta(String dnaSequence) throws InvalidDnaFormatException {
-		if (dnaSequence.length() == 0) throw new InvalidDnaFormatException("The DNA sequence was empty!");
+	public static Sequence create(String sequence, EncodingScheme encodingSheme) throws InvalidDnaFormatException
+	{
+		Sequence seq = new Sequence(encodingSheme);
+		seq.sequence = new byte[sequence.length()];
 		
-		Sequence seq = new Sequence();
-		seq.sequence = new byte[dnaSequence.length()];
-		for (int i = 0; i < dnaSequence.length(); i++)
+		for (int i = 0; i < sequence.length(); i++)
 		{
-			seq.sequence[i] = BasePair.getValue(dnaSequence.charAt(i));
+			seq.sequence[i] = encodingSheme.getValue(sequence.charAt(i));
 		}
 		
 		return seq;
 	}
-
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (byte bp : sequence) {
+			sb.append(this.encodingScheme.toString(bp));
+		}
+		return sb.toString();
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + encodingScheme.getClass().getName().hashCode();
 		result = prime * result + Arrays.hashCode(sequence);
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -48,17 +65,13 @@ public class Sequence {
 		if (getClass() != obj.getClass())
 			return false;
 		Sequence other = (Sequence) obj;
+		if (this.encodingScheme == null || other.encodingScheme == null)
+			return false;
+		if (!encodingScheme.getClass().equals(other.encodingScheme.getClass()))
+			return false;
 		if (!Arrays.equals(sequence, other.sequence))
 			return false;
 		return true;
 	}
-	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		for (byte bp : sequence) {
-			sb.append(BasePair.tostring(bp));
-		}
-		return sb.toString();
-	}
+
 }

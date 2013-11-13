@@ -3,10 +3,12 @@ package com.vitreoussoftare.bioinformatics.sequence;
 import static org.junit.Assert.*;
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.vitreoussoftare.bioinformatics.sequence.Sequence;
 import com.vitreoussoftare.bioinformatics.sequence.InvalidDnaFormatException;
+import com.vitreoussoftare.bioinformatics.sequence.fasta.FastaSequenceFactory;
 
 /**
  * Test the Sequence class
@@ -15,6 +17,16 @@ import com.vitreoussoftare.bioinformatics.sequence.InvalidDnaFormatException;
  */
 public class SequenceTest {
 
+	private FastaSequenceFactory factory;
+
+	/**
+	 * Setup the test class
+	 */
+	@Before
+	public void setup() {
+		this.factory = new FastaSequenceFactory();
+	}
+	
 	/**
 	 * Test that we can create a new DnaSequence
 	 * @throws InvalidDnaFormatException 
@@ -23,7 +35,7 @@ public class SequenceTest {
 	public void testCreation_nominal() throws InvalidDnaFormatException {
 		final String basis = "AATT";
 		
-		Sequence seq = Sequence.fromFasta(basis);
+		Sequence seq = this.factory.fromString(basis);
 		
 		assertEquals(basis, seq.toString());
 	}
@@ -36,7 +48,7 @@ public class SequenceTest {
 	public void testCreation_full() throws InvalidDnaFormatException {
 		final String basis = "AATTCCGGUU";
 		
-		Sequence seq = Sequence.fromFasta(basis);
+		Sequence seq = this.factory.fromString(basis);
 		
 		assertEquals(basis, seq.toString());
 	}
@@ -50,7 +62,7 @@ public class SequenceTest {
 		final String basis = "AATT132";
 		
 		// We expect an error here so don't do anything about it!
-		Sequence.fromFasta(basis);
+		this.factory.fromString(basis);
 	}
 	
 	
@@ -63,7 +75,7 @@ public class SequenceTest {
 		final String basis = "";
 		
 		// We expect an error here so don't do anything about it!
-		Sequence.fromFasta(basis);
+		this.factory.fromString(basis);
 	}
 	
 	/**
@@ -74,7 +86,7 @@ public class SequenceTest {
 	public void testEquals_sameRef() throws InvalidDnaFormatException {
 		final String basis = "AATTCCGGUU";
 		
-		Sequence seq = Sequence.fromFasta(basis);
+		Sequence seq = this.factory.fromString(basis);
 		
 		assertEquals(seq, seq);
 	}
@@ -87,9 +99,36 @@ public class SequenceTest {
 	public void testEquals_diffRef() throws InvalidDnaFormatException {
 		final String basis = "AATTCCGGUU";
 		
-		Sequence seq1 = Sequence.fromFasta(basis);
-		Sequence seq2 = Sequence.fromFasta(basis);
+		Sequence seq1 = this.factory.fromString(basis);
+		Sequence seq2 = this.factory.fromString(basis);
 		
 		assertEquals(seq1, seq2);
+	}
+	
+	/**
+	 * Test that we can handle the full range of valid input
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testHashCode_sameRef() throws InvalidDnaFormatException {
+		final String basis = "AATTCCGGUU";
+		
+		Sequence seq = this.factory.fromString(basis);
+		
+		assertEquals(seq.hashCode(), seq.hashCode());
+	}
+	
+	/**
+	 * Test that we can handle the full range of valid input
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testHashCode_diffRef() throws InvalidDnaFormatException {
+		final String basis = "AATTCCGGUU";
+		
+		Sequence seq1 = this.factory.fromString(basis);
+		Sequence seq2 = this.factory.fromString(basis);
+		
+		assertEquals(seq1.hashCode(), seq2.hashCode());
 	}
 }

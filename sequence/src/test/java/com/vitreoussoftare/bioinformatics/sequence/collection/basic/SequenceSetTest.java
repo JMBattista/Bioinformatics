@@ -9,19 +9,21 @@ import com.vitreoussoftare.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftare.bioinformatics.sequence.Sequence;
 import com.vitreoussoftare.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftare.bioinformatics.sequence.collection.SequenceCollectionFactory;
+import com.vitreoussoftare.bioinformatics.sequence.fasta.FastaSequenceFactory;
 
 public class SequenceSetTest {
 
 	private SequenceCollectionFactory factory;
+	private FastaSequenceFactory sequenceFactory;
 
 	/**
-	 * Setup for test execution
+	 * Setup the test class
 	 */
 	@Before
 	public void setup() {
+		this.sequenceFactory = new FastaSequenceFactory();
 		this.factory = new SequenceSetFactory();
-	}
-	
+	}	
 	/**
 	 * Can it be created?
 	 * @throws InvalidDnaFormatException 
@@ -42,7 +44,7 @@ public class SequenceSetTest {
 		SequenceCollection sc = this.factory.getSequenceCollection();
 		
 		assertNotNull(sc);
-		sc.add(Sequence.fromFasta("AATTCCGGUU"));
+		sc.add(sequenceFactory.fromString("AATTCCGGUU"));
 		assertEquals(1,  sc.size());
 	}
 	
@@ -53,11 +55,14 @@ public class SequenceSetTest {
 	@Test
 	public void testAdd_duplicate() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.factory.getSequenceCollection();
+		Sequence seq = sequenceFactory.fromString("AATTCCGGUU");
 		
 		assertNotNull(sc);
-		sc.add(Sequence.fromFasta("AATTCCGGUU"));
+		sc.add(sequenceFactory.fromString("AATTCCGGUU"));
 		assertEquals(1,  sc.size());
-		sc.add(Sequence.fromFasta("AATTCCGGUU"));
+		assertEquals(seq, sc.iterator().next());
+		assertTrue(sc.contains(seq));
+		sc.add(sequenceFactory.fromString("AATTCCGGUU"));
 		assertEquals(1,  sc.size());
 	}
 	
@@ -68,7 +73,7 @@ public class SequenceSetTest {
 	@Test
 	public void testContains_sameRef() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.factory.getSequenceCollection();
-		Sequence seq = Sequence.fromFasta("AATTCCGGUU");
+		Sequence seq = sequenceFactory.fromString("AATTCCGGUU");
 		sc.add(seq);
 		assertEquals(1,  sc.size());
 		assertTrue(sc.contains(seq));
@@ -81,8 +86,8 @@ public class SequenceSetTest {
 	@Test
 	public void testContains_diffRef() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.factory.getSequenceCollection();
-		sc.add(Sequence.fromFasta("AATTCCGGUU"));
+		sc.add(sequenceFactory.fromString("AATTCCGGUU"));
 		assertEquals(1,  sc.size());
-		assertTrue(sc.contains(Sequence.fromFasta("AATTCCGGUU")));
+		assertTrue(sc.contains(sequenceFactory.fromString("AATTCCGGUU")));
 	}
 }
