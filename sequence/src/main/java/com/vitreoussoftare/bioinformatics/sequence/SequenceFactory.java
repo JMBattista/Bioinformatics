@@ -20,7 +20,8 @@ public interface SequenceFactory {
 	 * Used for changing encoding schemes.
 	 * @param sequence the sequence to re-encode
 	 * @return the Sequence object
+	 * @throws InvalidDnaFormatException 
 	 */
-	public Sequence fromSequence(Sequence sequence);
+	public Sequence fromSequence(Sequence sequence) throws InvalidDnaFormatException;
 
 }
