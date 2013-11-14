@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -211,6 +213,196 @@ public class SuffixTreeTest {
 		
 		assertNotNull(tree);
 		assertFalse(tree.contains(this.factory.fromString("GCGGAGCGUGUGGUUUAAUUCGAUGCUACACGAAGAACCUUACCAAGAUUUGACAUGCAUGUAGUAGUGAACUGAAAGGG")));	
+	}
+	
+	/**
+	 * Find something in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testFindParents_trivial() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(recordSimple);
+		
+		assertNotNull(tree);
+		Collection<Sequence> parents = null;
+		
+		Sequence a = this.factory.fromString("A");
+		parents = tree.getParents(a);
+		assertEquals(1, parents.size());
+		assertEquals(recordSimple, parents.iterator().next());
+		
+		Sequence u = this.factory.fromString("U");
+		parents = tree.getParents(u);
+		assertEquals(1, parents.size());
+		assertEquals(recordSimple, parents.iterator().next());
+		
+		Sequence c = this.factory.fromString("C");
+		parents = tree.getParents(c);
+		assertEquals(1, parents.size());
+		assertEquals(recordSimple, parents.iterator().next());
+		
+		Sequence g = this.factory.fromString("G");
+		parents = tree.getParents(g);
+		assertEquals(1, parents.size());
+		assertEquals(recordSimple, parents.iterator().next());
+	}
+	
+	/**
+	 * Find something in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testFindParents_canFailWrongParent() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(recordSimple);
+		
+		assertNotNull(tree);
+		
+		Sequence g = this.factory.fromString("G");
+		Collection<Sequence> parents = tree.getParents(g);
+		assertEquals(1, parents.size());
+		assertNotEquals(g, parents.iterator().next());
+	}
+	
+	/**
+	 * Find something in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testFindParents_canFailMissing() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(recordSimple);
+		
+		assertNotNull(tree);
+		
+		Sequence t = this.factory.fromString("T");
+		Collection<Sequence> parents = tree.getParents(t);
+		assertTrue(parents.isEmpty());
+	}
+	
+	/**
+	 * Find something in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testFindParents_simple() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(recordSimple);
+		
+		assertNotNull(tree);
+		Collection<Sequence> parents = tree.getParents(recordSimple);
+		assertEquals(1, parents.size());
+		assertEquals(recordSimple, parents.iterator().next());
+	}
+
+	/**
+	 * Find something in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testFindParents_record1() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(record1);
+		
+		assertNotNull(tree);
+		Collection<Sequence> parents = tree.getParents(record1);
+		assertEquals(1, parents.size());
+		assertEquals(record1, parents.iterator().next());
+	}
+	
+	/**
+	 * Find something in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testFindParents_record2() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(record2);
+		
+		assertNotNull(tree);
+		Collection<Sequence> parents = tree.getParents(record2);
+		assertEquals(1, parents.size());
+		assertEquals(record2, parents.iterator().next());
+	}
+	
+	/**
+	 * Find something in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testFindParents_record3() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(record3);
+		
+		assertNotNull(tree);
+		Collection<Sequence> parents = tree.getParents(record3);
+		assertEquals(1, parents.size());
+		assertEquals(record3, parents.iterator().next());
+	}
+	
+	/**
+	 * Find something in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testFindParents_record3Substring() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(record3);
+		
+		Sequence seq = this.factory.fromString("GCGGAGCGUGUGGUUUAAUUCGAUGCUACACGAAGAACCUUACCAAGAUUUGACAUGCAUGUAGUAGUGAACUGAAAGGG");
+		assertNotNull(tree);
+		Collection<Sequence> parents = tree.getParents(seq);
+		assertEquals(1, parents.size());
+		assertEquals(record3, parents.iterator().next());	
+	}
+
+	/**
+	 * Find something in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testFindParentsMultiple_trivial() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(recordSimple);
+		tree.addSequence(record1);
+		tree.addSequence(record2);
+		tree.addSequence(record3);
+		
+		assertNotNull(tree);
+		Collection<Sequence> parents = null;
+		
+		Sequence a = this.factory.fromString("A");
+		parents = tree.getParents(a);
+//		assertTrue(parents.contains(recordSimple));
+//		assertTrue(parents.contains(record1));
+//		assertTrue(parents.contains(record2));
+		assertTrue(parents.contains(record3));
+		assertEquals(4, parents.size());
+		
+		Sequence u = this.factory.fromString("U");
+		parents = tree.getParents(u);
+		assertEquals(4, parents.size());
+		assertTrue(parents.contains(recordSimple));
+		assertTrue(parents.contains(record1));
+		assertTrue(parents.contains(record2));
+		assertTrue(parents.contains(record3));
+		
+		Sequence c = this.factory.fromString("C");
+		parents = tree.getParents(c);
+		assertEquals(4, parents.size());
+		assertTrue(parents.contains(recordSimple));
+		assertTrue(parents.contains(record1));
+		assertTrue(parents.contains(record2));
+		assertTrue(parents.contains(record3));
+		
+		Sequence g = this.factory.fromString("G");
+		parents = tree.getParents(g);
+		assertEquals(4, parents.size());
+		assertTrue(parents.contains(recordSimple));
+		assertTrue(parents.contains(record1));
+		assertTrue(parents.contains(record2));
+		assertTrue(parents.contains(record3));
 	}
 	
 	/**

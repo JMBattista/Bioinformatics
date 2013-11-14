@@ -1,6 +1,8 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.function.Consumer;
 
 import com.vitreoussoftware.bioinformatics.sequence.*;
@@ -22,22 +24,8 @@ public class SuffixTree {
 	 */
 	public SuffixTree(Sequence sequence)
 	{
-		//TODO this takes n^2 can probably be reduced dramatically
-		if (sequence == null) throw new IllegalArgumentException("Sequence cannot be null");
 		root = new SuffixTreeNode();
-		Iterator<BasePair> suffixIter = sequence.reverse().iterator();
-		
-		while (suffixIter.hasNext())
-		{
-			suffixIter.forEachRemaining(new Consumer<BasePair>() {
-				SuffixTreeNode current = root;
-				
-				public void accept(BasePair bp) {
-					current = current.getOrCreate(bp);
-				}
-			});
-			suffixIter.next();
-		}
+		this.addSequence(sequence);
 	}
 
 	/**
@@ -46,6 +34,24 @@ public class SuffixTree {
 	 * @return if the substring exists in the tree
 	 */
 	public boolean contains(Sequence sequence) {
+		return !this.getParents(sequence).isEmpty();
+	}
+	
+	/**
+	 * Returns the depth of the suffix tree.
+	 * @return the depth
+	 */
+	public int depth() {
+		// The root is a null element
+		return root.depth() -1;	
+	}
+
+	/**
+	 * Find the set of parents for the sequence of interest
+	 * @param sequence the sequence to find parents for
+	 * @return the set of parents, or empty list if no parents
+	 */
+	public Collection<Sequence> getParents(Sequence sequence) {
 		Iterator<BasePair> iter = sequence.reverse().iterator();
 		
 		SuffixTreeNode current = root;
@@ -55,20 +61,34 @@ public class SuffixTree {
 			if (current.contains(bp))
 				current = current.get(bp);
 			else
-				return false;
+				// return empty list
+				return new LinkedList<Sequence>();
 		}
 		
-		return true;
+		return current.getParents();
 	}
-	
+
 	/**
-	 * Returns the depth of the suffix tree.
-	 * @return the depth
+	 * Adds a new sequence to the suffix tree
+	 * @param sequence the sequence to add
 	 */
-	public int depth() {
-		// The root is a null element
-		return root.depth() -1;
+	public void addSequence(final Sequence sequence) {
+		//TODO this takes n^2 can probably be reduced dramatically
+		if (sequence == null) throw new IllegalArgumentException("Sequence cannot be null");
+		Iterator<BasePair> suffixIter = sequence.reverse().iterator();
 		
+		while (suffixIter.hasNext())
+		{
+			suffixIter.forEachRemaining(new Consumer<BasePair>() {
+				SuffixTreeNode current = root;
+				
+				public void accept(BasePair bp) {
+					current = current.getOrCreate(bp);
+					current.addParent(sequence);
+				}
+			});
+			suffixIter.next();
+		}
 	}
 	
 }
