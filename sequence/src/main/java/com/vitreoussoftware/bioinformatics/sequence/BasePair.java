@@ -73,10 +73,23 @@ public final class BasePair {
 
 	
 	public String toString() {
-		return this.scheme.toString(this.nucleotide);
+		try {
+			return this.scheme.toString(this.nucleotide);
+		} catch (InvalidDnaFormatException e) {
+			// this should never fail since the encoding came from the encapsulated BasePair
+			e.printStackTrace();
+			throw new RuntimeException("We hit an unknown basepair encoding converting to string\n");
+		}
 	}
 
 	public char toChar() {
-		return this.scheme.toChar(this.nucleotide);
+		try {
+			return this.scheme.toChar(this.nucleotide);	
+		} catch (InvalidDnaFormatException e) {
+			// this should never fail since the encoding came from the encapsulated BasePair
+			e.printStackTrace();
+			throw new RuntimeException("We hit an unknown basepair encoding converting to string\n");
+		}
+		
 	}	
 }

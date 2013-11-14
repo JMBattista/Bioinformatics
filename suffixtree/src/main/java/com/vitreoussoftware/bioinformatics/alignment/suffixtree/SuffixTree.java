@@ -22,6 +22,7 @@ public class SuffixTree {
 	 */
 	public SuffixTree(Sequence sequence)
 	{
+		//TODO this takes n^2 can probably be reduced dramatically
 		if (sequence == null) throw new IllegalArgumentException("Sequence cannot be null");
 		root = new SuffixTreeNode();
 		Iterator<BasePair> suffixIter = sequence.reverse().iterator();
@@ -58,6 +59,16 @@ public class SuffixTree {
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * Returns the depth of the suffix tree.
+	 * @return the depth
+	 */
+	public int depth() {
+		// The root is a null element
+		return root.depth() -1;
+		
 	}
 	
 }

@@ -56,6 +56,55 @@ public class SuffixTreeTest {
 		new SuffixTree(null);
 	}
 	
+	
+	/**
+	 * Check creation
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testCreate_simple() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(this.recordSimple);
+		
+		assertNotNull(tree);
+	}
+	
+	/**
+	 * Check creation
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testCreate_record1() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(this.record1);
+		
+		assertNotNull(tree);
+	}
+	
+	/**
+	 * Check creation
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testCreate_record2() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(this.record2);
+		
+		assertNotNull(tree);
+	}
+	
+	/**
+	 * Check creation
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testCreate_record3() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(this.record3);
+		
+		assertNotNull(tree);
+	}
+	
 	/**
 	 * Find something in the suffix tree
 	 * @throws IOException 
@@ -85,6 +134,7 @@ public class SuffixTreeTest {
 		assertFalse(tree.contains(this.factory.fromString("T")));
 	}
 	
+	
 	/**
 	 * Find something in the suffix tree
 	 * @throws IOException 
@@ -95,7 +145,7 @@ public class SuffixTreeTest {
 		SuffixTree tree = new SuffixTree(recordSimple);
 		
 		assertNotNull(tree);
-		assertFalse(tree.contains(recordSimple));
+		assertTrue(tree.contains(recordSimple));
 	}
 
 	/**
@@ -105,10 +155,10 @@ public class SuffixTreeTest {
 	 */
 	@Test
 	public void testFind_record1() throws IOException, InvalidDnaFormatException {
-		SuffixTree tree = new SuffixTree(recordSimple);
+		SuffixTree tree = new SuffixTree(record1);
 		
 		assertNotNull(tree);
-		assertFalse(tree.contains(record1));
+		assertTrue(tree.contains(record1));
 	}
 	
 	/**
@@ -118,10 +168,10 @@ public class SuffixTreeTest {
 	 */
 	@Test
 	public void testFind_record2() throws IOException, InvalidDnaFormatException {
-		SuffixTree tree = new SuffixTree(recordSimple);
+		SuffixTree tree = new SuffixTree(record2);
 		
 		assertNotNull(tree);
-		assertFalse(tree.contains(record2));
+		assertTrue(tree.contains(record2));
 	}
 	
 	/**
@@ -134,6 +184,110 @@ public class SuffixTreeTest {
 		SuffixTree tree = new SuffixTree(record3);
 		
 		assertNotNull(tree);
-		assertFalse(tree.contains(recordSimple));
+		assertTrue(tree.contains(record3));
+	}
+	
+	/**
+	 * Find something in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testFind_record3Substring() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(record3);
+		
+		assertNotNull(tree);
+		assertTrue(tree.contains(this.factory.fromString("GCGGAGCGUGUGGUUUAAUUCGAUGCUACACGAAGAACCUUACCAAGAUUUGACAUGCAUGUAGUAGUGAACUGAAAGGG")));	
+	}
+	
+	/**
+	 * Find something in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testFind_canFailLarge() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(record2);
+		
+		assertNotNull(tree);
+		assertFalse(tree.contains(this.factory.fromString("GCGGAGCGUGUGGUUUAAUUCGAUGCUACACGAAGAACCUUACCAAGAUUUGACAUGCAUGUAGUAGUGAACUGAAAGGG")));	
+	}
+	
+	/**
+	 * Check depth computation
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testDepth_1() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(this.factory.fromString("A"));
+		
+		assertNotNull(tree);
+		assertEquals(1, tree.depth());
+	}
+	
+	/**
+	 * Check depth computation
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testDepth_2() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(this.factory.fromString("AU"));
+		
+		assertNotNull(tree);
+		assertEquals(2, tree.depth());
+	}
+	
+	/**
+	 * Check depth computation
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testDepth_simple() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(this.recordSimple);
+		
+		assertNotNull(tree);
+		assertEquals(this.recordSimple.length(), tree.depth());
+	}
+	
+	/**
+	 * Check depth computation
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testDepth_record1() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(this.record1);
+		
+		assertNotNull(tree);
+		assertEquals(this.record1.length(), tree.depth());
+	}
+	
+	/**
+	 * Check depth computation
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testDepth_record2() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(this.record2);
+		
+		assertNotNull(tree);
+		assertEquals(this.record2.length(), tree.depth());
+	}
+	
+	/**
+	 * Check depth computation
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testDepth_record3() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = new SuffixTree(this.record3);
+		
+		assertNotNull(tree);
+		assertEquals(this.record3.length(), tree.depth());
 	}
 }

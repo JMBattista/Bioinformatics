@@ -37,4 +37,13 @@ class SuffixTreeNode {
 		return this.children.get(bp);
 	}
 
+	public int depth() {
+		int max = 0;
+		for (SuffixTreeNode node: this.children.values()) {
+			max = Math.max(max, node.depth());
+		}
+		
+		return max + 1;
+	}
+
 }

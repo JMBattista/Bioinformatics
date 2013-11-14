@@ -66,7 +66,7 @@ public class Sequence {
 						try {
 							while (remaining >= 0)
 							{
-								consumer.accept(basePair(remaining));
+								consumer.accept(getBasePair(remaining));
 								remaining--;
 							}
 						} catch (InvalidDnaFormatException e) {
@@ -83,7 +83,7 @@ public class Sequence {
 					@Override
 					public BasePair next() {
 						try {
-							BasePair bp = basePair(index);
+							BasePair bp = getBasePair(index);
 							index--;
 							return bp;
 						} catch (InvalidDnaFormatException e) {
@@ -92,10 +92,8 @@ public class Sequence {
 						}
 					}
 
-					private BasePair basePair(int index)
-							throws InvalidDnaFormatException {
-						BasePair bp = BasePair.create(encodingScheme.toChar(sequence[index]), encodingScheme);
-						return bp;
+					private BasePair getBasePair(int index) throws InvalidDnaFormatException {
+						return encodingScheme.toBasePair(sequence[index]);
 					}
 
 					@Override
@@ -117,8 +115,14 @@ public class Sequence {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for (byte bp : sequence) {
-			sb.append(this.encodingScheme.toString(bp));
+		try {
+			for (byte bp : sequence) {
+				sb.append(this.encodingScheme.toString(bp));
+			}
+		} catch (InvalidDnaFormatException e) {
+			// this should never fail since the encoding came from the encapsulated BasePair
+			e.printStackTrace();
+			throw new RuntimeException("We hit an unknown basepair encoding converting to string\n");
 		}
 		return sb.toString();
 	}
@@ -148,5 +152,13 @@ public class Sequence {
 		if (!Arrays.equals(sequence, other.sequence))
 			return false;
 		return true;
+	}
+
+	/**
+	 * The length of the sequence
+	 * @return length
+	 */
+	public int length() {
+		return this.sequence.length;
 	}
 }

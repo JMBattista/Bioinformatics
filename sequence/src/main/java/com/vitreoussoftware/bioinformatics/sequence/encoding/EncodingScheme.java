@@ -1,5 +1,6 @@
 package com.vitreoussoftware.bioinformatics.sequence.encoding;
 
+import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 
 /**
@@ -21,14 +22,24 @@ public interface EncodingScheme {
 	 * Return the string representation of the encoded nucleotide based on current encoding schema.
 	 * @param nucleotide the byte representation
 	 * @return the string representation
+	 * @throws InvalidDnaFormatException 
 	 */
-	String toString(byte nucleotide);
+	String toString(byte nucleotide) throws InvalidDnaFormatException;
 
 	/**
 	 * Return the character representation of the encoded nucleotide based on the current encoding schema.
 	 * @param nucleotide the byte representation
 	 * @return the character representation
+	 * @throws InvalidDnaFormatException 
 	 */
-	char toChar(byte nucleotide);
+	char toChar(byte nucleotide) throws InvalidDnaFormatException;
+
+	/**
+	 * Return the BasePair representation encoded nucleotide based on the current encoding schema.
+	 * @param nucleotide the byte representation
+	 * @return the BasePair
+	 * @throws InvalidDnaFormatException 
+	 */
+	BasePair toBasePair(byte nucleotide) throws InvalidDnaFormatException;
 
 }

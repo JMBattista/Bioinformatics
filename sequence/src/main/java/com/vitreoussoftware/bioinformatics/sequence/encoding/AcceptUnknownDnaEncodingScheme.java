@@ -26,19 +26,23 @@ public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
 	/**
 	 * The T nucleotide
 	 */
-	public static final BasePair T = createSafe('T');;
+	public static final BasePair T = createSafe('T');
+	/**
+	 * The U nucleotide for use in RNA
+	 */
+	public static final BasePair U = createSafe('U');
 	/**
 	 * The C nucleotide
 	 */
-	public static final BasePair C = createSafe('C');;
+	public static final BasePair C = createSafe('C');
 	/**
 	 * The G nucleotide
 	 */
-	public static final BasePair G = createSafe('G');;
+	public static final BasePair G = createSafe('G');
 	/**
 	 * Represents an unknown nucleotide due to processing
 	 */
-	public static final BasePair U = createSafe('U');
+	public static final BasePair N = createSafe('N');
 	
 	/**
 	 * Create an instance of the encoding scheme 
@@ -96,11 +100,12 @@ public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
 	};
 		
 	/**
-	 * Return the string representation of the encoded nucleotide based on current eoncoding schema.
+	 * Return the string representation of the encoded nucleotide based on current encoding schema.
 	 * @param nucleotide the byte representation
 	 * @return the string representation
+	 * @throws InvalidDnaFormatException 
 	 */
-	public String toString(byte nucleotide) {
+	public String toString(byte nucleotide) throws InvalidDnaFormatException {
 		switch (nucleotide) {
 		case NUCLEOTIDE_A:
 			return "A";
@@ -112,28 +117,50 @@ public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
 			return "G";
 		case NUCLEOTIDE_U:
 			return "U";
-		// we should never hit default but it is necessary for compilation
+		case NUCLEOTIDE_N:
+			return "N";
 		default:
-			return "";
+			throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
 		}	 
 	}
 
 	@Override
-	public char toChar(byte nucleotide) {
+	public char toChar(byte nucleotide) throws InvalidDnaFormatException{
 		switch (nucleotide) {
 		case NUCLEOTIDE_A:
 			return 'A';
 		case NUCLEOTIDE_T:
 			return 'T';
+		case NUCLEOTIDE_U:
+			return 'U';
 		case NUCLEOTIDE_C:
 			return 'C';
 		case NUCLEOTIDE_G:
 			return 'G';
-		case NUCLEOTIDE_U:
-			return 'U';
-		// we should never hit default but it is necessary for compilation
+		case NUCLEOTIDE_N:
+			return 'N';
 		default:
-			return ' ';
+			throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
 		}	 
+	}
+
+	@Override
+	public BasePair toBasePair(byte nucleotide) throws InvalidDnaFormatException {
+		switch (nucleotide) {
+		case NUCLEOTIDE_A:
+			return A;
+		case NUCLEOTIDE_T:
+			return T;
+		case NUCLEOTIDE_C:
+			return C;
+		case NUCLEOTIDE_G:
+			return G;
+		case NUCLEOTIDE_U:
+			return U;
+		case NUCLEOTIDE_N:
+			return N;
+		default:
+			throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
+		}
 	}	
 }
