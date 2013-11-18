@@ -1,4 +1,4 @@
-package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
+package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 
 import java.util.Collection;
 import java.util.HashMap;
