@@ -1,5 +1,8 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 
+import java.io.IOException;
+
+import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
@@ -29,7 +32,9 @@ public interface SuffixTreeFactory {
 	 * Create a SuffixTree based on a SequenceStreamREader.
 	 * @param sequenceReader the SequenceStreamReader
 	 * @return the SuffixTree
+	 * @throws InvalidDnaFormatException 
+	 * @throws IOException 
 	 */
-	public SuffixTree create(SequenceStreamReader sequenceReader);
+	public SuffixTree create(SequenceStreamReader sequenceReader) throws IOException, InvalidDnaFormatException;
 	
 }
