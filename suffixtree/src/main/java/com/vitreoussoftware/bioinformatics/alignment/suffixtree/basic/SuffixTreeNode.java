@@ -8,17 +8,20 @@ import java.util.List;
 
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
+import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
+import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
+import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceSetFactory;
 
 class SuffixTreeNode {
 	/**
 	 * The set of child BasePairs
 	 */
 	private final HashMap<BasePair, SuffixTreeNode> children;
-	private final Collection<Sequence> parents;
+	private final SequenceCollection parents;
 	
 	SuffixTreeNode()
 	{
-		this.parents = new HashSet<Sequence>();
+		this.parents = new SequenceSetFactory().getSequenceCollection();
 		this.children = new HashMap<BasePair, SuffixTreeNode>();
 	}
 	
@@ -40,8 +43,21 @@ class SuffixTreeNode {
 		return this.children.containsKey(bp);
 	}
 
+	/**
+	 * Retrieve the child that matches the given BasePair
+	 * @param bp the BasePair to match against
+	 * @return the matching child
+	 */
 	SuffixTreeNode get(BasePair bp) {
 		return this.children.get(bp);
+	}
+	
+	/**
+	 * Retrieve all children of this node
+	 * @return return all the children
+	 */
+	Collection<? extends SuffixTreeNode> getAll() {
+		return this.children.values();
 	}
 
 	int depth() {
@@ -53,12 +69,11 @@ class SuffixTreeNode {
 		return max + 1;
 	}
 
-	Collection<Sequence> getParents() {
+	SequenceCollection getParents() {
 		return this.parents;
 	}
 
 	void addParent(Sequence sequence) {
 		this.parents.add(sequence);
 	}
-
 }

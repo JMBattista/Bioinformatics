@@ -7,18 +7,39 @@ import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTreeFactor
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
+import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
+import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceListFactory;
 import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
 
 public class BasicSuffixTreeFactory implements SuffixTreeFactory {
 
+	private SequenceCollectionFactory factory;
+
+	/**
+	 * Create a BasicSuffixTreeFactory with a custom SequenceCollectionFactory
+	 * @param factory the SequenceCollectionFactory to use with the SuffixTree
+	 */
+	public BasicSuffixTreeFactory(SequenceCollectionFactory factory) {
+		this.factory = factory;
+	}
+	
+	/**
+	 * Create a BasicSuffixTreeFactory with default configuration
+	 */
+	public BasicSuffixTreeFactory() {
+		this.factory = new SequenceListFactory();
+	}
+	
 	@Override
 	public SuffixTree create(Sequence sequence) {
-		return new BasicSuffixTree(sequence);
+		SuffixTree tree = new BasicSuffixTree(this.factory);
+		tree.addSequence(sequence);
+		return tree;
 	}
 
 	@Override
 	public SuffixTree create(SequenceCollection sequenceCollection) {
-		SuffixTree t = new BasicSuffixTree();
+		SuffixTree t = new BasicSuffixTree(this.factory);
 		for (Sequence s : sequenceCollection)
 			t.addSequence(s);
 		return t;
@@ -26,7 +47,7 @@ public class BasicSuffixTreeFactory implements SuffixTreeFactory {
 
 	@Override
 	public SuffixTree create(SequenceStreamReader sequenceReader) throws IOException, InvalidDnaFormatException {
-		SuffixTree t = new BasicSuffixTree();
+		SuffixTree t = new BasicSuffixTree(this.factory);
 		
 		while (sequenceReader.hasRecord())
 			t.addSequence(sequenceReader.readRecord());

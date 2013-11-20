@@ -21,4 +21,8 @@ public class SequenceList extends ArrayList<Sequence> implements SequenceCollect
 	SequenceList() {
 		super();
 	}
+
+	public static SequenceCollection getEmpty() {
+		return new SequenceList();
+	}
 }

@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.function.Consumer;
 
 import com.vitreoussoftware.bioinformatics.sequence.*;
+import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
+import com.vitreoussoftware.utilities.Tuple;
 
 
 
@@ -33,11 +35,18 @@ public interface SuffixTree {
 	 * @param sequence the sequence to find parents for
 	 * @return the set of parents, or empty list if no parents
 	 */
-	public Collection<Sequence> getParents(Sequence sequence);
+	public SequenceCollection getParents(Sequence sequence);
 	
 	/**
 	 * Adds a new sequence to the suffix tree
 	 * @param sequence the sequence to add
 	 */
-	public void addSequence(final Sequence sequence);	
+	public void addSequence(final Sequence sequence);
+
+	/**
+	 * Return the minimum distance from the give sequence to each of the sequences making up the SuffixTree
+	 * @param sequence
+	 * @return The collection of tuples showing the distance and the collection of sequences for that distance
+	 */
+	public Collection<Tuple<Integer, SequenceCollection>> distance(Sequence sequence);	
 }
