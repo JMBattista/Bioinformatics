@@ -32,7 +32,7 @@ import com.vitreoussoftware.utilities.Tuple;
  */
 public class BasicSuffixTree implements SuffixTree {
 	
-	private SuffixTreeNode root;
+	protected SuffixTreeNode root;
 	private SequenceCollectionFactory factory;
 
 	/**

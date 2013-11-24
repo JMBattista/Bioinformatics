@@ -10,11 +10,11 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
  *
  */
 public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
-	static final byte NUCLEOTIDE_A = 0b00000010;
-	static final byte NUCLEOTIDE_T = 0b00000001;
-	static final byte NUCLEOTIDE_U = 0b00010000;
-	static final byte NUCLEOTIDE_C = 0b00001000;
-	static final byte NUCLEOTIDE_G = 0b00000100;
+	static final byte NUCLEOTIDE_A = 0b00000010; // 2
+	static final byte NUCLEOTIDE_T = 0b00000001; // 1
+	static final byte NUCLEOTIDE_U = 0b00010000; // 16 
+	static final byte NUCLEOTIDE_C = 0b00001000; // 8
+	static final byte NUCLEOTIDE_G = 0b00000100; // 4
 	static final byte NUCLEOTIDE_N = 0b00011111;
 	
 	public static EncodingScheme instance = new AcceptUnknownDnaEncodingScheme();

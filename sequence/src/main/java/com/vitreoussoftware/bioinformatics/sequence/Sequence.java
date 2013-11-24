@@ -93,7 +93,7 @@ public class Sequence {
 					}
 
 					private BasePair getBasePair(int index) throws InvalidDnaFormatException {
-						return encodingScheme.toBasePair(sequence[index]);
+						return get(index);
 					}
 
 					@Override
@@ -110,6 +110,24 @@ public class Sequence {
 				return null;
 			}
 		};
+	}
+	
+	/**
+	 * Get the BasePair at the specified index
+	 * @param index the index to get the BasePair from
+	 * @return the BasePair
+	 */
+	public BasePair get(int index)
+	{
+		try {
+			return this.encodingScheme.toBasePair(sequence[index]);
+		}
+		catch (InvalidDnaFormatException e)
+		{
+			// this should not have happened because we encoded everything using this scheme already
+			e.printStackTrace();
+			throw new RuntimeException("We failed to decode a value that was previously encoded in by the same encoding scheme, for value: " + sequence[index] + " encoding scheme " + this.encodingScheme.getClass().getName());
+		}
 	}
 	
 	@Override

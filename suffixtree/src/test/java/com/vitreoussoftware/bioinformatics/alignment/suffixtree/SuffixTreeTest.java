@@ -27,11 +27,11 @@ import com.vitreoussoftware.utilities.Tuple;
  */
 public abstract class SuffixTreeTest {
 	private SuffixTreeFactory factory;
-	private FastaSequenceFactory sequenceFactory;
-	private Sequence record1;
-	private Sequence record2;
-	private Sequence record3;
-	private Sequence recordSimple;
+	protected FastaSequenceFactory sequenceFactory;
+	protected Sequence record1;
+	protected Sequence record2;
+	protected Sequence record3;
+	protected Sequence recordSimple;
 	
 	@Before
 	public void setup() throws InvalidDnaFormatException {
