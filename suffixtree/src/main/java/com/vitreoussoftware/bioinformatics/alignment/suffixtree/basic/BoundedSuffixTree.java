@@ -1,32 +1,16 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToIntFunction;
-import java.util.function.ToLongFunction;
 
-import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
-import com.vitreoussoftware.bioinformatics.sequence.*;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
+import java.util.Iterator;
+
+import com.vitreoussoftware.bioinformatics.sequence.BasePair;
+import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
-import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceList;
-import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceSetFactory;
-import com.vitreoussoftware.utilities.Tuple;
 
 
 
 /**
- * Suffix Tree implementation for Sequence data
+ * Suffix Tree implementation for Sequence data where the substrings fall within a specified range of lengths.
  * @author John
  *
  */

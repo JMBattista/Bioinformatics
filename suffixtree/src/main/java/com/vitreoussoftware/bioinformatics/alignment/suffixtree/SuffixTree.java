@@ -45,8 +45,16 @@ public interface SuffixTree {
 
 	/**
 	 * Return the minimum distance from the give sequence to each of the sequences making up the SuffixTree
-	 * @param sequence
+	 * @param sequence the DNA sequence to check distance for
 	 * @return The collection of tuples showing the distance and the collection of sequences for that distance
 	 */
-	public Collection<Tuple<Integer, SequenceCollection>> distance(Sequence sequence);	
+	public Collection<Tuple<Integer, SequenceCollection>> distance(Sequence sequence);
+	
+	/**
+	 * Return the minimum distance from the give sequence to each of the sequences making up the SuffixTree
+	 * @param sequence the DNA sequence to check distance for
+	 * @param maxDistance the maximum distance before which we give up
+	 * @return The collection of tuples showing the distance and the collection of sequences for that distance
+	 */
+	public Collection<Tuple<Integer, SequenceCollection>> distance(Sequence sequence, int maxDistance);
 }

@@ -654,6 +654,85 @@ public abstract class SuffixTreeTest {
 	}
 	
 	/**
+	 * Find distances in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testMaxDistanceMultiple_offByEndN() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = this.factory.create(recordSimple);
+		tree.addSequence(record3);
+		
+		assertNotNull(tree);
+		
+		Sequence seq = this.sequenceFactory.fromString("AAAAAAAAAAN");
+		
+		Collection<Tuple<Integer, SequenceCollection>> distances = tree.distance(seq, 10);
+		
+		assertEquals("Number of tuples", 1, distances.size());
+		assertEquals("Distance of first tuple", 4, distances.stream().findFirst().get().getItem1().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distances.stream().findFirst().get().getItem2().size());
+		assertTrue("Record3 was not a parent", distances.stream().findFirst().get().getItem2().contains(record3));
+		
+		distances = tree.distance(seq, 2);
+		
+		assertEquals("Number of tuples", 0, distances.size());
+	}
+	
+	/**
+	 * Find distances in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testMaxDistanceMultiple_offByMiddleN() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = this.factory.create(recordSimple);
+		tree.addSequence(record3);
+		
+		assertNotNull(tree);
+		
+		Sequence seq = this.sequenceFactory.fromString("AAAAANAAAAA");
+		
+		Collection<Tuple<Integer, SequenceCollection>> distances = tree.distance(seq, 10);
+		
+		assertEquals("Number of tuples", 1, distances.size());
+		assertEquals("Distance of first tuple", 5, distances.stream().findFirst().get().getItem1().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distances.stream().findFirst().get().getItem2().size());
+		assertTrue("Simple was not a parent", distances.stream().findFirst().get().getItem2().contains(record3));
+		
+		distances = tree.distance(seq, 2);
+		
+		assertEquals("Number of tuples", 0, distances.size());
+	}
+	
+	/**
+	 * Find distances in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testMaxDistanceMultiple_offByStartN() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = this.factory.create(recordSimple);
+		tree.addSequence(record3);
+		
+		assertNotNull(tree);
+		
+		Sequence seq = this.sequenceFactory.fromString("NAAAAAAAAAAA");
+		
+		Collection<Tuple<Integer, SequenceCollection>> distance = tree.distance(seq, 10);
+		
+		assertEquals("Number of tuples", 1, distance.size());
+		assertEquals("Distance of first tuple", 6, distance.stream().findFirst().get().getItem1().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distance.stream().findFirst().get().getItem2().size());
+		assertTrue("Record3 was not a parent", distance.stream().findFirst().get().getItem2().contains(record3));
+
+
+		distance = tree.distance(seq, 2);
+		
+		assertEquals("Number of tuples", 0, distance.size());
+	}
+	
+	/**
 	 * Check depth computation
 	 * @throws IOException 
 	 * @throws InvalidDnaFormatException 
