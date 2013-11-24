@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
@@ -730,6 +731,35 @@ public abstract class SuffixTreeTest {
 		distance = tree.distance(seq, 2);
 		
 		assertEquals("Number of tuples", 0, distance.size());
+	}
+	
+	/**
+	 * Find distances in the suffix tree
+	 * @throws IOException 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testDistances_trivial3() throws IOException, InvalidDnaFormatException {
+		SuffixTree tree = this.factory.create(this.sequenceFactory.fromString("TATATACT"));
+		
+		assertNotNull(tree);
+		
+		Sequence sequence = this.sequenceFactory.fromString("TAT");
+		
+		Collection<Tuple<Sequence, List<Integer>>> distances = tree.distances(sequence, 2);
+		
+		// There is only one parent
+		assertEquals("Number of tuples", 1, distances.size());
+		
+		List<Integer> list = distances.stream().findFirst().get().getItem2();
+		Collections.sort(list); 
+		// There are 4 distance values on that parent TAT(0) TAT(0) TAC(1) ACT(2). ATA (3) is not included as it is over max distance
+		assertEquals("Number of distances of first tuple", 4, list.size());
+		// Contains the correct values
+		assertEquals("First position", 0, list.get(0).intValue());
+		assertEquals("First position", 0, list.get(1).intValue());
+		assertEquals("First position", 1, list.get(2).intValue());
+		assertEquals("First position", 2, list.get(3).intValue());
 	}
 	
 	/**

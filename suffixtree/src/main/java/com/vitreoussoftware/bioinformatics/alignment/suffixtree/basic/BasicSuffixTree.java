@@ -80,7 +80,7 @@ public class BasicSuffixTree implements SuffixTree {
 				return SequenceList.getEmpty();
 		}
 		
-		return current.getParents();
+		return new SequenceSetFactory().getSequenceCollection(current.getParents());
 	}
 	
 	
@@ -114,19 +114,21 @@ public class BasicSuffixTree implements SuffixTree {
 			previous = next;
 		}
 		
-		HashMap<Sequence, List<Integer>> results = new HashMap<Sequence, List<Integer>>();
+		// Collect the integer results for each sequence
+		HashMap<Sequence, List<Integer>> results1 = new HashMap<Sequence, List<Integer>>();
 		for (Tuple<Integer, SuffixTreeNode> tuple : previous) {
-			for (Sequence parent : tuple.getItem2().getParents()) {
-				List<Integer> list;
-				if (results.containsKey(parent))
-					list = results.get(parent);
+			for (Sequence parent1 : tuple.getItem2().getParents()) {
+				List<Integer> list1;
+				if (results1.containsKey(parent1))
+					list1 = results1.get(parent1);
 				else 
-					list = new LinkedList<Integer>();
-				list.add(tuple.getItem1());
+					list1 = new LinkedList<Integer>();
+				list1.add(tuple.getItem1());
 				
-				results.put(parent, list);
+				results1.put(parent1, list1);
 			}
 		}
+		HashMap<Sequence, List<Integer>> results = results1;
 		
 		// Create an inverted HashMap of Sequences and their corresponding distance, keeping minimum
 		HashMap<Sequence, Integer> sieve = new HashMap<Sequence, Integer>();
@@ -168,8 +170,67 @@ public class BasicSuffixTree implements SuffixTree {
 		});
 		
 		return distances;
-	}	
+	}
+
+	@Override
+	public Collection<Tuple<Sequence, List<Integer>>> distances(Sequence sequence) {
+		return distances(sequence, -1);
+	}
 	
+	@Override
+	public Collection<Tuple<Sequence, List<Integer>>> distances(Sequence sequence, int maxDistance) {
+		Iterator<BasePair> iter = sequence.reverse().iterator();
+		
+		LinkedList<Tuple<Integer, SuffixTreeNode>> previous = new LinkedList<Tuple<Integer, SuffixTreeNode>>();
+		previous.add(new Tuple<Integer, SuffixTreeNode>(0, root));
+		
+		while (iter.hasNext())
+		{
+			LinkedList<Tuple<Integer, SuffixTreeNode>> next = new LinkedList<Tuple<Integer, SuffixTreeNode>>();
+			
+			BasePair bp = iter.next();
+			SuffixTreeNode match = null;
+			for (Tuple<Integer, SuffixTreeNode> tuple : previous)
+			{
+				if (tuple.getItem2().contains(bp)) {
+					match = tuple.getItem2().get(bp);
+					next.add(new Tuple<Integer, SuffixTreeNode>(tuple.getItem1().intValue(), match));
+				}
+					
+				for (SuffixTreeNode child : tuple.getItem2().getAll()) {
+					// if they match don't increase the distance
+					if (!child.equals(match) && (maxDistance < 0 || tuple.getItem1().intValue() < maxDistance))
+						next.add(new Tuple<Integer, SuffixTreeNode>(tuple.getItem1().intValue()+1, child));
+				}
+				
+			}
+			
+			previous = next;
+		}
+		
+		// Collect the integer results for each sequence
+		HashMap<Sequence, List<Integer>> results1 = new HashMap<Sequence, List<Integer>>();
+		for (Tuple<Integer, SuffixTreeNode> tuple : previous) {
+			for (Sequence parent1 : tuple.getItem2().getParents()) {
+				List<Integer> list;
+				if (results1.containsKey(parent1))
+					list = results1.get(parent1);
+				else 
+					list = new LinkedList<Integer>();
+				list.add(tuple.getItem1());
+				
+				results1.put(parent1, list);
+			}
+		}
+		HashMap<Sequence, List<Integer>> results = results1;
+		
+		Collection<Tuple<Sequence, List<Integer>>> distances = new LinkedList<Tuple<Sequence, List<Integer>>>();
+		for (Sequence parent : results.keySet()) {
+			distances.add(new Tuple<Sequence, List<Integer>>(parent, results.get(parent)));
+		}
+		return distances;
+	}
+
 	@Override
 	public Collection<Tuple<Integer, SequenceCollection>> distance(Sequence sequence) {
 		return distance(sequence, -1);

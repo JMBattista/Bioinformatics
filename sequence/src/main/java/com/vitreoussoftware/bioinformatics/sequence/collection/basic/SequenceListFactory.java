@@ -33,5 +33,16 @@ public class SequenceListFactory implements SequenceCollectionFactory {
 		
 		return collection;
 	}
+	
+	@Override
+	public SequenceCollection getSequenceCollection(SequenceCollection collection) {
+		SequenceCollection newColleciton = getSequenceCollection();
+		
+		for (Sequence sequence : collection) {
+			newColleciton.add(sequence);
+		}
+		
+		return newColleciton;
+	}
 
 }

@@ -1,8 +1,10 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import com.vitreoussoftware.bioinformatics.sequence.*;
@@ -57,4 +59,19 @@ public interface SuffixTree {
 	 * @return The collection of tuples showing the distance and the collection of sequences for that distance
 	 */
 	public Collection<Tuple<Integer, SequenceCollection>> distance(Sequence sequence, int maxDistance);
+	
+	/**
+	 * Return the set of distances for each parent Sequence given the target Sequences
+	 * @param sequence the target Sequence
+	 * @return the tuples of parent Sequences and the distance lists
+	 */
+	public Collection<Tuple<Sequence, List<Integer>>> distances(Sequence sequence);
+
+	/**
+	 * Return the set of distances for each parent Sequence within the maximum for the given target Sequences
+	 * @param sequence the target Sequence
+	 * @param maxDistance the maximum distance that will be considered
+	 * @return the tuples of parent Sequences and the distance lists@param maxDistance
+	 */
+	public Collection<Tuple<Sequence, List<Integer>>> distances(Sequence sequence, int maxDistance);
 }

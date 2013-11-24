@@ -25,4 +25,11 @@ public interface SequenceCollectionFactory {
 	 * @throws InvalidDnaFormatException 
 	 */
 	public SequenceCollection getSequenceCollection(SequenceStreamReader reader) throws IOException, InvalidDnaFormatException;
+	
+	/**
+	 * Create a SequenceCollection from another SequenceCollection
+	 * @param collection the other SequenceCollection
+	 * @return the new collection
+	 */
+	public SequenceCollection getSequenceCollection(SequenceCollection collection);
 }

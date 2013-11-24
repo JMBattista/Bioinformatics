@@ -10,6 +10,7 @@ import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
+import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceListFactory;
 import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceSetFactory;
 
 class SuffixTreeNode {
@@ -21,7 +22,7 @@ class SuffixTreeNode {
 	
 	SuffixTreeNode()
 	{
-		this.parents = new SequenceSetFactory().getSequenceCollection();
+		this.parents = new SequenceListFactory().getSequenceCollection();
 		this.children = new HashMap<BasePair, SuffixTreeNode>();
 	}
 	
