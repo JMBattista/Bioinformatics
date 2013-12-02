@@ -7,7 +7,6 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
 import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
 
 /**
  * Create instances of SequenceList
@@ -25,6 +24,7 @@ public class SequenceListFactory implements SequenceCollectionFactory {
 	@Override
 	public SequenceCollection getSequenceCollection(SequenceStreamReader reader) throws IOException, InvalidDnaFormatException {
 		SequenceCollection collection = getSequenceCollection();
+
 		
 		while (reader.hasRecord())
 		{

@@ -11,6 +11,11 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectio
 import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceListFactory;
 import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
 
+/**
+ * Create a BasicSuffixTree
+ * @author John
+ *
+ */
 public class BasicSuffixTreeFactory implements SuffixTreeFactory {
 
 	private SequenceCollectionFactory factory;
