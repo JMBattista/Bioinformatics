@@ -60,7 +60,7 @@ public class BasePairTest {
 	 * @throws InvalidDnaFormatException
 	 */
 	public void testEquality_notSame() throws InvalidDnaFormatException {
-		assertNotEquals(BasePair.create('A', scheme), BasePair.create('T', scheme));
+		assertFalse(BasePair.create('A', scheme).equals(BasePair.create('T', scheme)));
 	}
 	
 	/** 
@@ -68,7 +68,7 @@ public class BasePairTest {
 	 * @throws InvalidDnaFormatException
 	 */
 	public void testEquality_againstN() throws InvalidDnaFormatException {
-		assertNotEquals(BasePair.create('A', scheme), BasePair.create('N', scheme));
+		assertFalse(BasePair.create('A', scheme).equals(BasePair.create('N', scheme)));
 	}
 	
 	/**

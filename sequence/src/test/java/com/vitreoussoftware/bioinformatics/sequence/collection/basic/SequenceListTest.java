@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -113,7 +114,7 @@ public class SequenceListTest {
 	public void testStreamSource_multiple() throws InvalidDnaFormatException, IOException {
 		SequenceStreamReader reader = new SequenceFromFastaStringStreamReader(FastaStringFileStreamReaderTest.getExampleFastaReader());
 		SequenceCollection sc = this.factory.getSequenceCollection(reader);
-		
+
 		assertNotNull(sc);
 		assertEquals(3,  sc.size());
 		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1)));

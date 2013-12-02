@@ -74,7 +74,7 @@ public class AcceptUnknownDnaEncodingSchemeTest {
 	 * @throws InvalidDnaFormatException
 	 */
 	public void testEquality_notSame() throws InvalidDnaFormatException {
-		assertNotEquals(AcceptUnknownDnaEncodingScheme.create('A'), AcceptUnknownDnaEncodingScheme.create('T'));
+		assertFalse(AcceptUnknownDnaEncodingScheme.create('A').equals(AcceptUnknownDnaEncodingScheme.create('T')));
 	}
 	
 	/** 
@@ -82,7 +82,7 @@ public class AcceptUnknownDnaEncodingSchemeTest {
 	 * @throws InvalidDnaFormatException
 	 */
 	public void testEquality_againstN() throws InvalidDnaFormatException {
-		assertNotEquals(AcceptUnknownDnaEncodingScheme.create('A'), AcceptUnknownDnaEncodingScheme.create('N'));
+		assertFalse(AcceptUnknownDnaEncodingScheme.create('A').equals(AcceptUnknownDnaEncodingScheme.create('N')));
 	}
 	
 	/**

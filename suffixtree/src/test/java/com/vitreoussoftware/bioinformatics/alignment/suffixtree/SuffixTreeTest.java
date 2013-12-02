@@ -272,7 +272,7 @@ public abstract class SuffixTreeTest {
 		Sequence g = this.sequenceFactory.fromString("G");
 		SequenceCollection parents = tree.getParents(g);
 		assertEquals(1, parents.size());
-		assertNotEquals(g, parents.iterator().next());
+		assertFalse(g.equals(parents.iterator().next()));
 	}
 	
 	/**

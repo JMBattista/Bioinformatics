@@ -1,6 +1,6 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 
-import static org.junit.Assert.*;
+import static junit.framework.Assert.*;
 
 import org.junit.Test;
 

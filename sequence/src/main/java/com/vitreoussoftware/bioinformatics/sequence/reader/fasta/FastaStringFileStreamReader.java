@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.function.Predicate;
 
 import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
 
@@ -33,7 +34,7 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
 	private FastaStringFileStreamReader(FileReader file)
 	{
 		this.file = file;
-		
+
 		buffer = new char[BUFFER_SIZE];
 		length = 0;  // we don't have anything in the buffer
 		index = 0;   // index starts at 0

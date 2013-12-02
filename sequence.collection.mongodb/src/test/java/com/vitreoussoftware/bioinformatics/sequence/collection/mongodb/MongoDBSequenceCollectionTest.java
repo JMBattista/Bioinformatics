@@ -1,6 +1,6 @@
 package com.vitreoussoftware.bioinformatics.sequence.collection.mongodb;
 
-import static org.junit.Assert.*;
+import static junit.framework.Assert.*;
 
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -332,7 +332,7 @@ public class MongoDBSequenceCollectionTest {
 		assertTrue("The second iterator result was not found in the collection", collection.contains(second));
 		
 		assertFalse("Iterator has a third element", iterator.hasNext());
-		assertNotEquals("The first and second sequences were the same", first, second);
+		assertFalse("The first and second sequences were the same", first.equals(second));
 	}
 
 	/**
@@ -372,7 +372,7 @@ public class MongoDBSequenceCollectionTest {
 		assertTrue("The first iterator result was found in the collection after removal", collection.contains(first));
 		
 		assertFalse("Iterator has a third element", iterator.hasNext());
-		assertNotEquals("The first and second sequences were the same", first, second);
+		assertFalse("The first and second sequences were the same", first.equals(second));
 		
 		assertTrue("The collection was not empty after removing all elements", collection.isEmpty());
 	}

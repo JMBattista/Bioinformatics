@@ -221,20 +221,15 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 
 	public Sequence[] toArray() {
 		Sequence[] array = new Sequence[this.size()];
-		int index = 0;
-		iterator().forEachRemaining(new Consumer<Sequence>() {
+        int index = 0;
+        Iterator<Sequence> iterator = iterator();
 
-			public void accept(Sequence seq) {
-				array[index] = seq;
-				index++;
-			}
+        while (iterator.hasNext()) {
+            array[index] = iterator.next();
+            index++;
+        }
 
-			public Consumer<Sequence> andThen(Consumer<? super Sequence> arg0) {
-				throw new RuntimeException("Attempt to call andThen in custom consumer");
-			}
-		});
-		
-		return array;
+        return array;
 	}
 
 	public <T> T[] toArray(T[] arg0) {
