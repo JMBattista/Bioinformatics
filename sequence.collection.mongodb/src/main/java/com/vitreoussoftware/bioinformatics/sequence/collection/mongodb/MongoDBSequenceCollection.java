@@ -23,7 +23,9 @@ import com.mongodb.WriteResult;
 
 import java.util.Arrays;
 
+import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
+import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 
 /**
@@ -32,12 +34,15 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectio
  *
  */
 public class MongoDBSequenceCollection implements SequenceCollection {
+	private static final String SEQUENCE_KEY = "sequence";
 	/**
 	 * The collection being used to store content from this SequenceCollection
 	 */
 	private DBCollection collection;
+	private SequenceFactory factory;
 
-	MongoDBSequenceCollection(DB db, String collectionName) {
+	MongoDBSequenceCollection(DB db, String collectionName, SequenceFactory factory) {
+		this.factory = factory;
 		this.collection = db.getCollection(collectionName);		
 	}
 
@@ -48,10 +53,6 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 		}
 		
 		return false;
-	}
-
-	private BasicDBObject buildDocument(Sequence arg0) {
-		return new BasicDBObject("sequence", arg0.toString());
 	}
 
 	public boolean addAll(Collection<? extends Sequence> arg0) {
@@ -92,13 +93,24 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 	}
 
 	public boolean contains(Object arg0) {
-		// TODO Auto-generated method stub
+		if (arg0 instanceof Sequence)
+		{
+			Sequence seq = (Sequence) arg0;
+			DBCursor find = this.collection.find(buildDocument(seq));
+			return find.count() > 0;
+		}
+		
 		return false;
 	}
 
 	public boolean containsAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean contained = true;
+		
+		for(Object obj: arg0) {
+			contained = contained && contains(obj);	
+		}
+		
+		return contained;
 	}
 
 	public boolean isEmpty() {
@@ -106,33 +118,89 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 	}
 
 	public Iterator<Sequence> iterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		final DBCursor cursor = this.collection.find();
+		return new Iterator<Sequence>() {
+			DBObject last = null;
+			public void forEachRemaining(Consumer<? super Sequence> arg0) {
+				DBCursor iter = cursor.copy();
+				while (iter.hasNext()) {
+					arg0.accept(buildSequence(iter.next()));
+				}
+			}
 
-	public Stream<Sequence> parallelStream() {
-		// TODO Auto-generated method stub
-		return null;
+			public boolean hasNext() {
+				return cursor.hasNext();
+			}
+
+			public Sequence next() {
+				last = cursor.next();
+				return buildSequence(last);
+			}
+
+			public void remove() {
+				if (last != null)
+					collection.remove(last);
+			}
+		};
 	}
 
 	public boolean remove(Object arg0) {
-		// TODO Auto-generated method stub
+		if (this.contains(arg0)) {
+			if (arg0 instanceof Sequence) {
+				this.collection.remove(buildDocument((Sequence) arg0));
+			}
+			return true;
+		}
+		
 		return false;
 	}
 
-	public boolean removeAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
+	public boolean removeAll(Collection<?> collection) {
+		boolean changed = false;
+		
+		for(Object obj: collection) {
+			changed = this.remove(obj) || changed;
+		}
+		
+		return changed;
+	}
+
+	public boolean removeIf(final Predicate<? super Sequence> predicate) {
+		iterator().forEachRemaining(new Consumer<Sequence>() {
+
+			public void accept(Sequence seq) {
+				if(predicate.test(seq))
+					remove(seq);
+			}
+
+			public Consumer<Sequence> andThen(Consumer<? super Sequence> arg0) {
+				return null;
+			}
+		});
+		
 		return false;
 	}
 
-	public boolean removeIf(Predicate<? super Sequence> arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public boolean retainAll(final Collection<?> collection) {
+		class Container {
+			public boolean result = false;
+		}
+		final Container changed = new Container();
+		
+		iterator().forEachRemaining(new Consumer<Sequence>() {
+			public void accept(Sequence seq) {
+				if (!collection.contains(seq)) {
+					remove(seq);
+					changed.result = true;
+				}
+			}
 
-	public boolean retainAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
-		return false;
+			public Consumer<Sequence> andThen(Consumer<? super Sequence> arg0) {
+				throw new RuntimeException("Called andThen on custom Consume that was not implemented");
+			}
+		});
+		
+		return changed.result; 
 	}
 
 	public int size() {
@@ -140,23 +208,37 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 	}
 
 	public Spliterator<Sequence> spliterator() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Spliterator functionality is not currently supported for the MongoDBSequenceCollection");
 	}
 
 	public Stream<Sequence> stream() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Stream functionality is not currently supported for the MongoDBSequenceCollection");
+	}
+	
+	public Stream<Sequence> parallelStream() {
+		throw new UnsupportedOperationException("Stream functionality is not currently supported for the MongoDBSequenceCollection");
 	}
 
-	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+	public Sequence[] toArray() {
+		Sequence[] array = new Sequence[this.size()];
+		int index = 0;
+		iterator().forEachRemaining(new Consumer<Sequence>() {
+
+			public void accept(Sequence seq) {
+				array[index] = seq;
+				index++;
+			}
+
+			public Consumer<Sequence> andThen(Consumer<? super Sequence> arg0) {
+				throw new RuntimeException("Attempt to call andThen in custom consumer");
+			}
+		});
+		
+		return array;
 	}
 
 	public <T> T[] toArray(T[] arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("toArray(T[] arg0 is not supported");
 	}
 
 	public void forEach(Consumer<? super Sequence> arg0) {
@@ -164,4 +246,16 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 
 	}
 
+	private BasicDBObject buildDocument(Sequence arg0) {
+		return new BasicDBObject(SEQUENCE_KEY, arg0.toString());
+	}
+	
+	private Sequence buildSequence(DBObject arg0) {
+		try {
+			return this.factory.fromString((String)arg0.get(SEQUENCE_KEY));
+		} catch (InvalidDnaFormatException e) {
+			e.printStackTrace();
+			throw new RuntimeException("We were unable to decode a value we stored stored in the database!" + arg0.get(SEQUENCE_KEY));
+		}
+	}
 }

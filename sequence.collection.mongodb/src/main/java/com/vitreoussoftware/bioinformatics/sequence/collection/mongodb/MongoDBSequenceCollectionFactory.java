@@ -6,8 +6,10 @@ import java.net.UnknownHostException;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
+import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
 
 /**
@@ -33,6 +35,11 @@ public class MongoDBSequenceCollectionFactory implements SequenceCollectionFacto
 	private DB db;
 
 	/**
+	 * The SequenceFactory for converting returned items into Sequences
+	 */
+	private SequenceFactory factory;
+
+	/**
 	 * @param serverName URL that resolves to the MongoDB host server
 	 * @param port The port running the MongoDB instance
 	 * @param dbName The name of the DB
@@ -43,11 +50,12 @@ public class MongoDBSequenceCollectionFactory implements SequenceCollectionFacto
 		MongoClient mongoClient = new MongoClient( serverName , port );
 		this.db = mongoClient.getDB( dbName );
 		this.collectionName = collectionName;
+		this.factory = new FastaSequenceFactory();
 	}
 
 	public SequenceCollection getSequenceCollection() {
 		if (this.collection == null) 
-			this.collection = new MongoDBSequenceCollection(db, this.collectionName);
+			this.collection = new MongoDBSequenceCollection(db, this.collectionName, this.factory);
 		
 		return this.collection;
 	}

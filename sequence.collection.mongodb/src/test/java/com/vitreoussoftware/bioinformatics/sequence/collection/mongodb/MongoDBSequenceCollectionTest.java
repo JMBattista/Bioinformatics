@@ -4,8 +4,12 @@ import static org.junit.Assert.*;
 
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,42 +29,12 @@ import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 public class MongoDBSequenceCollectionTest {
 
 	private SequenceFactory sequenceFactory;
+	private MongoDBSequenceCollectionFactory collectionFactory;
 
 	@Before
 	public void setUp() throws Exception {
 		this.sequenceFactory = new FastaSequenceFactory();
-	}
-
-	/**
-	 * Create a SequenceCollection
-	 * @throws UnknownHostException Failed to connect 
-	 */
-	@Test
-	public void testCreateFactory() throws UnknownHostException {
-		SequenceCollectionFactory collectionFactory = new MongoDBSequenceCollectionFactory("localhost", 27017, "testSeq", "testColl");
-		assertNotNull("The collectionFactory initialized to null", collectionFactory);
-	}
-	
-	/**
-	 * Create a SequenceCollection
-	 * @throws UnknownHostException Failed to connect 
-	 */
-	@Test(expected=UnknownHostException.class)
-	public void testCreateFactory_canFail() throws UnknownHostException {
-		SequenceCollectionFactory collectionFactory = new MongoDBSequenceCollectionFactory("SXKSAkasdglak@#@KASGlsldfs", 27017, "testSeq", "testColl");
-		fail("We should not have been able to successfully initialize the factory without a connection to the DB");
-	}
-	
-	/**
-	 * Create a SequenceCollection
-	 * @throws UnknownHostException Failed to connect 
-	 */
-	@Test
-	public void testGetCollection() throws UnknownHostException {
-		SequenceCollectionFactory collectionFactory = new MongoDBSequenceCollectionFactory("localhost", 27017, "testSeq", "testColl");
-		assertNotNull("The collectionFactory initialized to null", collectionFactory);
-		SequenceCollection collection = collectionFactory.getSequenceCollection();
-		assertNotNull("The collection returned was nulll", collection);
+		this.collectionFactory = new MongoDBSequenceCollectionFactory("localhost", 27017, "testSeq", "testColl");
 	}
 	
 	/**
@@ -69,8 +43,6 @@ public class MongoDBSequenceCollectionTest {
 	 */
 	@Test
 	public void testClearCollection() throws UnknownHostException {
-		SequenceCollectionFactory collectionFactory = new MongoDBSequenceCollectionFactory("localhost", 27017, "testSeq", "testColl");
-		assertNotNull("The collectionFactory initialized to null", collectionFactory);
 		SequenceCollection collection = collectionFactory.getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();
@@ -84,8 +56,6 @@ public class MongoDBSequenceCollectionTest {
 	 */
 	@Test
 	public void testAddSequence() throws UnknownHostException, InvalidDnaFormatException {
-		SequenceCollectionFactory collectionFactory = new MongoDBSequenceCollectionFactory("localhost", 27017, "testSeq", "testColl");
-		assertNotNull("The collectionFactory initialized to null", collectionFactory);
 		SequenceCollection collection = collectionFactory.getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();
@@ -104,8 +74,6 @@ public class MongoDBSequenceCollectionTest {
 	 */
 	@Test
 	public void testAddAllSequences() throws UnknownHostException, InvalidDnaFormatException {
-		SequenceCollectionFactory collectionFactory = new MongoDBSequenceCollectionFactory("localhost", 27017, "testSeq", "testColl");
-		assertNotNull("The collectionFactory initialized to null", collectionFactory);
 		SequenceCollection collection = collectionFactory.getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();
@@ -125,8 +93,6 @@ public class MongoDBSequenceCollectionTest {
 	 */
 	@Test
 	public void testAddAllSequences_many() throws UnknownHostException, InvalidDnaFormatException {
-		SequenceCollectionFactory collectionFactory = new MongoDBSequenceCollectionFactory("localhost", 27017, "testSeq", "testColl");
-		assertNotNull("The collectionFactory initialized to null", collectionFactory);
 		SequenceCollection collection = collectionFactory.getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();
@@ -142,5 +108,459 @@ public class MongoDBSequenceCollectionTest {
 		collection.addAll(list);
 		
 		assertEquals("The collection did not have many elements in it", many, collection.size());
+	}
+	
+	/**
+	 * Create a SequenceCollection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testContains_single() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		Sequence seq = this.sequenceFactory.fromString("ATCGN");
+		collection.add(seq);
+		
+		assertEquals("The collection did not have only one element in it", 1, collection.size());
+		
+		assertTrue("The sequence was not found in the collection", collection.contains(seq));
+	}
+	
+	/**
+	 * Fail to find a Sequence because it is a substring of the Sequence stored in the collection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testContains_canFailShorter() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		Sequence seq  = this.sequenceFactory.fromString("ATCGN");
+		Sequence fail = this.sequenceFactory.fromString("ATCG");
+		collection.add(seq);
+		
+		assertEquals("The collection did not have only one element in it", 1, collection.size());
+		
+		assertFalse("The sequence was found in the collection", collection.contains(fail));
+	}
+	
+	/**
+	 * Fail to find a Sequence because it is a superstring of the Sequence stored in the collection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testContains_canFailLonger() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		Sequence seq  = this.sequenceFactory.fromString("ATCGN");
+		Sequence fail = this.sequenceFactory.fromString("ATCGNA");
+		collection.add(seq);
+		
+		assertEquals("The collection did not have only one element in it", 1, collection.size());
+		
+		assertFalse("The sequence was found in the collection", collection.contains(fail));
+	}
+	
+	/**
+	 * Create a SequenceCollection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testContainsAll_single() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		Sequence seq = this.sequenceFactory.fromString("ATCGN");
+		collection.add(seq);
+		
+		assertEquals("The collection did not have only one element in it", 1, collection.size());
+		
+		List<Sequence> seqs = new LinkedList<Sequence>();
+		seqs.add(seq);
+		assertTrue("The sequence was not found in the collection", collection.containsAll(seqs));
+	}
+	
+	/**
+	 * Create a SequenceCollection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testContainsAll_singleCanFail() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		Sequence seq = this.sequenceFactory.fromString("ATCGN");
+		Sequence fail = this.sequenceFactory.fromString("ATCGNA");
+		collection.add(seq);
+		
+		assertEquals("The collection did not have only one element in it", 1, collection.size());
+		
+		List<Sequence> seqs = new LinkedList<Sequence>();
+		seqs.add(fail);
+		assertFalse("The sequence was found in the collection", collection.containsAll(seqs));
+	}
+	
+	/**
+	 * Create a SequenceCollection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testContainsAll_multiple() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		collection.add(seq1);
+		collection.add(seq2);
+		
+		assertEquals("The collection did not have only one element in it", 2, collection.size());
+		
+		assertTrue("The first sequence was not contained", collection.contains(seq1));
+		assertTrue("The second sequence was not contained", collection.contains(seq2));
+		
+		List<Sequence> seqs = new LinkedList<Sequence>();
+		seqs.add(seq1);
+		seqs.add(seq2);
+		assertTrue("The sequence was not found in the collection", collection.containsAll(seqs));
+	}
+	
+	/**
+	 * Create a SequenceCollection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testContainsAll_multipleCanFail() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		Sequence fail = this.sequenceFactory.fromString("ATCGNA");
+		collection.add(seq1);
+		collection.add(seq2);
+		
+		assertEquals("The collection did not have only one element in it", 2, collection.size());
+
+		assertTrue("The first sequence was not contained", collection.contains(seq1));
+		assertTrue("The second sequence was not contained", collection.contains(seq2));
+		
+		List<Sequence> seqs = new LinkedList<Sequence>();
+		seqs.add(seq1);
+		seqs.add(seq2);
+		seqs.add(fail);
+		
+		assertFalse("The sequence was found in the collection", collection.containsAll(seqs));
+	}
+	
+	/**
+	 * Create a SequenceCollection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testIsEmtpy() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		assertTrue("The collection was not empty", collection.isEmpty());
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		collection.add(seq1);
+		collection.add(seq2);
+		
+		assertEquals("The collection did not have only one element in it", 2, collection.size());
+		
+		assertFalse("The collection was empty", collection.isEmpty());
+	}
+	
+	/**
+	 * Create a SequenceCollection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testIterator() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		collection.add(seq1);
+		collection.add(seq2);
+		
+		assertEquals("The collection did not have only one element in it", 2, collection.size());
+		
+		assertTrue("The first sequence was not contained", collection.contains(seq1));
+		assertTrue("The second sequence was not contained", collection.contains(seq2));
+		
+		Iterator<Sequence> iterator = collection.iterator();
+		
+		assertTrue("Iterator has at least one element", iterator.hasNext());
+		Sequence first = iterator.next();
+		assertTrue("The first iterator result was not found in the collection", collection.contains(first));
+		
+		assertTrue("Iterator has a second element", iterator.hasNext());
+		Sequence second = iterator.next();
+		assertTrue("The second iterator result was not found in the collection", collection.contains(second));
+		
+		assertFalse("Iterator has a third element", iterator.hasNext());
+		assertNotEquals("The first and second sequences were the same", first, second);
+	}
+
+	/**
+	 * Create a SequenceCollection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testIterator_remove() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		collection.add(seq1);
+		collection.add(seq2);
+		
+		assertEquals("The collection did not have only one element in it", 2, collection.size());
+		
+		assertTrue("The first sequence was not contained", collection.contains(seq1));
+		assertTrue("The second sequence was not contained", collection.contains(seq2));
+		
+		Iterator<Sequence> iterator = collection.iterator();
+		
+		assertTrue("Iterator has at least one element", iterator.hasNext());
+		Sequence first = iterator.next();
+		assertTrue("The first iterator result was not found in the collection", collection.contains(first));
+		iterator.remove();
+		assertTrue("The first iterator result was found in the collection after removal", collection.contains(first));
+		
+		assertTrue("Iterator has a second element", iterator.hasNext());
+		Sequence second = iterator.next();
+		assertTrue("The second iterator result was not found in the collection", collection.contains(second));
+		iterator.remove();
+		assertTrue("The first iterator result was found in the collection after removal", collection.contains(first));
+		
+		assertFalse("Iterator has a third element", iterator.hasNext());
+		assertNotEquals("The first and second sequences were the same", first, second);
+		
+		assertTrue("The collection was not empty after removing all elements", collection.isEmpty());
+	}
+
+	/**
+	 * Create a SequenceCollection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testIterator_forEachRemaining() throws UnknownHostException, InvalidDnaFormatException {
+		final SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		collection.add(seq1);
+		collection.add(seq2);
+		
+		assertEquals("The collection did not have only one element in it", 2, collection.size());
+		
+		assertTrue("The first sequence was not contained", collection.contains(seq1));
+		assertTrue("The second sequence was not contained", collection.contains(seq2));
+		
+		Iterator<Sequence> iterator = collection.iterator();
+		
+		iterator.forEachRemaining(new Consumer<Sequence>() {
+
+			public void accept(Sequence seq) {
+				assertTrue("The sequence was not in the collection", collection.contains(seq));
+			}
+
+			public Consumer<Sequence> andThen(Consumer<? super Sequence> arg0) {
+				fail("Called the andThen method in foreach remaining");
+				return null;
+			}
+		});
+	}
+	
+	/**
+	 * Create a SequenceCollection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testRemove() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		Sequence seq3 = this.sequenceFactory.fromString("ATCGNA");
+		collection.add(seq1);
+		collection.add(seq2);
+		collection.add(seq3);
+		
+		assertEquals("The collection did not have three elements in it", 3, collection.size());
+
+		assertTrue("The first sequence was not contained", collection.contains(seq1));
+		assertTrue("The second sequence was not contained", collection.contains(seq2));
+		assertTrue("The third sequence was not contained", collection.contains(seq3));
+		
+		assertTrue("The remove call returned false", collection.remove(seq3));
+		
+		assertEquals("The collection did not have two elements in it", 2, collection.size());
+
+		assertTrue("The first sequence was not contained", collection.contains(seq1));
+		assertTrue("The second sequence was not contained", collection.contains(seq2));
+		
+		assertFalse("The third sequence was contained", collection.contains(seq3));
+	}
+	
+	/**
+	 * Create a SequenceCollection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testRemoveAll() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		Sequence seq3 = this.sequenceFactory.fromString("ATCGNA");
+		collection.add(seq1);
+		collection.add(seq2);
+		collection.add(seq3);
+		
+		assertEquals("The collection did not have three elements in it", 3, collection.size());
+
+		assertTrue("The first sequence was not contained", collection.contains(seq1));
+		assertTrue("The second sequence was not contained", collection.contains(seq2));
+		assertTrue("The third sequence was not contained", collection.contains(seq3));
+		
+		List<Sequence> seqs = new LinkedList<Sequence>();
+		seqs.add(seq1);
+		seqs.add(seq3);
+
+		assertTrue("The remove all returned false", collection.removeAll(seqs));
+		assertEquals("The collection did not have two elements in it", 1, collection.size());
+	
+		assertTrue("The second sequence was not contained", collection.contains(seq2));
+
+		assertFalse("The first sequence was contained", collection.contains(seq1));
+		assertFalse("The third sequence was contained", collection.contains(seq3));
+	}
+
+	/**
+	 * Create a SequenceCollection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testRemoveIf() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		final Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
+		final Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		final Sequence seq3 = this.sequenceFactory.fromString("ATCGNA");
+		collection.add(seq1);
+		collection.add(seq2);
+		collection.add(seq3);
+		
+		assertEquals("The collection did not have three elements in it", 3, collection.size());
+
+		assertTrue("The first sequence was not contained", collection.contains(seq1));
+		assertTrue("The second sequence was not contained", collection.contains(seq2));
+		assertTrue("The third sequence was not contained", collection.contains(seq3));
+		
+		collection.removeIf(new Predicate<Sequence>() {
+			public boolean test(Sequence seq) {
+				return seq.equals(seq3);
+			}
+		});
+		
+		assertEquals("The collection did not have two elements in it", 2, collection.size());
+
+		assertTrue("The first sequence was not contained", collection.contains(seq1));
+		assertTrue("The second sequence was not contained", collection.contains(seq2));
+		
+		assertFalse("The third sequence was contained", collection.contains(seq3));
+	}
+	
+	/**
+	 * Create a SequenceCollection
+	 * @throws UnknownHostException Failed to connect 
+	 * @throws InvalidDnaFormatException 
+	 */
+	@Test
+	public void testRetainAll() throws UnknownHostException, InvalidDnaFormatException {
+		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		assertNotNull("The collection returned was nulll", collection);
+		collection.clear();
+		assertEquals("The collection was not empty after a drop",  0, collection.size());
+		
+		final Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
+		final Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		final Sequence seq3 = this.sequenceFactory.fromString("ATCGNA");
+		collection.add(seq1);
+		collection.add(seq2);
+		collection.add(seq3);
+		
+		assertEquals("The collection did not have three elements in it", 3, collection.size());
+
+		assertTrue("The first sequence was not contained", collection.contains(seq1));
+		assertTrue("The second sequence was not contained", collection.contains(seq2));
+		assertTrue("The third sequence was not contained", collection.contains(seq3));
+		
+		
+		List<Sequence> list = new LinkedList<Sequence>();
+		list.add(seq1);
+		collection.retainAll(list);
+		
+		assertEquals("The collection did not have one elements in it", 1, collection.size());
+
+		assertTrue("The first sequence was not contained", collection.contains(seq1));
+		
+		assertFalse("The second sequence was contained", collection.contains(seq2));
+		assertFalse("The third sequence was contained", collection.contains(seq3));
 	}
 }
