@@ -13,13 +13,13 @@ public class EasyDBObject {
     public static final String EXISTS = "$exists";
     public static final String SET = "$set";
     public static final String NOT_EQUALS = "$ne";
-    public static final String EQUAls = "$eq";
+    public static final String EQUALS = "$eq";
     public static final String OR = "$or";
     public static final String AND = "$and";
-    public static final String GT = "$gt";
-    public static final String GTE= "$gte";
-    public static final String LT = "$lt";
-    public static final String LTE = "$lte";
+    public static final String GREATER_THAN = "$gt";
+    public static final String GREATER_THAN_EQUALS = "$gte";
+    public static final String LESS_THAN = "$lt";
+    public static final String LESS_THAN_EQUALS = "$lte";
 
     /**
      * Designed to be used via static imports
@@ -133,7 +133,7 @@ public class EasyDBObject {
      * @return DBObject for {key : {$gt : value}}
      */
     public static DBObject gt(String key, Object value) {
-        return field(key, field(GT, value));
+        return field(key, field(GREATER_THAN, value));
     }
 
     /**
@@ -143,7 +143,7 @@ public class EasyDBObject {
      * @return DBObject for {key : {$gte : value}}
      */
     public static DBObject gte(String key, Object value) {
-        return field(key, field(GTE, value));
+        return field(key, field(GREATER_THAN_EQUALS, value));
     }
 
     /**
@@ -153,7 +153,7 @@ public class EasyDBObject {
      * @return DBObject for {key : {$lt : value}}
      */
     public static DBObject lt(String key, Object value) {
-        return field(key, field(LT, value));
+        return field(key, field(LESS_THAN, value));
     }
 
     /**
@@ -163,6 +163,26 @@ public class EasyDBObject {
      * @return DBObject for {key : {$lte : value}}
      */
     public static DBObject lte(String key, Object value) {
-        return field(key, field(LTE, value));
+        return field(key, field(LESS_THAN_EQUALS, value));
+    }
+
+    /**
+     * Determine if the record is neq value for key
+     * @param key The field to use for comparison
+     * @param value The value to compare against
+     * @return DBObject for {key : {$neq : value}}
+     */
+    public static DBObject neq(String key, Object value) {
+        return field(key, field(NOT_EQUALS, value));
+    }
+
+    /**
+     * Determine if the record is eq value for key
+     * @param key The field to use for comparison
+     * @param value The value to compare against
+     * @return DBObject for {key : {$eq : value}}
+     */
+    public static DBObject eq(String key, Object value) {
+        return field(key, field(EQUALS, value));
     }
 }
