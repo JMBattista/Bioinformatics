@@ -13,6 +13,8 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectio
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
 
+import static com.vitreoussoftware.utility.mongodb.EasyDBObject.field;
+
 /**
  * Create a SequenceCollection backed onto a MongoDB collection
  * Repeated usage of this factory will return the same collection.
@@ -52,7 +54,7 @@ public class MongoDBSequenceCollectionFactory implements SequenceCollectionFacto
 		this.db = mongoClient.getDB( dbName );
         this.dbCollection = this.db.getCollection(collectionName);
         // Ensure that items marked as 'deleted' are indexed and cleaned up after 10 seconds
-        this.dbCollection.ensureIndex(new BasicDBObject(MongoDBSequenceCollection.DELETED, 1), new BasicDBObject("expireAfterSeconds", 10));
+        this.dbCollection.ensureIndex(field(MongoDBSequenceCollection.DELETED, 1), field("expireAfterSeconds", 30));
         this.factory = new FastaSequenceFactory();
 	}
 
