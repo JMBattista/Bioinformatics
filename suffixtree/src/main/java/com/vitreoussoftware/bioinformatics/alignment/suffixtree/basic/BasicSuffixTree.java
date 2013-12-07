@@ -1,19 +1,9 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToIntFunction;
-import java.util.function.ToLongFunction;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
 import com.vitreoussoftware.bioinformatics.sequence.*;
@@ -22,7 +12,6 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectio
 import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceList;
 import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceSetFactory;
 import com.vitreoussoftware.utilities.Tuple;
-
 
 
 /**
@@ -87,7 +76,6 @@ public class BasicSuffixTree implements SuffixTree {
 
 	@Override
 	public Collection<Tuple<Integer, SequenceCollection>> distance(Sequence sequence, int maxDistance) {
-		//TODO rewrite this method using stream operations
 		Iterator<BasePair> iter = sequence.reverse().iterator();
 		
 		LinkedList<Tuple<Integer, SuffixTreeNode>> previous = new LinkedList<Tuple<Integer, SuffixTreeNode>>();
@@ -113,53 +101,20 @@ public class BasicSuffixTree implements SuffixTree {
 			
 			previous = next;
 		}
-		
-		// Collect the integer results for each sequence
-		HashMap<Sequence, List<Integer>> results1 = new HashMap<Sequence, List<Integer>>();
-		for (Tuple<Integer, SuffixTreeNode> tuple : previous) {
-			for (Sequence parent1 : tuple.getItem2().getParents()) {
-				List<Integer> list1;
-				if (results1.containsKey(parent1))
-					list1 = results1.get(parent1);
-				else 
-					list1 = new LinkedList<Integer>();
-				list1.add(tuple.getItem1());
-				
-				results1.put(parent1, list1);
-			}
-		}
-		HashMap<Sequence, List<Integer>> results = results1;
-		
-		// Create an inverted HashMap of Sequences and their corresponding distance, keeping minimum
-		HashMap<Sequence, Integer> sieve = new HashMap<Sequence, Integer>();
-		for (Sequence parent : results.keySet()) {
-			List<Integer> list = results.get(parent);
-			Collections.sort(list);
-			
-			sieve.put(parent, list.get(0));
-		}
-		
-		// Now flip to a HashMap of distances to Sequences
-		HashMap<Integer, SequenceCollection> collector = new HashMap<Integer, SequenceCollection>();
-		for (Sequence parent : sieve.keySet())
-		{
-			if (collector.containsKey(sieve.get(parent))) {
-				collector.get(sieve.get(parent)).add(parent);
-			}
-			else
-			{
-				SequenceCollection collection = this.factory.getSequenceCollection();
-				collection.add(parent);
-				collector.put(sieve.get(parent), collection);
-			}
-		}
-		
-		// Put all of the values into the distances collection
-		List<Tuple<Integer, SequenceCollection>> distances = new LinkedList<Tuple<Integer,SequenceCollection>>();
-		for (Integer key : collector.keySet()) {
-			distances.add(new Tuple<Integer, SequenceCollection>(key, collector.get(key)));
-		}
-		
+
+        Map<Sequence, List<Integer>> collected = previous.parallelStream()
+                .<Tuple<Sequence, Integer>>flatMap(tuple -> tuple.getItem2().getParents().stream().map(parent -> new Tuple<>(parent, tuple.getItem1())))
+                .collect(Collectors.groupingBy(tuple -> tuple.getItem1(), Collectors.mapping(x -> x.getItem2(), Collectors.toList())));
+
+        Map<Integer, List<Sequence>> results = collected.keySet().parallelStream()
+                .map(parent -> new Tuple<>(collected.get(parent).stream().reduce((x, y) -> Math.min(x, y)).get(), parent))
+                .collect(Collectors.groupingBy(tuple -> tuple.getItem1(), Collectors.mapping(x -> x.getItem2(), Collectors.toList())));
+
+
+        List<Tuple<Integer, SequenceCollection>> distances = results.keySet().parallelStream()
+                .map(key -> new Tuple<>(key, this.factory.getSequenceCollection(results.get(key))))
+                .collect(Collectors.toList());
+
 		// Sort distances on the distance value
 		Collections.sort(distances, new Comparator<Tuple<Integer, SequenceCollection>>() {
 
@@ -182,7 +137,7 @@ public class BasicSuffixTree implements SuffixTree {
 		Iterator<BasePair> iter = sequence.reverse().iterator();
 		
 		LinkedList<Tuple<Integer, SuffixTreeNode>> previous = new LinkedList<Tuple<Integer, SuffixTreeNode>>();
-		previous.add(new Tuple<Integer, SuffixTreeNode>(0, root));
+		previous.add(new Tuple<>(0, root));
 		
 		while (iter.hasNext())
 		{
@@ -207,28 +162,14 @@ public class BasicSuffixTree implements SuffixTree {
 			
 			previous = next;
 		}
-		
-		// Collect the integer results for each sequence
-		HashMap<Sequence, List<Integer>> results1 = new HashMap<Sequence, List<Integer>>();
-		for (Tuple<Integer, SuffixTreeNode> tuple : previous) {
-			for (Sequence parent1 : tuple.getItem2().getParents()) {
-				List<Integer> list;
-				if (results1.containsKey(parent1))
-					list = results1.get(parent1);
-				else 
-					list = new LinkedList<Integer>();
-				list.add(tuple.getItem1());
-				
-				results1.put(parent1, list);
-			}
-		}
-		HashMap<Sequence, List<Integer>> results = results1;
-		
-		Collection<Tuple<Sequence, List<Integer>>> distances = new LinkedList<Tuple<Sequence, List<Integer>>>();
-		for (Sequence parent : results.keySet()) {
-			distances.add(new Tuple<Sequence, List<Integer>>(parent, results.get(parent)));
-		}
-		return distances;
+
+        final Map<Sequence,List<Integer>> results = previous.parallelStream()
+                .flatMap(tuple -> tuple.getItem2().getParents().stream().map(parent -> new Tuple<>(parent, tuple.getItem1())))
+                .collect(Collectors.groupingBy(tuple -> tuple.getItem1(), Collectors.mapping(tuple -> tuple.getItem2(), Collectors.toList())));
+
+        return results.keySet().parallelStream()
+                .map(parent -> new Tuple<>(parent, results.get(parent)))
+                .collect(Collectors.<Tuple<Sequence, List<Integer>>>toList());
 	}
 
 	@Override

@@ -97,7 +97,7 @@ public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
 			default:
 				throw new InvalidDnaFormatException("There was an invalid value for DnaSeqeucne " + nucleotide);
 		}
-	};
+	}
 		
 	/**
 	 * Return the string representation of the encoded nucleotide based on current encoding schema.

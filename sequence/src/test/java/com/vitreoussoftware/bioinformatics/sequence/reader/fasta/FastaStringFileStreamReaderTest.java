@@ -3,8 +3,7 @@ package com.vitreoussoftware.bioinformatics.sequence.reader.fasta;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 import org.junit.Test;
 
@@ -35,7 +34,7 @@ public class FastaStringFileStreamReaderTest {
 	/**
 	 * The path where the FASTA test files can be found.
 	 */
-	private static final String FASTA_PATH = "src/test/resources/fasta/";
+	private static final String FASTA_PATH = "out/test/sequence.test/";
 
 	/**
 	 * Shortened FASTA string for basic testing
@@ -114,6 +113,9 @@ public class FastaStringFileStreamReaderTest {
 	 */
 	@Test
 	public void testCreate() throws IOException {
+        OutputStreamWriter stream = new OutputStreamWriter(new FileOutputStream(new File("find the path")));
+        stream.write("test");
+        stream.close();
 		FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA);
 	}
 	

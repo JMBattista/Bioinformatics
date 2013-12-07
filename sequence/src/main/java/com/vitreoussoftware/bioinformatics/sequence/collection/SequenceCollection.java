@@ -9,5 +9,5 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
  * @author John
  *
  */
-public interface SequenceCollection extends Collection<Sequence> {
+public interface SequenceCollection extends Collection<Sequence>, Iterable<Sequence> {
 }

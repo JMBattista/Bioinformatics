@@ -1,27 +1,18 @@
 package com.vitreoussoftware.bioinformatics.sequence.collection.mongodb;
 
-import java.net.UnknownHostException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
-import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.DBCursor;
-import com.mongodb.ServerAddress;
-import com.mongodb.WriteResult;
-
-import java.util.Arrays;
 
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
@@ -34,16 +25,29 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectio
  *
  */
 public class MongoDBSequenceCollection implements SequenceCollection {
-	private static final String SEQUENCE_KEY = "sequence";
-	/**
+    /**
+     * The document field that stores the string representation of the sequence
+     */
+    static final String SEQUENCE = "sequence";
+
+    /**
+     * The document field used to indicate that document has been marked for deletion
+     */
+    static final String DELETED = "deleted";
+
+    /**
 	 * The collection being used to store content from this SequenceCollection
 	 */
 	private DBCollection collection;
+
+    /**
+     * The factory used to produce new sequences from the returned values.
+     */
 	private SequenceFactory factory;
 
-	MongoDBSequenceCollection(DB db, String collectionName, SequenceFactory factory) {
+	MongoDBSequenceCollection(DBCollection dbCollection, SequenceFactory factory) {
 		this.factory = factory;
-		this.collection = db.getCollection(collectionName);		
+		this.collection = dbCollection;
 	}
 
 	public boolean add(Sequence arg0) {
@@ -88,16 +92,17 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 	}
 
 	public void clear() {
-		// Drop would remove the collection instead of just wiping it out
-		this.collection.remove(new BasicDBObject(), WriteConcern.ACKNOWLEDGED);
+		// Set the deleted field across the whole collection. This will cause them to disapear.
+        this.collection.update(new BasicDBObject(DELETED, new BasicDBObject("$exists", false)), new BasicDBObject("$set", new BasicDBObject(DELETED, new Date())), false, true, WriteConcern.ACKNOWLEDGED);
 	}
 
 	public boolean contains(Object arg0) {
 		if (arg0 instanceof Sequence)
 		{
-			Sequence seq = (Sequence) arg0;
-			DBCursor find = this.collection.find(buildDocument(seq));
-			return find.count() > 0;
+            BasicDBObject doc = buildDocument((Sequence) arg0);
+            doc.put(DELETED, new BasicDBObject("$exists", false));
+
+            return this.collection.count(doc) > 0;
 		}
 		
 		return false;
@@ -118,9 +123,10 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 	}
 
 	public Iterator<Sequence> iterator() {
-		final DBCursor cursor = this.collection.find();
+		final DBCursor cursor = this.collection.find(new BasicDBObject(DELETED, new BasicDBObject("$exists", false)));
+        final MongoDBSequenceCollection parent = this;
 		return new Iterator<Sequence>() {
-			DBObject last = null;
+			Sequence last = null;
 			public void forEachRemaining(Consumer<? super Sequence> arg0) {
 				DBCursor iter = cursor.copy();
 				while (iter.hasNext()) {
@@ -133,13 +139,13 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 			}
 
 			public Sequence next() {
-				last = cursor.next();
-				return buildSequence(last);
+				last = buildSequence(cursor.next());
+				return last;
 			}
 
 			public void remove() {
 				if (last != null)
-					collection.remove(last);
+                    parent.remove(last);
 			}
 		};
 	}
@@ -147,7 +153,7 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 	public boolean remove(Object arg0) {
 		if (this.contains(arg0)) {
 			if (arg0 instanceof Sequence) {
-				this.collection.remove(buildDocument((Sequence) arg0));
+				this.collection.update(buildDocument((Sequence) arg0), new BasicDBObject("$set", new BasicDBObject(DELETED, new Date())), false, true);
 			}
 			return true;
 		}
@@ -204,7 +210,7 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 	}
 
 	public int size() {
-		return (int) this.collection.count();
+		return (int) this.collection.count(new BasicDBObject(DELETED, new BasicDBObject("$exists", false)));
 	}
 
 	public Spliterator<Sequence> spliterator() {
@@ -242,15 +248,16 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 	}
 
 	private BasicDBObject buildDocument(Sequence arg0) {
-		return new BasicDBObject(SEQUENCE_KEY, arg0.toString());
+
+        return new BasicDBObject(SEQUENCE, arg0.toString());
 	}
 	
 	private Sequence buildSequence(DBObject arg0) {
 		try {
-			return this.factory.fromString((String)arg0.get(SEQUENCE_KEY));
+			return this.factory.fromString((String)arg0.get(SEQUENCE));
 		} catch (InvalidDnaFormatException e) {
 			e.printStackTrace();
-			throw new RuntimeException("We were unable to decode a value we stored stored in the database!" + arg0.get(SEQUENCE_KEY));
+			throw new RuntimeException("We were unable to decode a value we stored stored in the database!" + arg0.get(SEQUENCE));
 		}
 	}
 }

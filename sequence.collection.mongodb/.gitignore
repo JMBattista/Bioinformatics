@@ -3,7 +3,7 @@
 #################
 
 .idea
-.class
+*.class
 
 #################
 ## Eclipse
@@ -220,3 +220,4 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+/target

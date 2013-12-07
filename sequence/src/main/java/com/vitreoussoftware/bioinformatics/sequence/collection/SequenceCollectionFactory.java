@@ -1,8 +1,10 @@
 package com.vitreoussoftware.bioinformatics.sequence.collection;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
 
 /**
@@ -24,12 +26,35 @@ public interface SequenceCollectionFactory {
 	 * @throws IOException errors reading from the stream 
 	 * @throws InvalidDnaFormatException 
 	 */
-	public SequenceCollection getSequenceCollection(SequenceStreamReader reader) throws IOException, InvalidDnaFormatException;
+	public default SequenceCollection getSequenceCollection(SequenceStreamReader reader) throws IOException, InvalidDnaFormatException {
+        SequenceCollection sequenceCollection = getSequenceCollection();
+        while (reader.hasRecord()) {
+            sequenceCollection.add(reader.readRecord());
+        }
+
+        return sequenceCollection;
+    }
 	
 	/**
 	 * Create a SequenceCollection from another SequenceCollection
 	 * @param collection the other SequenceCollection
 	 * @return the new collection
 	 */
-	public SequenceCollection getSequenceCollection(SequenceCollection collection);
+	public default SequenceCollection getSequenceCollection(SequenceCollection collection) {
+        return getSequenceCollection((Collection<Sequence>)collection);
+    }
+
+    /**
+     * Create a SequenceCollection from another Collection<Sequence> object
+     * @param collection the Collection of sequences
+     * @return the new collection
+     */
+    public default SequenceCollection getSequenceCollection(Collection<Sequence> collection) {
+        SequenceCollection sequenceCollection = getSequenceCollection();
+        for (Sequence seq : collection) {
+            sequenceCollection.add(seq);
+        }
+
+        return sequenceCollection;
+    }
 }

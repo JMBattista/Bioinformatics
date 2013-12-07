@@ -2,10 +2,11 @@ package com.vitreoussoftware.bioinformatics.sequence.collection.mongodb;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Collection;
 
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
+import com.mongodb.*;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
@@ -23,16 +24,16 @@ public class MongoDBSequenceCollectionFactory implements SequenceCollectionFacto
 	 * The collection instance for this factory
 	 */
 	private MongoDBSequenceCollection collection = null;
-	
-	/**
-	 * The name of the collection to be initialized
-	 */
-	private String collectionName;
-	
-	/**
+
+    /**
 	 * The DB connection for this factory
 	 */
 	private DB db;
+
+    /**
+     * The DB collection for this factory
+     */
+    private DBCollection dbCollection;
 
 	/**
 	 * The SequenceFactory for converting returned items into Sequences
@@ -49,27 +50,16 @@ public class MongoDBSequenceCollectionFactory implements SequenceCollectionFacto
 	public MongoDBSequenceCollectionFactory(String serverName, int port, String dbName, String collectionName) throws UnknownHostException {
 		MongoClient mongoClient = new MongoClient( serverName , port );
 		this.db = mongoClient.getDB( dbName );
-		this.collectionName = collectionName;
-		this.factory = new FastaSequenceFactory();
+        this.dbCollection = this.db.getCollection(collectionName);
+        // Ensure that items marked as 'deleted' are indexed and cleaned up after 10 seconds
+        this.dbCollection.ensureIndex(new BasicDBObject(MongoDBSequenceCollection.DELETED, 1), new BasicDBObject("expireAfterSeconds", 10));
+        this.factory = new FastaSequenceFactory();
 	}
 
 	public SequenceCollection getSequenceCollection() {
-		if (this.collection == null) 
-			this.collection = new MongoDBSequenceCollection(db, this.collectionName, this.factory);
+		if (this.collection == null)
+			this.collection = new MongoDBSequenceCollection(this.dbCollection, this.factory);
 		
 		return this.collection;
 	}
-
-	public SequenceCollection getSequenceCollection(SequenceStreamReader reader)
-			throws IOException, InvalidDnaFormatException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public SequenceCollection getSequenceCollection(
-			SequenceCollection collection) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
