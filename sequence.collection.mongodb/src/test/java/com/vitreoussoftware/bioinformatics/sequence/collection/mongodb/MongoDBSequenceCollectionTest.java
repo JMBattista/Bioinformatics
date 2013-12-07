@@ -602,7 +602,7 @@ public class MongoDBSequenceCollectionTest {
      * @throws InvalidDnaFormatException
      */
     @Test
-    public void testPersistent_deletionDuringIteratiion() throws UnknownHostException, InvalidDnaFormatException {
+    public void testPersistent_deletionDuringIteration() throws UnknownHostException, InvalidDnaFormatException {
         SequenceCollection collection = collectionFactory.getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
@@ -639,7 +639,43 @@ public class MongoDBSequenceCollectionTest {
      * @throws InvalidDnaFormatException
      */
     @Test
-    public void testPersistent_clearDuringIteratiion() throws UnknownHostException, InvalidDnaFormatException {
+    public void testPersistent_deletionDuringIterationBeforeBatch() throws UnknownHostException, InvalidDnaFormatException {
+        SequenceCollection collection = collectionFactory.getSequenceCollection();
+        assertNotNull("The collection returned was nulll", collection);
+        collection.clear();
+        assertEquals("The collection was not empty after a drop",  0, collection.size());
+
+        final Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
+        final Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+        final Sequence seq3 = this.sequenceFactory.fromString("ATCGNA");
+        collection.add(seq1);
+        collection.add(seq2);
+        collection.add(seq3);
+
+        assertEquals("The collection did not have three elements in it", 3, collection.size());
+
+        final Iterator<Sequence> iterator = collection.iterator();
+        collection.remove(seq3);
+
+        assertTrue("There were no elements", iterator.hasNext());
+        assertNotNull(iterator.next());
+
+        assertTrue("There were no elements", iterator.hasNext());
+        assertNotNull(iterator.next());
+
+        assertTrue("There were no elements", iterator.hasNext());
+        assertNotNull(iterator.next());
+
+        assertFalse("There were still elements", iterator.hasNext());
+    }
+
+    /**
+     * Test that the data structure handles multi-point update in a persistent manner.
+     * @throws UnknownHostException Failed to connect
+     * @throws InvalidDnaFormatException
+     */
+    @Test
+    public void testPersistent_clearDuringIteration() throws UnknownHostException, InvalidDnaFormatException {
         SequenceCollection collection = collectionFactory.getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();

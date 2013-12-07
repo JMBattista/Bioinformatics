@@ -19,6 +19,8 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 
+import static com.vitreoussoftware.utility.mongodb.EasyDBObject.*;
+
 /**
  * Sequence Collection backed on MongoDB NoSQL store 
  * @author John
@@ -64,7 +66,7 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 		if (arg0 != null) {
 			// Buffer the collection before submitting to increase the speed
 			int count = 0;
-			BasicDBObject[] buffer = arg0.size() > maxCount ? new BasicDBObject[maxCount] : new BasicDBObject[arg0.size()];
+			DBObject[] buffer = arg0.size() > maxCount ? new DBObject[maxCount] : new DBObject[arg0.size()];
 			
 			for (Sequence seq : arg0) {
 				buffer[count % maxCount] = buildDocument(seq);
@@ -93,14 +95,14 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 
 	public void clear() {
 		// Set the deleted field across the whole collection. This will cause them to disapear.
-        this.collection.update(new BasicDBObject(DELETED, new BasicDBObject("$exists", false)), new BasicDBObject("$set", new BasicDBObject(DELETED, new Date())), false, true, WriteConcern.ACKNOWLEDGED);
+        this.collection.update(exists(DELETED, false), set(DELETED, now()), false, true, WriteConcern.ACKNOWLEDGED);
 	}
 
 	public boolean contains(Object arg0) {
 		if (arg0 instanceof Sequence)
 		{
-            BasicDBObject doc = buildDocument((Sequence) arg0);
-            doc.put(DELETED, new BasicDBObject("$exists", false));
+            DBObject doc = buildDocument((Sequence) arg0);
+            doc.put(DELETED, exists(false));
 
             return this.collection.count(doc) > 0;
 		}
@@ -123,9 +125,10 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 	}
 
 	public Iterator<Sequence> iterator() {
-		final DBCursor cursor = this.collection.find(new BasicDBObject(DELETED, new BasicDBObject("$exists", false)));
+		final DBCursor cursor = this.collection.find(or(exists(DELETED, false), gte(DELETED, now())));
         final MongoDBSequenceCollection parent = this;
-		return new Iterator<Sequence>() {
+
+        return new Iterator<Sequence>() {
 			Sequence last = null;
 			public void forEachRemaining(Consumer<? super Sequence> arg0) {
 				DBCursor iter = cursor.copy();
@@ -153,7 +156,7 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 	public boolean remove(Object arg0) {
 		if (this.contains(arg0)) {
 			if (arg0 instanceof Sequence) {
-				this.collection.update(buildDocument((Sequence) arg0), new BasicDBObject("$set", new BasicDBObject(DELETED, new Date())), false, true);
+				this.collection.update(buildDocument((Sequence) arg0), set(DELETED, now()), false, true);
 			}
 			return true;
 		}
@@ -210,7 +213,7 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 	}
 
 	public int size() {
-		return (int) this.collection.count(new BasicDBObject(DELETED, new BasicDBObject("$exists", false)));
+		return (int) this.collection.count(exists(DELETED, false));
 	}
 
 	public Spliterator<Sequence> spliterator() {
@@ -247,9 +250,9 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 
 	}
 
-	private BasicDBObject buildDocument(Sequence arg0) {
+	private DBObject buildDocument(Sequence arg0) {
 
-        return new BasicDBObject(SEQUENCE, arg0.toString());
+        return field(SEQUENCE, arg0.toString());
 	}
 	
 	private Sequence buildSequence(DBObject arg0) {
