@@ -17,12 +17,14 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectio
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 
+import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactoryTest;
+
 /**
  * Test the MongoDBSequenceCollection class
  * @author John
  *
  */
-public class MongoDBSequenceCollectionFactoryTest {
+public class MongoDBSequenceCollectionFactoryTest extends SequenceCollectionFactoryTest {
 
 	private SequenceFactory sequenceFactory;
 
@@ -31,16 +33,20 @@ public class MongoDBSequenceCollectionFactoryTest {
 		this.sequenceFactory = new FastaSequenceFactory();
 	}
 
-	/**
-	 * Create a SequenceCollection
-	 * @throws UnknownHostException Failed to connect 
-	 */
-	@Test
-	public void testCreateFactory() throws UnknownHostException {
-		SequenceCollectionFactory collectionFactory = new MongoDBSequenceCollectionFactory("localhost", 27017, "testSeq", "testColl");
-		assertNotNull("The collectionFactory initialized to null", collectionFactory);
-	}
-	
+    @Override
+    public SequenceCollectionFactory getFactory() {
+        try {
+            return new MongoDBSequenceCollectionFactory("localhost", 27017, "testSeq", "testColl");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            fail("Exception thrown while trying to create MongoDBSequenceCollectionFactory, check that MongoDB is running");
+        }
+
+        // unreachable due to fail() call
+        return null;
+    }
+
 	/**
 	 * Create a SequenceCollection
 	 * @throws UnknownHostException Failed to connect 
@@ -50,16 +56,4 @@ public class MongoDBSequenceCollectionFactoryTest {
 		SequenceCollectionFactory collectionFactory = new MongoDBSequenceCollectionFactory("SXKSAkasdglak@#@KASGlsldfs", 27017, "testSeq", "testColl");
 		fail("We should not have been able to successfully initialize the factory without a connection to the DB");
 	}
-	
-	/**
-	 * Create a SequenceCollection
-	 * @throws UnknownHostException Failed to connect 
-	 */
-	@Test
-	public void testGetCollection() throws UnknownHostException {
-		SequenceCollectionFactory collectionFactory = new MongoDBSequenceCollectionFactory("localhost", 27017, "testSeq", "testColl");
-		assertNotNull("The collectionFactory initialized to null", collectionFactory);
-		SequenceCollection collection = collectionFactory.getSequenceCollection();
-		assertNotNull("The collection returned was nulll", collection);
-	}	
 }
