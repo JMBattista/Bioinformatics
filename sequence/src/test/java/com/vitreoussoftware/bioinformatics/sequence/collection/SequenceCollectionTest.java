@@ -57,7 +57,7 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq = this.sequenceFactory.fromString("ATCGN");
+		Sequence seq = this.sequenceFactory.fromString("ATCGN").get();
 		collection.add(seq);
 
 		assertEquals("The collection did not have only one element in it", 1, collection.size());
@@ -75,7 +75,7 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq = this.sequenceFactory.fromString("ATCGN");
+		Sequence seq = this.sequenceFactory.fromString("ATCGN").get();
 
 		collection.addAll(Arrays.asList(seq, seq, seq));
 
@@ -94,7 +94,7 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq = this.sequenceFactory.fromString("ATCGN");
+		Sequence seq = this.sequenceFactory.fromString("ATCGN").get();
 
 		List<Sequence> list = new LinkedList<Sequence>();
 		final int many = 99999;
@@ -118,7 +118,7 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq = this.sequenceFactory.fromString("ATCGN");
+		Sequence seq = this.sequenceFactory.fromString("ATCGN").get();
 		collection.add(seq);
 
 		assertEquals("The collection did not have only one element in it", 1, collection.size());
@@ -138,8 +138,8 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq  = this.sequenceFactory.fromString("ATCGN");
-		Sequence fail = this.sequenceFactory.fromString("ATCG");
+		Sequence seq  = this.sequenceFactory.fromString("ATCGN").get();
+		Sequence fail = this.sequenceFactory.fromString("ATCG").get();
 		collection.add(seq);
 
 		assertEquals("The collection did not have only one element in it", 1, collection.size());
@@ -159,8 +159,8 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq  = this.sequenceFactory.fromString("ATCGN");
-		Sequence fail = this.sequenceFactory.fromString("ATCGNA");
+		Sequence seq  = this.sequenceFactory.fromString("ATCGN").get();
+		Sequence fail = this.sequenceFactory.fromString("ATCGNA").get();
 		collection.add(seq);
 
 		assertEquals("The collection did not have only one element in it", 1, collection.size());
@@ -180,7 +180,7 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq = this.sequenceFactory.fromString("ATCGN");
+		Sequence seq = this.sequenceFactory.fromString("ATCGN").get();
 		collection.add(seq);
 
 		assertEquals("The collection did not have only one element in it", 1, collection.size());
@@ -202,8 +202,8 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq = this.sequenceFactory.fromString("ATCGN");
-		Sequence fail = this.sequenceFactory.fromString("ATCGNA");
+		Sequence seq = this.sequenceFactory.fromString("ATCGN").get();
+		Sequence fail = this.sequenceFactory.fromString("ATCGNA").get();
 		collection.add(seq);
 
 		assertEquals("The collection did not have only one element in it", 1, collection.size());
@@ -225,8 +225,8 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
-		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT").get();
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA").get();
 		collection.add(seq1);
 		collection.add(seq2);
 
@@ -253,9 +253,9 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
-		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
-		Sequence fail = this.sequenceFactory.fromString("ATCGNA");
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT").get();
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA").get();
+		Sequence fail = this.sequenceFactory.fromString("ATCGNA").get();
 		collection.add(seq1);
 		collection.add(seq2);
 
@@ -285,8 +285,8 @@ public abstract class SequenceCollectionTest {
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
 		assertTrue("The collection was not empty", collection.isEmpty());
-		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
-		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT").get();
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA").get();
 		collection.add(seq1);
 		collection.add(seq2);
 
@@ -307,8 +307,8 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
-		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT").get();
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA").get();
 		collection.add(seq1);
 		collection.add(seq2);
 
@@ -343,8 +343,8 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
-		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT").get();
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA").get();
 		collection.add(seq1);
 		collection.add(seq2);
 
@@ -385,8 +385,8 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
-		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT").get();
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA").get();
 		collection.add(seq1);
 		collection.add(seq2);
 
@@ -422,9 +422,9 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
-		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
-		Sequence seq3 = this.sequenceFactory.fromString("ATCGNA");
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT").get();
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA").get();
+		Sequence seq3 = this.sequenceFactory.fromString("ATCGNA").get();
 		collection.add(seq1);
 		collection.add(seq2);
 		collection.add(seq3);
@@ -457,9 +457,9 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
-		Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
-		Sequence seq3 = this.sequenceFactory.fromString("ATCGNA");
+		Sequence seq1 = this.sequenceFactory.fromString("ATCGT").get();
+		Sequence seq2 = this.sequenceFactory.fromString("ATCGA").get();
+		Sequence seq3 = this.sequenceFactory.fromString("ATCGNA").get();
 		collection.add(seq1);
 		collection.add(seq2);
 		collection.add(seq3);
@@ -495,9 +495,9 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		final Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
-		final Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
-		final Sequence seq3 = this.sequenceFactory.fromString("ATCGNA");
+		final Sequence seq1 = this.sequenceFactory.fromString("ATCGT").get();
+		final Sequence seq2 = this.sequenceFactory.fromString("ATCGA").get();
+		final Sequence seq3 = this.sequenceFactory.fromString("ATCGNA").get();
 		collection.add(seq1);
 		collection.add(seq2);
 		collection.add(seq3);
@@ -534,9 +534,9 @@ public abstract class SequenceCollectionTest {
 		collection.clear();
 		assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-		final Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
-		final Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
-		final Sequence seq3 = this.sequenceFactory.fromString("ATCGNA");
+		final Sequence seq1 = this.sequenceFactory.fromString("ATCGT").get();
+		final Sequence seq2 = this.sequenceFactory.fromString("ATCGA").get();
+		final Sequence seq3 = this.sequenceFactory.fromString("ATCGNA").get();
 		collection.add(seq1);
 		collection.add(seq2);
 		collection.add(seq3);

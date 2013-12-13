@@ -1,12 +1,11 @@
 package com.vitreoussoftware.bioinformatics.sequence.reader.fasta;
 
-import java.io.IOException;
-
-import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
+
+import java.util.Optional;
 
 /**
  * Maps a SequenceStringStreamReader who's string return values are in FASTA format into encoded sequences
@@ -33,13 +32,12 @@ public class SequenceFromFastaStringStreamReader implements SequenceStreamReader
 	}
 
 	@Override
-	public boolean hasRecord() throws IOException {
-		return reader.hasRecord();
+    public boolean hasNext() {
+		return reader.hasNext();
 	}
 
 	@Override
-	public Sequence readRecord() throws IOException, InvalidDnaFormatException {
-		return this.factory.fromString(this.reader.readRecord());
+    public Optional<Sequence> next() {
+		return this.factory.fromString(this.reader.next());
 	}
-
 }

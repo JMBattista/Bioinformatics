@@ -62,8 +62,8 @@ public class BoundedSuffixTreeFactory implements SuffixTreeFactory {
 	public SuffixTree create(SequenceStreamReader sequenceReader) throws IOException, InvalidDnaFormatException {
 		SuffixTree t = new BoundedSuffixTree(this.factory, this.minLength, this.maxLength);
 		
-		while (sequenceReader.hasRecord())
-			t.addSequence(sequenceReader.readRecord());
+		while (sequenceReader.hasNext())
+			t.addSequence(sequenceReader.next().orElseThrow(() -> new RuntimeException("TODO update this exception")));
 		
 		return t;
 	}

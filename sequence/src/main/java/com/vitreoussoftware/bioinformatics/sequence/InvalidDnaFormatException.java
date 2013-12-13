@@ -5,7 +5,7 @@ package com.vitreoussoftware.bioinformatics.sequence;
  * @author John
  *
  */
-public class InvalidDnaFormatException extends Exception {
+public class InvalidDnaFormatException extends RuntimeException {
 
 	/**
 	 * Create an InvalidDnaFormatException with an error message

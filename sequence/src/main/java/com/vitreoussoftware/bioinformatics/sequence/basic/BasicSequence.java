@@ -7,6 +7,7 @@ import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
@@ -31,17 +32,24 @@ public class BasicSequence implements Sequence {
 	 * @return the encoded sequence
 	 * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException if the input doesn't match the scheme
 	 */
-	public static BasicSequence create(String sequence, EncodingScheme encodingSheme) throws InvalidDnaFormatException
+	public static Optional<Sequence> create(String sequence, EncodingScheme encodingSheme)
 	{
-		BasicSequence seq = new BasicSequence(encodingSheme);
-		seq.sequence = new byte[sequence.length()];
-		
-		for (int i = 0; i < sequence.length(); i++)
-		{
-			seq.sequence[i] = encodingSheme.getValue(sequence.charAt(i));
-		}
-		
-		return seq;
+
+        try {
+            BasicSequence seq = new BasicSequence(encodingSheme);
+            seq.sequence = new byte[sequence.length()];
+
+            for (int i = 0; i < sequence.length(); i++)
+            {
+                seq.sequence[i] = encodingSheme.getValue(sequence.charAt(i));
+            }
+
+            return Optional.<Sequence>of(seq);
+        }
+        catch (InvalidDnaFormatException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
 	}
 
     @Override

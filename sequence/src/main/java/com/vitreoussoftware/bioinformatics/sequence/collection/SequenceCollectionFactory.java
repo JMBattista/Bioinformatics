@@ -2,6 +2,7 @@ package com.vitreoussoftware.bioinformatics.sequence.collection;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Optional;
 
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
@@ -28,8 +29,8 @@ public interface SequenceCollectionFactory {
 	 */
 	public default SequenceCollection getSequenceCollection(SequenceStreamReader reader) throws IOException, InvalidDnaFormatException {
         SequenceCollection sequenceCollection = getSequenceCollection();
-        while (reader.hasRecord()) {
-            sequenceCollection.add(reader.readRecord());
+        while (reader.hasNext()) {
+            sequenceCollection.add(reader.next().orElseThrow(() -> new RuntimeException("TODO use reason Optional")));
         }
 
         return sequenceCollection;

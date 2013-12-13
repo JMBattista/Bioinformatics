@@ -256,11 +256,7 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 	}
 	
 	private Sequence buildSequence(DBObject arg0) {
-		try {
-			return this.factory.fromString((String)arg0.get(SEQUENCE));
-		} catch (InvalidDnaFormatException e) {
-			e.printStackTrace();
-			throw new RuntimeException("We were unable to decode a value we stored stored in the database!" + arg0.get(SEQUENCE));
-		}
+        return this.factory.fromString((String)arg0.get(SEQUENCE))
+                    .orElseThrow(() -> new RuntimeException("We were unable to decode a value we stored stored in the database!" + arg0.get(SEQUENCE)));
 	}
 }

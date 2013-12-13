@@ -156,7 +156,7 @@ public class FastaStringFileStreamReaderTest {
 	public void testReadRecord_simple() throws IOException {
 		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_SIMPLE_FASTA);
 		
-		assertEquals(recordSimple, reader.readRecord());
+		assertEquals(recordSimple, reader.next());
 	}
 	
 	/**
@@ -167,7 +167,7 @@ public class FastaStringFileStreamReaderTest {
 	public void testReadRecord_example1() throws IOException {
 		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA);
 		
-		assertEquals(record1, reader.readRecord());
+		assertEquals(record1, reader.next());
 	}
 	
 	/**
@@ -178,8 +178,8 @@ public class FastaStringFileStreamReaderTest {
 	public void testReadRecord_example2() throws IOException {
 		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA);
 		
-		assertEquals(record1, reader.readRecord());
-		assertEquals(record2, reader.readRecord());
+		assertEquals(record1, reader.next());
+		assertEquals(record2, reader.next());
 	}
 	
 	/**
@@ -190,9 +190,9 @@ public class FastaStringFileStreamReaderTest {
 	public void testReadRecord_example3() throws IOException {
 		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA);
 		
-		assertEquals(record1, reader.readRecord());
-		assertEquals(record2, reader.readRecord());
-		assertEquals(record3, reader.readRecord());
+		assertEquals(record1, reader.next());
+		assertEquals(record2, reader.next());
+		assertEquals(record3, reader.next());
 	}
 	
 	/**
@@ -204,9 +204,9 @@ public class FastaStringFileStreamReaderTest {
 		try (SequenceStringStreamReader reader 
 				= FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA))
 		{
-			assertEquals(record1, reader.readRecord());
-			assertEquals(record2, reader.readRecord());
-			assertEquals(record3, reader.readRecord());	
+			assertEquals(record1, reader.next());
+			assertEquals(record2, reader.next());
+			assertEquals(record3, reader.next());
 		} catch (Exception e) {
 			throw e;
 		}
@@ -220,11 +220,11 @@ public class FastaStringFileStreamReaderTest {
 	public void testReadRecord_paged() throws IOException {
 		SequenceStringStreamReader reader = FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_PAGED_FASTA);
 		
-		while (reader.hasRecord())
+		while (reader.hasNext())
 		{	
-			assertEquals(record1, reader.readRecord());
-			assertEquals(record2, reader.readRecord());
-			assertEquals(record3, reader.readRecord());
+			assertEquals(record1, reader.next());
+			assertEquals(record2, reader.next());
+			assertEquals(record3, reader.next());
 		}
 	}
 

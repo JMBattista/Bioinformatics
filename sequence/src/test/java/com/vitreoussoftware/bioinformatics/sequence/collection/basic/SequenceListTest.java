@@ -47,7 +47,7 @@ public class SequenceListTest extends SequenceCollectionTest {
 		SequenceCollection sc = this.getFactory().getSequenceCollection();
 		
 		assertNotNull(sc);
-		sc.add(sequenceFactory.fromString("AATTCCGGUU"));
+		sc.add(sequenceFactory.fromString("AATTCCGGUU").get());
 		assertEquals(1,  sc.size());
 	}
 	
@@ -58,7 +58,7 @@ public class SequenceListTest extends SequenceCollectionTest {
 	@Test
 	public void testContains_sameRef() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.getFactory().getSequenceCollection();
-		Sequence seq = sequenceFactory.fromString("AATTCCGGUU");
+		Sequence seq = sequenceFactory.fromString("AATTCCGGUU").get();
 		sc.add(seq);
 		assertEquals(1,  sc.size());
 		assertTrue(sc.contains(seq));
@@ -71,9 +71,9 @@ public class SequenceListTest extends SequenceCollectionTest {
 	@Test
 	public void testContains_diffRef() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.getFactory().getSequenceCollection();
-		sc.add(sequenceFactory.fromString("AATTCCGGUU"));
+		sc.add(sequenceFactory.fromString("AATTCCGGUU").get());
 		assertEquals(1,  sc.size());
-		assertTrue(sc.contains(sequenceFactory.fromString("AATTCCGGUU")));
+		assertTrue(sc.contains(sequenceFactory.fromString("AATTCCGGUU").get()));
 	}
 
 	/**
@@ -88,8 +88,8 @@ public class SequenceListTest extends SequenceCollectionTest {
 		
 		assertNotNull(sc);
 		assertEquals(1,  sc.size());
-		assertEquals(sequenceFactory.fromString(FastaStringFileStreamReaderTest.recordSimple), sc.iterator().next());
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.recordSimple)));
+		assertEquals(sequenceFactory.fromString(FastaStringFileStreamReaderTest.recordSimple).get(), sc.iterator().next());
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.recordSimple).get()));
 	}
 	
 	/**
@@ -104,8 +104,8 @@ public class SequenceListTest extends SequenceCollectionTest {
 
 		assertNotNull(sc);
 		assertEquals(3,  sc.size());
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1)));
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.record2)));
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3)));
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1).get()));
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.record2).get()));
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3).get()));
 	}
 }

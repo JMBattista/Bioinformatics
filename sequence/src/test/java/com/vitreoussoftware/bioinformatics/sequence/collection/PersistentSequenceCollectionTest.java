@@ -35,9 +35,9 @@ public abstract class PersistentSequenceCollectionTest extends SequenceCollectio
         collection.clear();
         assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-        final Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
-        final Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
-        final Sequence seq3 = this.sequenceFactory.fromString("ATCGNA");
+        final Sequence seq1 = this.sequenceFactory.fromString("ATCGT").get();
+        final Sequence seq2 = this.sequenceFactory.fromString("ATCGA").get();
+        final Sequence seq3 = this.sequenceFactory.fromString("ATCGNA").get();
         collection.add(seq1);
         collection.add(seq2);
 
@@ -67,9 +67,9 @@ public abstract class PersistentSequenceCollectionTest extends SequenceCollectio
         collection.clear();
         assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-        final Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
-        final Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
-        final Sequence seq3 = this.sequenceFactory.fromString("ATCGNA");
+        final Sequence seq1 = this.sequenceFactory.fromString("ATCGT").get();
+        final Sequence seq2 = this.sequenceFactory.fromString("ATCGA").get();
+        final Sequence seq3 = this.sequenceFactory.fromString("ATCGNA").get();
         collection.add(seq1);
         collection.add(seq2);
         collection.add(seq3);
@@ -104,9 +104,9 @@ public abstract class PersistentSequenceCollectionTest extends SequenceCollectio
         collection.clear();
         assertEquals("The collection was not empty after a drop",  0, collection.size());
 
-        final Sequence seq1 = this.sequenceFactory.fromString("ATCGT");
-        final Sequence seq2 = this.sequenceFactory.fromString("ATCGA");
-        final Sequence seq3 = this.sequenceFactory.fromString("ATCGNA");
+        final Sequence seq1 = this.sequenceFactory.fromString("ATCGT").get();
+        final Sequence seq2 = this.sequenceFactory.fromString("ATCGA").get();
+        final Sequence seq3 = this.sequenceFactory.fromString("ATCGNA").get();
         collection.add(seq1);
         collection.add(seq2);
         collection.add(seq3);

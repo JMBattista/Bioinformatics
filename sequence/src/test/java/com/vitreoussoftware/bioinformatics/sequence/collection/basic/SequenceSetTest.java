@@ -44,7 +44,7 @@ public class SequenceSetTest {
 		SequenceCollection sc = this.factory.getSequenceCollection();
 		
 		assertNotNull(sc);
-		sc.add(sequenceFactory.fromString("AATTCCGGUU"));
+		sc.add(sequenceFactory.fromString("AATTCCGGUU").get());
 		assertEquals(1,  sc.size());
 	}
 	
@@ -55,14 +55,14 @@ public class SequenceSetTest {
 	@Test
 	public void testAdd_duplicate() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.factory.getSequenceCollection();
-		Sequence seq = sequenceFactory.fromString("AATTCCGGUU");
+		Sequence seq = sequenceFactory.fromString("AATTCCGGUU").get();
 		
 		assertNotNull(sc);
-		sc.add(sequenceFactory.fromString("AATTCCGGUU"));
+		sc.add(sequenceFactory.fromString("AATTCCGGUU").get());
 		assertEquals(1,  sc.size());
 		assertEquals(seq, sc.iterator().next());
 		assertTrue(sc.contains(seq));
-		sc.add(sequenceFactory.fromString("AATTCCGGUU"));
+		sc.add(sequenceFactory.fromString("AATTCCGGUU").get());
 		assertEquals(1,  sc.size());
 	}
 	
@@ -73,7 +73,7 @@ public class SequenceSetTest {
 	@Test
 	public void testContains_sameRef() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.factory.getSequenceCollection();
-		Sequence seq = sequenceFactory.fromString("AATTCCGGUU");
+		Sequence seq = sequenceFactory.fromString("AATTCCGGUU").get();
 		sc.add(seq);
 		assertEquals(1,  sc.size());
 		assertTrue(sc.contains(seq));
@@ -86,8 +86,8 @@ public class SequenceSetTest {
 	@Test
 	public void testContains_diffRef() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.factory.getSequenceCollection();
-		sc.add(sequenceFactory.fromString("AATTCCGGUU"));
+		sc.add(sequenceFactory.fromString("AATTCCGGUU").get());
 		assertEquals(1,  sc.size());
-		assertTrue(sc.contains(sequenceFactory.fromString("AATTCCGGUU")));
+		assertTrue(sc.contains(sequenceFactory.fromString("AATTCCGGUU").get()));
 	}
 }

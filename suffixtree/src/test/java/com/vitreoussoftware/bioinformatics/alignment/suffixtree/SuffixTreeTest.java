@@ -38,10 +38,10 @@ public abstract class SuffixTreeTest {
 	public void setup() throws InvalidDnaFormatException {
 		this.factory = getSuffixTreeFactory();
 		this.sequenceFactory = new FastaSequenceFactory();
-		this.record1 = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1);
-		this.record2 = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record2);
-		this.record3 = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3);
-		this.recordSimple = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.recordSimple);
+		this.record1 = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1).get();
+		this.record2 = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record2).get();
+		this.record3 = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3).get();
+		this.recordSimple = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.recordSimple).get();
 	}
 
 	protected abstract SuffixTreeFactory getSuffixTreeFactory(); 
@@ -126,180 +126,180 @@ public abstract class SuffixTreeTest {
 		SuffixTree tree = this.factory.create(recordSimple);
 		
 		assertNotNull(tree);
-		assertTrue(tree.contains(this.sequenceFactory.fromString("A")));
-		assertTrue(tree.contains(this.sequenceFactory.fromString("U")));
-		assertTrue(tree.contains(this.sequenceFactory.fromString("C")));
-		assertTrue(tree.contains(this.sequenceFactory.fromString("G")));
+		assertTrue(tree.contains(this.sequenceFactory.fromString("A").get()));
+		assertTrue(tree.contains(this.sequenceFactory.fromString("U").get()));
+		assertTrue(tree.contains(this.sequenceFactory.fromString("C").get()));
+		assertTrue(tree.contains(this.sequenceFactory.fromString("G").get()));
 	}
-	
+
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFind_canFail() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
-		
+
 		assertNotNull(tree);
-		assertFalse(tree.contains(this.sequenceFactory.fromString("T")));
+		assertFalse(tree.contains(this.sequenceFactory.fromString("T").get()));
 	}
-	
-	
+
+
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFind_simple() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
-		
+
 		assertNotNull(tree);
 		assertTrue(tree.contains(recordSimple));
 	}
 
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFind_record1() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(record1);
-		
+
 		assertNotNull(tree);
 		assertTrue(tree.contains(record1));
 	}
-	
+
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFind_record2() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(record2);
-		
+
 		assertNotNull(tree);
 		assertTrue(tree.contains(record2));
 	}
-	
+
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFind_record3() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(record3);
-		
+
 		assertNotNull(tree);
 		assertTrue(tree.contains(record3));
 	}
-	
+
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFind_record3Substring() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(record3);
-		
+
 		assertNotNull(tree);
-		assertTrue(tree.contains(this.sequenceFactory.fromString("GCGGAGCGUGUGGUUUAAUUCGAUGCUACACGAAGAACCUUACCAAGAUUUGACAUGCAUGUAGUAGUGAACUGAAAGGG")));	
+		assertTrue(tree.contains(this.sequenceFactory.fromString("GCGGAGCGUGUGGUUUAAUUCGAUGCUACACGAAGAACCUUACCAAGAUUUGACAUGCAUGUAGUAGUGAACUGAAAGGG").get()));
 	}
-	
+
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFind_canFailLarge() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(record2);
-		
+
 		assertNotNull(tree);
-		assertFalse(tree.contains(this.sequenceFactory.fromString("GCGGAGCGUGUGGUUUAAUUCGAUGCUACACGAAGAACCUUACCAAGAUUUGACAUGCAUGUAGUAGUGAACUGAAAGGG")));	
+		assertFalse(tree.contains(this.sequenceFactory.fromString("GCGGAGCGUGUGGUUUAAUUCGAUGCUACACGAAGAACCUUACCAAGAUUUGACAUGCAUGUAGUAGUGAACUGAAAGGG").get()));
 	}
-	
+
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFindParents_trivial() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
-		
+
 		assertNotNull(tree);
 		SequenceCollection parents = null;
-		
-		Sequence a = this.sequenceFactory.fromString("A");
+
+		Sequence a = this.sequenceFactory.fromString("A").get();
 		parents = tree.getParents(a);
 		assertEquals(1, parents.size());
 		assertEquals(recordSimple, parents.iterator().next());
-		
-		Sequence u = this.sequenceFactory.fromString("U");
+
+		Sequence u = this.sequenceFactory.fromString("U").get();
 		parents = tree.getParents(u);
 		assertEquals(1, parents.size());
 		assertEquals(recordSimple, parents.iterator().next());
-		
-		Sequence c = this.sequenceFactory.fromString("C");
+
+		Sequence c = this.sequenceFactory.fromString("C").get();
 		parents = tree.getParents(c);
 		assertEquals(1, parents.size());
 		assertEquals(recordSimple, parents.iterator().next());
-		
-		Sequence g = this.sequenceFactory.fromString("G");
+
+		Sequence g = this.sequenceFactory.fromString("G").get();
 		parents = tree.getParents(g);
 		assertEquals(1, parents.size());
 		assertEquals(recordSimple, parents.iterator().next());
 	}
-	
-	
+
+
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFindParents_canFailWrongParent() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
-		
+
 		assertNotNull(tree);
-		
-		Sequence g = this.sequenceFactory.fromString("G");
+
+		Sequence g = this.sequenceFactory.fromString("G").get();
 		SequenceCollection parents = tree.getParents(g);
 		assertEquals(1, parents.size());
 		assertFalse(g.equals(parents.iterator().next()));
 	}
-	
+
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFindParents_canFailMissing() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
-		
+
 		assertNotNull(tree);
-		
-		Sequence t = this.sequenceFactory.fromString("T");
+
+		Sequence t = this.sequenceFactory.fromString("T").get();
 		SequenceCollection parents = tree.getParents(t);
 		assertTrue(parents.isEmpty());
 	}
-	
+
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFindParents_simple() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
-		
+
 		assertNotNull(tree);
 		SequenceCollection parents = tree.getParents(recordSimple);
 		assertEquals(1, parents.size());
@@ -308,68 +308,68 @@ public abstract class SuffixTreeTest {
 
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFindParents_record1() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(record1);
-		
+
 		assertNotNull(tree);
 		SequenceCollection parents = tree.getParents(record1);
 		assertEquals(1, parents.size());
 		assertEquals(record1, parents.iterator().next());
 	}
-	
+
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFindParents_record2() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(record2);
-		
+
 		assertNotNull(tree);
 		SequenceCollection parents = tree.getParents(record2);
 		assertEquals(1, parents.size());
 		assertEquals(record2, parents.iterator().next());
 	}
-	
+
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFindParents_record3() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(record3);
-		
+
 		assertNotNull(tree);
 		SequenceCollection parents = tree.getParents(record3);
 		assertEquals(1, parents.size());
 		assertEquals(record3, parents.iterator().next());
 	}
-	
+
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@Test
 	public void testFindParents_record3Substring() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(record3);
-		
-		Sequence seq = this.sequenceFactory.fromString("GCGGAGCGUGUGGUUUAAUUCGAUGCUACACGAAGAACCUUACCAAGAUUUGACAUGCAUGUAGUAGUGAACUGAAAGGG");
+
+		Sequence seq = this.sequenceFactory.fromString("GCGGAGCGUGUGGUUUAAUUCGAUGCUACACGAAGAACCUUACCAAGAUUUGACAUGCAUGUAGUAGUGAACUGAAAGGG").get();
 		assertNotNull(tree);
 		SequenceCollection parents = tree.getParents(seq);
 		assertEquals(1, parents.size());
-		assertEquals(record3, parents.iterator().next());	
+		assertEquals(record3, parents.iterator().next());
 	}
 
 	/**
 	 * Find something in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testFindParentsMultiple_trivial() throws IOException, InvalidDnaFormatException {
@@ -377,35 +377,35 @@ public abstract class SuffixTreeTest {
 		tree.addSequence(record1);
 		tree.addSequence(record2);
 		tree.addSequence(record3);
-		
+
 		assertNotNull(tree);
 		SequenceCollection parents = null;
-		
-		Sequence a = this.sequenceFactory.fromString("A");
+
+		Sequence a = this.sequenceFactory.fromString("A").get();
 		parents = tree.getParents(a);
 		assertTrue(parents.contains(recordSimple));
 		assertTrue(parents.contains(record1));
 		assertTrue(parents.contains(record2));
 		assertTrue(parents.contains(record3));
 		assertEquals(4, parents.size());
-		
-		Sequence u = this.sequenceFactory.fromString("U");
+
+		Sequence u = this.sequenceFactory.fromString("U").get();
 		parents = tree.getParents(u);
 		assertEquals(4, parents.size());
 		assertTrue(parents.contains(recordSimple));
 		assertTrue(parents.contains(record1));
 		assertTrue(parents.contains(record2));
 		assertTrue(parents.contains(record3));
-		
-		Sequence c = this.sequenceFactory.fromString("C"); 
+
+		Sequence c = this.sequenceFactory.fromString("C").get();
 		parents = tree.getParents(c);
 		assertEquals(4, parents.size());
 		assertTrue(parents.contains(recordSimple));
 		assertTrue(parents.contains(record1));
 		assertTrue(parents.contains(record2));
 		assertTrue(parents.contains(record3));
-		
-		Sequence g = this.sequenceFactory.fromString("G");
+
+		Sequence g = this.sequenceFactory.fromString("G").get();
 		parents = tree.getParents(g);
 		assertEquals(4, parents.size());
 		assertTrue(parents.contains(recordSimple));
@@ -413,315 +413,315 @@ public abstract class SuffixTreeTest {
 		assertTrue(parents.contains(record2));
 		assertTrue(parents.contains(record3));
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testDistance_trivial0() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
-		
+
 		assertNotNull(tree);
-		
-		Sequence a = this.sequenceFactory.fromString("A");
-		Sequence u = this.sequenceFactory.fromString("U");
-		Sequence c = this.sequenceFactory.fromString("C");
-		Sequence g = this.sequenceFactory.fromString("G");
-		
+
+		Sequence a = this.sequenceFactory.fromString("A").get();
+		Sequence u = this.sequenceFactory.fromString("U").get();
+		Sequence c = this.sequenceFactory.fromString("C").get();
+		Sequence g = this.sequenceFactory.fromString("G").get();
+
 		Collection<Tuple<Integer, SequenceCollection>> distancesA = tree.distance(a);
-		
+
 		assertEquals("Number of tuples", 1, distancesA.size());
 		assertEquals("Distance of first tuple", 0, distancesA.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 1, distancesA.stream().findFirst().get().getItem2().size());
 		assertEquals("Correct first tuple sequence", recordSimple, distancesA.stream().findFirst().get().getItem2().stream().findFirst().get());
-		
+
 		Collection<Tuple<Integer, SequenceCollection>> distancesU = tree.distance(u);
-		
+
 		assertEquals("Number of tuples", 1, distancesU.size());
 		assertEquals("Distance of first tuple", 0, distancesU.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 1, distancesU.stream().findFirst().get().getItem2().size());
 		assertEquals("Correct first tuple sequence", recordSimple, distancesU.stream().findFirst().get().getItem2().stream().findFirst().get());
-		
+
 		Collection<Tuple<Integer, SequenceCollection>> distancesC = tree.distance(c);
-		
+
 		assertEquals("Number of tuples", 1, distancesC.size());
 		assertEquals("Distance of first tuple", 0, distancesC.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 1, distancesC.stream().findFirst().get().getItem2().size());
 		assertEquals("Correct first tuple sequence", recordSimple, distancesC.stream().findFirst().get().getItem2().stream().findFirst().get());
-		
+
 		Collection<Tuple<Integer, SequenceCollection>> distancesG = tree.distance(g);
-		
+
 		assertEquals("Number of tuples", 1, distancesG.size());
 		assertEquals("Distance of first tuple", 0, distancesG.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 1, distancesG.stream().findFirst().get().getItem2().size());
 		assertEquals("Correct first tuple sequence", recordSimple, distancesG.stream().findFirst().get().getItem2().stream().findFirst().get());
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testDistance_trivial1() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
-		
+
 		assertNotNull(tree);
-		
-		Sequence t = this.sequenceFactory.fromString("T");
-		
+
+		Sequence t = this.sequenceFactory.fromString("T").get();
+
 		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(t);
-		
+
 		assertEquals("Number of tuples", 1, distancesT.size());
 		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getItem2().size());
 		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getItem2().stream().findFirst().get());
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testDistance_trivialN() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
-		
+
 		assertNotNull(tree);
-		
-		Sequence n = this.sequenceFactory.fromString("N");
-		
+
+		Sequence n = this.sequenceFactory.fromString("N").get();
+
 		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(n);
-		
+
 		assertEquals("Number of tuples", 1, distancesT.size());
 		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getItem2().size());
 		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getItem2().stream().findFirst().get());
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testDistance_multiCharacterOptions() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
-		
+
 		assertNotNull(tree);
-		
-		Sequence seq = this.sequenceFactory.fromString("AAC");
-		
+
+		Sequence seq = this.sequenceFactory.fromString("AAC").get();
+
 		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
-		
+
 		assertEquals("Number of tuples", 1, distancesT.size());
 		assertEquals("Distance of first tuple", 0, distancesT.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getItem2().size());
 		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getItem2().stream().findFirst().get());
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testDistance_offByEndN() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
-		
+
 		assertNotNull(tree);
-		
-		Sequence seq = this.sequenceFactory.fromString("AAN");
-		
+
+		Sequence seq = this.sequenceFactory.fromString("AAN").get();
+
 		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
-		
+
 		assertEquals("Number of tuples", 1, distancesT.size());
 		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getItem2().size());
 		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getItem2().stream().findFirst().get());
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testDistance_offByMiddleN() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
-		
+
 		assertNotNull(tree);
-		
-		Sequence seq = this.sequenceFactory.fromString("ANA");
-		
+
+		Sequence seq = this.sequenceFactory.fromString("ANA").get();
+
 		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
-		
+
 		assertEquals("Number of tuples", 1, distancesT.size());
 		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getItem2().size());
 		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getItem2().stream().findFirst().get());
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testDistance_offByStartN() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
-		
+
 		assertNotNull(tree);
-		
-		Sequence seq = this.sequenceFactory.fromString("NAA");
-		
+
+		Sequence seq = this.sequenceFactory.fromString("NAA").get();
+
 		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
-		
+
 		assertEquals("Number of tuples", 1, distancesT.size());
 		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getItem2().size());
 		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getItem2().stream().findFirst().get());
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testDistanceMultiple_offByEndN() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
 		tree.addSequence(record3);
-		
+
 		assertNotNull(tree);
-		
-		Sequence seq = this.sequenceFactory.fromString("AAN");
-		
+
+		Sequence seq = this.sequenceFactory.fromString("AAN").get();
+
 		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
-		
+
 		assertEquals("Number of tuples", 1, distancesT.size());
 		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 2, distancesT.stream().findFirst().get().getItem2().size());
 		assertTrue("Simple was not a parent", distancesT.stream().findFirst().get().getItem2().contains(recordSimple));
 		assertTrue("Record3 was not a parent", distancesT.stream().findFirst().get().getItem2().contains(record3));
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testDistanceMultiple_offByMiddleN() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
 		tree.addSequence(record3);
-		
+
 		assertNotNull(tree);
-		
-		Sequence seq = this.sequenceFactory.fromString("ANA");
-		
+
+		Sequence seq = this.sequenceFactory.fromString("ANA").get();
+
 		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
-		
+
 		assertEquals("Number of tuples", 1, distancesT.size());
 		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 2, distancesT.stream().findFirst().get().getItem2().size());
 		assertTrue("Simple was not a parent", distancesT.stream().findFirst().get().getItem2().contains(recordSimple));
 		assertTrue("Record3 was not a parent", distancesT.stream().findFirst().get().getItem2().contains(record3));
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testDistanceMultiple_offByStartN() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
 		tree.addSequence(record3);
-		
+
 		assertNotNull(tree);
-		
-		Sequence seq = this.sequenceFactory.fromString("NAA");
-		
+
+		Sequence seq = this.sequenceFactory.fromString("NAA").get();
+
 		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
-		
+
 		assertEquals("Number of tuples", 1, distancesT.size());
 		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 2, distancesT.stream().findFirst().get().getItem2().size());
 		assertTrue("Simple was not a parent", distancesT.stream().findFirst().get().getItem2().contains(recordSimple));
 		assertTrue("Record3 was not a parent", distancesT.stream().findFirst().get().getItem2().contains(record3));
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testMaxDistanceMultiple_offByEndN() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
 		tree.addSequence(record3);
-		
+
 		assertNotNull(tree);
-		
-		Sequence seq = this.sequenceFactory.fromString("AAAAAAAAAAN");
-		
+
+		Sequence seq = this.sequenceFactory.fromString("AAAAAAAAAAN").get();
+
 		Collection<Tuple<Integer, SequenceCollection>> distances = tree.distance(seq, 10);
-		
+
 		assertEquals("Number of tuples", 1, distances.size());
 		assertEquals("Distance of first tuple", 4, distances.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 1, distances.stream().findFirst().get().getItem2().size());
 		assertTrue("Record3 was not a parent", distances.stream().findFirst().get().getItem2().contains(record3));
-		
+
 		distances = tree.distance(seq, 2);
-		
+
 		assertEquals("Number of tuples", 0, distances.size());
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testMaxDistanceMultiple_offByMiddleN() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
 		tree.addSequence(record3);
-		
+
 		assertNotNull(tree);
-		
-		Sequence seq = this.sequenceFactory.fromString("AAAAANAAAAA");
-		
+
+		Sequence seq = this.sequenceFactory.fromString("AAAAANAAAAA").get();
+
 		Collection<Tuple<Integer, SequenceCollection>> distances = tree.distance(seq, 10);
-		
+
 		assertEquals("Number of tuples", 1, distances.size());
 		assertEquals("Distance of first tuple", 5, distances.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 1, distances.stream().findFirst().get().getItem2().size());
 		assertTrue("Simple was not a parent", distances.stream().findFirst().get().getItem2().contains(record3));
-		
+
 		distances = tree.distance(seq, 2);
-		
+
 		assertEquals("Number of tuples", 0, distances.size());
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testMaxDistanceMultiple_offByStartN() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(recordSimple);
 		tree.addSequence(record3);
-		
+
 		assertNotNull(tree);
-		
-		Sequence seq = this.sequenceFactory.fromString("NAAAAAAAAAAA");
-		
+
+		Sequence seq = this.sequenceFactory.fromString("NAAAAAAAAAAA").get();
+
 		Collection<Tuple<Integer, SequenceCollection>> distance = tree.distance(seq, 10);
-		
+
 		assertEquals("Number of tuples", 1, distance.size());
 		assertEquals("Distance of first tuple", 6, distance.stream().findFirst().get().getItem1().intValue());
 		assertEquals("Number of sequences on first tuple", 1, distance.stream().findFirst().get().getItem2().size());
@@ -729,30 +729,30 @@ public abstract class SuffixTreeTest {
 
 
 		distance = tree.distance(seq, 2);
-		
+
 		assertEquals("Number of tuples", 0, distance.size());
 	}
-	
+
 	/**
 	 * Find distances in the suffix tree
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testDistances_trivial3() throws IOException, InvalidDnaFormatException {
-		SuffixTree tree = this.factory.create(this.sequenceFactory.fromString("TATATACT"));
-		
+		SuffixTree tree = this.factory.create(this.sequenceFactory.fromString("TATATACT").get());
+
 		assertNotNull(tree);
-		
-		Sequence sequence = this.sequenceFactory.fromString("TAT");
-		
+
+		Sequence sequence = this.sequenceFactory.fromString("TAT").get();
+
 		Collection<Tuple<Sequence, List<Integer>>> distances = tree.distances(sequence, 2);
-		
+
 		// There is only one parent
 		assertEquals("Number of tuples", 1, distances.size());
-		
+
 		List<Integer> list = distances.stream().findFirst().get().getItem2();
-		Collections.sort(list); 
+		Collections.sort(list);
 		// There are 4 distance values on that parent TAT(0) TAT(0) TAC(1) ACT(2). ATA (3) is not included as it is over max distance
 		assertEquals("Number of distances of first tuple", 4, list.size());
 		// Contains the correct values
@@ -761,15 +761,15 @@ public abstract class SuffixTreeTest {
 		assertEquals("First position", 1, list.get(2).intValue());
 		assertEquals("First position", 2, list.get(3).intValue());
 	}
-	
+
 	/**
 	 * Check depth computation
-	 * @throws IOException 
-	 * @throws InvalidDnaFormatException 
+	 * @throws IOException
+	 * @throws InvalidDnaFormatException
 	 */
 	@Test
 	public void testDepth_1() throws IOException, InvalidDnaFormatException {
-		SuffixTree tree = this.factory.create(this.sequenceFactory.fromString("A"));
+		SuffixTree tree = this.factory.create(this.sequenceFactory.fromString("A").get());
 		
 		assertNotNull(tree);
 		assertEquals(1, tree.depth());
@@ -782,7 +782,7 @@ public abstract class SuffixTreeTest {
 	 */
 	@Test
 	public void testDepth_2() throws IOException, InvalidDnaFormatException {
-		SuffixTree tree = this.factory.create(this.sequenceFactory.fromString("AU"));
+		SuffixTree tree = this.factory.create(this.sequenceFactory.fromString("AU").get());
 		
 		assertNotNull(tree);
 		assertEquals(2, tree.depth());

@@ -1,11 +1,8 @@
 package com.vitreoussoftware.bioinformatics.sequence.reader.fasta;
 
-import java.io.Closeable;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.function.Predicate;
 
 import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
 
@@ -39,22 +36,14 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
 		length = 0;  // we don't have anything in the buffer
 		index = 0;   // index starts at 0
 		readingSequence = false; // we start with reading meta data, not sequence
-
-		try (FileReader f = new FileReader("bob")){
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
 	}
 	
 	/**
-	 * Reads a record from the file
+     * Reads a record from the file
 	 * @return the record
-	 * @throws IOException something went wrong reading from the file 
 	 */
 	@Override
-	public String readRecord() throws IOException
-	{
+	public String next() {
 		StringBuilder sb = new StringBuilder();
 		do {
 			// if we are out of buffered data read more
@@ -93,11 +82,17 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
 		} while (length > 0 && (readingSequence || index >= length));
 		
 		return  sb.toString();
-	}
+    }
 
-	private void bufferData() throws IOException {
-		length = file.read(buffer);
-		index = 0;
+	private void bufferData() {
+        try {
+		    length = file.read(buffer);
+		    index = 0;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Unable to read from file");
+        }
 	}
 	
 	/**
@@ -118,17 +113,18 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
 		super.finalize();
 	}
 
-	/** 
-	 * Does the stream reader still have a record?
+	/**
+     * Does the stream reader still have a record?
 	 * @return boolean indicator
 	 * @throws IOException If the file cannot be accessed it may fail
 	 */
 	@Override
-	public boolean hasRecord() throws IOException {
+	public boolean hasNext() {
 		// if we know we have data remaining say so
 		if (length > 0 && index < length)
 			return true;
 		// if we don't know find out
+
 		bufferData();
 		
 		return length > 0 && index < length;

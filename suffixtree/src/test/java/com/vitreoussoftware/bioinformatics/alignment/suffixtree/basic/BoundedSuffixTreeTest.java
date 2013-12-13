@@ -35,7 +35,7 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		SuffixTree tree = getSuffixTreeFactory().create(record1);
 		
 		assertNotNull(tree);
-		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1.substring(120, 320));
+		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
 		SequenceCollection parents = tree.getParents(subSequence);
 		assertTrue(tree.contains(subSequence));
@@ -51,7 +51,7 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		SuffixTree tree = getSuffixTreeFactory().create(record2);
 		
 		assertNotNull(tree);
-		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record2.substring(120, 320));
+		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record2.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
 		SequenceCollection parents = tree.getParents(subSequence);
 		assertTrue(tree.contains(subSequence));
@@ -67,7 +67,7 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		SuffixTree tree = getSuffixTreeFactory().create(record3);
 		
 		assertNotNull(tree);
-		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3.substring(120, 320));
+		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
 		SequenceCollection parents = tree.getParents(subSequence);
 		assertTrue(tree.contains(subSequence));
@@ -83,7 +83,7 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		SuffixTree tree = getSuffixTreeFactory().create(record1);
 		
 		assertNotNull(tree);
-		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1.substring(120, 320));
+		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
 		SequenceCollection parents = tree.getParents(subSequence);
 		assertEquals(1, parents.size());
@@ -100,7 +100,7 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		SuffixTree tree = getSuffixTreeFactory().create(record2);
 		
 		assertNotNull(tree);
-		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record2.substring(120, 320));
+		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record2.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
 		SequenceCollection parents = tree.getParents(subSequence);
 		assertEquals(1, parents.size());
@@ -117,7 +117,7 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		SuffixTree tree = getSuffixTreeFactory().create(record3);
 		
 		assertNotNull(tree);
-		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3.substring(120, 320));
+		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
 		SequenceCollection parents = tree.getParents(subSequence);
 		assertEquals(1, parents.size());
@@ -147,7 +147,7 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		SuffixTree tree = new BoundedSuffixTreeFactory(100, 200).create(record3);
 		
 		assertNotNull(tree);
-		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3.substring(120, 320));
+		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
 		SequenceCollection parents = tree.getParents(subSequence);
 		assertEquals(1, parents.size());
