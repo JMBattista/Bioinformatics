@@ -34,7 +34,6 @@ public class BasicSequence implements Sequence {
 	 */
 	public static Optional<Sequence> create(String sequence, EncodingScheme encodingSheme)
 	{
-
         try {
             BasicSequence seq = new BasicSequence(encodingSheme);
             seq.sequence = new byte[sequence.length()];
@@ -47,7 +46,9 @@ public class BasicSequence implements Sequence {
             return Optional.<Sequence>of(seq);
         }
         catch (InvalidDnaFormatException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
+            System.err.println("\t" + sequence);
+            // TODO allow attaching a 'Reason' to empty, via extending Optional
             return Optional.empty();
         }
 	}

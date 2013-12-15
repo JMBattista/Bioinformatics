@@ -151,4 +151,12 @@ public class BasePairTest {
 		assertEquals("U", BasePair.create('u', scheme).toString());
 	}
 
+    /**
+     * @throws InvalidDnaFormatException
+     */
+    @Test(expected = InvalidDnaFormatException.class)
+    public void testCreation_canFAil() throws InvalidDnaFormatException {
+        BasePair.create('Q', scheme);
+    }
+
 }

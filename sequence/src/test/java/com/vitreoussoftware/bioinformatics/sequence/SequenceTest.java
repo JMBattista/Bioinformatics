@@ -10,6 +10,8 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 
+import java.util.Optional;
+
 /**
  * Test the Sequence class
  * @author John
@@ -64,6 +66,20 @@ public class SequenceTest {
 		// We expect an error here so don't do anything about it!
 		this.factory.fromString(basis).orElseThrow(() -> new InvalidDnaFormatException("TODO update this exception"));
 	}
+
+    /**
+     * Test that some basic invalid input is rejected
+     * @throws InvalidDnaFormatException
+     */
+    @Test
+    public void testCreation_optional() {
+        final String basis = "AATT132";
+
+        // We expect an error here so don't do anything about it!
+        Optional<Sequence> sequenceOptional = this.factory.fromString(basis);
+        assertNotNull("optional value was null", sequenceOptional);
+        assertFalse("isPresent was true", sequenceOptional.isPresent());
+    }
 	
 	
 	/**
