@@ -13,7 +13,7 @@ import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamR
  */
 public final class FastaStringFileStreamReader implements SequenceStringStreamReader 
 {
-	private static final int BUFFER_SIZE = 64 * 1024; // 64 KB read size
+	private static final int DEFAULT_BUFFER_SIZE = 64 * 1024; // 64 KB read size
 	
 	/**
 	 * The FASTA file
@@ -22,21 +22,42 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
 	private char[] buffer;
 	private int length;
 	private int index;
-	private boolean readingSequence;
 
 	/**
 	 * Create a FASTA File Stream Reader for the given file
 	 * @param file the file to run on
 	 */
-	private FastaStringFileStreamReader(FileReader file)
+	private FastaStringFileStreamReader(FileReader file, int pagingSize)
 	{
 		this.file = file;
 
-		buffer = new char[BUFFER_SIZE];
+		buffer = new char[pagingSize];
 		length = 0;  // we don't have anything in the buffer
 		index = 0;   // index starts at 0
-		readingSequence = false; // we start with reading meta data, not sequence
 	}
+
+    /**
+     * Create an input stream for FASTA file format
+     * @param fileName the FASTA file
+     * @return the input stream
+     * @throws FileNotFoundException the specified file was not found
+     */
+    public static SequenceStringStreamReader create(String fileName) throws FileNotFoundException
+    {
+        return create(fileName, DEFAULT_BUFFER_SIZE);
+    }
+
+    /**
+     * Create an input stream for FASTA file format
+     * @param fileName the FASTA file
+     * @param pagingSize the size of the buffer for paging data from disk
+     * @return the input stream
+     * @throws FileNotFoundException the specified file was not found
+     */
+    public static SequenceStringStreamReader create(String fileName, int pagingSize) throws FileNotFoundException {
+        FileReader file = new FileReader(fileName);
+        return new FastaStringFileStreamReader(file, pagingSize);
+    }
 	
 	/**
      * Reads a record from the file
@@ -44,47 +65,60 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
 	 */
 	@Override
 	public String next() {
-		StringBuilder sb = new StringBuilder();
-		do {
-			// if we are out of buffered data read more
-			if (index >= length)
-			{
-				bufferData();
-			}
-			
-			// if we are not reading a sequence we are reading metadata. This is necessary in case we wrap around because the buffer empties.
-			if (!readingSequence)
-			{
-				// spin until we find the end of the heading row
-				while (index < length && buffer[index] != ';')
-					index++;
-				// move cursor past the end of the heading row ';'
-				index++;
-				readingSequence = true;
-			}
-			
-			// spin until we are out of white space
-			while (index < length && Character.isWhitespace(buffer[index]))
-				index++;
-			
-			// once we find the start of the sequence read it into the buffer
-			while (index < length && buffer[index] != '>')
-			{
-				if (! Character.isWhitespace(buffer[index]))
-					sb.append(buffer[index]);
-				index++;
-			}
-			
-			if (index < length && buffer[index] == '>')
-			{
-				readingSequence = false;
-			}
-		} while (length > 0 && (readingSequence || index >= length));
-		
-		return  sb.toString();
+        String metadata = readMetadata();
+        String data = readSequenceData();
+
+        return data;
     }
 
-	private void bufferData() {
+    private String readMetadata() {
+        StringBuilder sb = new StringBuilder();
+        // if we are out of buffered data read more
+        if (index >= length)
+            bufferData();
+
+        // spin until we find the end of the heading row
+        while (index < length && buffer[index] != '\n') {
+            sb.append(buffer[index]);
+            index++;
+        }
+
+        // If we reached the end return the metadata
+        if (index < length && buffer[index] == '\n')
+            return sb.toString();
+
+        // If we need to rebuffer do so.
+        return sb.toString() + readMetadata();
+    }
+
+    private String readSequenceData() {
+        StringBuilder sb = new StringBuilder();
+        boolean readingSequence = true;
+        do {
+            // if we are out of buffered data read more
+            if (index >= length)
+                bufferData();
+
+            // spin until we are out of white space
+            while (index < length && Character.isWhitespace(buffer[index]))
+                index++;
+
+            // read elements from the buffer until we find the start of the next sequence or the end of file
+            while (index < length && buffer[index] != '>' && ! Character.isWhitespace(buffer[index])) {
+                sb.append(buffer[index]);
+                index++;
+            }
+
+            if (index < length && buffer[index] == '>')
+            {
+                readingSequence = false;
+            }
+        } while (length > 0 && (readingSequence || index >= length));
+
+        return  sb.toString();
+    }
+
+    private void bufferData() {
         try {
 		    length = file.read(buffer);
 		    index = 0;
@@ -93,18 +127,6 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
             e.printStackTrace();
             throw new RuntimeException("Unable to read from file");
         }
-	}
-	
-	/**
-	 * Create an input stream for FASTA file format
-	 * @param fileName the FASTA file
-	 * @return the input stream
-	 * @throws FileNotFoundException the specified file was not found
-	 */
-	public static SequenceStringStreamReader create(String fileName) throws FileNotFoundException
-	{
-		FileReader file = new FileReader(fileName);
-		return new FastaStringFileStreamReader(file);
 	}
 	
 	@Override

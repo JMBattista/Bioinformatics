@@ -31,5 +31,6 @@
 (.addAll mongoDbCollection ;; Add them all in one go, but start uploading immediately
   (map #(.get %) (filter #(incIfFalse (.isPresent %) badCount) sequenceReader)))
 
-
+;; 183 failures, 711,552 success
+(println "Finished uploading!")
 (println "Number of failed sequences " @badCount)
