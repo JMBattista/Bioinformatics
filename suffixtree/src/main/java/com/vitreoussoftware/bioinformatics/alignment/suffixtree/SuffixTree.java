@@ -1,16 +1,11 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import com.vitreoussoftware.bioinformatics.sequence.*;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
-import com.vitreoussoftware.utilities.Tuple;
-
+import org.javatuples.Pair;
 
 
 /**
@@ -50,7 +45,7 @@ public interface SuffixTree {
 	 * @param sequence the DNA sequence to check distance for
 	 * @return The collection of tuples showing the distance and the collection of sequences for that distance
 	 */
-	public Collection<Tuple<Integer, SequenceCollection>> distance(Sequence sequence);
+	public Collection<Pair<Integer, SequenceCollection>> distance(Sequence sequence);
 	
 	/**
 	 * Return the minimum distance from the give sequence to each of the sequences making up the SuffixTree
@@ -58,14 +53,14 @@ public interface SuffixTree {
 	 * @param maxDistance the maximum distance before which we give up
 	 * @return The collection of tuples showing the distance and the collection of sequences for that distance
 	 */
-	public Collection<Tuple<Integer, SequenceCollection>> distance(Sequence sequence, int maxDistance);
+	public Collection<Pair<Integer, SequenceCollection>> distance(Sequence sequence, int maxDistance);
 	
 	/**
 	 * Return the set of distances for each parent Sequence given the target Sequences
 	 * @param sequence the target Sequence
 	 * @return the tuples of parent Sequences and the distance lists
 	 */
-	public Collection<Tuple<Sequence, List<Integer>>> distances(Sequence sequence);
+	public Collection<Pair<Sequence, List<Integer>>> distances(Sequence sequence);
 
 	/**
 	 * Return the set of distances for each parent Sequence within the maximum for the given target Sequences
@@ -73,5 +68,14 @@ public interface SuffixTree {
 	 * @param maxDistance the maximum distance that will be considered
 	 * @return the tuples of parent Sequences and the distance lists@param maxDistance
 	 */
-	public Collection<Tuple<Sequence, List<Integer>>> distances(Sequence sequence, int maxDistance);
+	public Collection<Pair<Sequence, List<Integer>>> distances(Sequence sequence, int maxDistance);
+
+    /**
+     * Walk the tree to build up a result
+     * @param walker the walk to perform
+     * @param <T> the tracking value during the walk
+     * @param <R> the result type for the walk
+     * @return the result of the walk
+     */
+    public <T, R> R walk(Walk<T, R> walker);
 }

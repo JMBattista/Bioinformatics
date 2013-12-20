@@ -3,15 +3,15 @@ package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
+import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Walk;
 import com.vitreoussoftware.bioinformatics.sequence.*;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
 import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceList;
 import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceSetFactory;
-import com.vitreoussoftware.utilities.Tuple;
+import org.javatuples.*;
 
 
 /**
@@ -29,7 +29,8 @@ public class BasicSuffixTree implements SuffixTree {
 	 */
 	BasicSuffixTree(SequenceCollectionFactory factory) {
 		this.factory = factory;
-		root = new SuffixTreeNode();
+        //TODO I don't like this.
+		root = new SuffixTreeNode(null);
 	}
 
 	/**
@@ -56,7 +57,7 @@ public class BasicSuffixTree implements SuffixTree {
 	 * @return the set of parents, or empty list if no parents
 	 */
 	public SequenceCollection getParents(Sequence sequence) {
-		Iterator<BasePair> iter = sequence.reverse().iterator();
+		Iterator<BasePair> iter = sequence.iterator();
 		
 		SuffixTreeNode current = root;
 		while (iter.hasNext())
@@ -75,26 +76,26 @@ public class BasicSuffixTree implements SuffixTree {
 	
 
 	@Override
-	public Collection<Tuple<Integer, SequenceCollection>> distance(Sequence sequence, int maxDistance) {
-		Iterator<BasePair> iter = sequence.reverse().iterator();
+	public Collection<Pair<Integer, SequenceCollection>> distance(Sequence sequence, int maxDistance) {
+		Iterator<BasePair> iter = sequence.iterator();
 		
-		LinkedList<Tuple<Integer, SuffixTreeNode>> previous = new LinkedList<Tuple<Integer, SuffixTreeNode>>();
-		previous.add(new Tuple<Integer, SuffixTreeNode>(0, root));
+		LinkedList<Pair<Integer, SuffixTreeNode>> previous = new LinkedList<Pair<Integer, SuffixTreeNode>>();
+		previous.add(new Pair<Integer, SuffixTreeNode>(0, root));
 		
 		while (iter.hasNext())
 		{
-			LinkedList<Tuple<Integer, SuffixTreeNode>> next = new LinkedList<Tuple<Integer, SuffixTreeNode>>();
+			LinkedList<Pair<Integer, SuffixTreeNode>> next = new LinkedList<Pair<Integer, SuffixTreeNode>>();
 			
 			BasePair bp = iter.next();
 			
-			for (Tuple<Integer, SuffixTreeNode> tuple : previous)
+			for (Pair<Integer, SuffixTreeNode> tuple : previous)
 			{
-				if (tuple.getItem2().contains(bp)) {
-					next.add(new Tuple<Integer, SuffixTreeNode>(tuple.getItem1(), tuple.getItem2().get(bp)));
+				if (tuple.getValue1().contains(bp)) {
+					next.add(new Pair<Integer, SuffixTreeNode>(tuple.getValue0(), tuple.getValue1().get(bp)));
 				}
-				else if (maxDistance < 0 || tuple.getItem1().intValue()+1 < maxDistance) {
-					for (SuffixTreeNode child : tuple.getItem2().getAll()) {
-						next.add(new Tuple<Integer, SuffixTreeNode>(tuple.getItem1().intValue()+1, child));
+				else if (maxDistance < 0 || tuple.getValue0().intValue()+1 < maxDistance) {
+					for (SuffixTreeNode child : tuple.getValue1().getAll()) {
+						next.add(new Pair<>(tuple.getValue0().intValue()+1, child));
 					}
 				}
 			}
@@ -103,24 +104,24 @@ public class BasicSuffixTree implements SuffixTree {
 		}
 
         Map<Sequence, List<Integer>> collected = previous.parallelStream()
-                .<Tuple<Sequence, Integer>>flatMap(tuple -> tuple.getItem2().getParents().stream().map(parent -> new Tuple<>(parent, tuple.getItem1())))
-                .collect(Collectors.groupingBy(tuple -> tuple.getItem1(), Collectors.mapping(x -> x.getItem2(), Collectors.toList())));
+                .<Pair<Sequence, Integer>>flatMap(tuple -> tuple.getValue1().getParents().stream().map(parent -> new Pair<>(parent, tuple.getValue0())))
+                .collect(Collectors.groupingBy(tuple -> tuple.getValue0(), Collectors.mapping(x -> x.getValue1(), Collectors.toList())));
 
         Map<Integer, List<Sequence>> results = collected.keySet().parallelStream()
-                .map(parent -> new Tuple<>(collected.get(parent).stream().reduce((x, y) -> Math.min(x, y)).get(), parent))
-                .collect(Collectors.groupingBy(tuple -> tuple.getItem1(), Collectors.mapping(x -> x.getItem2(), Collectors.toList())));
+                .map(parent -> new Pair<>(collected.get(parent).stream().reduce((x, y) -> Math.min(x, y)).get(), parent))
+                .collect(Collectors.groupingBy(pair -> pair.getValue0(), Collectors.mapping(x -> x.getValue1(), Collectors.toList())));
 
 
-        List<Tuple<Integer, SequenceCollection>> distances = results.keySet().parallelStream()
-                .map(key -> new Tuple<>(key, this.factory.getSequenceCollection(results.get(key))))
+        List<Pair<Integer, SequenceCollection>> distances = results.keySet().parallelStream()
+                .map(key -> new Pair<>(key, this.factory.getSequenceCollection(results.get(key))))
                 .collect(Collectors.toList());
 
 		// Sort distances on the distance value
-		Collections.sort(distances, new Comparator<Tuple<Integer, SequenceCollection>>() {
+		Collections.sort(distances, new Comparator<Pair<Integer, SequenceCollection>>() {
 
 			@Override
-			public int compare(Tuple<Integer, SequenceCollection> arg0, Tuple<Integer, SequenceCollection> arg1) {
-				return arg0.getItem1() - arg1.getItem1();
+			public int compare(Pair<Integer, SequenceCollection> arg0, Pair<Integer, SequenceCollection> arg1) {
+				return arg0.getValue0() - arg1.getValue0();
 			}
 		});
 		
@@ -128,34 +129,34 @@ public class BasicSuffixTree implements SuffixTree {
 	}
 
 	@Override
-	public Collection<Tuple<Sequence, List<Integer>>> distances(Sequence sequence) {
+	public Collection<Pair<Sequence, List<Integer>>> distances(Sequence sequence) {
 		return distances(sequence, -1);
 	}
 	
 	@Override
-	public Collection<Tuple<Sequence, List<Integer>>> distances(Sequence sequence, int maxDistance) {
-		Iterator<BasePair> iter = sequence.reverse().iterator();
+	public Collection<Pair<Sequence, List<Integer>>> distances(Sequence sequence, int maxDistance) {
+		Iterator<BasePair> iter = sequence.iterator();
 		
-		LinkedList<Tuple<Integer, SuffixTreeNode>> previous = new LinkedList<Tuple<Integer, SuffixTreeNode>>();
-		previous.add(new Tuple<>(0, root));
+		LinkedList<Pair<Integer, SuffixTreeNode>> previous = new LinkedList<Pair<Integer, SuffixTreeNode>>();
+		previous.add(new Pair<>(0, root));
 		
 		while (iter.hasNext())
 		{
-			LinkedList<Tuple<Integer, SuffixTreeNode>> next = new LinkedList<Tuple<Integer, SuffixTreeNode>>();
+			LinkedList<Pair<Integer, SuffixTreeNode>> next = new LinkedList<Pair<Integer, SuffixTreeNode>>();
 			
 			BasePair bp = iter.next();
 			SuffixTreeNode match = null;
-			for (Tuple<Integer, SuffixTreeNode> tuple : previous)
+			for (Pair<Integer, SuffixTreeNode> tuple : previous)
 			{
-				if (tuple.getItem2().contains(bp)) {
-					match = tuple.getItem2().get(bp);
-					next.add(new Tuple<Integer, SuffixTreeNode>(tuple.getItem1().intValue(), match));
+				if (tuple.getValue1().contains(bp)) {
+					match = tuple.getValue1().get(bp);
+					next.add(new Pair<Integer, SuffixTreeNode>(tuple.getValue0().intValue(), match));
 				}
 					
-				for (SuffixTreeNode child : tuple.getItem2().getAll()) {
+				for (SuffixTreeNode child : tuple.getValue1().getAll()) {
 					// if they match don't increase the distance
-					if (!child.equals(match) && (maxDistance < 0 || tuple.getItem1().intValue() < maxDistance))
-						next.add(new Tuple<Integer, SuffixTreeNode>(tuple.getItem1().intValue()+1, child));
+					if (!child.equals(match) && (maxDistance < 0 || tuple.getValue0().intValue() < maxDistance))
+						next.add(new Pair<Integer, SuffixTreeNode>(tuple.getValue0().intValue()+1, child));
 				}
 				
 			}
@@ -164,16 +165,44 @@ public class BasicSuffixTree implements SuffixTree {
 		}
 
         final Map<Sequence,List<Integer>> results = previous.parallelStream()
-                .flatMap(tuple -> tuple.getItem2().getParents().stream().map(parent -> new Tuple<>(parent, tuple.getItem1())))
-                .collect(Collectors.groupingBy(tuple -> tuple.getItem1(), Collectors.mapping(tuple -> tuple.getItem2(), Collectors.toList())));
+                .flatMap(tuple -> tuple.getValue1().getParents().stream().map(parent -> new Pair<>(parent, tuple.getValue0())))
+                .collect(Collectors.groupingBy(tuple -> tuple.getValue0(), Collectors.mapping(tuple -> tuple.getValue1(), Collectors.toList())));
 
         return results.keySet().parallelStream()
-                .map(parent -> new Tuple<>(parent, results.get(parent)))
-                .collect(Collectors.<Tuple<Sequence, List<Integer>>>toList());
+                .map(parent -> new Pair<>(parent, results.get(parent)))
+                .collect(Collectors.<Pair<Sequence, List<Integer>>>toList());
 	}
 
-	@Override
-	public Collection<Tuple<Integer, SequenceCollection>> distance(Sequence sequence) {
+    @Override
+    public <T, R> R walk(Walk<T, R> walker) {
+        PriorityQueue<Pair<SuffixTreeNode, T>> toBeWalked = new PriorityQueue<>(100, new Comparator<Pair<SuffixTreeNode, T>>() {
+            @Override
+            public int compare(Pair<SuffixTreeNode, T> o1, Pair<SuffixTreeNode, T> o2) {
+                return walker.compare(o1.getValue1(), o2.getValue1());
+            }
+        });
+        toBeWalked.add(new Pair<>(root, walker.initialValue()));
+        //AGGCUUAACACAUGCAAGUCGAACGAAGUUAGGAAGCUUGCUUCUGAUACUUAGUGGCGGACGGGUGAGUAAUGCUUAGG
+        while (!toBeWalked.isEmpty()) {
+            Pair<SuffixTreeNode, T> pair = toBeWalked.remove();
+            for (SuffixTreeNode node : pair.getValue0().getAll()) {
+                Optional<T> result = walker.visit(node.getBasePair(), pair.getValue1());
+
+                // If there was a result use it, otherwise ignore
+                if (result.isPresent()) {
+                    if (walker.isFinished(result.get()))
+                        return walker.getResult();
+                    else
+                        toBeWalked.add(new Pair<>(node, result.get()));
+                }
+            }
+        }
+
+        return walker.getResult();
+    }
+
+    @Override
+	public Collection<Pair<Integer, SequenceCollection>> distance(Sequence sequence) {
 		return distance(sequence, -1);
 	}
 
@@ -182,9 +211,8 @@ public class BasicSuffixTree implements SuffixTree {
 	 * @param sequence the sequence to add
 	 */
 	public void addSequence(final Sequence sequence) {
-		//TODO this takes n^2 can probably be reduced dramatically
 		if (sequence == null) throw new IllegalArgumentException("Sequence cannot be null");
-		Iterator<BasePair> suffixIter = sequence.reverse().iterator();
+		Iterator<BasePair> suffixIter = sequence.iterator();
 		
 		while (suffixIter.hasNext())
 		{

@@ -22,7 +22,7 @@ public class BoundedSuffixTree extends BasicSuffixTree {
 	/**
 	 * Create the suffix tree
 	 * @param factory the factory for creating SequenceCollections 
-	 * @param minlength the minimum length of a suffix contained in the tree.
+	 * @param minLength the minimum length of a suffix contained in the tree.
 	 * @param maxLength the maximum length of a suffix contained in the tree.
 	 */
 	BoundedSuffixTree(SequenceCollectionFactory factory, int minLength, int maxLength) {
@@ -38,7 +38,7 @@ public class BoundedSuffixTree extends BasicSuffixTree {
 	 */
 	public void addSequence(final Sequence sequence) {
 		if (sequence == null) throw new IllegalArgumentException("Sequence cannot be null");
-		Iterator<BasePair> suffixIter = sequence.reverse().iterator();
+		Iterator<BasePair> suffixIter = sequence.iterator();
 
 		int startPos = 0;
 		final int length = sequence.length();
@@ -47,7 +47,7 @@ public class BoundedSuffixTree extends BasicSuffixTree {
 			SuffixTreeNode current = root;
 			// up to max length create or iterate the nodes and add parents.
 			for (int offset = 0; offset < this.maxLength && offset + startPos < sequence.length(); offset++) {
-				current = current.getOrCreate(sequence.get(length - startPos - offset -1));
+				current = current.getOrCreate(sequence.get(startPos + offset));
 				if (offset >= this.minLength) current.addParent(sequence);
 			}
 			

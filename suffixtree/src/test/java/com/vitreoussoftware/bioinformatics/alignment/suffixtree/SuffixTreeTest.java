@@ -2,24 +2,23 @@ package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
+
+import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import org.junit.Before;
 import org.junit.Test;
+import org.javatuples.Pair;
 
-import com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic.BasicSuffixTreeFactory;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.reader.fasta.FastaStringFileStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.reader.fasta.FastaStringFileStreamReaderTest;
-import com.vitreoussoftware.utilities.Tuple;
 
 /**
  * Test the FastaFileStreamReader class
@@ -430,33 +429,33 @@ public abstract class SuffixTreeTest {
 		Sequence c = this.sequenceFactory.fromString("C").get();
 		Sequence g = this.sequenceFactory.fromString("G").get();
 
-		Collection<Tuple<Integer, SequenceCollection>> distancesA = tree.distance(a);
+		Collection<Pair<Integer, SequenceCollection>> distancesA = tree.distance(a);
 
 		assertEquals("Number of tuples", 1, distancesA.size());
-		assertEquals("Distance of first tuple", 0, distancesA.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 1, distancesA.stream().findFirst().get().getItem2().size());
-		assertEquals("Correct first tuple sequence", recordSimple, distancesA.stream().findFirst().get().getItem2().stream().findFirst().get());
+		assertEquals("Distance of first tuple", 0, distancesA.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distancesA.stream().findFirst().get().getValue1().size());
+		assertEquals("Correct first tuple sequence", recordSimple, distancesA.stream().findFirst().get().getValue1().stream().findFirst().get());
 
-		Collection<Tuple<Integer, SequenceCollection>> distancesU = tree.distance(u);
+		Collection<Pair<Integer, SequenceCollection>> distancesU = tree.distance(u);
 
 		assertEquals("Number of tuples", 1, distancesU.size());
-		assertEquals("Distance of first tuple", 0, distancesU.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 1, distancesU.stream().findFirst().get().getItem2().size());
-		assertEquals("Correct first tuple sequence", recordSimple, distancesU.stream().findFirst().get().getItem2().stream().findFirst().get());
+		assertEquals("Distance of first tuple", 0, distancesU.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distancesU.stream().findFirst().get().getValue1().size());
+		assertEquals("Correct first tuple sequence", recordSimple, distancesU.stream().findFirst().get().getValue1().stream().findFirst().get());
 
-		Collection<Tuple<Integer, SequenceCollection>> distancesC = tree.distance(c);
+		Collection<Pair<Integer, SequenceCollection>> distancesC = tree.distance(c);
 
 		assertEquals("Number of tuples", 1, distancesC.size());
-		assertEquals("Distance of first tuple", 0, distancesC.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 1, distancesC.stream().findFirst().get().getItem2().size());
-		assertEquals("Correct first tuple sequence", recordSimple, distancesC.stream().findFirst().get().getItem2().stream().findFirst().get());
+		assertEquals("Distance of first tuple", 0, distancesC.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distancesC.stream().findFirst().get().getValue1().size());
+		assertEquals("Correct first tuple sequence", recordSimple, distancesC.stream().findFirst().get().getValue1().stream().findFirst().get());
 
-		Collection<Tuple<Integer, SequenceCollection>> distancesG = tree.distance(g);
+		Collection<Pair<Integer, SequenceCollection>> distancesG = tree.distance(g);
 
 		assertEquals("Number of tuples", 1, distancesG.size());
-		assertEquals("Distance of first tuple", 0, distancesG.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 1, distancesG.stream().findFirst().get().getItem2().size());
-		assertEquals("Correct first tuple sequence", recordSimple, distancesG.stream().findFirst().get().getItem2().stream().findFirst().get());
+		assertEquals("Distance of first tuple", 0, distancesG.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distancesG.stream().findFirst().get().getValue1().size());
+		assertEquals("Correct first tuple sequence", recordSimple, distancesG.stream().findFirst().get().getValue1().stream().findFirst().get());
 	}
 
 	/**
@@ -472,12 +471,12 @@ public abstract class SuffixTreeTest {
 
 		Sequence t = this.sequenceFactory.fromString("T").get();
 
-		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(t);
+		Collection<Pair<Integer, SequenceCollection>> distancesT = tree.distance(t);
 
 		assertEquals("Number of tuples", 1, distancesT.size());
-		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getItem2().size());
-		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getItem2().stream().findFirst().get());
+		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getValue1().size());
+		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getValue1().stream().findFirst().get());
 	}
 
 	/**
@@ -493,12 +492,12 @@ public abstract class SuffixTreeTest {
 
 		Sequence n = this.sequenceFactory.fromString("N").get();
 
-		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(n);
+		Collection<Pair<Integer, SequenceCollection>> distancesT = tree.distance(n);
 
 		assertEquals("Number of tuples", 1, distancesT.size());
-		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getItem2().size());
-		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getItem2().stream().findFirst().get());
+		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getValue1().size());
+		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getValue1().stream().findFirst().get());
 	}
 
 	/**
@@ -514,12 +513,12 @@ public abstract class SuffixTreeTest {
 
 		Sequence seq = this.sequenceFactory.fromString("AAC").get();
 
-		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
+		Collection<Pair<Integer, SequenceCollection>> distancesT = tree.distance(seq);
 
 		assertEquals("Number of tuples", 1, distancesT.size());
-		assertEquals("Distance of first tuple", 0, distancesT.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getItem2().size());
-		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getItem2().stream().findFirst().get());
+		assertEquals("Distance of first tuple", 0, distancesT.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getValue1().size());
+		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getValue1().stream().findFirst().get());
 	}
 
 	/**
@@ -535,12 +534,12 @@ public abstract class SuffixTreeTest {
 
 		Sequence seq = this.sequenceFactory.fromString("AAN").get();
 
-		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
+		Collection<Pair<Integer, SequenceCollection>> distancesT = tree.distance(seq);
 
 		assertEquals("Number of tuples", 1, distancesT.size());
-		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getItem2().size());
-		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getItem2().stream().findFirst().get());
+		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getValue1().size());
+		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getValue1().stream().findFirst().get());
 	}
 
 	/**
@@ -556,12 +555,12 @@ public abstract class SuffixTreeTest {
 
 		Sequence seq = this.sequenceFactory.fromString("ANA").get();
 
-		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
+		Collection<Pair<Integer, SequenceCollection>> distancesT = tree.distance(seq);
 
 		assertEquals("Number of tuples", 1, distancesT.size());
-		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getItem2().size());
-		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getItem2().stream().findFirst().get());
+		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getValue1().size());
+		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getValue1().stream().findFirst().get());
 	}
 
 	/**
@@ -577,12 +576,12 @@ public abstract class SuffixTreeTest {
 
 		Sequence seq = this.sequenceFactory.fromString("NAA").get();
 
-		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
+		Collection<Pair<Integer, SequenceCollection>> distancesT = tree.distance(seq);
 
 		assertEquals("Number of tuples", 1, distancesT.size());
-		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getItem2().size());
-		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getItem2().stream().findFirst().get());
+		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distancesT.stream().findFirst().get().getValue1().size());
+		assertEquals("Correct first tuple sequence", recordSimple, distancesT.stream().findFirst().get().getValue1().stream().findFirst().get());
 	}
 
 	/**
@@ -599,13 +598,13 @@ public abstract class SuffixTreeTest {
 
 		Sequence seq = this.sequenceFactory.fromString("AAN").get();
 
-		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
+		Collection<Pair<Integer, SequenceCollection>> distancesT = tree.distance(seq);
 
 		assertEquals("Number of tuples", 1, distancesT.size());
-		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 2, distancesT.stream().findFirst().get().getItem2().size());
-		assertTrue("Simple was not a parent", distancesT.stream().findFirst().get().getItem2().contains(recordSimple));
-		assertTrue("Record3 was not a parent", distancesT.stream().findFirst().get().getItem2().contains(record3));
+		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 2, distancesT.stream().findFirst().get().getValue1().size());
+		assertTrue("Simple was not a parent", distancesT.stream().findFirst().get().getValue1().contains(recordSimple));
+		assertTrue("Record3 was not a parent", distancesT.stream().findFirst().get().getValue1().contains(record3));
 	}
 
 	/**
@@ -622,13 +621,13 @@ public abstract class SuffixTreeTest {
 
 		Sequence seq = this.sequenceFactory.fromString("ANA").get();
 
-		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
+		Collection<Pair<Integer, SequenceCollection>> distancesT = tree.distance(seq);
 
 		assertEquals("Number of tuples", 1, distancesT.size());
-		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 2, distancesT.stream().findFirst().get().getItem2().size());
-		assertTrue("Simple was not a parent", distancesT.stream().findFirst().get().getItem2().contains(recordSimple));
-		assertTrue("Record3 was not a parent", distancesT.stream().findFirst().get().getItem2().contains(record3));
+		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 2, distancesT.stream().findFirst().get().getValue1().size());
+		assertTrue("Simple was not a parent", distancesT.stream().findFirst().get().getValue1().contains(recordSimple));
+		assertTrue("Record3 was not a parent", distancesT.stream().findFirst().get().getValue1().contains(record3));
 	}
 
 	/**
@@ -645,13 +644,13 @@ public abstract class SuffixTreeTest {
 
 		Sequence seq = this.sequenceFactory.fromString("NAA").get();
 
-		Collection<Tuple<Integer, SequenceCollection>> distancesT = tree.distance(seq);
+		Collection<Pair<Integer, SequenceCollection>> distancesT = tree.distance(seq);
 
 		assertEquals("Number of tuples", 1, distancesT.size());
-		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 2, distancesT.stream().findFirst().get().getItem2().size());
-		assertTrue("Simple was not a parent", distancesT.stream().findFirst().get().getItem2().contains(recordSimple));
-		assertTrue("Record3 was not a parent", distancesT.stream().findFirst().get().getItem2().contains(record3));
+		assertEquals("Distance of first tuple", 1, distancesT.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 2, distancesT.stream().findFirst().get().getValue1().size());
+		assertTrue("Simple was not a parent", distancesT.stream().findFirst().get().getValue1().contains(recordSimple));
+		assertTrue("Record3 was not a parent", distancesT.stream().findFirst().get().getValue1().contains(record3));
 	}
 
 	/**
@@ -668,12 +667,12 @@ public abstract class SuffixTreeTest {
 
 		Sequence seq = this.sequenceFactory.fromString("AAAAAAAAAAN").get();
 
-		Collection<Tuple<Integer, SequenceCollection>> distances = tree.distance(seq, 10);
+		Collection<Pair<Integer, SequenceCollection>> distances = tree.distance(seq, 10);
 
 		assertEquals("Number of tuples", 1, distances.size());
-		assertEquals("Distance of first tuple", 4, distances.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 1, distances.stream().findFirst().get().getItem2().size());
-		assertTrue("Record3 was not a parent", distances.stream().findFirst().get().getItem2().contains(record3));
+		assertEquals("Distance of first tuple", 4, distances.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distances.stream().findFirst().get().getValue1().size());
+		assertTrue("Record3 was not a parent", distances.stream().findFirst().get().getValue1().contains(record3));
 
 		distances = tree.distance(seq, 2);
 
@@ -694,12 +693,12 @@ public abstract class SuffixTreeTest {
 
 		Sequence seq = this.sequenceFactory.fromString("AAAAANAAAAA").get();
 
-		Collection<Tuple<Integer, SequenceCollection>> distances = tree.distance(seq, 10);
+		Collection<Pair<Integer, SequenceCollection>> distances = tree.distance(seq, 10);
 
 		assertEquals("Number of tuples", 1, distances.size());
-		assertEquals("Distance of first tuple", 5, distances.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 1, distances.stream().findFirst().get().getItem2().size());
-		assertTrue("Simple was not a parent", distances.stream().findFirst().get().getItem2().contains(record3));
+		assertEquals("Distance of first tuple", 4, distances.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distances.stream().findFirst().get().getValue1().size());
+		assertTrue("Simple was not a parent", distances.stream().findFirst().get().getValue1().contains(record3));
 
 		distances = tree.distance(seq, 2);
 
@@ -720,12 +719,12 @@ public abstract class SuffixTreeTest {
 
 		Sequence seq = this.sequenceFactory.fromString("NAAAAAAAAAAA").get();
 
-		Collection<Tuple<Integer, SequenceCollection>> distance = tree.distance(seq, 10);
+		Collection<Pair<Integer, SequenceCollection>> distance = tree.distance(seq, 10);
 
 		assertEquals("Number of tuples", 1, distance.size());
-		assertEquals("Distance of first tuple", 6, distance.stream().findFirst().get().getItem1().intValue());
-		assertEquals("Number of sequences on first tuple", 1, distance.stream().findFirst().get().getItem2().size());
-		assertTrue("Record3 was not a parent", distance.stream().findFirst().get().getItem2().contains(record3));
+		assertEquals("Distance of first tuple", 5, distance.stream().findFirst().get().getValue0().intValue());
+		assertEquals("Number of sequences on first tuple", 1, distance.stream().findFirst().get().getValue1().size());
+		assertTrue("Record3 was not a parent", distance.stream().findFirst().get().getValue1().contains(record3));
 
 
 		distance = tree.distance(seq, 2);
@@ -746,12 +745,12 @@ public abstract class SuffixTreeTest {
 
 		Sequence sequence = this.sequenceFactory.fromString("TAT").get();
 
-		Collection<Tuple<Sequence, List<Integer>>> distances = tree.distances(sequence, 2);
+		Collection<Pair<Sequence, List<Integer>>> distances = tree.distances(sequence, 2);
 
 		// There is only one parent
 		assertEquals("Number of tuples", 1, distances.size());
 
-		List<Integer> list = distances.stream().findFirst().get().getItem2();
+		List<Integer> list = distances.stream().findFirst().get().getValue1();
 		Collections.sort(list);
 		// There are 4 distance values on that parent TAT(0) TAT(0) TAC(1) ACT(2). ATA (3) is not included as it is over max distance
 		assertEquals("Number of distances of first tuple", 4, list.size());
@@ -806,14 +805,14 @@ public abstract class SuffixTreeTest {
 	 * @throws IOException 
 	 * @throws InvalidDnaFormatException 
 	 */
-	//@Test // Keep around for debugging
+	@Test // Keep around for debugging
 	public void testDepth_record1() throws IOException, InvalidDnaFormatException {
 		SuffixTree tree = this.factory.create(this.record1);
-		
+
 		assertNotNull(tree);
 		assertEquals(this.record1.length(), tree.depth());
 	}
-	
+
 	/**
 	 * Check depth computation
 	 * @throws IOException 
@@ -839,4 +838,92 @@ public abstract class SuffixTreeTest {
 		assertNotNull(tree);
 		assertEquals(this.record3.length(), tree.depth());
 	}
+
+    /**
+     * Check depth computation
+     * @throws IOException
+     * @throws InvalidDnaFormatException
+     */
+    @Test // Keep around for debugging
+    public void testCustomWalk_depth() throws IOException, InvalidDnaFormatException {
+        SuffixTree tree = this.factory.create(this.record1);
+
+        assertNotNull(tree);
+
+        int depth = tree.walk(new Walk<Integer, Integer>() {
+            int depth = initialValue();
+
+            @Override
+            public boolean isFinished(Integer value) {
+                return false;
+            }
+
+            @Override
+            public Integer initialValue() {
+                return 0;
+            }
+
+            @Override
+            public Integer getResult() {
+                return depth;
+            }
+
+            @Override
+            public Optional<Integer> visit(BasePair basePair, Integer value) {
+                int result = value.intValue() + 1;
+                depth = Math.max(depth, result);
+                return Optional.of(result);
+            }
+        });
+
+        assertEquals(this.record1.length(), depth);
+    }
+
+    /**
+     * Shows that custom walk can check that the suffix tree contains a value
+     * @throws IOException
+     * @throws InvalidDnaFormatException
+     */
+    @Test
+    public void testCustomWalk_contains() throws IOException, InvalidDnaFormatException {
+        SuffixTree tree = this.factory.create(recordSimple);
+
+        assertNotNull(tree);
+
+        Sequence seq = this.sequenceFactory.fromString("AAC").get();
+
+        boolean contained = tree.walk(new Walk<Integer, Boolean>() {
+            boolean result = false;
+            @Override
+            public boolean isFinished(Integer value) {
+                return (result = value.equals(seq.length()));
+            }
+
+            @Override
+            public Integer initialValue() {
+                return 0;
+            }
+
+            @Override
+            public Boolean getResult() {
+                return result;
+            }
+
+            @Override
+            public Optional<Integer> visit(BasePair basePair, Integer value) {
+                if (seq.get(value).equals(basePair))
+                    return Optional.of(value +1);
+                else
+                    return Optional.empty();
+            }
+
+            @Override
+            public int compare(Integer a, Integer b) {
+                return -1 * (a - b);
+            }
+        });
+
+        assertTrue("The longest matching set was not as long as the sequence", contained);
+    }
+
 }

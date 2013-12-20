@@ -3,7 +3,10 @@ package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.Optional;
 
+import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Walk;
+import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import org.junit.Test;
 
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
@@ -37,8 +40,7 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		assertNotNull(tree);
 		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
-		SequenceCollection parents = tree.getParents(subSequence);
-		assertTrue(tree.contains(subSequence));
+		assertTrue("Tree did not contain the substring", tree.contains(subSequence));
 	}
 	
 	/**
@@ -53,7 +55,6 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		assertNotNull(tree);
 		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record2.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
-		SequenceCollection parents = tree.getParents(subSequence);
 		assertTrue(tree.contains(subSequence));
 	}
 	
@@ -153,4 +154,44 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		assertEquals(1, parents.size());
 		assertEquals(record3, parents.iterator().next());
 	}
+
+    /**
+     * Check depth computation
+     * @throws IOException
+     * @throws InvalidDnaFormatException
+     */
+    @Test // Keep around for debugging
+    public void testCustomWalk_depth() throws IOException, InvalidDnaFormatException {
+        SuffixTree tree = getSuffixTreeFactory().create(this.record1);
+
+        assertNotNull(tree);
+
+        int depth = tree.walk(new Walk<Integer, Integer>() {
+            int depth = initialValue();
+
+            @Override
+            public boolean isFinished(Integer value) {
+                return false;
+            }
+
+            @Override
+            public Integer initialValue() {
+                return 0;
+            }
+
+            @Override
+            public Integer getResult() {
+                return depth;
+            }
+
+            @Override
+            public Optional<Integer> visit(BasePair basePair, Integer value) {
+                int result = value.intValue() + 1;
+                depth = Math.max(depth, result);
+                return Optional.of(result);
+            }
+        });
+
+        assertEquals(200, depth);
+    }
 }
