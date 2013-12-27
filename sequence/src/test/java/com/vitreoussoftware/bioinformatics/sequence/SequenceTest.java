@@ -10,7 +10,9 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Test the Sequence class
@@ -147,4 +149,33 @@ public class SequenceTest {
 		
 		assertEquals(seq1.hashCode(), seq2.hashCode());
 	}
+
+    @Test
+    public void testIterator_basic() {
+        final Sequence seq = this.factory.fromString("ATCGU").get();
+
+        final Iterator<BasePair> iterator = seq.iterator();
+
+        for (int i = 0; i < seq.length(); i++) {
+            assertTrue("There was no element @" + i, iterator.hasNext());
+            iterator.next();
+        }
+
+        assertFalse("We could iterate too far", iterator.hasNext());
+    }
+
+    @Test
+    public void testIterator_forEachRemaining() {
+        final Sequence seq = this.factory.fromString("ATCGU").get();
+
+        final Iterator<BasePair> iterator = seq.iterator();
+
+        for (int i = 0; i < seq.length(); i++) {
+            assertTrue("There was no element @" + i, iterator.hasNext());
+            final AtomicInteger remainingCount = new AtomicInteger();
+            iterator.forEachRemaining(x -> remainingCount.incrementAndGet());
+            assertEquals("Number of remaining elements was wrong", seq.length()-i, remainingCount.get());
+            iterator.next();
+        }
+    }
 }

@@ -29,10 +29,11 @@ public interface SuffixTree {
 
 	/**
 	 * Find the set of parents for the sequence of interest
-	 * @param sequence the sequence to find parents for
-	 * @return the set of parents, or empty list if no parents
+	 *
+     * @param sequence the sequence to find parents for
+     * @return the set of parents, or empty list if no parents
 	 */
-	public SequenceCollection getParents(Sequence sequence);
+	public Collection<Position> getPositions(Sequence sequence);
 	
 	/**
 	 * Adds a new sequence to the suffix tree

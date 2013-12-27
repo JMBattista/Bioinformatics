@@ -47,8 +47,11 @@ public class BoundedSuffixTree extends BasicSuffixTree {
 			SuffixTreeNode current = root;
 			// up to max length create or iterate the nodes and add parents.
 			for (int offset = 0; offset < this.maxLength && offset + startPos < sequence.length(); offset++) {
-				current = current.getOrCreate(sequence.get(startPos + offset));
-				if (offset >= this.minLength) current.addParent(sequence);
+                current = current.getOrCreate(sequence.get(startPos + offset));
+
+                // Only add the starting position, not the position of the current node.
+				if (offset >= this.minLength)
+                    current.addPosition(sequence, startPos);
 			}
 			
 			// iterate forward and update the position

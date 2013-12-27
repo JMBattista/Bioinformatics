@@ -3,18 +3,16 @@ package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Walk;
+import com.vitreoussoftware.bioinformatics.alignment.suffixtree.*;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
+import org.javatuples.Pair;
 import org.junit.Test;
 
-import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
-import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTreeFactory;
-import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTreeTest;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.reader.fasta.FastaStringFileStreamReaderTest;
 
 /**
@@ -70,7 +68,7 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		assertNotNull(tree);
 		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
-		SequenceCollection parents = tree.getParents(subSequence);
+
 		assertTrue(tree.contains(subSequence));
 	}
 	
@@ -86,8 +84,9 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		assertNotNull(tree);
 		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
-		SequenceCollection parents = tree.getParents(subSequence);
-		assertEquals(1, parents.size());
+        Collection<Position> positions = tree.getPositions(subSequence);
+        Set<Sequence> parents = positions.stream().map(position -> position.getSequence()).collect(Collectors.toSet());
+        assertEquals(1, parents.size());
 		assertEquals(record1, parents.iterator().next());
 	}
 	
@@ -103,8 +102,9 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		assertNotNull(tree);
 		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record2.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
-		SequenceCollection parents = tree.getParents(subSequence);
-		assertEquals(1, parents.size());
+        Collection<Position> positions = tree.getPositions(subSequence);
+        Set<Sequence> parents = positions.stream().map(position -> position.getSequence()).collect(Collectors.toSet());
+        assertEquals(1, parents.size());
 		assertEquals(record2, parents.iterator().next());
 	}
 	
@@ -120,7 +120,8 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		assertNotNull(tree);
 		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
-		SequenceCollection parents = tree.getParents(subSequence);
+        Collection<Position> positions = tree.getPositions(subSequence);
+        Set<Sequence> parents = positions.stream().map(position -> position.getSequence()).collect(Collectors.toSet());
 		assertEquals(1, parents.size());
 		assertEquals(record3, parents.iterator().next());
 	}
@@ -150,48 +151,9 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		assertNotNull(tree);
 		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
-		SequenceCollection parents = tree.getParents(subSequence);
+        Collection<Position> positions = tree.getPositions(subSequence);
+        Set<Sequence> parents = positions.stream().map(position -> position.getSequence()).collect(Collectors.toSet());
 		assertEquals(1, parents.size());
 		assertEquals(record3, parents.iterator().next());
 	}
-
-    /**
-     * Check depth computation
-     * @throws IOException
-     * @throws InvalidDnaFormatException
-     */
-    @Test // Keep around for debugging
-    public void testCustomWalk_depth() throws IOException, InvalidDnaFormatException {
-        SuffixTree tree = getSuffixTreeFactory().create(this.record1);
-
-        assertNotNull(tree);
-
-        int depth = tree.walk(new Walk<Integer, Integer>() {
-            int depth = initialValue();
-
-            @Override
-            public boolean isFinished(Integer value) {
-                return false;
-            }
-
-            @Override
-            public Integer initialValue() {
-                return 0;
-            }
-
-            @Override
-            public Integer getResult() {
-                return depth;
-            }
-
-            @Override
-            public Optional<Integer> visit(BasePair basePair, Integer value) {
-                int result = value.intValue() + 1;
-                depth = Math.max(depth, result);
-                return Optional.of(result);
-            }
-        });
-
-        assertEquals(200, depth);
-    }
 }

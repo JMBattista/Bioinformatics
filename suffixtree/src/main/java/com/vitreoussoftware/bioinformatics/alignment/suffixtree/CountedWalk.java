@@ -1,7 +1,10 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
+import com.vitreoussoftware.bioinformatics.sequence.Sequence;
+import org.javatuples.Pair;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -57,9 +60,9 @@ public class CountedWalk<T,R> implements Walk<T,R> {
     }
 
     @Override
-    public boolean isFinished(T value) {
+    public boolean isFinished(T metadata) {
         isFinished.incrementAndGet();
-        return walker.isFinished(value);
+        return walker.isFinished(metadata);
     }
 
     @Override
@@ -75,8 +78,8 @@ public class CountedWalk<T,R> implements Walk<T,R> {
     }
 
     @Override
-    public Optional<T> visit(BasePair basePair, T value) {
+    public Optional<T> visit(BasePair basePair, Collection<Position> positions, T metadata) {
         visit.incrementAndGet();
-        return walker.visit(basePair, value);
+        return walker.visit(basePair, positions, metadata);
     }
 }

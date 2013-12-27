@@ -3,16 +3,15 @@ package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import org.junit.Before;
 import org.junit.Test;
 import org.javatuples.Pair;
+import org.javatuples.Triplet;
 
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
@@ -233,25 +232,25 @@ public abstract class SuffixTreeTest {
 		SuffixTree tree = this.factory.create(recordSimple);
 
 		assertNotNull(tree);
-		SequenceCollection parents = null;
+		Set<Sequence> parents = null;
 
 		Sequence a = this.sequenceFactory.fromString("A").get();
-		parents = tree.getParents(a);
+		parents = tree.getPositions(a).stream().map(p -> p.getSequence()).collect(Collectors.toSet());
 		assertEquals(1, parents.size());
 		assertEquals(recordSimple, parents.iterator().next());
 
 		Sequence u = this.sequenceFactory.fromString("U").get();
-		parents = tree.getParents(u);
+		parents = tree.getPositions(u).stream().map(p -> p.getSequence()).collect(Collectors.toSet());
 		assertEquals(1, parents.size());
 		assertEquals(recordSimple, parents.iterator().next());
 
 		Sequence c = this.sequenceFactory.fromString("C").get();
-		parents = tree.getParents(c);
+		parents = tree.getPositions(c).stream().map(p -> p.getSequence()).collect(Collectors.toSet());;
 		assertEquals(1, parents.size());
 		assertEquals(recordSimple, parents.iterator().next());
 
 		Sequence g = this.sequenceFactory.fromString("G").get();
-		parents = tree.getParents(g);
+		parents = tree.getPositions(g).stream().map(p -> p.getSequence()).collect(Collectors.toSet());;
 		assertEquals(1, parents.size());
 		assertEquals(recordSimple, parents.iterator().next());
 	}
@@ -269,7 +268,7 @@ public abstract class SuffixTreeTest {
 		assertNotNull(tree);
 
 		Sequence g = this.sequenceFactory.fromString("G").get();
-		SequenceCollection parents = tree.getParents(g);
+		Set<Sequence> parents = tree.getPositions(g).stream().map(p -> p.getSequence()).collect(Collectors.toSet());;
 		assertEquals(1, parents.size());
 		assertFalse(g.equals(parents.iterator().next()));
 	}
@@ -286,7 +285,7 @@ public abstract class SuffixTreeTest {
 		assertNotNull(tree);
 
 		Sequence t = this.sequenceFactory.fromString("T").get();
-		SequenceCollection parents = tree.getParents(t);
+		Set<Sequence> parents = tree.getPositions(t).stream().map(p -> p.getSequence()).collect(Collectors.toSet());;
 		assertTrue(parents.isEmpty());
 	}
 
@@ -300,7 +299,7 @@ public abstract class SuffixTreeTest {
 		SuffixTree tree = this.factory.create(recordSimple);
 
 		assertNotNull(tree);
-		SequenceCollection parents = tree.getParents(recordSimple);
+		Set<Sequence> parents = tree.getPositions(recordSimple).stream().map(p -> p.getSequence()).collect(Collectors.toSet());;
 		assertEquals(1, parents.size());
 		assertEquals(recordSimple, parents.iterator().next());
 	}
@@ -315,7 +314,7 @@ public abstract class SuffixTreeTest {
 		SuffixTree tree = this.factory.create(record1);
 
 		assertNotNull(tree);
-		SequenceCollection parents = tree.getParents(record1);
+		Set<Sequence> parents = tree.getPositions(record1).stream().map(p -> p.getSequence()).collect(Collectors.toSet());;
 		assertEquals(1, parents.size());
 		assertEquals(record1, parents.iterator().next());
 	}
@@ -330,7 +329,7 @@ public abstract class SuffixTreeTest {
 		SuffixTree tree = this.factory.create(record2);
 
 		assertNotNull(tree);
-		SequenceCollection parents = tree.getParents(record2);
+		Set<Sequence> parents = tree.getPositions(record2).stream().map(p -> p.getSequence()).collect(Collectors.toSet());;
 		assertEquals(1, parents.size());
 		assertEquals(record2, parents.iterator().next());
 	}
@@ -345,7 +344,7 @@ public abstract class SuffixTreeTest {
 		SuffixTree tree = this.factory.create(record3);
 
 		assertNotNull(tree);
-		SequenceCollection parents = tree.getParents(record3);
+		Set<Sequence> parents = tree.getPositions(record3).stream().map(p -> p.getSequence()).collect(Collectors.toSet());;
 		assertEquals(1, parents.size());
 		assertEquals(record3, parents.iterator().next());
 	}
@@ -360,7 +359,7 @@ public abstract class SuffixTreeTest {
 
 		Sequence seq = this.sequenceFactory.fromString("GCGGAGCGUGUGGUUUAAUUCGAUGCUACACGAAGAACCUUACCAAGAUUUGACAUGCAUGUAGUAGUGAACUGAAAGGG").get();
 		assertNotNull(tree);
-		SequenceCollection parents = tree.getParents(seq);
+		Set<Sequence> parents = tree.getPositions(seq).stream().map(p -> p.getSequence()).collect(Collectors.toSet());;
 		assertEquals(1, parents.size());
 		assertEquals(record3, parents.iterator().next());
 	}
@@ -378,10 +377,10 @@ public abstract class SuffixTreeTest {
 		tree.addSequence(record3);
 
 		assertNotNull(tree);
-		SequenceCollection parents = null;
+		Set<Sequence> parents = null;
 
 		Sequence a = this.sequenceFactory.fromString("A").get();
-		parents = tree.getParents(a);
+		parents = tree.getPositions(a).stream().map(p -> p.getSequence()).collect(Collectors.toSet());;
 		assertTrue(parents.contains(recordSimple));
 		assertTrue(parents.contains(record1));
 		assertTrue(parents.contains(record2));
@@ -389,7 +388,7 @@ public abstract class SuffixTreeTest {
 		assertEquals(4, parents.size());
 
 		Sequence u = this.sequenceFactory.fromString("U").get();
-		parents = tree.getParents(u);
+		parents = tree.getPositions(u).stream().map(p -> p.getSequence()).collect(Collectors.toSet());;
 		assertEquals(4, parents.size());
 		assertTrue(parents.contains(recordSimple));
 		assertTrue(parents.contains(record1));
@@ -397,7 +396,7 @@ public abstract class SuffixTreeTest {
 		assertTrue(parents.contains(record3));
 
 		Sequence c = this.sequenceFactory.fromString("C").get();
-		parents = tree.getParents(c);
+		parents = tree.getPositions(c).stream().map(p -> p.getSequence()).collect(Collectors.toSet());;
 		assertEquals(4, parents.size());
 		assertTrue(parents.contains(recordSimple));
 		assertTrue(parents.contains(record1));
@@ -405,7 +404,7 @@ public abstract class SuffixTreeTest {
 		assertTrue(parents.contains(record3));
 
 		Sequence g = this.sequenceFactory.fromString("G").get();
-		parents = tree.getParents(g);
+		parents = tree.getPositions(g).stream().map(p -> p.getSequence()).collect(Collectors.toSet());;
 		assertEquals(4, parents.size());
 		assertTrue(parents.contains(recordSimple));
 		assertTrue(parents.contains(record1));
@@ -838,92 +837,4 @@ public abstract class SuffixTreeTest {
 		assertNotNull(tree);
 		assertEquals(this.record3.length(), tree.depth());
 	}
-
-    /**
-     * Check depth computation
-     * @throws IOException
-     * @throws InvalidDnaFormatException
-     */
-    @Test // Keep around for debugging
-    public void testCustomWalk_depth() throws IOException, InvalidDnaFormatException {
-        SuffixTree tree = this.factory.create(this.record1);
-
-        assertNotNull(tree);
-
-        int depth = tree.walk(new Walk<Integer, Integer>() {
-            int depth = initialValue();
-
-            @Override
-            public boolean isFinished(Integer value) {
-                return false;
-            }
-
-            @Override
-            public Integer initialValue() {
-                return 0;
-            }
-
-            @Override
-            public Integer getResult() {
-                return depth;
-            }
-
-            @Override
-            public Optional<Integer> visit(BasePair basePair, Integer value) {
-                int result = value.intValue() + 1;
-                depth = Math.max(depth, result);
-                return Optional.of(result);
-            }
-        });
-
-        assertEquals(this.record1.length(), depth);
-    }
-
-    /**
-     * Shows that custom walk can check that the suffix tree contains a value
-     * @throws IOException
-     * @throws InvalidDnaFormatException
-     */
-    @Test
-    public void testCustomWalk_contains() throws IOException, InvalidDnaFormatException {
-        SuffixTree tree = this.factory.create(recordSimple);
-
-        assertNotNull(tree);
-
-        Sequence seq = this.sequenceFactory.fromString("AAC").get();
-
-        boolean contained = tree.walk(new Walk<Integer, Boolean>() {
-            boolean result = false;
-            @Override
-            public boolean isFinished(Integer value) {
-                return (result = value.equals(seq.length()));
-            }
-
-            @Override
-            public Integer initialValue() {
-                return 0;
-            }
-
-            @Override
-            public Boolean getResult() {
-                return result;
-            }
-
-            @Override
-            public Optional<Integer> visit(BasePair basePair, Integer value) {
-                if (seq.get(value).equals(basePair))
-                    return Optional.of(value +1);
-                else
-                    return Optional.empty();
-            }
-
-            @Override
-            public int compare(Integer a, Integer b) {
-                return -1 * (a - b);
-            }
-        });
-
-        assertTrue("The longest matching set was not as long as the sequence", contained);
-    }
-
 }

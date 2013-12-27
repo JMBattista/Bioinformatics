@@ -2,16 +2,11 @@ package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 
+import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Position;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
-import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceListFactory;
-import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceSetFactory;
 import org.javatuples.Pair;
 
 class SuffixTreeNode {
@@ -19,13 +14,13 @@ class SuffixTreeNode {
 	 * The set of child BasePairs
 	 */
 	private final HashMap<BasePair, SuffixTreeNode> children;
-	private final SequenceCollection parents;
+	private final Collection<Position> positions;
     private final BasePair basePair;
 
     SuffixTreeNode(BasePair basePair)
 	{
-		this.parents = new SequenceListFactory().getSequenceCollection();
-		this.children = new HashMap<BasePair, SuffixTreeNode>();
+		this.positions = new LinkedList<>();
+		this.children = new HashMap<>();
         this.basePair = basePair;
 	}
 	
@@ -73,12 +68,12 @@ class SuffixTreeNode {
 		return max + 1;
 	}
 
-	SequenceCollection getParents() {
-		return this.parents;
+	Collection<Position> getPositions() {
+		return this.positions;
 	}
 
-	void addParent(Sequence sequence) {
-		this.parents.add(sequence);
+	void addPosition(Sequence sequence, int index) {
+		this.positions.add(Position.with(sequence, index));
 	}
 
     public BasePair getBasePair() {

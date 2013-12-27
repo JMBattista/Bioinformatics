@@ -4,13 +4,12 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
 
+import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Position;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Walk;
 import com.vitreoussoftware.bioinformatics.sequence.*;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
-import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceList;
-import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceSetFactory;
 import org.javatuples.*;
 
 
@@ -39,7 +38,7 @@ public class BasicSuffixTree implements SuffixTree {
 	 * @return if the substring exists in the tree
 	 */
 	public boolean contains(Sequence sequence) {
-		return !this.getParents(sequence).isEmpty();
+		return !this.getPositions(sequence).isEmpty();
 	}
 	
 	/**
@@ -53,10 +52,11 @@ public class BasicSuffixTree implements SuffixTree {
 
 	/**
 	 * Find the set of parents for the sequence of interest
-	 * @param sequence the sequence to find parents for
-	 * @return the set of parents, or empty list if no parents
+	 *
+     * @param sequence the sequence to find parents for
+     * @return the set of parents, or empty list if no parents
 	 */
-	public SequenceCollection getParents(Sequence sequence) {
+	public Collection<Position> getPositions(Sequence sequence) {
 		Iterator<BasePair> iter = sequence.iterator();
 		
 		SuffixTreeNode current = root;
@@ -67,10 +67,10 @@ public class BasicSuffixTree implements SuffixTree {
 				current = current.get(bp);
 			else
 				// return empty list
-				return SequenceList.getEmpty();
+				return Collections.EMPTY_LIST;
 		}
 		
-		return new SequenceSetFactory().getSequenceCollection(current.getParents());
+		return current.getPositions();
 	}
 	
 	
@@ -104,7 +104,7 @@ public class BasicSuffixTree implements SuffixTree {
 		}
 
         Map<Sequence, List<Integer>> collected = previous.parallelStream()
-                .<Pair<Sequence, Integer>>flatMap(tuple -> tuple.getValue1().getParents().stream().map(parent -> new Pair<>(parent, tuple.getValue0())))
+                .<Pair<Sequence, Integer>>flatMap(pair -> pair.getValue1().getPositions().stream().map(position -> new Pair<>(position.getSequence(), pair.getValue0())))
                 .collect(Collectors.groupingBy(tuple -> tuple.getValue0(), Collectors.mapping(x -> x.getValue1(), Collectors.toList())));
 
         Map<Integer, List<Sequence>> results = collected.keySet().parallelStream()
@@ -165,7 +165,7 @@ public class BasicSuffixTree implements SuffixTree {
 		}
 
         final Map<Sequence,List<Integer>> results = previous.parallelStream()
-                .flatMap(tuple -> tuple.getValue1().getParents().stream().map(parent -> new Pair<>(parent, tuple.getValue0())))
+                .flatMap(tuple -> tuple.getValue1().getPositions().stream().map(position -> new Pair<>(position.getSequence(), tuple.getValue0())))
                 .collect(Collectors.groupingBy(tuple -> tuple.getValue0(), Collectors.mapping(tuple -> tuple.getValue1(), Collectors.toList())));
 
         return results.keySet().parallelStream()
@@ -182,11 +182,11 @@ public class BasicSuffixTree implements SuffixTree {
             }
         });
         toBeWalked.add(new Pair<>(root, walker.initialValue()));
-        //AGGCUUAACACAUGCAAGUCGAACGAAGUUAGGAAGCUUGCUUCUGAUACUUAGUGGCGGACGGGUGAGUAAUGCUUAGG
+
         while (!toBeWalked.isEmpty()) {
             Pair<SuffixTreeNode, T> pair = toBeWalked.remove();
             for (SuffixTreeNode node : pair.getValue0().getAll()) {
-                Optional<T> result = walker.visit(node.getBasePair(), pair.getValue1());
+                Optional<T> result = walker.visit(node.getBasePair(), node.getPositions(), pair.getValue1());
 
                 // If there was a result use it, otherwise ignore
                 if (result.isPresent()) {
@@ -213,18 +213,28 @@ public class BasicSuffixTree implements SuffixTree {
 	public void addSequence(final Sequence sequence) {
 		if (sequence == null) throw new IllegalArgumentException("Sequence cannot be null");
 		Iterator<BasePair> suffixIter = sequence.iterator();
-		
+
+        // Start from the front of the sequence and then for each position
+        int offset = 0;
 		while (suffixIter.hasNext())
 		{
-			suffixIter.forEachRemaining(new Consumer<BasePair>() {
+            final int currentOffset = offset;
+            // Add the sub-sequence of elements remaining in the sequence to the SuffixTree
+            suffixIter.forEachRemaining(new Consumer<BasePair>() {
 				SuffixTreeNode current = root;
+                int index = 0;
 				
 				public void accept(BasePair bp) {
 					current = current.getOrCreate(bp);
-					current.addParent(sequence);
+                    // We add the position the sequence started from, not its current point
+                    //  to better support alignment algorithms which will be interested in finding a partial
+                    //  alignment and then knowing what its starting point was
+					current.addPosition(sequence, currentOffset);
+                    index++;
 				}
 			});
 			suffixIter.next();
+            ++ offset;
 		}
 	}
 }
