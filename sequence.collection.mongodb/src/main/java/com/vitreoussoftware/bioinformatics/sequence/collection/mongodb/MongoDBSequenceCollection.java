@@ -67,7 +67,8 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 			// Buffer the collection before submitting to increase the speed
 			int count = 0;
 			DBObject[] buffer = arg0.size() > maxCount ? new DBObject[maxCount] : new DBObject[arg0.size()];
-			
+
+
 			for (Sequence seq : arg0) {
 				buffer[count % maxCount] = buildDocument(seq);
 				count++;

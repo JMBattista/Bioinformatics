@@ -17,6 +17,11 @@ import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamR
  */
 public class FastaStringFileStreamReaderTest {
     /**
+     * The path where the FASTA test files can be found.
+     */
+    private static final String FASTA_PATH = "target/test/sequence/Fasta/";
+
+    /**
      * FASTA file with enough data that pages must be performed
      */
     private static final String ALTERNATE_FASTA = "alternate.fasta";
@@ -50,11 +55,6 @@ public class FastaStringFileStreamReaderTest {
 	 * FASTA file with three full records
 	 */
 	private static final String SSU_PARC_EXAMPLE_FASTA = "SSUParc_Example.fasta";
-
-	/**
-	 * The path where the FASTA test files can be found.
-	 */
-	private static final String FASTA_PATH = "out/test/sequence.test/";
 
 	/**
 	 * Shortened FASTA string for basic testing
