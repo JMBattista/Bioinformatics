@@ -7,17 +7,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import org.junit.Before;
 import org.junit.Test;
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
 
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.reader.fasta.FastaStringFileStreamReaderTest;
+import org.junit.experimental.categories.Category;
 
 /**
  * Test the FastaFileStreamReader class
@@ -42,8 +41,8 @@ public abstract class SuffixTreeTest {
 		this.recordSimple = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.recordSimple).get();
 	}
 
-	protected abstract SuffixTreeFactory getSuffixTreeFactory(); 
-	
+	protected abstract SuffixTreeFactory getSuffixTreeFactory();
+
 	/**
 	 * Create a SuffixTree
 	 * @throws IOException 

@@ -2,6 +2,7 @@ package com.vitreoussoftware.bioinformatics.sequence.collection.basic;
 
 import static org.junit.Assert.*;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionTest;
@@ -99,7 +100,7 @@ public class SequenceListTest extends SequenceCollectionTest {
 	 */
 	@Test
 	public void testStreamSource_multiple() throws InvalidDnaFormatException, IOException {
-		SequenceStreamReader reader = new SequenceFromFastaStringStreamReader(FastaStringFileStreamReaderTest.getExampleFastaReader());
+        SequenceStreamReader reader = new SequenceFromFastaStringStreamReader(FastaStringFileStreamReaderTest.getExampleFastaReader());
 		SequenceCollection sc = this.getFactory().getSequenceCollection(reader);
 
 		assertNotNull(sc);

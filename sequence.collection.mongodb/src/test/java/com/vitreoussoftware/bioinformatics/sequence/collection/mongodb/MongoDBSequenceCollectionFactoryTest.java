@@ -3,27 +3,25 @@ package com.vitreoussoftware.bioinformatics.sequence.collection.mongodb;
 import static org.junit.Assert.*;
 
 import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
+import com.vitreoussoftware.test.type.IntegrationTests;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
-import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactoryTest;
+import org.junit.experimental.categories.Category;
+
 
 /**
  * Test the MongoDBSequenceCollection class
  * @author John
  *
  */
+@Category({ IntegrationTests.class })
 public class MongoDBSequenceCollectionFactoryTest extends SequenceCollectionFactoryTest {
 
 	private SequenceFactory sequenceFactory;

@@ -3,28 +3,17 @@ package com.vitreoussoftware.bioinformatics.sequence.collection.mongodb;
 import static junit.framework.Assert.*;
 
 import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
+import com.vitreoussoftware.test.type.IntegrationTests;
 import com.vitreoussoftware.bioinformatics.sequence.collection.*;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
-import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
-import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
+import org.junit.experimental.categories.Category;
 
 /**
  * Test the MongoDBSequenceCollection class
  * @author John
  *
  */
+@Category({ IntegrationTests.class })
 public class MongoDBSequenceCollectionTest extends PersistentSequenceCollectionTest {
 
     @Override

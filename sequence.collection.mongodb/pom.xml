@@ -4,7 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.vitreoussoftware.bioinformatics</groupId>
   <artifactId>sequence.collection.mongodb</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <name>MongoDB Sequence Collection</name>
@@ -36,31 +35,5 @@
       <artifactId>mongo-java-driver</artifactId>
       <version>2.11.3</version>
     </dependency>
-    <dependency>
-      <groupId>org.javatuples</groupId>
-      <artifactId>javatuples</artifactId>
-      <version>1.2</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.10</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
-
-  <build>
-    <testOutputDirectory>target/test/sequence/</testOutputDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>    
 </project>
