@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.net.UnknownHostException;
 
-import com.vitreoussoftware.test.type.IntegrationTests;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +12,6 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectio
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactoryTest;
-import org.junit.experimental.categories.Category;
 
 
 /**
@@ -21,8 +19,7 @@ import org.junit.experimental.categories.Category;
  * @author John
  *
  */
-@Category({ IntegrationTests.class })
-public class MongoDBSequenceCollectionFactoryTest extends SequenceCollectionFactoryTest {
+public class MongoDBSequenceCollectionFactoryIT extends SequenceCollectionFactoryTest {
 
 	private SequenceFactory sequenceFactory;
 

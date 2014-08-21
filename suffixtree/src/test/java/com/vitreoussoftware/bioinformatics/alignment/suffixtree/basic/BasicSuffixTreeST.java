@@ -8,7 +8,7 @@ import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTreeTest;
  * @author John
  *
  */
-public class BasicSuffixTreeTest extends SuffixTreeTest {
+public class BasicSuffixTreeST extends SuffixTreeTest {
 	@Override
 	protected SuffixTreeFactory getSuffixTreeFactory() {
 		return new BasicSuffixTreeFactory();

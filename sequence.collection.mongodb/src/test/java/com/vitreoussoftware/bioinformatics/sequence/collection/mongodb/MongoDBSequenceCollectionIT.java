@@ -4,17 +4,14 @@ import static junit.framework.Assert.*;
 
 import java.net.UnknownHostException;
 
-import com.vitreoussoftware.test.type.IntegrationTests;
 import com.vitreoussoftware.bioinformatics.sequence.collection.*;
-import org.junit.experimental.categories.Category;
 
 /**
  * Test the MongoDBSequenceCollection class
  * @author John
  *
  */
-@Category({ IntegrationTests.class })
-public class MongoDBSequenceCollectionTest extends PersistentSequenceCollectionTest {
+public class MongoDBSequenceCollectionIT extends PersistentSequenceCollectionTest {
 
     @Override
     protected SequenceCollectionFactory getFactory() {
