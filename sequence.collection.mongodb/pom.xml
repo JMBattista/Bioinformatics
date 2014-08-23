@@ -22,9 +22,17 @@
       <artifactId>Sequence</artifactId>
       <version>0.1.0-SNAPSHOT</version>
     </dependency>
+    <!-- Test dependencies -->
     <dependency>
       <groupId>com.vitreoussoftware.bioinformatics</groupId>
       <artifactId>Sequence</artifactId>
+      <version>0.1.0-SNAPSHOT</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.vitreoussoftware.test</groupId>
+      <artifactId>ScalaTestSpec</artifactId>
       <version>0.1.0-SNAPSHOT</version>
       <type>test-jar</type>
       <scope>test</scope>

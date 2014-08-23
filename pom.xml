@@ -12,16 +12,25 @@
   <modules>
     <module>Sequence</module>
     <module>Suffixtree</module>
-  	<module>sequence.collection.mongodb</module>
+  	<module>Sequence.Collection.Mongodb</module>
+  	<module>ScalaTestSpec</module>
+      <module>aligners</module>
   </modules>
 
   <dependencies>
+  	<!-- test dependencies -->
   	<dependency>
   		<groupId>junit</groupId>
   		<artifactId>junit</artifactId>
   		<version>4.11</version>
       <scope>test</scope>
   	</dependency>
+  	<dependency>
+  	  <groupId>org.scalatest</groupId>
+  	  <artifactId>scalatest_2.10</artifactId>
+  	  <version>2.2.1</version>
+  	  <scope>test</scope>
+		</dependency>
   </dependencies>
 
   <build>
