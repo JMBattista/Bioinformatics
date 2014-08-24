@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
 
-import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Position;
+import com.vitreoussoftware.bioinformatics.alignment.Position;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Walk;
 import com.vitreoussoftware.bioinformatics.sequence.*;
@@ -28,17 +28,16 @@ public class BasicSuffixTree implements SuffixTree {
 	 */
 	BasicSuffixTree(SequenceCollectionFactory factory) {
 		this.factory = factory;
-        //TODO I don't like this.
 		root = new SuffixTreeNode(null);
 	}
 
 	/**
 	 * Does the tree contain the specified substring?
-	 * @param sequence the substring to search for
+	 * @param pattern the substring to search for
 	 * @return if the substring exists in the tree
 	 */
-	public boolean contains(Sequence sequence) {
-		return !this.getPositions(sequence).isEmpty();
+	public boolean contains(Sequence pattern) {
+		return !this.getPositions(pattern).isEmpty();
 	}
 	
 	/**
@@ -53,11 +52,11 @@ public class BasicSuffixTree implements SuffixTree {
 	/**
 	 * Find the set of parents for the sequence of interest
 	 *
-     * @param sequence the sequence to find parents for
+     * @param pattern the sequence to find parents for
      * @return the set of parents, or empty list if no parents
 	 */
-	public Collection<Position> getPositions(Sequence sequence) {
-		Iterator<BasePair> iter = sequence.iterator();
+	public Collection<Position> getPositions(Sequence pattern) {
+		Iterator<BasePair> iter = pattern.iterator();
 		
 		SuffixTreeNode current = root;
 		while (iter.hasNext())
@@ -160,7 +159,7 @@ public class BasicSuffixTree implements SuffixTree {
 				}
 				
 			}
-			
+
 			previous = next;
 		}
 
@@ -208,11 +207,11 @@ public class BasicSuffixTree implements SuffixTree {
 
 	/**
 	 * Adds a new sequence to the suffix tree
-	 * @param sequence the sequence to add
+	 * @param text the sequence to add
 	 */
-	public void addSequence(final Sequence sequence) {
-		if (sequence == null) throw new IllegalArgumentException("Sequence cannot be null");
-		Iterator<BasePair> suffixIter = sequence.iterator();
+	public void addSequence(final Sequence text) {
+		if (text == null) throw new IllegalArgumentException("Sequence cannot be null");
+		Iterator<BasePair> suffixIter = text.iterator();
 
         // Start from the front of the sequence and then for each position
         int offset = 0;
@@ -229,7 +228,7 @@ public class BasicSuffixTree implements SuffixTree {
                     // We add the position the sequence started from, not its current point
                     //  to better support alignment algorithms which will be interested in finding a partial
                     //  alignment and then knowing what its starting point was
-					current.addPosition(sequence, currentOffset);
+					current.addPosition(text, currentOffset);
                     index++;
 				}
 			});

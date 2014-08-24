@@ -34,24 +34,24 @@ public class BoundedSuffixTree extends BasicSuffixTree {
 
 	/**
 	 * Adds a new sequence to the suffix tree
-	 * @param sequence the sequence to add
+	 * @param text the sequence to add
 	 */
-	public void addSequence(final Sequence sequence) {
-		if (sequence == null) throw new IllegalArgumentException("Sequence cannot be null");
-		Iterator<BasePair> suffixIter = sequence.iterator();
+	public void addSequence(final Sequence text) {
+		if (text == null) throw new IllegalArgumentException("Sequence cannot be null");
+		Iterator<BasePair> suffixIter = text.iterator();
 
 		int startPos = 0;
-		final int length = sequence.length();
+		final int length = text.length();
 		while (suffixIter.hasNext() && startPos + this.minLength < length)
 		{
 			SuffixTreeNode current = root;
 			// up to max length create or iterate the nodes and add parents.
-			for (int offset = 0; offset < this.maxLength && offset + startPos < sequence.length(); offset++) {
-                current = current.getOrCreate(sequence.get(startPos + offset));
+			for (int offset = 0; offset < this.maxLength && offset + startPos < text.length(); offset++) {
+                current = current.getOrCreate(text.get(startPos + offset));
 
                 // Only add the starting position, not the position of the current node.
 				if (offset >= this.minLength)
-                    current.addPosition(sequence, startPos);
+                    current.addPosition(text, startPos);
 			}
 			
 			// iterate forward and update the position

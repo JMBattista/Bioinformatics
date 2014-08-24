@@ -14,7 +14,7 @@
     <module>Suffixtree</module>
   	<module>Sequence.Collection.Mongodb</module>
   	<module>ScalaTestSpec</module>
-      <module>aligners</module>
+    <module>alignment</module>
   </modules>
 
   <dependencies>

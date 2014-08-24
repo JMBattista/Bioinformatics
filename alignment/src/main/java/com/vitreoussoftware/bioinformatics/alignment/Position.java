@@ -1,4 +1,4 @@
-package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
+package com.vitreoussoftware.bioinformatics.alignment;
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 

@@ -1,6 +1,6 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 
-import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Position;
+import com.vitreoussoftware.bioinformatics.alignment.Position;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTreeFactory;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Walkers;

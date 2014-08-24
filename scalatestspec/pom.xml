@@ -56,21 +56,6 @@
     </dependency>
   </dependencies>
 
-
-  <repositories>
-    <repository>
-      <id>scala</id>
-      <name>Scala Tools</name>
-      <url>http://scala-tools.org/repo-releases</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
   <build>
     <plugins>
       <plugin>
@@ -89,7 +74,6 @@
           <jvmArgs>
             <jvmArg>-Xmx1024m</jvmArg>
           </jvmArgs>
-          <scala-version>${scala-version}</scala-version>
           <recompileMode>incremental</recompileMode>
         </configuration>
       </plugin>

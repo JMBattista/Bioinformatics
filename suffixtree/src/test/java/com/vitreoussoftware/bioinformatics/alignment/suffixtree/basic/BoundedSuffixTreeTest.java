@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.vitreoussoftware.bioinformatics.alignment.Position;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.*;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import org.javatuples.Pair;
