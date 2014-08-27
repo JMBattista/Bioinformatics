@@ -10,11 +10,12 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>ScalaTestSpec</module>
     <module>Sequence</module>
-    <module>Suffixtree</module>
-  	<module>Sequence.Collection.Mongodb</module>
-  	<module>ScalaTestSpec</module>
-    <module>alignment</module>
+    <module>Sequence.Collection.Mongodb</module>
+    <module>Alignment</module>
+    <module>Alignment.Suffixtree</module>
+    <module>Alignment.StringBased</module>
   </modules>
 
   <dependencies>

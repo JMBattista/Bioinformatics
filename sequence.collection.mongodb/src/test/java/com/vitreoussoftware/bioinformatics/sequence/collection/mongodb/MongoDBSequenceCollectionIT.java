@@ -1,6 +1,6 @@
 package com.vitreoussoftware.bioinformatics.sequence.collection.mongodb;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 import java.net.UnknownHostException;
 

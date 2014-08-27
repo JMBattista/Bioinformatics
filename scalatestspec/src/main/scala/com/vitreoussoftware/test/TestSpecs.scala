@@ -21,7 +21,7 @@ import org.scalatest._
 import org.scalatest.prop.PropertyChecks
 
 /**
- * Base for setting up tests usiing ScalaTest
+ * Base for setting up tests using ScalaTest
  */
 abstract class UnitSpec extends FlatSpec with Matchers with Inside with OptionValues with EitherValues with Inspectors {
 }
@@ -30,4 +30,10 @@ abstract class UnitSpec extends FlatSpec with Matchers with Inside with OptionVa
  * Base for Property based testing
  */
 abstract class PropertySpec extends UnitSpec with PropertyChecks {
+}
+
+/**
+ * Describe / it syntax Behavioral tests
+ */
+abstract class BehaviorSpec extends FunSpec  with Matchers with Inside with OptionValues with EitherValues with Inspectors {
 }

@@ -1,18 +1,14 @@
 package com.vitreoussoftware.bioinformatics.sequence;
 
-import static org.junit.Assert.*;
-import junit.framework.Assert;
-
+import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
-import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.junit.Assert.*;
 
 /**
  * Test the Sequence class

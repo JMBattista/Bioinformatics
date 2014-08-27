@@ -14,7 +14,7 @@ import scala.collection.JavaConversions._
  * Created by John on 8/23/14.
  */
 @RunWith(classOf[JUnitRunner])
-abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
+abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
   val bases = List("A", "U", "C", "G")
   val baseSeqs = bases.map(base => BasicSequence.create(base, AcceptUnknownDnaEncodingScheme.instance).get())
 
@@ -29,7 +29,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
    * Perform any setup necessary to create and return the aligner for use in tests
    * @return the aligner to use for the tests
    */
-  def getAligner() : TextFirstAligner
+  def getAligner() : PatternFirstAligner
 
   /**
    * Perform any cleanup necessary to dispose of the aligner.
@@ -37,9 +37,9 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
    * @param aligner the aligner used by the test
    * @return None
    */
-  def destroyAligner(aligner: TextFirstAligner) = None
+  def destroyAligner(aligner: PatternFirstAligner) = None
 
-  def withAligner(test: (TextFirstAligner) => Unit) = {
+  def withAligner(test: (PatternFirstAligner) => Unit) = {
     val aligner = getAligner()
     test(aligner)
     destroyAligner(aligner)
@@ -48,7 +48,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
   "An empty " + anAligner should "should not contain any patterns" in {
     withAligner {
       (aligner) => {
-        val results = baseSeqs.map(x => (x.toString, aligner.contains(x)))
+        val results = baseSeqs.map(pattern => (pattern.toString, aligner.addSequence(pattern)))
         val expected = bases.zip(List.fill(bases.length)(false))
         results should contain theSameElementsInOrderAs expected
       }
