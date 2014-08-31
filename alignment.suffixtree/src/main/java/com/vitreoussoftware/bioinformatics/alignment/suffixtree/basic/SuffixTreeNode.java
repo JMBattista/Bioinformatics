@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import com.vitreoussoftware.bioinformatics.alignment.Position;
+import com.vitreoussoftware.bioinformatics.alignment.Alignment;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 
@@ -14,12 +14,12 @@ class SuffixTreeNode {
 	 * The set of child BasePairs
 	 */
 	private final HashMap<BasePair, SuffixTreeNode> children;
-	private final Collection<Position> positions;
+	private final Collection<Alignment> alignments;
     private final BasePair basePair;
 
     SuffixTreeNode(BasePair basePair)
 	{
-		this.positions = new LinkedList<>();
+		this.alignments = new LinkedList<>();
 		this.children = new HashMap<>();
         this.basePair = basePair;
 	}
@@ -68,12 +68,12 @@ class SuffixTreeNode {
 		return max + 1;
 	}
 
-	Collection<Position> getPositions() {
-		return this.positions;
+	Collection<Alignment> getAlignments() {
+		return this.alignments;
 	}
 
 	void addPosition(Sequence sequence, int index) {
-		this.positions.add(Position.with(sequence, index));
+		this.alignments.add(Alignment.with(sequence, index));
 	}
 
     public BasePair getBasePair() {

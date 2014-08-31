@@ -1,13 +1,6 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 
-import java.util.Collection;
-import java.util.List;
-
-import com.vitreoussoftware.bioinformatics.alignment.Position;
 import com.vitreoussoftware.bioinformatics.alignment.TextFirstAligner;
-import com.vitreoussoftware.bioinformatics.sequence.*;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
-import org.javatuples.Pair;
 
 
 /**

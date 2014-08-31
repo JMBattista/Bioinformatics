@@ -36,7 +36,7 @@ public interface PatternFirstAligner {
      * @param text the pattern to find parents for
      * @return the set of parents, or empty list if no parents
      */
-    public Collection<Position> getAlignments(Sequence text);
+    public Collection<Alignment> getAlignments(Sequence text);
 
     /**
      * Adds a new pattern to the aligner

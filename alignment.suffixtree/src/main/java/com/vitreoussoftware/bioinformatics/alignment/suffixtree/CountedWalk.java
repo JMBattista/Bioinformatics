@@ -1,6 +1,6 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 
-import com.vitreoussoftware.bioinformatics.alignment.Position;
+import com.vitreoussoftware.bioinformatics.alignment.Alignment;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 
 import java.util.Collection;
@@ -77,8 +77,8 @@ public class CountedWalk<T,R> implements Walk<T,R> {
     }
 
     @Override
-    public Optional<T> visit(BasePair basePair, Collection<Position> positions, T metadata) {
+    public Optional<T> visit(BasePair basePair, Collection<Alignment> alignments, T metadata) {
         visit.incrementAndGet();
-        return walker.visit(basePair, positions, metadata);
+        return walker.visit(basePair, alignments, metadata);
     }
 }

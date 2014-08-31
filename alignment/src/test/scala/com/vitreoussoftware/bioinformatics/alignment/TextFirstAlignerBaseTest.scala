@@ -151,7 +151,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
       (aligner) => {
         aligner.addSequence(seqSimple)
         aligner.contains(seqSimple) should be (true)
-        aligner.getAlignments(seqSimple) should contain theSameElementsAs  (List(Position.`with`(seqSimple, 0)))
+        aligner.getAlignments(seqSimple) should contain theSameElementsAs  (List(Alignment.`with`(seqSimple, 0)))
       })
   }
 

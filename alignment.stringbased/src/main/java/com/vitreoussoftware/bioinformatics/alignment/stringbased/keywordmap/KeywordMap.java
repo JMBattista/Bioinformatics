@@ -1,14 +1,12 @@
 package com.vitreoussoftware.bioinformatics.alignment.stringbased.keywordmap;
 
+import com.vitreoussoftware.bioinformatics.alignment.Alignment;
 import com.vitreoussoftware.bioinformatics.alignment.PatternFirstAligner;
-import com.vitreoussoftware.bioinformatics.alignment.Position;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import org.javatuples.Pair;
-import scala.collection.Seq;
 
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,7 +22,7 @@ public class KeywordMap implements PatternFirstAligner{
     }
 
     @Override
-    public Collection<Position> getAlignments(Sequence text) {
+    public Collection<Alignment> getAlignments(Sequence text) {
         return null;
     }
 

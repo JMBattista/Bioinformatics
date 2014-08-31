@@ -1,10 +1,7 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 
-import com.vitreoussoftware.bioinformatics.alignment.Position;
+import com.vitreoussoftware.bioinformatics.alignment.Alignment;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
-import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
-import org.javatuples.Pair;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -34,10 +31,10 @@ public interface Walk<T, R> {
      * Root elements use the result of initialValue.
      *
      * @param basePair The BasePair for the current node
-     * @param positions
+     * @param alignments
      *@param metadata The metadata associated with this nodes parent  @return the metadata to associate with this node
      */
-    public Optional<T> visit(BasePair basePair, Collection<Position> positions, T metadata);
+    public Optional<T> visit(BasePair basePair, Collection<Alignment> alignments, T metadata);
 
     /**
      * Called after each visit that yields metadata to determine if the walk should continue.

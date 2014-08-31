@@ -1,13 +1,11 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 
-import com.vitreoussoftware.bioinformatics.alignment.Position;
+import com.vitreoussoftware.bioinformatics.alignment.Alignment;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTreeFactory;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Walkers;
-import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.reader.fasta.FastaStringFileStreamReaderTest;
@@ -257,56 +255,56 @@ public class WalkersTest {
         Sequence g = this.sequenceFactory.fromString("G").get();
 
         {
-            Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(a));
+            Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(a));
 
             final int distance = distances.getValue0();
-            final Collection<Position> positions = distances.getValue1();
+            final Collection<Alignment> alignments = distances.getValue1();
 
             assertEquals("Distance was wrong", 0, distance);
-            assertEquals("Number of positions was wrong", 22, positions.size());
-            for (Position p : positions) {
+            assertEquals("Number of alignments was wrong", 22, alignments.size());
+            for (Alignment p : alignments) {
                 assertEquals("The base pair was wrong for " + p.getPosition(), AcceptUnknownDnaEncodingScheme.A, p.getSequence().get(p.getPosition()));
             }
-            assertTrue("Simple was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+            assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
         }
 
         {
-            Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(u));
+            Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(u));
 
             final int distance = distances.getValue0();
-            final Collection<Position> positions = distances.getValue1();
+            final Collection<Alignment> alignments = distances.getValue1();
 
             assertEquals("Distance was wrong", 0, distance);
-            for (Position p : positions) {
+            for (Alignment p : alignments) {
                 assertEquals("The base pair was wrong for " + p.getPosition(), AcceptUnknownDnaEncodingScheme.U, p.getSequence().get(p.getPosition()));
             }
-            assertTrue("Simple was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+            assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
         }
 
         {
-            Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(c));
+            Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(c));
 
             final int distance = distances.getValue0();
-            final Collection<Position> positions = distances.getValue1();
+            final Collection<Alignment> alignments = distances.getValue1();
 
             assertEquals("Distance was wrong", 0, distance);
-            for (Position p : positions) {
+            for (Alignment p : alignments) {
                 assertEquals("The base pair was wrong for " + p.getPosition(), AcceptUnknownDnaEncodingScheme.C, p.getSequence().get(p.getPosition()));
             }
-            assertTrue("Simple was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+            assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
         }
 
         {
-            Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(g));
+            Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(g));
 
             final int distance = distances.getValue0();
-            final Collection<Position> positions = distances.getValue1();
+            final Collection<Alignment> alignments = distances.getValue1();
 
             assertEquals("Distance was wrong", 0, distance);
-            for (Position p : positions) {
+            for (Alignment p : alignments) {
                 assertEquals("The base pair was wrong for " + p.getPosition(), AcceptUnknownDnaEncodingScheme.G, p.getSequence().get(p.getPosition()));
             }
-            assertTrue("Simple was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+            assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
         }
     }
 
@@ -323,15 +321,15 @@ public class WalkersTest {
 
         Sequence t = this.sequenceFactory.fromString("T").get();
 
-        Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(t));
+        Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(t));
         final int distance = distances.getValue0();
-        final Collection<Position> positions = distances.getValue1();
+        final Collection<Alignment> alignments = distances.getValue1();
 
         assertEquals("Distance was wrong", 1, distance);
-        assertTrue("Did not contain first position", positions.stream().filter(x -> x.getPosition() == 0).findFirst().isPresent());
-        assertTrue("Did not contain last position", positions.stream().filter(x -> x.getPosition() == recordSimple.length()-1).findFirst().isPresent());
-        assertEquals("Number of positions did not match", recordSimple.length(), positions.size());
-        assertTrue("Simple was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertTrue("Did not contain first position", alignments.stream().filter(x -> x.getPosition() == 0).findFirst().isPresent());
+        assertTrue("Did not contain last position", alignments.stream().filter(x -> x.getPosition() == recordSimple.length()-1).findFirst().isPresent());
+        assertEquals("Number of alignments did not match", recordSimple.length(), alignments.size());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -347,13 +345,13 @@ public class WalkersTest {
 
         Sequence n = this.sequenceFactory.fromString("N").get();
 
-        Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(n));
+        Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(n));
         final int distance = distances.getValue0();
-        final Collection<Position> positions = distances.getValue1();
+        final Collection<Alignment> alignments = distances.getValue1();
 
         assertEquals("Distance was wrong", 1, distance);
-        assertEquals("Number of positions did not match", recordSimple.length(), positions.size());
-        assertTrue("Simple was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertEquals("Number of alignments did not match", recordSimple.length(), alignments.size());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -369,13 +367,13 @@ public class WalkersTest {
 
         Sequence seq = this.sequenceFactory.fromString("AAC").get();
 
-        Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(seq));
+        Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(seq));
         final int distance = distances.getValue0();
-        final Collection<Position> positions = distances.getValue1();
+        final Collection<Alignment> alignments = distances.getValue1();
 
         assertEquals("Distance was wrong", 0, distance);
-        assertEquals("Number of positions did not match", 2, positions.size());
-        assertTrue("Simple was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertEquals("Number of alignments did not match", 2, alignments.size());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -391,13 +389,13 @@ public class WalkersTest {
 
         Sequence seq = this.sequenceFactory.fromString("AAT").get();
 
-        Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(seq));
+        Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(seq));
         final int distance = distances.getValue0();
-        final Collection<Position> positions = distances.getValue1();
+        final Collection<Alignment> alignments = distances.getValue1();
 
         assertEquals("Distance was wrong", 1, distance);
-        assertEquals("Number of positions did not match", 6, positions.size());
-        assertTrue("Simple was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertEquals("Number of alignments did not match", 6, alignments.size());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -413,13 +411,13 @@ public class WalkersTest {
 
         Sequence seq = this.sequenceFactory.fromString("AAN").get();
 
-        Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(seq));
+        Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(seq));
         final int distance = distances.getValue0();
-        final Collection<Position> positions = distances.getValue1();
+        final Collection<Alignment> alignments = distances.getValue1();
 
         assertEquals("Distance was wrong", 1, distance);
-        assertEquals("Number of positions did not match", 6, positions.size());
-        assertTrue("Simple was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertEquals("Number of alignments did not match", 6, alignments.size());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -435,13 +433,13 @@ public class WalkersTest {
 
         Sequence seq = this.sequenceFactory.fromString("ANA").get();
 
-        Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(seq));
+        Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(seq));
         final int distance = distances.getValue0();
-        final Collection<Position> positions = distances.getValue1();
+        final Collection<Alignment> alignments = distances.getValue1();
 
         assertEquals("Distance was wrong", 1, distance);
-        assertEquals("Number of positions did not match", 3, positions.size());
-        assertTrue("Simple was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertEquals("Number of alignments did not match", 3, alignments.size());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -457,13 +455,13 @@ public class WalkersTest {
 
         Sequence seq = this.sequenceFactory.fromString("NAA").get();
 
-        Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(seq));
+        Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(seq));
         final int distance = distances.getValue0();
-        final Collection<Position> positions = distances.getValue1();
+        final Collection<Alignment> alignments = distances.getValue1();
 
         assertEquals("Distance was wrong", 1, distance);
-        assertEquals("Number of positions did not match", 6, positions.size());
-        assertTrue("Simple was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertEquals("Number of alignments did not match", 6, alignments.size());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -480,18 +478,18 @@ public class WalkersTest {
 
         Sequence seq = this.sequenceFactory.fromString("AAN").get();
 
-        Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(seq));
+        Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(seq));
         final int distance = distances.getValue0();
-        final Collection<Position> positions = distances.getValue1();
+        final Collection<Alignment> alignments = distances.getValue1();
 
         assertEquals("Distance was wrong", 1, distance);
-        assertEquals("Number of positions did not match", 102, positions.size());
+        assertEquals("Number of alignments did not match", 102, alignments.size());
 
-        final List<Position> simplePositions = positions.stream().filter(p -> p.getSequence().equals(recordSimple)).collect(Collectors.toList());
-        final List<Position> record3Positions = positions.stream().filter(p -> p.getSequence().equals(record3)).collect(Collectors.toList());
+        final List<Alignment> simpleAlignments = alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).collect(Collectors.toList());
+        final List<Alignment> record3Alignments = alignments.stream().filter(p -> p.getSequence().equals(record3)).collect(Collectors.toList());
 
-        assertEquals("The positions from simple and record 3 did not match up", 102, simplePositions.size() + record3Positions.size());
-        assertEquals("Simple was not the matching sequence for the correct number of  positions", 6, simplePositions.size());
+        assertEquals("The alignments from simple and record 3 did not match up", 102, simpleAlignments.size() + record3Alignments.size());
+        assertEquals("Simple was not the matching sequence for the correct number of  alignments", 6, simpleAlignments.size());
     }
 
     /**
@@ -508,18 +506,18 @@ public class WalkersTest {
 
         Sequence seq = this.sequenceFactory.fromString("ANA").get();
 
-        Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(seq));
+        Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(seq));
         final int distance = distances.getValue0();
-        final Collection<Position> positions = distances.getValue1();
+        final Collection<Alignment> alignments = distances.getValue1();
 
         assertEquals("Distance was wrong", 1, distance);
-        assertEquals("Number of positions did not match", 69, positions.size());
+        assertEquals("Number of alignments did not match", 69, alignments.size());
 
-        final List<Position> simplePositions = positions.stream().filter(p -> p.getSequence().equals(recordSimple)).collect(Collectors.toList());
-        final List<Position> record3Positions = positions.stream().filter(p -> p.getSequence().equals(record3)).collect(Collectors.toList());
+        final List<Alignment> simpleAlignments = alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).collect(Collectors.toList());
+        final List<Alignment> record3Alignments = alignments.stream().filter(p -> p.getSequence().equals(record3)).collect(Collectors.toList());
 
-        assertEquals("The positions from simple and record 3 did not match up", 69, simplePositions.size() + record3Positions.size());
-        assertEquals("Simple was not the matching sequence for the correct number of  positions", 3, simplePositions.size());
+        assertEquals("The alignments from simple and record 3 did not match up", 69, simpleAlignments.size() + record3Alignments.size());
+        assertEquals("Simple was not the matching sequence for the correct number of  alignments", 3, simpleAlignments.size());
     }
 
     /**
@@ -536,18 +534,18 @@ public class WalkersTest {
 
         Sequence seq = this.sequenceFactory.fromString("NAA").get();
 
-        Pair<Integer, Collection<Position>> distances = tree.walk(Walkers.distance(seq));
+        Pair<Integer, Collection<Alignment>> distances = tree.walk(Walkers.distance(seq));
         final int distance = distances.getValue0();
-        final Collection<Position> positions = distances.getValue1();
+        final Collection<Alignment> alignments = distances.getValue1();
 
         assertEquals("Distance was wrong", 1, distance);
-        assertEquals("Number of positions did not match", 102, positions.size());
+        assertEquals("Number of alignments did not match", 102, alignments.size());
 
-        final List<Position> simplePositions = positions.stream().filter(p -> p.getSequence().equals(recordSimple)).collect(Collectors.toList());
-        final List<Position> record3Positions = positions.stream().filter(p -> p.getSequence().equals(record3)).collect(Collectors.toList());
+        final List<Alignment> simpleAlignments = alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).collect(Collectors.toList());
+        final List<Alignment> record3Alignments = alignments.stream().filter(p -> p.getSequence().equals(record3)).collect(Collectors.toList());
 
-        assertEquals("The positions from simple and record 3 did not match up", 102, simplePositions.size() + record3Positions.size());
-        assertEquals("Simple was not the matching sequence for the correct number of  positions", 6, simplePositions.size());
+        assertEquals("The alignments from simple and record 3 did not match up", 102, simpleAlignments.size() + record3Alignments.size());
+        assertEquals("Simple was not the matching sequence for the correct number of  alignments", 6, simpleAlignments.size());
     }
 
     /**
@@ -564,14 +562,14 @@ public class WalkersTest {
 
         Sequence seq = this.sequenceFactory.fromString("AAAAAAAAAAN").get();
 
-        Optional<Pair<Integer, Collection<Position>>> distances = tree.walk(Walkers.distance(seq, 10));
+        Optional<Pair<Integer, Collection<Alignment>>> distances = tree.walk(Walkers.distance(seq, 10));
         assertTrue("There was no result", distances.isPresent());
         final int distance = distances.get().getValue0();
-        final Collection<Position> positions = distances.get().getValue1();
+        final Collection<Alignment> alignments = distances.get().getValue1();
 
         assertEquals("Distance was wrong", 4, distance);
-        assertEquals("Number of positions did not match", 1, positions.size());
-        assertTrue("Record3 was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(record3)).findFirst().isPresent());
+        assertEquals("Number of alignments did not match", 1, alignments.size());
+        assertTrue("Record3 was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(record3)).findFirst().isPresent());
 
         distances = tree.walk(Walkers.distance(seq, 2));
 
@@ -592,14 +590,14 @@ public class WalkersTest {
 
         Sequence seq = this.sequenceFactory.fromString("AAAAANAAAAA").get();
 
-        Optional<Pair<Integer, Collection<Position>>> distances = tree.walk(Walkers.distance(seq, 10));
+        Optional<Pair<Integer, Collection<Alignment>>> distances = tree.walk(Walkers.distance(seq, 10));
         assertTrue("There was no result", distances.isPresent());
         final int distance = distances.get().getValue0();
-        final Collection<Position> positions = distances.get().getValue1();
+        final Collection<Alignment> alignments = distances.get().getValue1();
 
         assertEquals("Distance was wrong", 4, distance);
-        assertEquals("Number of positions did not match", 3, positions.size());
-        assertTrue("Record3 was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(record3)).findFirst().isPresent());
+        assertEquals("Number of alignments did not match", 3, alignments.size());
+        assertTrue("Record3 was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(record3)).findFirst().isPresent());
 
         distances = tree.walk(Walkers.distance(seq, 2));
 
@@ -620,14 +618,14 @@ public class WalkersTest {
 
         Sequence seq = this.sequenceFactory.fromString("NAAAAAAAAAAA").get();
 
-        Optional<Pair<Integer, Collection<Position>>> distances = tree.walk(Walkers.distance(seq, 10));
+        Optional<Pair<Integer, Collection<Alignment>>> distances = tree.walk(Walkers.distance(seq, 10));
         assertTrue("There was no result", distances.isPresent());
         final int distance = distances.get().getValue0();
-        final Collection<Position> positions = distances.get().getValue1();
+        final Collection<Alignment> alignments = distances.get().getValue1();
 
         assertEquals("Distance was wrong", 5, distance);
-        assertEquals("Number of positions did not match", 5, positions.size());
-        assertTrue("Record 3 was not the matching sequence", positions.stream().filter(p -> p.getSequence().equals(record3)).findFirst().isPresent());
+        assertEquals("Number of alignments did not match", 5, alignments.size());
+        assertTrue("Record 3 was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(record3)).findFirst().isPresent());
 
         distances = tree.walk(Walkers.distance(seq, 2));
 

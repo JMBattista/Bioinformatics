@@ -151,8 +151,8 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
     withAligner(
       (aligner) => {
         aligner.addPattern(seqSimple)
-        aligner.containedIn(seqSimple) should be (true)
-        aligner.getAlignments(seqSimple) should contain theSameElementsAs  (List(Position.`with`(seqSimple, 0)))
+        aligner.containedIn(seqSimple) should contain theSameElementsAs  baseSeqs
+        aligner.getAlignments(seqSimple) should contain theSameElementsAs  (List(Alignment.`with`(seqSimple, 0)))
       })
   }
 
@@ -160,7 +160,7 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
     withAligner(
       (aligner) => {
         aligner.addPattern(seqSimple)
-        aligner.containedIn(seqRecord1) should be (false)
+        aligner.containedIn(seqRecord1) should contain theSameElementsAs  baseSeqs
         aligner.getAlignments(seqRecord1) should contain theSameElementsAs  (List())
       }
     )

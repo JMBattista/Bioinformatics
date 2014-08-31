@@ -44,15 +44,15 @@ public interface TextFirstAligner {
      * @param pattern to find alignments for
      * @return the set of parents, or empty list if no parents
      */
-    public Collection<Position> getAlignments(Sequence pattern);
+    public Collection<Alignment> getAlignments(Sequence pattern);
 
     /**
      * Find the set of alignments for the each pattern of interest
      *
      * @param patterns to find alignments for
-     * @return List of (Pattern, Collection<Position) pairs.
+     * @return List of (Pattern, Collection<Alignment) pairs.
      */
-    default public Collection<Pair<Sequence, Collection<Position>>> getPositions(SequenceCollection patterns) {
+    default public Collection<Pair<Sequence, Collection<Alignment>>> getPositions(SequenceCollection patterns) {
         return patterns.stream().map(pattern -> Pair.with(pattern, this.getAlignments(pattern))).collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -106,6 +106,7 @@ public interface TextFirstAligner {
      * @return the tuples of parent Sequences and the shortestDistance lists
      */
     default public Collection<Pair<Sequence, List<Integer>>> distances(Sequence pattern) {
+        // Negative number used to indicate no distance cap
         return distances(pattern, -1);
     }
 
@@ -115,22 +116,23 @@ public interface TextFirstAligner {
      * @return the tuples of parent Sequences and the shortestDistance lists
      */
     default public Collection<Pair<Sequence, Collection<Pair<Sequence, List<Integer>>>>> distances(SequenceCollection patterns) {
+        // Negative number used to indicate no distance cap
         return distances(patterns, -1);
     }
 
     /**
-     * Return the set of distances for each parent Sequence within the maximum for the given target Sequences
+     * Return the set of distances for each text Sequence within the maximum for the given pattern Sequence
      * @param pattern the target Sequence
      * @param maxDistance the maximum shortestDistance that will be considered
-     * @return the tuples of parent Sequences and the shortestDistance lists@param maxDistance
+     * @return the tuples of parent Sequences and the shortestDistance lists
      */
     public Collection<Pair<Sequence, List<Integer>>> distances(Sequence pattern, int maxDistance);
 
     /**
-     * Return the set of distances for each parent Sequence within the maximum for the given target Sequences
-     * @param patterns the target Sequence
+     * Return the set of distances for each parent Sequence within the maximum for the given pattern Sequences
+     * @param patterns the target Sequences
      * @param maxDistance the maximum shortestDistance that will be considered
-     * @return the tuples of parent Sequences and the shortestDistance lists@param maxDistance
+     * @return the tuples of parent Sequences and the shortestDistance lists
      */
     default public Collection<Pair<Sequence, Collection<Pair<Sequence, List<Integer>>>>> distances(SequenceCollection patterns, int maxDistance) {
         return patterns.stream().map(pattern -> Pair.with(pattern, distances(pattern, maxDistance))).collect(Collectors.toCollection(LinkedList::new));

@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
 
-import com.vitreoussoftware.bioinformatics.alignment.Position;
+import com.vitreoussoftware.bioinformatics.alignment.Alignment;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Walk;
 import com.vitreoussoftware.bioinformatics.sequence.*;
@@ -55,7 +55,7 @@ public class BasicSuffixTree implements SuffixTree {
      * @param pattern the sequence to find parents for
      * @return the set of parents, or empty list if no parents
 	 */
-	public Collection<Position> getAlignments(Sequence pattern) {
+	public Collection<Alignment> getAlignments(Sequence pattern) {
 		Iterator<BasePair> iter = pattern.iterator();
 		
 		SuffixTreeNode current = root;
@@ -69,7 +69,7 @@ public class BasicSuffixTree implements SuffixTree {
 				return Collections.EMPTY_LIST;
 		}
 		
-		return current.getPositions();
+		return current.getAlignments();
 	}
 	
 	
@@ -103,7 +103,7 @@ public class BasicSuffixTree implements SuffixTree {
 		}
 
         Map<Sequence, List<Integer>> collected = previous.parallelStream()
-                .<Pair<Sequence, Integer>>flatMap(pair -> pair.getValue1().getPositions().stream().map(position -> new Pair<>(position.getSequence(), pair.getValue0())))
+                .<Pair<Sequence, Integer>>flatMap(pair -> pair.getValue1().getAlignments().stream().map(position -> new Pair<>(position.getSequence(), pair.getValue0())))
                 .collect(Collectors.groupingBy(tuple -> tuple.getValue0(), Collectors.mapping(x -> x.getValue1(), Collectors.toList())));
 
         Map<Integer, List<Sequence>> results = collected.keySet().parallelStream()
@@ -159,7 +159,7 @@ public class BasicSuffixTree implements SuffixTree {
 		}
 
         final Map<Sequence,List<Integer>> results = previous.parallelStream()
-                .flatMap(tuple -> tuple.getValue1().getPositions().stream().map(position -> new Pair<>(position.getSequence(), tuple.getValue0())))
+                .flatMap(tuple -> tuple.getValue1().getAlignments().stream().map(position -> new Pair<>(position.getSequence(), tuple.getValue0())))
                 .collect(Collectors.groupingBy(tuple -> tuple.getValue0(), Collectors.mapping(tuple -> tuple.getValue1(), Collectors.toList())));
 
         return results.keySet().parallelStream()
@@ -180,7 +180,7 @@ public class BasicSuffixTree implements SuffixTree {
         while (!toBeWalked.isEmpty()) {
             Pair<SuffixTreeNode, T> pair = toBeWalked.remove();
             for (SuffixTreeNode node : pair.getValue0().getAll()) {
-                Optional<T> result = walker.visit(node.getBasePair(), node.getPositions(), pair.getValue1());
+                Optional<T> result = walker.visit(node.getBasePair(), node.getAlignments(), pair.getValue1());
 
                 // If there was a result use it, otherwise ignore
                 if (result.isPresent()) {
