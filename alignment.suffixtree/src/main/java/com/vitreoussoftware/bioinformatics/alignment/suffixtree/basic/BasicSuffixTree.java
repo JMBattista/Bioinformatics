@@ -37,7 +37,7 @@ public class BasicSuffixTree implements SuffixTree {
 	 * @return if the substring exists in the tree
 	 */
 	public boolean contains(Sequence pattern) {
-		return !this.getPositions(pattern).isEmpty();
+		return !this.getAlignments(pattern).isEmpty();
 	}
 	
 	/**
@@ -55,7 +55,7 @@ public class BasicSuffixTree implements SuffixTree {
      * @param pattern the sequence to find parents for
      * @return the set of parents, or empty list if no parents
 	 */
-	public Collection<Position> getPositions(Sequence pattern) {
+	public Collection<Position> getAlignments(Sequence pattern) {
 		Iterator<BasePair> iter = pattern.iterator();
 		
 		SuffixTreeNode current = root;
@@ -75,11 +75,11 @@ public class BasicSuffixTree implements SuffixTree {
 	
 
 	@Override
-	public Collection<Pair<Integer, SequenceCollection>> distance(Sequence sequence, int maxDistance) {
-		Iterator<BasePair> iter = sequence.iterator();
+	public Collection<Pair<Integer, SequenceCollection>> shortestDistance(Sequence pattern, int maxDistance) {
+		Iterator<BasePair> iter = pattern.iterator();
 		
 		LinkedList<Pair<Integer, SuffixTreeNode>> previous = new LinkedList<Pair<Integer, SuffixTreeNode>>();
-		previous.add(new Pair<Integer, SuffixTreeNode>(0, root));
+		previous.add(new Pair<>(0, root));
 		
 		while (iter.hasNext())
 		{
@@ -90,7 +90,7 @@ public class BasicSuffixTree implements SuffixTree {
 			for (Pair<Integer, SuffixTreeNode> tuple : previous)
 			{
 				if (tuple.getValue1().contains(bp)) {
-					next.add(new Pair<Integer, SuffixTreeNode>(tuple.getValue0(), tuple.getValue1().get(bp)));
+					next.add(new Pair<>(tuple.getValue0(), tuple.getValue1().get(bp)));
 				}
 				else if (maxDistance < 0 || tuple.getValue0().intValue()+1 < maxDistance) {
 					for (SuffixTreeNode child : tuple.getValue1().getAll()) {
@@ -115,7 +115,7 @@ public class BasicSuffixTree implements SuffixTree {
                 .map(key -> new Pair<>(key, this.factory.getSequenceCollection(results.get(key))))
                 .collect(Collectors.toList());
 
-		// Sort distances on the distance value
+		// Sort distances on the shortestDistance value
 		Collections.sort(distances, new Comparator<Pair<Integer, SequenceCollection>>() {
 
 			@Override
@@ -126,15 +126,10 @@ public class BasicSuffixTree implements SuffixTree {
 		
 		return distances;
 	}
-
-	@Override
-	public Collection<Pair<Sequence, List<Integer>>> distances(Sequence sequence) {
-		return distances(sequence, -1);
-	}
 	
 	@Override
-	public Collection<Pair<Sequence, List<Integer>>> distances(Sequence sequence, int maxDistance) {
-		Iterator<BasePair> iter = sequence.iterator();
+	public Collection<Pair<Sequence, List<Integer>>> distances(Sequence pattern, int maxDistance) {
+		Iterator<BasePair> iter = pattern.iterator();
 		
 		LinkedList<Pair<Integer, SuffixTreeNode>> previous = new LinkedList<Pair<Integer, SuffixTreeNode>>();
 		previous.add(new Pair<>(0, root));
@@ -153,7 +148,7 @@ public class BasicSuffixTree implements SuffixTree {
 				}
 					
 				for (SuffixTreeNode child : tuple.getValue1().getAll()) {
-					// if they match don't increase the distance
+					// if they match don't increase the shortestDistance
 					if (!child.equals(match) && (maxDistance < 0 || tuple.getValue0().intValue() < maxDistance))
 						next.add(new Pair<Integer, SuffixTreeNode>(tuple.getValue0().intValue()+1, child));
 				}
@@ -199,11 +194,6 @@ public class BasicSuffixTree implements SuffixTree {
 
         return walker.getResult();
     }
-
-    @Override
-	public Collection<Pair<Integer, SequenceCollection>> distance(Sequence sequence) {
-		return distance(sequence, -1);
-	}
 
 	/**
 	 * Adds a new sequence to the suffix tree

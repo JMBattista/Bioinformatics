@@ -45,12 +45,13 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
     destroyAligner(aligner)
   }
 
-  "An empty " + anAligner should "should not contain any patterns" in {
+  "An empty " + anAligner should "should not contain any alignments" in {
     withAligner {
       (aligner) => {
-        val results = baseSeqs.map(pattern => (pattern.toString, aligner.addSequence(pattern)))
-        val expected = bases.zip(List.fill(bases.length)(false))
-        results should contain theSameElementsInOrderAs expected
+        baseSeqs.map(pattern => (pattern.toString, aligner.addPattern(pattern)))
+
+        val results = aligner.containedIn(seqSimple)
+        results should contain theSameElementsAs baseSeqs
       }
     }
   }
@@ -58,24 +59,24 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
   it should "should not provide any positions" in {
     withAligner {
       (aligner) => {
-        val results = baseSeqs.map(x => (x.toString, aligner.getPositions(x).size()))
+        val results = baseSeqs.map(x => (x.toString, aligner.getAlignments(x).size()))
         val expected = bases.zip(List.fill(bases.length)(0))
         results should contain theSameElementsInOrderAs expected
       }
     }
   }
 
-  it should "should not provide any shortest distance values" in {
+  it should "should not provide any shortest shortestDistance values" in {
     withAligner {
       (aligner) => {
-        val results = baseSeqs.map(x => (x.toString, aligner.distance(x).size()))
+        val results = baseSeqs.map(x => (x.toString, aligner.shortestDistance(x).size()))
         val expected = bases.zip(List.fill(bases.length)(0))
         results should contain theSameElementsInOrderAs expected
       }
     }
   }
 
-  it should "should not provide any distance values " in {
+  it should "should not provide any shortestDistance values " in {
     withAligner {
       (aligner) => {
         val results = baseSeqs.map(x => (x.toString, aligner.distances(x).size()))
@@ -88,7 +89,7 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
   it should "should allow adding a sequence" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(BasicSequence.create(FastaStringFileStreamReaderTest.recordSimple, AcceptUnknownDnaEncodingScheme.instance).get())
+        aligner.addPattern(BasicSequence.create(FastaStringFileStreamReaderTest.recordSimple, AcceptUnknownDnaEncodingScheme.instance).get())
       }
     }
   }
@@ -96,8 +97,8 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
   anAligner + "built with the SimpleRecord" should "contain the single base patterns" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(seqSimple)
-        val results = baseSeqs.map(x => (x.toString, aligner.contains(x)))
+        aligner.addPattern(seqSimple)
+        val results = baseSeqs.map(x => (x.toString, aligner.containedIn(x)))
         val expected = bases.zip(List.fill(bases.length)(true))
         results should contain theSameElementsInOrderAs expected
       }
@@ -107,8 +108,8 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
   it should "provide positions" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(seqSimple)
-        val results = baseSeqs.map(x => (x.toString, aligner.getPositions(x).size()))
+        aligner.addPattern(seqSimple)
+        val results = baseSeqs.map(x => (x.toString, aligner.getAlignments(x).size()))
         val expected = bases.zip(List(22, 20, 13, 25))
         results should contain theSameElementsInOrderAs expected
       }
@@ -118,8 +119,8 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
   it should "determine shortest values for single base sequences" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(seqSimple)
-        val results = baseSeqs.map(x => (x.toString, aligner.distance(x).size()))
+        aligner.addPattern(seqSimple)
+        val results = baseSeqs.map(x => (x.toString, aligner.shortestDistance(x).size()))
         val expected = bases.zip(List.fill(bases.length)(1))
         results should contain theSameElementsInOrderAs expected
       }
@@ -129,7 +130,7 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
   it should "determine distances for single base sequences" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(seqSimple)
+        aligner.addPattern(seqSimple)
         val results = baseSeqs.map(x => (x.toString, aligner.distances(x).size()))
         val expected = bases.zip(List.fill(bases.length)(1))
         results should contain theSameElementsInOrderAs expected
@@ -140,8 +141,8 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
   it should "allow adding a sequence" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(seqSimple)
-        aligner.addSequence(seqRecord1)
+        aligner.addPattern(seqSimple)
+        aligner.addPattern(seqRecord1)
       }
     }
   }
@@ -149,18 +150,18 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
   it should "find its identity pattern" in {
     withAligner(
       (aligner) => {
-        aligner.addSequence(seqSimple)
-        aligner.contains(seqSimple) should be (true)
-        aligner.getPositions(seqSimple) should contain theSameElementsAs  (List(Position.`with`(seqSimple, 0)))
+        aligner.addPattern(seqSimple)
+        aligner.containedIn(seqSimple) should be (true)
+        aligner.getAlignments(seqSimple) should contain theSameElementsAs  (List(Position.`with`(seqSimple, 0)))
       })
   }
 
   it should "not contain the record1 pattern" in {
     withAligner(
       (aligner) => {
-        aligner.addSequence(seqSimple)
-        aligner.contains(seqRecord1) should be (false)
-        aligner.getPositions(seqRecord1) should contain theSameElementsAs  (List())
+        aligner.addPattern(seqSimple)
+        aligner.containedIn(seqRecord1) should be (false)
+        aligner.getAlignments(seqRecord1) should contain theSameElementsAs  (List())
       }
     )
   }
@@ -168,8 +169,8 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
   anAligner + "built with the Record1" should "contain the single base patterns" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(seqRecord1)
-        baseSeqs.map(x => (x.toString, aligner.contains(x))) should contain theSameElementsInOrderAs
+        aligner.addPattern(seqRecord1)
+        baseSeqs.map(x => (x.toString, aligner.containedIn(x))) should contain theSameElementsInOrderAs
           bases.zip(List.fill(bases.length)(true))
       }
     }
@@ -178,13 +179,13 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
   anAligner + "built with recordSimple/1/2/3" should "be able to report matches across all the parents" in {
     withAligner(
       (aligner) => {
-        sourceSeqs.map(text => aligner.addSequence(text))
+        sourceSeqs.map(text => aligner.addPattern(text))
 
         // All the bases are contained in this alligner
-        baseSeqs.map(x => (x.toString, aligner.contains(x))) should contain theSameElementsInOrderAs
+        baseSeqs.map(x => (x.toString, aligner.containedIn(x))) should contain theSameElementsInOrderAs
           bases.zip(List.fill(bases.length)(true))
 
-        val parentSets = baseSeqs.map(pattern => (pattern.toString, aligner.getPositions(pattern).toList.map(p => p.getSequence).toSet))
+        val parentSets = baseSeqs.map(pattern => (pattern.toString, aligner.getAlignments(pattern).toList.map(p => p.getSequence).toSet))
 
         forAll (parentSets) {
           set => set._2 should contain theSameElementsAs  sourceSeqs

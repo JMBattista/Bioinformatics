@@ -140,10 +140,10 @@ public class Walkers {
     }
 
     /**
-     * For the given sequence finds the alignment with the minimum distance.
+     * For the given sequence finds the alignment with the minimum shortestDistance.
      * Distance function is 1 for each mismatched BasePair and does not allow gaps.
      * @param sequence The target sequence we are trying to align
-     * @return The distance for the alignment and the list of sequenced position pairs that match the alignment.
+     * @return The shortestDistance for the alignment and the list of sequenced position pairs that match the alignment.
      */
     public static Walk<Triplet<Integer, Integer, Collection<Position>>,
                     Pair<Integer, Collection<Position>>> distance(Sequence sequence)
@@ -152,11 +152,11 @@ public class Walkers {
     }
 
     /**
-     * For the given sequence finds the alignment with the minimum distance, as long as it is less than or equal to maxDistance
+     * For the given sequence finds the alignment with the minimum shortestDistance, as long as it is less than or equal to maxDistance
      * Distance function is 1 for each mismatched BasePair and does not allow gaps.
      * @param sequence The target sequence we are trying to align
-     * @Param maxDistance The maximum distance a sequence can be before being rejected
-     * @return The distance for the alignment and the list of sequenced position pairs that match the alignment.
+     * @Param maxDistance The maximum shortestDistance a sequence can be before being rejected
+     * @return The shortestDistance for the alignment and the list of sequenced position pairs that match the alignment.
      */
     public static Walk<Triplet<Integer, Integer, Collection<Position>>,
             Optional<Pair<Integer, Collection<Position>>>> distance(Sequence sequence, int maxDistance)
@@ -181,7 +181,7 @@ public class Walkers {
                 final int position = metadata.getValue0();
                 final int distance = getDistance(metadata.getValue1(), basePair, sequence.get(position));
 
-                // A max distance of 0 means infinity
+                // A max shortestDistance of 0 means infinity
                 if (maxDistance != 0 && distance > maxDistance)
                     return Optional.empty();
 
@@ -193,11 +193,11 @@ public class Walkers {
                     return Optional.of(Triplet.with(position +1, distance, positions));
                 }
                 else {
-                    // If there is no result, or the result is of a higher distance use the current value
+                    // If there is no result, or the result is of a higher shortestDistance use the current value
                     if (!result.isPresent() || (result.isPresent() && result.get().getValue0() > distance)) {
                             result = Optional.of(Pair.<Integer, Collection<Position>>with(distance, new HashSet<>(positions)));
                     }
-                        // If the result distance matches current distance add the positions
+                        // If the result shortestDistance matches current shortestDistance add the positions
                     else if (result.get().getValue0().intValue() == distance) {
                             result.get().getValue1().addAll(positions);
                     }
@@ -219,7 +219,7 @@ public class Walkers {
 
             @Override
             public int compare(Triplet<Integer, Integer, Collection<Position>> a, Triplet<Integer, Integer, Collection<Position>> b) {
-                // Value 1 is distance
+                // Value 1 is shortestDistance
                 return a.getValue1() - b.getValue1();
             }
         };

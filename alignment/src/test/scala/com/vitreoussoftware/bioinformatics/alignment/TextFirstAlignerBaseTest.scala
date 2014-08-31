@@ -58,24 +58,24 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
   it should "should not provide any positions" in {
     withAligner {
       (aligner) => {
-        val results = baseSeqs.map(x => (x.toString, aligner.getPositions(x).size()))
+        val results = baseSeqs.map(x => (x.toString, aligner.getAlignments(x).size()))
         val expected = bases.zip(List.fill(bases.length)(0))
         results should contain theSameElementsInOrderAs expected
       }
     }
   }
 
-  it should "should not provide any shortest distance values" in {
+  it should "should not provide any shortest shortestDistance values" in {
     withAligner {
       (aligner) => {
-        val results = baseSeqs.map(x => (x.toString, aligner.distance(x).size()))
+        val results = baseSeqs.map(x => (x.toString, aligner.shortestDistance(x).size()))
         val expected = bases.zip(List.fill(bases.length)(0))
         results should contain theSameElementsInOrderAs expected
       }
     }
   }
 
-  it should "should not provide any distance values " in {
+  it should "should not provide any shortestDistance values " in {
     withAligner {
       (aligner) => {
         val results = baseSeqs.map(x => (x.toString, aligner.distances(x).size()))
@@ -108,7 +108,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
     withAligner {
       (aligner) => {
         aligner.addSequence(seqSimple)
-        val results = baseSeqs.map(x => (x.toString, aligner.getPositions(x).size()))
+        val results = baseSeqs.map(x => (x.toString, aligner.getAlignments(x).size()))
         val expected = bases.zip(List(22, 20, 13, 25))
         results should contain theSameElementsInOrderAs expected
       }
@@ -119,7 +119,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
     withAligner {
       (aligner) => {
         aligner.addSequence(seqSimple)
-        val results = baseSeqs.map(x => (x.toString, aligner.distance(x).size()))
+        val results = baseSeqs.map(x => (x.toString, aligner.shortestDistance(x).size()))
         val expected = bases.zip(List.fill(bases.length)(1))
         results should contain theSameElementsInOrderAs expected
       }
@@ -151,7 +151,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
       (aligner) => {
         aligner.addSequence(seqSimple)
         aligner.contains(seqSimple) should be (true)
-        aligner.getPositions(seqSimple) should contain theSameElementsAs  (List(Position.`with`(seqSimple, 0)))
+        aligner.getAlignments(seqSimple) should contain theSameElementsAs  (List(Position.`with`(seqSimple, 0)))
       })
   }
 
@@ -160,7 +160,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
       (aligner) => {
         aligner.addSequence(seqSimple)
         aligner.contains(seqRecord1) should be (false)
-        aligner.getPositions(seqRecord1) should contain theSameElementsAs  (List())
+        aligner.getAlignments(seqRecord1) should contain theSameElementsAs  (List())
       }
     )
   }
@@ -184,7 +184,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
         baseSeqs.map(x => (x.toString, aligner.contains(x))) should contain theSameElementsInOrderAs
           bases.zip(List.fill(bases.length)(true))
 
-        val parentSets = baseSeqs.map(pattern => (pattern.toString, aligner.getPositions(pattern).toList.map(p => p.getSequence).toSet))
+        val parentSets = baseSeqs.map(pattern => (pattern.toString, aligner.getAlignments(pattern).toList.map(p => p.getSequence).toSet))
 
         forAll (parentSets) {
           set => set._2 should contain theSameElementsAs  sourceSeqs
