@@ -11,6 +11,6 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
  */
 public interface SequenceCollection extends Collection<Sequence>, Iterable<Sequence> {
     public static SequenceCollection from(Collection<Sequence> collection) {
-        return (SequenceCollection)collection;
+        return new JavaCollectionWrapper(collection);
     }
 }

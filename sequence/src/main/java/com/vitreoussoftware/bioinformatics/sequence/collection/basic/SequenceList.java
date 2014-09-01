@@ -18,7 +18,7 @@ public class SequenceList extends ArrayList<Sequence> implements SequenceCollect
 	 */
 	private static final long serialVersionUID = 9119483062067567584L;
 	
-	SequenceList() {
+	protected SequenceList() {
 		super();
 	}
 

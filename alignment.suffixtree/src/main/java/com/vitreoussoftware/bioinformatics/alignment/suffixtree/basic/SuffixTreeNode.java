@@ -14,12 +14,12 @@ class SuffixTreeNode {
 	 * The set of child BasePairs
 	 */
 	private final HashMap<BasePair, SuffixTreeNode> children;
-	private final Collection<Alignment> alignments;
+	private final Collection<Position> texts;
     private final BasePair basePair;
 
     SuffixTreeNode(BasePair basePair)
 	{
-		this.alignments = new LinkedList<>();
+		this.texts = new LinkedList<>();
 		this.children = new HashMap<>();
         this.basePair = basePair;
 	}
@@ -68,12 +68,12 @@ class SuffixTreeNode {
 		return max + 1;
 	}
 
-	Collection<Alignment> getAlignments() {
-		return this.alignments;
+	Collection<Position> getTexts() {
+		return this.texts;
 	}
 
 	void addPosition(Sequence sequence, int index) {
-		this.alignments.add(Alignment.with(sequence, index));
+		this.texts.add(Position.with(sequence, index));
 	}
 
     public BasePair getBasePair() {

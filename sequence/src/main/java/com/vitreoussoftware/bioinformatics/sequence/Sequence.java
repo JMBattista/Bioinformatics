@@ -1,21 +1,31 @@
 package com.vitreoussoftware.bioinformatics.sequence;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-import javax.management.RuntimeErrorException;
-
-import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
+import com.vitreoussoftware.collections.Streamable;
 
 /**
  * A DNA Sequence representation
  * @author John
  *
  */
-public interface Sequence extends Iterable<BasePair> {
-	/**
+public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
+
+    @Override
+    public default Stream<BasePair> stream() {
+        return StreamSupport.stream(spliterator(), false);
+    }
+
+    @Override
+    public default Stream<BasePair> parallelStream() {
+        return StreamSupport.stream(spliterator(), true);
+    }
+
+    /**
 	 * Return an iterator that proceeds from the back to the front of the sequence
 	 * @return the basepair iterator
 	 */
@@ -115,13 +125,11 @@ public interface Sequence extends Iterable<BasePair> {
 
             @Override
             public void forEachRemaining(Consumer<? super BasePair> consumer) {
-                int remaining = index;
-
                 try {
-                    while (remaining < length())
+                    while (index < length())
                     {
-                        consumer.accept(getBasePair(remaining));
-                        remaining++;
+                        consumer.accept(get(index));
+                        index++;
                     }
                 } catch (InvalidDnaFormatException e) {
                     throw new RuntimeException("We encountered a badly encoded set of base pairs inside sequence iterator");
@@ -136,16 +144,12 @@ public interface Sequence extends Iterable<BasePair> {
             @Override
             public BasePair next() {
                 try {
-                    BasePair bp = getBasePair(index);
+                    BasePair bp = get(index);
                     index++;
                     return bp;
                 } catch (InvalidDnaFormatException e) {
                     throw new RuntimeException("We encountered a badly encoded set of base pairs inside sequence iterator");
                 }
-            }
-
-            private BasePair getBasePair(int index) throws InvalidDnaFormatException {
-                return get(index);
             }
 
             @Override
@@ -158,6 +162,51 @@ public interface Sequence extends Iterable<BasePair> {
 
     @Override
     public default Spliterator<BasePair> spliterator() {
-        throw new UnsupportedOperationException("Splitterator is not defined for Sequence");
+        return new SequenceSpliterator(this, 0, length());
+    }
+
+    class SequenceSpliterator implements Spliterator<BasePair> {
+        private final Sequence sequence;
+        int origin;
+        int fence;
+
+        public SequenceSpliterator(Sequence sequence, int origin, int fence) {
+            this.sequence = sequence;
+            this.origin = origin;
+            this.fence = fence;
+        }
+
+        @Override
+        public boolean tryAdvance(Consumer<? super BasePair> action) {
+            if (origin <= fence) {
+                action.accept(sequence.get(origin));
+                origin++;
+                return true;
+            }
+
+            return false;
+        }
+
+            @Override
+            public Spliterator<BasePair> trySplit() {
+            int low = origin;
+            int mid =  ((low + fence) >>> 1) & -1;
+            if (low < mid) {
+                origin = mid;
+                return new SequenceSpliterator(sequence, low, mid);
+            }
+
+            return null;
+        }
+
+            @Override
+            public long estimateSize() {
+            return (fence - origin) / 2;
+        }
+
+            @Override
+            public int characteristics() {
+            return ORDERED | SIZED | IMMUTABLE | SUBSIZED | NONNULL;
+        }
     }
 }

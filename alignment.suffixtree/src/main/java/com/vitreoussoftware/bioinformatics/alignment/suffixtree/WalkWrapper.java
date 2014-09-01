@@ -1,6 +1,7 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 
 import com.vitreoussoftware.bioinformatics.alignment.Alignment;
+import com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic.Position;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 
 import java.util.Collection;
@@ -41,8 +42,8 @@ public final class WalkWrapper<T, R, R2> implements Walk<T, R2> {
     }
 
     @Override
-    public Optional<T> visit(BasePair basePair, Collection<Alignment> alignments, T metadata) {
-        return wrappedWalk.visit(basePair, alignments, metadata);
+    public Optional<T> visit(BasePair basePair, Collection<Position> positions, T metadata) {
+        return wrappedWalk.visit(basePair, positions, metadata);
     }
 
     @Override

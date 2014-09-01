@@ -1,15 +1,16 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 
 import com.vitreoussoftware.bioinformatics.alignment.Alignment;
+import com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic.Position;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
+import scala.tools.cmd.Opt;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * Provided Walk implementations, see the CountedWalk class to get information on how the walk is used
@@ -49,7 +50,7 @@ public class Walkers {
             }
 
             @Override
-            public Optional<Integer> visit(BasePair basePair, Collection<Alignment> alignments, Integer metadata) {
+            public Optional<Integer> visit(BasePair basePair, Collection<Position> positions, Integer metadata) {
                 size.incrementAndGet();
                 return Optional.of(0);
             }
@@ -86,7 +87,7 @@ public class Walkers {
             }
 
             @Override
-            public Optional<Integer> visit(BasePair basePair, Collection<Alignment> alignments, Integer metadata) {
+            public Optional<Integer> visit(BasePair basePair, Collection<Position> positions, Integer metadata) {
                 int result = metadata + 1;
 
                 // No need to enter syncronized block unless there is a chance it will be changed
@@ -125,7 +126,7 @@ public class Walkers {
             }
 
             @Override
-            public Optional<Integer> visit(BasePair basePair, Collection<Alignment> alignments, Integer metadata) {
+            public Optional<Integer> visit(BasePair basePair, Collection<Position> positions, Integer metadata) {
                 if (sequence.get(metadata).equals(basePair))
                     return Optional.of(metadata +1);
                 else
@@ -145,8 +146,7 @@ public class Walkers {
      * @param sequence The target sequence we are trying to align
      * @return The shortestDistance for the alignment and the list of sequenced position pairs that match the alignment.
      */
-    public static Walk<Triplet<Integer, Integer, Collection<Alignment>>,
-                    Pair<Integer, Collection<Alignment>>> distance(Sequence sequence)
+    public static Walk<Triplet<Integer, Integer, Collection<Position>>, Collection<Alignment>> distance(Sequence sequence)
     {
         return new WalkWrapper<>(distance(sequence, 0), x -> x.get());
     }
@@ -158,26 +158,26 @@ public class Walkers {
      * @Param maxDistance The maximum shortestDistance a sequence can be before being rejected
      * @return The shortestDistance for the alignment and the list of sequenced position pairs that match the alignment.
      */
-    public static Walk<Triplet<Integer, Integer, Collection<Alignment>>,
-            Optional<Pair<Integer, Collection<Alignment>>>> distance(Sequence sequence, int maxDistance)
+    public static Walk<Triplet<Integer, Integer, Collection<Position>>,
+            Optional<Collection<Alignment>>> distance(Sequence sequence, int maxDistance)
     {
-        return new Walk<Triplet<Integer, Integer, Collection<Alignment>>,
-                Optional<Pair<Integer, Collection<Alignment>>>>() {
-            Optional<Pair<Integer, Collection<Alignment>>> result = Optional.empty();
+        return new Walk<Triplet<Integer, Integer, Collection<Position>>,
+                Optional<Collection<Alignment>>>() {
+            Optional<Collection<Alignment>> result = Optional.empty();
 
             @Override
-            public Triplet<Integer, Integer, Collection<Alignment>> initialValue() {
+            public Triplet<Integer, Integer, Collection<Position>> initialValue() {
                 // Alignment, Distance, Parent Positions for prev
                 return Triplet.with(0, 0, null);
             }
 
             @Override
-            public Optional<Pair<Integer,Collection<Alignment>>> getResult() {
+            public Optional<Collection<Alignment>> getResult() {
                 return result;
             }
 
             @Override
-            public Optional<Triplet<Integer, Integer, Collection<Alignment>>> visit(BasePair basePair, Collection<Alignment> alignments, Triplet<Integer, Integer, Collection<Alignment>> metadata) {
+            public Optional<Triplet<Integer, Integer, Collection<Position>>> visit(BasePair basePair, Collection<Position> positions, Triplet<Integer, Integer, Collection<Position>> metadata) {
                 final int position = metadata.getValue0();
                 final int distance = getDistance(metadata.getValue1(), basePair, sequence.get(position));
 
@@ -186,20 +186,25 @@ public class Walkers {
                     return Optional.empty();
 
                 // Stop considering branches that are more costly than current minimum
-                if (result.isPresent() && distance > result.get().getValue0())
+                Optional<Integer> resultDistance = result.flatMap(collection -> collection.stream().findFirst()).map(alignment -> alignment.getDistance());
+
+                if (resultDistance.map(d -> distance > d).orElse(false))
                     return Optional.empty();
 
                 if (position < sequence.length() - 1) {
-                    return Optional.of(Triplet.with(position +1, distance, alignments));
+                    return Optional.of(Triplet.with(position +1, distance, positions));
                 }
                 else {
                     // If there is no result, or the result is of a higher shortestDistance use the current value
-                    if (!result.isPresent() || (result.isPresent() && result.get().getValue0() > distance)) {
-                            result = Optional.of(Pair.<Integer, Collection<Alignment>>with(distance, new HashSet<>(alignments)));
+                    if (resultDistance.map(d -> d > distance).orElse(true)) {
+                            result = Optional.of(positions.stream().map(p -> Alignment.with(p.getSequence(), p.getPosition(), distance))
+                                    .collect(Collectors.toCollection(HashSet::new)));
                     }
-                        // If the result shortestDistance matches current shortestDistance add the alignments
-                    else if (result.get().getValue0().intValue() == distance) {
-                            result.get().getValue1().addAll(alignments);
+                    // If the result shortestDistance matches current shortestDistance add the positions
+                    else if (resultDistance.get() == distance) {
+                        List<Alignment> alignments = positions.stream().map(p -> Alignment.with(p.getSequence(), p.getPosition(), distance))
+                                .collect(Collectors.toList());
+                        result.get().addAll(alignments);
                     }
 
                     // We don't need to continue the walk from this point, we've reached the end!
@@ -212,13 +217,13 @@ public class Walkers {
             }
 
             @Override
-            public boolean isFinished(Triplet<Integer, Integer, Collection<Alignment>> metadata) {
+            public boolean isFinished(Triplet<Integer, Integer, Collection<Position>> metadata) {
                 // We only know we're finished if we found an exact match or we've exhausted all search paths
-                return result.isPresent() && result.get().getValue0().intValue() == 0;
+                return result.isPresent() && result.get().stream().findFirst().get().getDistance() == 0;
             }
 
             @Override
-            public int compare(Triplet<Integer, Integer, Collection<Alignment>> a, Triplet<Integer, Integer, Collection<Alignment>> b) {
+            public int compare(Triplet<Integer, Integer, Collection<Position>> a, Triplet<Integer, Integer, Collection<Position>> b) {
                 // Value 1 is shortestDistance
                 return a.getValue1() - b.getValue1();
             }

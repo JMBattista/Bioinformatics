@@ -7,6 +7,7 @@ import com.vitreoussoftware.bioinformatics.sequence.reader.fasta.FastaStringFile
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import scala.collection.JavaConversions._
+import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection
 
 /**
  * Set of Basic Behavior tests for TextFirstAlginers
@@ -115,13 +116,47 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
     }
   }
 
-  it should "determine shortest values for single base sequences" in {
+  it should "report zero as the shortest distance for all single base pairs" in {
     withAligner {
       (aligner) => {
         aligner.addSequence(seqSimple)
-        val results = baseSeqs.map(x => (x.toString, aligner.shortestDistance(x).size()))
-        val expected = bases.zip(List.fill(bases.length)(1))
-        results should contain theSameElementsInOrderAs expected
+        val results = baseSeqs.map(x => (x, aligner.shortestDistance(x)))
+
+        results should have size(baseSeqs.size)
+
+        for ((pattern, alignments) <- results) {
+          pattern should have length 1
+          val patternBase = pattern.get(0);
+          alignments.size should be(seqSimple.filter(bp => bp == patternBase) size)
+
+          forAll(alignments) { alignment =>
+            alignment.getSequence should be(seqSimple)
+            alignment.getDistance should be(0)
+          }
+        }
+      }
+    }
+  }
+
+  it should "also work for a collection of base sequences" in {
+    withAligner {
+      (aligner) => {
+        aligner.addSequence(seqSimple)
+        val results = aligner.shortestDistance(SequenceCollection.from(baseSeqs)).map(pair => (pair.getValue0, pair.getValue1))
+
+        results should have size(baseSeqs.size)
+
+        for ((pattern, alignments) <- results) {
+          pattern should have length 1
+          val patternBase = pattern.get(0);
+          alignments.size should be(seqSimple.filter(bp => bp == patternBase) size)
+
+          forAll(alignments) { alignment =>
+            alignment.getSequence should be(seqSimple)
+            alignment.getDistance should be(0)
+          }
+        }
+
       }
     }
   }

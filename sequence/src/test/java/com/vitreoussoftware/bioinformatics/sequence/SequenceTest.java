@@ -164,14 +164,15 @@ public class SequenceTest {
     public void testIterator_forEachRemaining() {
         final Sequence seq = this.factory.fromString("ATCGU").get();
 
-        final Iterator<BasePair> iterator = seq.iterator();
-
         for (int i = 0; i < seq.length(); i++) {
-            assertTrue("There was no element @" + i, iterator.hasNext());
+            final Iterator<BasePair> iterator = seq.iterator();
+            for (int j = 0; j < i; j++) {
+                assertTrue("There was no element @" + j, iterator.hasNext());
+                iterator.next();
+            }
             final AtomicInteger remainingCount = new AtomicInteger();
             iterator.forEachRemaining(x -> remainingCount.incrementAndGet());
             assertEquals("Number of remaining elements was wrong", seq.length()-i, remainingCount.get());
-            iterator.next();
         }
     }
 }

@@ -3,6 +3,7 @@ package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.vitreoussoftware.bioinformatics.alignment.Alignment;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
@@ -69,24 +70,25 @@ public class BasicSuffixTree implements SuffixTree {
 				return Collections.EMPTY_LIST;
 		}
 		
-		return current.getAlignments();
+		return current.getTexts().stream().map(position -> Alignment.with(position.getSequence(), position.getPosition())).collect(Collectors.toCollection(LinkedList::new));
 	}
 	
 	
 
 	@Override
-	public Collection<Pair<Integer, SequenceCollection>> shortestDistance(Sequence pattern, int maxDistance) {
+	public Collection<Alignment> shortestDistance(Sequence pattern, int maxDistance) {
 		Iterator<BasePair> iter = pattern.iterator();
 		
 		LinkedList<Pair<Integer, SuffixTreeNode>> previous = new LinkedList<Pair<Integer, SuffixTreeNode>>();
 		previous.add(new Pair<>(0, root));
-		
+
+        //TODO use a priority queue based on distance so we don't evaluate more items than necessary
 		while (iter.hasNext())
 		{
-			LinkedList<Pair<Integer, SuffixTreeNode>> next = new LinkedList<Pair<Integer, SuffixTreeNode>>();
-			
+			LinkedList<Pair<Integer, SuffixTreeNode>> next = new LinkedList<>();
+
 			BasePair bp = iter.next();
-			
+
 			for (Pair<Integer, SuffixTreeNode> tuple : previous)
 			{
 				if (tuple.getValue1().contains(bp)) {
@@ -98,33 +100,17 @@ public class BasicSuffixTree implements SuffixTree {
 					}
 				}
 			}
-			
+
 			previous = next;
 		}
 
-        Map<Sequence, List<Integer>> collected = previous.parallelStream()
-                .<Pair<Sequence, Integer>>flatMap(pair -> pair.getValue1().getAlignments().stream().map(position -> new Pair<>(position.getSequence(), pair.getValue0())))
-                .collect(Collectors.groupingBy(tuple -> tuple.getValue0(), Collectors.mapping(x -> x.getValue1(), Collectors.toList())));
+        Collection<Alignment> collected = previous.parallelStream().flatMap(pair ->
+                pair.getValue1().getTexts().stream().map(position -> Alignment.with(position.getSequence(), position.getPosition(), pair.getValue0())))
+                .collect(Collectors.toCollection(LinkedList::new));
 
-        Map<Integer, List<Sequence>> results = collected.keySet().parallelStream()
-                .map(parent -> new Pair<>(collected.get(parent).stream().reduce((x, y) -> Math.min(x, y)).get(), parent))
-                .collect(Collectors.groupingBy(pair -> pair.getValue0(), Collectors.mapping(x -> x.getValue1(), Collectors.toList())));
+        int shortestDistance = collected.stream().min((a, b) -> a.getDistance() - b.getDistance()).map(a -> a.getDistance()).orElse(0);
 
-
-        List<Pair<Integer, SequenceCollection>> distances = results.keySet().parallelStream()
-                .map(key -> new Pair<>(key, this.factory.getSequenceCollection(results.get(key))))
-                .collect(Collectors.toList());
-
-		// Sort distances on the shortestDistance value
-		Collections.sort(distances, new Comparator<Pair<Integer, SequenceCollection>>() {
-
-			@Override
-			public int compare(Pair<Integer, SequenceCollection> arg0, Pair<Integer, SequenceCollection> arg1) {
-				return arg0.getValue0() - arg1.getValue0();
-			}
-		});
-		
-		return distances;
+        return collected.stream().filter(alignment -> alignment.getDistance() == shortestDistance).collect(Collectors.toCollection(LinkedList::new));
 	}
 	
 	@Override
@@ -159,7 +145,7 @@ public class BasicSuffixTree implements SuffixTree {
 		}
 
         final Map<Sequence,List<Integer>> results = previous.parallelStream()
-                .flatMap(tuple -> tuple.getValue1().getAlignments().stream().map(position -> new Pair<>(position.getSequence(), tuple.getValue0())))
+                .flatMap(tuple -> tuple.getValue1().getTexts().stream().map(position -> new Pair<>(position.getSequence(), tuple.getValue0())))
                 .collect(Collectors.groupingBy(tuple -> tuple.getValue0(), Collectors.mapping(tuple -> tuple.getValue1(), Collectors.toList())));
 
         return results.keySet().parallelStream()
@@ -180,7 +166,7 @@ public class BasicSuffixTree implements SuffixTree {
         while (!toBeWalked.isEmpty()) {
             Pair<SuffixTreeNode, T> pair = toBeWalked.remove();
             for (SuffixTreeNode node : pair.getValue0().getAll()) {
-                Optional<T> result = walker.visit(node.getBasePair(), node.getAlignments(), pair.getValue1());
+                Optional<T> result = walker.visit(node.getBasePair(), node.getTexts(), pair.getValue1());
 
                 // If there was a result use it, otherwise ignore
                 if (result.isPresent()) {
@@ -201,29 +187,20 @@ public class BasicSuffixTree implements SuffixTree {
 	 */
 	public void addSequence(final Sequence text) {
 		if (text == null) throw new IllegalArgumentException("Sequence cannot be null");
-		Iterator<BasePair> suffixIter = text.iterator();
 
         // Start from the front of the sequence and then for each position
-        int offset = 0;
-		while (suffixIter.hasNext())
+		for (int offset = 0; offset < text.length(); offset++)
 		{
-            final int currentOffset = offset;
+            SuffixTreeNode current = root;
             // Add the sub-sequence of elements remaining in the sequence to the SuffixTree
-            suffixIter.forEachRemaining(new Consumer<BasePair>() {
-				SuffixTreeNode current = root;
-                int index = 0;
-				
-				public void accept(BasePair bp) {
-					current = current.getOrCreate(bp);
-                    // We add the position the sequence started from, not its current point
-                    //  to better support alignment algorithms which will be interested in finding a partial
-                    //  alignment and then knowing what its starting point was
-					current.addPosition(text, currentOffset);
-                    index++;
-				}
-			});
-			suffixIter.next();
-            ++ offset;
+            for (int j = offset; j < text.length(); j++) {
+                BasePair bp = text.get(j);
+                current = current.getOrCreate(bp);
+                // We add the position the sequence started from, not its current point
+                //  to better support alignment algorithms which will be interested in finding a partial
+                //  alignment and then knowing what its starting point was
+                current.addPosition(text, offset);
+            }
 		}
 	}
 }
