@@ -8,16 +8,13 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import scala.collection.JavaConversions._
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection
+import org.scalatest.{Inside, Matchers}
 
-/**
- * Set of Basic Behavior tests for TextFirstAlginers
- *
- * Created by John on 8/23/14.
- */
-@RunWith(classOf[JUnitRunner])
-abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
+trait AlignerTestData {
   val bases = List("A", "U", "C", "G")
-  val baseSeqs = bases.map(base => BasicSequence.create(base, AcceptUnknownDnaEncodingScheme.instance).get())
+  val baseSeqs = seqsFrom(bases)
+  val offByNSeqs = seqsFrom(List("AAN", "ANA", "NAA"))
+  val offByNSeqsLong = seqsFrom(List("AAAAAAAAAAN", "AAAAANAAAAA", "NAAAAAAAAAAA"))
 
   val seqSimple = BasicSequence.create(FastaStringFileStreamReaderTest.recordSimple, AcceptUnknownDnaEncodingScheme.instance).get()
   val seqRecord1 = BasicSequence.create(FastaStringFileStreamReaderTest.record1, AcceptUnknownDnaEncodingScheme.instance).get()
@@ -26,6 +23,16 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
 
   val sourceSeqs = List(seqSimple, seqRecord1, seqRecord2, seqRecord3)
 
+  def seqsFrom(seqs: List[String]) = {
+    seqs.map(seq => BasicSequence.create(seq, AcceptUnknownDnaEncodingScheme.instance).get())
+  }
+
+  def zip[T1, T2](list: List[T1], value: T2) = {
+    list.zip(List.fill(list.length)(value))
+  }
+}
+
+trait AlignerHelpers extends Matchers {
   /**
    * Perform any setup necessary to create and return the aligner for use in tests
    * @return the aligner to use for the tests
@@ -39,19 +46,33 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
    * @return None
    */
   def destroyAligner(aligner: TextFirstAligner) = None
+}
 
+/**
+ * Set of Basic Behavior tests for TextFirstAlginers
+ *
+ * Created by John on 8/23/14.
+ */
+@RunWith(classOf[JUnitRunner])
+abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with AlignerTestData with AlignerHelpers {
+  /**
+   * Perform the test with an aligner
+   * @param test the test to run
+   */
   def withAligner(test: (TextFirstAligner) => Unit) = {
     val aligner = getAligner()
     test(aligner)
     destroyAligner(aligner)
   }
 
+
   "An empty " + anAligner should "should not contain any patterns" in {
     withAligner {
       (aligner) => {
-        val results = baseSeqs.map(x => (x.toString, aligner.contains(x)))
-        val expected = bases.zip(List.fill(bases.length)(false))
-        results should contain theSameElementsInOrderAs expected
+        forAll(baseSeqs) { (seq) => {
+            aligner contains seq shouldBe false
+          }
+        }
       }
     }
   }
@@ -60,7 +81,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
     withAligner {
       (aligner) => {
         val results = baseSeqs.map(x => (x.toString, aligner.getAlignments(x).size()))
-        val expected = bases.zip(List.fill(bases.length)(0))
+        val expected = zip(bases, 0)
         results should contain theSameElementsInOrderAs expected
       }
     }
@@ -167,7 +188,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
         aligner.addSequence(seqSimple)
         val results = baseSeqs.map(x => (x.toString, aligner.distances(x).size()))
         val expected = bases.zip(List.fill(bases.length)(1))
-        results should contain theSameElementsInOrderAs expected
+       results should contain theSameElementsInOrderAs expected
       }
     }
   }

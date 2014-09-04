@@ -35,5 +35,5 @@ abstract class PropertySpec extends UnitSpec with PropertyChecks {
 /**
  * Describe / it syntax Behavioral tests
  */
-abstract class BehaviorSpec extends FunSpec  with Matchers with Inside with OptionValues with EitherValues with Inspectors {
+abstract class BehaviorSpec extends fixture.FunSpec  with Matchers with Inside with OptionValues with EitherValues with Inspectors {
 }

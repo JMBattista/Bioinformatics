@@ -642,12 +642,10 @@ public abstract class SuffixTreeTest {
 		Sequence seq = this.sequenceFactory.fromString("AAAAAAAAAAN").get();
 
 		Collection<Alignment> alignments = tree.shortestDistance(seq, 10);
-        List<Sequence> texts = alignments.stream().map(alignment -> alignment.getSequence()).collect(Collectors.toList());
 
-        assertTrue("All tuples for A*N have distance 4", alignments.stream().allMatch(alignment -> alignment.getDistance() == 1));
-        assertTrue("All tuples for A*N have the correct text sequences", texts.stream().allMatch(text -> text.equals(recordSimple) || text.equals(record3)));
-        assertTrue("Some tuple for A*N has Simple as a text", texts.stream().anyMatch(text -> text.equals(recordSimple)));
-        assertTrue("Some tuple for A*N has Record3 as a text", texts.stream().anyMatch(text -> text.equals(record3)));
+        assertTrue("All tuples for A*N have distance 4", alignments.stream().allMatch(alignment -> alignment.getDistance() == 4));
+        assertTrue("All tuples for A*N have the correct text sequences", alignments.stream().map(a -> a.getSequence()).allMatch(text -> text.equals(recordSimple) || text.equals(record3)));
+        assertTrue("Some tuple for A*N has Record3 as a text", alignments.stream().map(a -> a.getSequence()).allMatch(text -> text.equals(record3)));
 
 		alignments = tree.shortestDistance(seq, 2);
 
@@ -671,10 +669,8 @@ public abstract class SuffixTreeTest {
         Collection<Alignment> alignments = tree.shortestDistance(seq, 10);
         List<Sequence> texts = alignments.stream().map(alignment -> alignment.getSequence()).collect(Collectors.toList());
 
-        assertTrue("All tuples for A*NA* have distance 4", alignments.stream().allMatch(alignment -> alignment.getDistance() == 1));
-        assertTrue("All tuples for A*NA* have the correct text sequences", texts.stream().allMatch(text -> text.equals(recordSimple) || text.equals(record3)));
-        assertTrue("Some tuple for A*NA* has Simple as a text", texts.stream().anyMatch(text -> text.equals(recordSimple)));
-        assertTrue("Some tuple for A*NA* has Record3 as a text", texts.stream().anyMatch(text -> text.equals(record3)));
+        assertTrue("All tuples for A*NA* have distance 4", alignments.stream().allMatch(alignment -> alignment.getDistance() == 4));
+        assertTrue("All tuples for A*NA* have the correct text sequences", texts.stream().allMatch(text -> text.equals(record3)));
 
         alignments = tree.shortestDistance(seq, 2);
 
@@ -698,10 +694,14 @@ public abstract class SuffixTreeTest {
         Collection<Alignment> alignments = tree.shortestDistance(seq, 10);
         List<Sequence> texts = alignments.stream().map(alignment -> alignment.getSequence()).collect(Collectors.toList());
 
-        assertTrue("All tuples for NA* have distance 4", alignments.stream().allMatch(alignment -> alignment.getDistance() == 1));
-        assertTrue("All tuples for NA* have the correct text sequences", texts.stream().allMatch(text -> text.equals(recordSimple) || text.equals(record3)));
-        assertTrue("Some tuple for NA* has Simple as a text", texts.stream().anyMatch(text -> text.equals(recordSimple)));
-        assertTrue("Some tuple for NA* has Record3 as a text", texts.stream().anyMatch(text -> text.equals(record3)));
+        int distance = alignments.stream().findFirst().map(x -> x.getDistance()).orElse(-1);
+
+        assertEquals("Basic distance was six", 5, distance);
+        for (Alignment alignment : alignments) {
+            assertEquals("Tuple did not have the same distance " + alignment, distance, alignment.getDistance());
+        }
+        assertTrue("All tuples for NA* have distance 5", alignments.stream().allMatch(alignment -> alignment.getDistance() == 5));
+        assertTrue("Some tuple for NA* has Record3 as a text", texts.stream().allMatch(text -> text.equals(record3)));
 
         alignments = tree.shortestDistance(seq, 2);
 

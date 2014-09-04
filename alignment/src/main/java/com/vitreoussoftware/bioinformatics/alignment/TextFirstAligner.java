@@ -52,7 +52,7 @@ public interface TextFirstAligner {
      * @param patterns to find alignments for
      * @return List of (Pattern, Collection<Alignment) pairs.
      */
-    default public Collection<Pair<Sequence, Collection<Alignment>>> getPositions(SequenceCollection patterns) {
+    default public Collection<Pair<Sequence, Collection<Alignment>>> getAlignments(SequenceCollection patterns) {
         return patterns.stream().map(pattern -> Pair.with(pattern, this.getAlignments(pattern))).collect(Collectors.toCollection(LinkedList::new));
     }
 
