@@ -33,7 +33,13 @@ public final class BasePair {
 		byte value = encodingScheme.getValue(nucleotide);
 		return new BasePair(value, encodingScheme);
 	}
-	
+
+    public int distance(BasePair bp) {
+        if (this.equals(bp))
+            return 0;
+        else
+            return 1;
+    }
 	
 	@Override
 	public int hashCode() {

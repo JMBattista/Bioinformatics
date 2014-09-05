@@ -9,6 +9,8 @@ import org.scalatest.junit.JUnitRunner
 import scala.collection.JavaConversions._
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection
 import org.scalatest.{Inside, Matchers}
+import com.vitreoussoftware.bioinformatics.sequence.{BasePair, Sequence}
+import org.scalacheck.{Gen, Arbitrary}
 
 trait AlignerTestData {
   val bases = List("A", "U", "C", "G")
@@ -29,6 +31,11 @@ trait AlignerTestData {
 
   def zip[T1, T2](list: List[T1], value: T2) = {
     list.zip(List.fill(list.length)(value))
+  }
+
+  def checkDistance(sequence: Sequence, alignment: Alignment) = {
+    alignment.getSequence.drop(alignment.getPosition).take(sequence.length()).zip(sequence)
+      .map(value => value._1 distance  value._2).sum
   }
 }
 

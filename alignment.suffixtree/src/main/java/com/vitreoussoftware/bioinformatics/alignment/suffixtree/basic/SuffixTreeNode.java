@@ -55,9 +55,17 @@ class SuffixTreeNode {
 	 * Retrieve all children of this node
 	 * @return return all the children
 	 */
-	Collection<? extends SuffixTreeNode> getAll() {
+	Collection<? extends SuffixTreeNode> values() {
 		return this.children.values();
 	}
+
+    /**
+     * Retrieve all Keys for the children
+     * @return return all the keys
+     */
+    Collection<BasePair> keySet() {
+        return this.children.keySet();
+    }
 
 	int depth() {
 		int max = 0;

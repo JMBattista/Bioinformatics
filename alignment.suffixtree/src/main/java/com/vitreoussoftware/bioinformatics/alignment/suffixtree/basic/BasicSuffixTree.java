@@ -1,15 +1,12 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 
 import java.util.*;
-import java.util.function.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.vitreoussoftware.bioinformatics.alignment.Alignment;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Walk;
 import com.vitreoussoftware.bioinformatics.sequence.*;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
 import org.javatuples.*;
 
@@ -77,40 +74,38 @@ public class BasicSuffixTree implements SuffixTree {
 
 	@Override
 	public Collection<Alignment> shortestDistance(Sequence pattern, int maxDistance) {
-		Iterator<BasePair> iter = pattern.iterator();
-		
-		LinkedList<Pair<Integer, SuffixTreeNode>> previous = new LinkedList<Pair<Integer, SuffixTreeNode>>();
-		previous.add(new Pair<>(0, root));
+		PriorityQueue<Triplet<Integer, Integer, SuffixTreeNode>> queue = new PriorityQueue<>(50, (a, b) -> a.getValue0() - b.getValue0());
+		queue.add(new Triplet<>(0, 0, root));
+        List<Alignment> alignments = new LinkedList<>();
 
-        //TODO use a priority queue based on distance so we don't evaluate more items than necessary
-		while (iter.hasNext())
+		while (queue.size() > 0)
 		{
-			LinkedList<Pair<Integer, SuffixTreeNode>> next = new LinkedList<>();
+            int distance = queue.peek().getValue0();
 
-			BasePair bp = iter.next();
+            if (alignments.size() > 0 && alignments.get(0).getDistance() < distance)
+                break;
 
-			for (Pair<Integer, SuffixTreeNode> tuple : previous)
+            int position = queue.peek().getValue1();
+            SuffixTreeNode node = queue.poll().getValue2();
+
+			BasePair bp = pattern.get(position);
+
+			for (BasePair candidate: node.keySet())
 			{
-				if (tuple.getValue1().contains(bp)) {
-					next.add(new Pair<>(tuple.getValue0(), tuple.getValue1().get(bp)));
-				}
-				else if (maxDistance < 0 || tuple.getValue0().intValue()+1 < maxDistance) {
-					for (SuffixTreeNode child : tuple.getValue1().getAll()) {
-						next.add(new Pair<>(tuple.getValue0().intValue()+1, child));
-					}
-				}
+				int newDistance = candidate.distance(bp) + distance;
+                if (maxDistance == -1 || newDistance <= maxDistance) {
+                    if (position == pattern.length() -1)
+                        for (Position pos: node.get(candidate).getTexts())
+                        alignments.add(Alignment.with(pos.getSequence(), pos.getPosition(), newDistance));
+                    else
+                        queue.add(Triplet.with(newDistance, position+1, node.get(candidate)));
+                }
 			}
-
-			previous = next;
 		}
 
-        Collection<Alignment> collected = previous.parallelStream().flatMap(pair ->
-                pair.getValue1().getTexts().stream().map(position -> Alignment.with(position.getSequence(), position.getPosition(), pair.getValue0())))
-                .collect(Collectors.toCollection(LinkedList::new));
+        int shortestDistance = alignments.stream().min((a, b) -> a.getDistance() - b.getDistance()).map(a -> a.getDistance()).orElse(0);
 
-        int shortestDistance = collected.stream().min((a, b) -> a.getDistance() - b.getDistance()).map(a -> a.getDistance()).orElse(0);
-
-        return collected.stream().filter(alignment -> alignment.getDistance() == shortestDistance).collect(Collectors.toCollection(LinkedList::new));
+        return alignments.stream().filter(alignment -> alignment.getDistance() == shortestDistance).collect(Collectors.toCollection(LinkedList::new));
 	}
 	
 	@Override
@@ -133,7 +128,7 @@ public class BasicSuffixTree implements SuffixTree {
 					next.add(new Pair<Integer, SuffixTreeNode>(tuple.getValue0().intValue(), match));
 				}
 					
-				for (SuffixTreeNode child : tuple.getValue1().getAll()) {
+				for (SuffixTreeNode child : tuple.getValue1().values()) {
 					// if they match don't increase the shortestDistance
 					if (!child.equals(match) && (maxDistance < 0 || tuple.getValue0().intValue() < maxDistance))
 						next.add(new Pair<Integer, SuffixTreeNode>(tuple.getValue0().intValue()+1, child));
@@ -165,7 +160,7 @@ public class BasicSuffixTree implements SuffixTree {
 
         while (!toBeWalked.isEmpty()) {
             Pair<SuffixTreeNode, T> pair = toBeWalked.remove();
-            for (SuffixTreeNode node : pair.getValue0().getAll()) {
+            for (SuffixTreeNode node : pair.getValue0().values()) {
                 Optional<T> result = walker.visit(node.getBasePair(), node.getTexts(), pair.getValue1());
 
                 // If there was a result use it, otherwise ignore

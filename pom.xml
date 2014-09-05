@@ -31,7 +31,13 @@
   	  <artifactId>scalatest_2.10</artifactId>
   	  <version>2.2.1</version>
   	  <scope>test</scope>
-		</dependency>
+    </dependency>
+    <dependency>
+      <groupId>org.scalacheck</groupId>
+      <artifactId>scalacheck_2.10</artifactId>
+      <version>1.11.5</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
