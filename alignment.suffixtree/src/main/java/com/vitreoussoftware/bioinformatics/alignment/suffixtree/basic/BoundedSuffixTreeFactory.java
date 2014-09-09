@@ -25,7 +25,7 @@ public class BoundedSuffixTreeFactory implements SuffixTreeFactory {
 	/**
 	 * Create a BasicSuffixTreeFactory with a custom SequenceCollectionFactory
 	 * @param factory the SequenceCollectionFactory to use with the SuffixTree
-	 * @param minlength the minimum length of a suffix contained in the tree.
+	 * @param minLength the minimum length of a suffix contained in the tree.
 	 * @param maxLength the maximum length of a suffix contained in the tree.
 	 */
 	public BoundedSuffixTreeFactory(SequenceCollectionFactory factory, int minLength, int maxLength) {
@@ -46,30 +46,4 @@ public class BoundedSuffixTreeFactory implements SuffixTreeFactory {
     public SuffixTree create() {
         return new BoundedSuffixTree(this.factory, this.minLength, this.maxLength);
     }
-
-	@Override
-	public SuffixTree create(Sequence sequence) {
-		SuffixTree tree = create();
-		tree.addSequence(sequence);
-		return tree;
-	}
-
-	@Override
-	public SuffixTree create(SequenceCollection sequenceCollection) {
-		SuffixTree tree = create();
-		for (Sequence s : sequenceCollection)
-			tree.addSequence(s);
-		return tree;
-	}
-
-	@Override
-	public SuffixTree create(SequenceStreamReader sequenceReader) throws IOException, InvalidDnaFormatException {
-		SuffixTree tree = create();
-		
-		while (sequenceReader.hasNext())
-			tree.addSequence(sequenceReader.next().orElseThrow(() -> new RuntimeException("TODO update this exception")));
-		
-		return tree;
-	}
-
 }

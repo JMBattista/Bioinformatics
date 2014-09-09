@@ -158,7 +158,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
   it should "should allow adding a sequence" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(BasicSequence.create(FastaStringFileStreamReaderTest.recordSimple, AcceptUnknownDnaEncodingScheme.instance).get())
+        aligner.addText(BasicSequence.create(FastaStringFileStreamReaderTest.recordSimple, AcceptUnknownDnaEncodingScheme.instance).get())
       }
     }
   }
@@ -166,7 +166,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
   anAligner + "built with the SimpleRecord" should "contain the single base patterns" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(seqSimple)
+        aligner.addText(seqSimple)
         val results = baseSeqs.map(x => (x.toString, aligner.contains(x)))
         val expected = bases.zip(List.fill(bases.length)(true))
         results should contain theSameElementsInOrderAs expected
@@ -177,7 +177,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
   it should "provide positions" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(seqSimple)
+        aligner.addText(seqSimple)
         val results = baseSeqs.map(x => (x.toString, aligner.getAlignments(x).size()))
         val expected = bases.zip(List(22, 20, 13, 25))
         results should contain theSameElementsInOrderAs expected
@@ -188,7 +188,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
   it should "report zero as the shortest distance for all single base pairs" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(seqSimple)
+        aligner.addText(seqSimple)
         val results = baseSeqs.map(x => (x, aligner.shortestDistance(x)))
 
         results should have size(baseSeqs.size)
@@ -210,7 +210,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
   it should "also work for a collection of base sequences" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(seqSimple)
+        aligner.addText(seqSimple)
         val results = aligner.shortestDistance(SequenceCollection.from(baseSeqs)).map(pair => (pair.getValue0, pair.getValue1))
 
         results should have size(baseSeqs.size)
@@ -233,8 +233,8 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
   it should "allow adding a sequence" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(seqSimple)
-        aligner.addSequence(seqRecord1)
+        aligner.addText(seqSimple)
+        aligner.addText(seqRecord1)
       }
     }
   }
@@ -242,7 +242,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
   it should "not contain the record1 pattern" in {
     withAligner(
       (aligner) => {
-        aligner.addSequence(seqSimple)
+        aligner.addText(seqSimple)
         aligner.contains(seqRecord1) should be (false)
         aligner.getAlignments(seqRecord1) should contain theSameElementsAs  (List())
       }
@@ -252,7 +252,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
   anAligner + "built with the Record1" should "contain the single base patterns" in {
     withAligner {
       (aligner) => {
-        aligner.addSequence(seqRecord1)
+        aligner.addText(seqRecord1)
         baseSeqs.map(x => (x.toString, aligner.contains(x))) should contain theSameElementsInOrderAs
           bases.zip(List.fill(bases.length)(true))
       }
@@ -262,7 +262,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
   anAligner + "built with recordSimple/1/2/3" should "be able to report matches across all the parents" in {
     withAligner(
       (aligner) => {
-        sourceSeqs.map(text => aligner.addSequence(text))
+        sourceSeqs.map(text => aligner.addText(text))
 
         // All the bases are contained in this alligner
         baseSeqs.map(x => (x.toString, aligner.contains(x))) should contain theSameElementsInOrderAs

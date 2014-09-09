@@ -34,30 +34,10 @@ public class BasicSuffixTreeFactory implements SuffixTreeFactory {
 	public BasicSuffixTreeFactory() {
 		this.factory = new SequenceListFactory();
 	}
-	
-	@Override
-	public SuffixTree create(Sequence sequence) {
-		SuffixTree tree = new BasicSuffixTree(this.factory);
-		tree.addSequence(sequence);
-		return tree;
-	}
 
-	@Override
-	public SuffixTree create(SequenceCollection sequenceCollection) {
-		SuffixTree t = new BasicSuffixTree(this.factory);
-		for (Sequence s : sequenceCollection)
-			t.addSequence(s);
-		return t;
-	}
-
-	@Override
-	public SuffixTree create(SequenceStreamReader sequenceReader) throws IOException, InvalidDnaFormatException {
-		SuffixTree t = new BasicSuffixTree(this.factory);
-		
-		while (sequenceReader.hasNext())
-			t.addSequence(sequenceReader.next().orElseThrow(() -> new RuntimeException("TODO update this exception")));
-		
-		return t;
-	}
+    @Override
+    public SuffixTree create() {
+        return new BasicSuffixTree(this.factory);
+    }
 
 }

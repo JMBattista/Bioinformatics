@@ -13,19 +13,33 @@ import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
  *
  */
 public interface SuffixTreeFactory {
-	/**
+    /**
+     * Create a SuffixTree based on no sequence and return it
+     * @return the suffix tree for that sequence
+     */
+    public SuffixTree create();
+
+    /**
 	 * Create a SuffixTree based on a Sequence
-	 * @param sequence the sequence
-	 * @return the suffix tree for that sequence
+	 * @param text the text
+	 * @return the suffix tree for that text
 	 */
-	public SuffixTree create(Sequence sequence);
+	default public SuffixTree create(Sequence text) {
+        SuffixTree tree = create();
+        tree.addText(text);
+        return tree;
+    }
 	
 	/**
 	 * Create a SuffixTree based on a SequenceCollection
-	 * @param sequenceCollection the collection of sequences
+	 * @param texts the collection of sequences
 	 * @return the SuffixTree for that collection of Sequences
 	 */
-	public SuffixTree create(SequenceCollection sequenceCollection);
+	default public SuffixTree create(SequenceCollection texts) {
+        SuffixTree tree = create();
+        texts.forEach(text -> tree.addText(text));
+        return tree;
+    }
 	
 	
 	/**
@@ -35,6 +49,13 @@ public interface SuffixTreeFactory {
 	 * @throws InvalidDnaFormatException 
 	 * @throws IOException 
 	 */
-	public SuffixTree create(SequenceStreamReader sequenceReader) throws IOException, InvalidDnaFormatException;
+	default public SuffixTree create(SequenceStreamReader sequenceReader) throws IOException, InvalidDnaFormatException
+    {
+        SuffixTree tree = create();
+        while (sequenceReader.hasNext())
+            tree.addText(sequenceReader.next().orElseThrow(() -> new RuntimeException("TODO update this exception")));
+
+        return tree;
+    }
 	
 }

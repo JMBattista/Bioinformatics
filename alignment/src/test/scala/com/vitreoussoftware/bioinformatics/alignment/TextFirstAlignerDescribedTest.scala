@@ -69,7 +69,7 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
         describe("when asked about containment") {
           it("should find the single base sequences") {
             aligner => {
-              aligner addSequence seqSimple
+              aligner addText seqSimple
               forAll(baseSeqs) { (seq) => {
                 aligner contains seq shouldBe true
               }}
@@ -83,7 +83,7 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
         describe("when asked for shortest distance") {
           it("should work for sequences off by a value of N") {
             aligner => {
-              aligner addSequence seqSimple
+              aligner addText seqSimple
               def assert(x: util.Collection[Alignment]) = {
                 x.map(a => a.getDistance).forall(d => d == 1) shouldBe true
               }
@@ -102,7 +102,7 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
 
           it("should work for long sequences off by a value of N") {
             aligner => {
-              aligner addSequence seqSimple
+              aligner addText seqSimple
               def assert(x: util.Collection[Alignment]) = {
                 x.map(a => a.getDistance()).toList should contain only 6
               }
@@ -122,7 +122,7 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
 
         it("should work for generated sequence") {
           aligner => {
-            aligner addSequence seqSimple
+            aligner addText seqSimple
 
             forAll { (seq: Sequence) =>
               whenever (seq.length() > 0 && seq.length() < seqSimple.length()) {

@@ -36,7 +36,7 @@ public class BoundedSuffixTree extends BasicSuffixTree {
 	 * Adds a new sequence to the suffix tree
 	 * @param text the sequence to add
 	 */
-	public void addSequence(final Sequence text) {
+	public void addText(final Sequence text) {
 		if (text == null) throw new IllegalArgumentException("Sequence cannot be null");
 		Iterator<BasePair> suffixIter = text.iterator();
 

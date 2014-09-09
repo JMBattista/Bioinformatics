@@ -60,7 +60,7 @@ public interface TextFirstAligner {
      * Adds a new text to the suffix tree
      * @param text the text to add
      */
-    public void addSequence(final Sequence text);
+    public void addText(final Sequence text);
 
     /**
      * Return the minimum shortestDistance from the given pattern to each of the sequences making up the Aligner

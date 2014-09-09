@@ -444,7 +444,7 @@ public class WalkersTest {
     @Test
     public void testDistanceMultiple_offByEndN() throws IOException, InvalidDnaFormatException {
         SuffixTree tree = this.factory.create(recordSimple);
-        tree.addSequence(record3);
+        tree.addText(record3);
 
         assertNotNull(tree);
 
@@ -470,7 +470,7 @@ public class WalkersTest {
     @Test
     public void testDistanceMultiple_offByMiddleN() throws IOException, InvalidDnaFormatException {
         SuffixTree tree = this.factory.create(recordSimple);
-        tree.addSequence(record3);
+        tree.addText(record3);
 
         assertNotNull(tree);
 
@@ -496,7 +496,7 @@ public class WalkersTest {
     @Test
     public void testDistanceMultiple_offByStartN() throws IOException, InvalidDnaFormatException {
         SuffixTree tree = this.factory.create(recordSimple);
-        tree.addSequence(record3);
+        tree.addText(record3);
 
         assertNotNull(tree);
 
@@ -522,7 +522,7 @@ public class WalkersTest {
     @Test
     public void testMaxDistanceMultiple_offByEndN() throws IOException, InvalidDnaFormatException {
         SuffixTree tree = this.factory.create(recordSimple);
-        tree.addSequence(record3);
+        tree.addText(record3);
 
         assertNotNull(tree);
 
@@ -548,7 +548,7 @@ public class WalkersTest {
     @Test
     public void testMaxDistanceMultiple_offByMiddleN() throws IOException, InvalidDnaFormatException {
         SuffixTree tree = this.factory.create(recordSimple);
-        tree.addSequence(record3);
+        tree.addText(record3);
 
         assertNotNull(tree);
 
@@ -574,7 +574,7 @@ public class WalkersTest {
     @Test
     public void testMaxDistanceMultiple_offByStartN() throws IOException, InvalidDnaFormatException {
         SuffixTree tree = this.factory.create(recordSimple);
-        tree.addSequence(record3);
+        tree.addText(record3);
 
         assertNotNull(tree);
 
