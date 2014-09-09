@@ -9,7 +9,6 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.reader.fasta.FastaStringFileStreamReaderTest;
-import org.javatuples.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -260,9 +259,9 @@ public class WalkersTest {
             assertEquals("Not all alignments had distance 0", alignments.stream().allMatch(alignment -> alignment.getDistance() == 0));
             assertEquals("Number of alignments was wrong", 22, alignments.size());
             for (Alignment p : alignments) {
-                assertEquals("The base pair was wrong for " + p.getPosition(), AcceptUnknownDnaEncodingScheme.A, p.getSequence().get(p.getPosition()));
+                assertEquals("The base pair was wrong for " + p.getPosition(), AcceptUnknownDnaEncodingScheme.A, p.getText().get(p.getPosition()));
             }
-            assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+            assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getText().equals(recordSimple)).findFirst().isPresent());
         }
 
         {
@@ -270,9 +269,9 @@ public class WalkersTest {
 
             assertEquals("Not all alignments had distance 0", alignments.stream().allMatch(alignment -> alignment.getDistance() == 0));
             for (Alignment p : alignments) {
-                assertEquals("The base pair was wrong for " + p.getPosition(), AcceptUnknownDnaEncodingScheme.U, p.getSequence().get(p.getPosition()));
+                assertEquals("The base pair was wrong for " + p.getPosition(), AcceptUnknownDnaEncodingScheme.U, p.getText().get(p.getPosition()));
             }
-            assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+            assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getText().equals(recordSimple)).findFirst().isPresent());
         }
 
         {
@@ -280,9 +279,9 @@ public class WalkersTest {
 
             assertEquals("Not all alignments had distance 0", alignments.stream().allMatch(alignment -> alignment.getDistance() == 0));
             for (Alignment p : alignments) {
-                assertEquals("The base pair was wrong for " + p.getPosition(), AcceptUnknownDnaEncodingScheme.C, p.getSequence().get(p.getPosition()));
+                assertEquals("The base pair was wrong for " + p.getPosition(), AcceptUnknownDnaEncodingScheme.C, p.getText().get(p.getPosition()));
             }
-            assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+            assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getText().equals(recordSimple)).findFirst().isPresent());
         }
 
         {
@@ -290,9 +289,9 @@ public class WalkersTest {
 
             assertEquals("Not all alignments had distance 0", alignments.stream().allMatch(alignment -> alignment.getDistance() == 0));
             for (Alignment p : alignments) {
-                assertEquals("The base pair was wrong for " + p.getPosition(), AcceptUnknownDnaEncodingScheme.G, p.getSequence().get(p.getPosition()));
+                assertEquals("The base pair was wrong for " + p.getPosition(), AcceptUnknownDnaEncodingScheme.G, p.getText().get(p.getPosition()));
             }
-            assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+            assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getText().equals(recordSimple)).findFirst().isPresent());
         }
     }
 
@@ -315,7 +314,7 @@ public class WalkersTest {
         assertTrue("Did not contain first position", alignments.stream().filter(x -> x.getPosition() == 0).findFirst().isPresent());
         assertTrue("Did not contain last position", alignments.stream().filter(x -> x.getPosition() == recordSimple.length()-1).findFirst().isPresent());
         assertEquals("Number of alignments did not match", recordSimple.length(), alignments.size());
-        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getText().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -335,7 +334,7 @@ public class WalkersTest {
 
         assertEquals("Not all alignments had correct", alignments.stream().allMatch(a -> a.getDistance() == 1));
         assertEquals("Number of alignments did not match", recordSimple.length(), alignments.size());
-        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getText().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -353,9 +352,8 @@ public class WalkersTest {
 
         Collection<Alignment> alignments = tree.walk(Walkers.distance(seq));
 
-        assertEquals("Not all alignments had correct", alignments.stream().allMatch(a -> a.getDistance() == 0));
         assertEquals("Number of alignments did not match", 2, alignments.size());
-        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getText().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -375,7 +373,7 @@ public class WalkersTest {
 
         assertEquals("Not all alignments had correct", alignments.stream().allMatch(a -> a.getDistance() == 1));
         assertEquals("Number of alignments did not match", 6, alignments.size());
-        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getText().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -395,7 +393,7 @@ public class WalkersTest {
 
         assertEquals("Not all alignments had correct", alignments.stream().allMatch(a -> a.getDistance() == 1));
         assertEquals("Number of alignments did not match", 6, alignments.size());
-        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getText().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -415,7 +413,7 @@ public class WalkersTest {
 
         assertEquals("Not all alignments had correct", alignments.stream().allMatch(a -> a.getDistance() == 1));
         assertEquals("Number of alignments did not match", 3, alignments.size());
-        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getText().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -435,7 +433,7 @@ public class WalkersTest {
 
         assertEquals("Not all alignments had correct", alignments.stream().allMatch(a -> a.getDistance() == 1));
         assertEquals("Number of alignments did not match", 6, alignments.size());
-        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).findFirst().isPresent());
+        assertTrue("Simple was not the matching sequence", alignments.stream().filter(p -> p.getText().equals(recordSimple)).findFirst().isPresent());
     }
 
     /**
@@ -457,8 +455,8 @@ public class WalkersTest {
         assertEquals("Not all alignments had correct", alignments.stream().allMatch(a -> a.getDistance() == 1));
         assertEquals("Number of alignments did not match", 102, alignments.size());
 
-        final List<Alignment> simpleAlignments = alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).collect(Collectors.toList());
-        final List<Alignment> record3Alignments = alignments.stream().filter(p -> p.getSequence().equals(record3)).collect(Collectors.toList());
+        final List<Alignment> simpleAlignments = alignments.stream().filter(p -> p.getText().equals(recordSimple)).collect(Collectors.toList());
+        final List<Alignment> record3Alignments = alignments.stream().filter(p -> p.getText().equals(record3)).collect(Collectors.toList());
 
         assertEquals("The alignments from simple and record 3 did not match up", 102, simpleAlignments.size() + record3Alignments.size());
         assertEquals("Simple was not the matching sequence for the correct number of  alignments", 6, simpleAlignments.size());
@@ -483,8 +481,8 @@ public class WalkersTest {
         assertEquals("Not all alignments had correct", alignments.stream().allMatch(a -> a.getDistance() == 1));
         assertEquals("Number of alignments did not match", 69, alignments.size());
 
-        final List<Alignment> simpleAlignments = alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).collect(Collectors.toList());
-        final List<Alignment> record3Alignments = alignments.stream().filter(p -> p.getSequence().equals(record3)).collect(Collectors.toList());
+        final List<Alignment> simpleAlignments = alignments.stream().filter(p -> p.getText().equals(recordSimple)).collect(Collectors.toList());
+        final List<Alignment> record3Alignments = alignments.stream().filter(p -> p.getText().equals(record3)).collect(Collectors.toList());
 
         assertEquals("The alignments from simple and record 3 did not match up", 69, simpleAlignments.size() + record3Alignments.size());
         assertEquals("Simple was not the matching sequence for the correct number of  alignments", 3, simpleAlignments.size());
@@ -509,8 +507,8 @@ public class WalkersTest {
         assertEquals("Not all alignments had correct", alignments.stream().allMatch(a -> a.getDistance() == 1));
         assertEquals("Number of alignments did not match", 102, alignments.size());
 
-        final List<Alignment> simpleAlignments = alignments.stream().filter(p -> p.getSequence().equals(recordSimple)).collect(Collectors.toList());
-        final List<Alignment> record3Alignments = alignments.stream().filter(p -> p.getSequence().equals(record3)).collect(Collectors.toList());
+        final List<Alignment> simpleAlignments = alignments.stream().filter(p -> p.getText().equals(recordSimple)).collect(Collectors.toList());
+        final List<Alignment> record3Alignments = alignments.stream().filter(p -> p.getText().equals(record3)).collect(Collectors.toList());
 
         assertEquals("The alignments from simple and record 3 did not match up", 102, simpleAlignments.size() + record3Alignments.size());
         assertEquals("Simple was not the matching sequence for the correct number of  alignments", 6, simpleAlignments.size());
@@ -535,7 +533,7 @@ public class WalkersTest {
 
         assertTrue("Distance was wrong", alignments.map(as -> as.stream().allMatch(a -> a.getDistance() == 4)).orElse(false));
         assertEquals("Number of alignments did not match", 1, (int) alignments.map(a -> a.size()).orElse(-1));
-        assertTrue("Record3 was not the matching sequence", alignments.map(as -> as.stream().filter(p -> p.getSequence().equals(record3)).findFirst().isPresent()).orElse(false));
+        assertTrue("Record3 was not the matching sequence", alignments.map(as -> as.stream().filter(p -> p.getText().equals(record3)).findFirst().isPresent()).orElse(false));
 
         alignments = tree.walk(Walkers.distance(seq, 2));
 
@@ -561,7 +559,7 @@ public class WalkersTest {
 
         assertTrue("Distance was wrong", alignments.map(as -> as.stream().allMatch(a -> a.getDistance() == 4)).orElse(false));
         assertEquals("Number of alignments did not match", 3, (int) alignments.map(a -> a.size()).orElse(-1));
-        assertTrue("Record3 was not the matching sequence", alignments.map(as -> as.stream().filter(p -> p.getSequence().equals(record3)).findFirst().isPresent()).orElse(false));
+        assertTrue("Record3 was not the matching sequence", alignments.map(as -> as.stream().filter(p -> p.getText().equals(record3)).findFirst().isPresent()).orElse(false));
 
         alignments = tree.walk(Walkers.distance(seq, 2));
 
@@ -587,7 +585,7 @@ public class WalkersTest {
 
         assertTrue("Distance was wrong", alignments.map(as -> as.stream().allMatch(a -> a.getDistance() == 5)).orElse(false));
         assertEquals("Number of alignments did not match", 5, (int) alignments.map(a -> a.size()).orElse(-1));
-        assertTrue("Record3 was not the matching sequence", alignments.map(as -> as.stream().filter(p -> p.getSequence().equals(record3)).findFirst().isPresent()).orElse(false));
+        assertTrue("Record3 was not the matching sequence", alignments.map(as -> as.stream().filter(p -> p.getText().equals(record3)).findFirst().isPresent()).orElse(false));
 
         alignments = tree.walk(Walkers.distance(seq, 2));
 

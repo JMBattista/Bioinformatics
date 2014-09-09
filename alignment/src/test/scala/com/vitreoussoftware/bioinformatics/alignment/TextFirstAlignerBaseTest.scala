@@ -33,10 +33,51 @@ trait AlignerTestData {
     list.zip(List.fill(list.length)(value))
   }
 
-  def checkDistance(sequence: Sequence, alignment: Alignment) = {
-    alignment.getSequence.drop(alignment.getPosition).take(sequence.length()).zip(sequence)
+  def checkDistance(alignment: Alignment) = {
+    val pattern = alignment.getPattern
+    alignment.getText.drop(alignment.getPosition).take(pattern.length()).zip(pattern)
       .map(value => value._1 distance  value._2).sum
   }
+
+  def genSequence(): Gen[Sequence] = {
+    val genBasePair = for(bp <- Gen.frequency(
+      (1, "A"),
+      (1, "U"),
+      (1, "C"),
+      (1, "G")
+    )) yield bp
+
+    def makeSeq(seq: List[String]) = {
+      var builder = new StringBuilder
+      seq.foreach(bp => builder = builder append bp)
+      BasicSequence.create(builder.toString(), AcceptUnknownDnaEncodingScheme.instance).get()
+    }
+
+    def genSeq(len: Int): Gen[Sequence] = {
+      for {seq <- Gen.listOfN(len, genBasePair)} yield makeSeq(seq)
+    }
+
+    def sizedSequence(len: Int) = {
+      var length = len % 50
+      if (len < 0)
+        length = -1 * len
+      if (length == 0)
+        length = 1
+      genSeq(length)
+    }
+
+    Gen.sized(sz => sizedSequence(sz))
+  }
+
+  val genBasePair = for(bp <- Gen.frequency(
+    (1, 'A'),
+    (1, 'U'),
+    (1, 'C'),
+    (1, 'G')
+  )) yield BasePair.create(bp, AcceptUnknownDnaEncodingScheme.instance)
+
+  implicit lazy val arbBasePair: Arbitrary[BasePair] = Arbitrary(genBasePair)
+  implicit lazy val arbSequence: Arbitrary[Sequence] = Arbitrary(genSequence)
 }
 
 trait AlignerHelpers extends Matchers {
@@ -158,7 +199,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
           alignments.size should be(seqSimple.filter(bp => bp == patternBase) size)
 
           forAll(alignments) { alignment =>
-            alignment.getSequence should be(seqSimple)
+            alignment.getText should be(seqSimple)
             alignment.getDistance should be(0)
           }
         }
@@ -180,22 +221,11 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
           alignments.size should be(seqSimple.filter(bp => bp == patternBase) size)
 
           forAll(alignments) { alignment =>
-            alignment.getSequence should be(seqSimple)
+            alignment.getText should be(seqSimple)
             alignment.getDistance should be(0)
           }
         }
 
-      }
-    }
-  }
-
-  it should "determine distances for single base sequences" in {
-    withAligner {
-      (aligner) => {
-        aligner.addSequence(seqSimple)
-        val results = baseSeqs.map(x => (x.toString, aligner.distances(x).size()))
-        val expected = bases.zip(List.fill(bases.length)(1))
-       results should contain theSameElementsInOrderAs expected
       }
     }
   }
@@ -207,15 +237,6 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
         aligner.addSequence(seqRecord1)
       }
     }
-  }
-
-  it should "find its identity pattern" in {
-    withAligner(
-      (aligner) => {
-        aligner.addSequence(seqSimple)
-        aligner.contains(seqSimple) should be (true)
-        aligner.getAlignments(seqSimple) should contain theSameElementsAs  (List(Alignment.`with`(seqSimple, 0)))
-      })
   }
 
   it should "not contain the record1 pattern" in {
@@ -247,7 +268,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
         baseSeqs.map(x => (x.toString, aligner.contains(x))) should contain theSameElementsInOrderAs
           bases.zip(List.fill(bases.length)(true))
 
-        val parentSets = baseSeqs.map(pattern => (pattern.toString, aligner.getAlignments(pattern).toList.map(p => p.getSequence).toSet))
+        val parentSets = baseSeqs.map(pattern => (pattern.toString, aligner.getAlignments(pattern).toList.map(p => p.getText).toSet))
 
         forAll (parentSets) {
           set => set._2 should contain theSameElementsAs  sourceSeqs

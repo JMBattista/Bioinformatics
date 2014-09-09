@@ -8,8 +8,7 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import java.util
 import org.scalatest.prop.PropertyChecks
-import com.vitreoussoftware.bioinformatics.sequence.{BasePair, Sequence}
-import org.scalacheck.{Gen, Arbitrary}
+import com.vitreoussoftware.bioinformatics.sequence.Sequence
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence
 import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme
 
@@ -21,46 +20,6 @@ import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEnc
 abstract class TextFirstAlignerDescribedTest(anAligner: String) extends BehaviorSpec with PropertyChecks
   with AlignerTestData with AlignerHelpers {
   type FixtureParam = TextFirstAligner
-
-  def genSequence(): Gen[Sequence] = {
-    val genBasePair = for(bp <- Gen.frequency(
-      (1, "A"),
-      (1, "U"),
-      (1, "C"),
-      (1, "G")
-    )) yield bp
-
-    def makeSeq(seq: List[String]) = {
-      var builder = new StringBuilder
-      seq.foreach(bp => builder = builder append bp)
-      BasicSequence.create(builder.toString(), AcceptUnknownDnaEncodingScheme.instance).get()
-    }
-
-    def genSeq(len: Int): Gen[Sequence] = {
-      for {seq <- Gen.listOfN(len, genBasePair)} yield makeSeq(seq)
-    }
-
-    def sizedSequence(len: Int) = {
-      var length = len % 20
-      if (len < 0)
-        length = -1 * len
-      if (length == 0)
-        length = 1
-      genSeq(length)
-    }
-
-    Gen.sized(sz => sizedSequence(sz))
-  }
-
-  val genBasePair = for(bp <- Gen.frequency(
-    (1, 'A'),
-    (1, 'U'),
-    (1, 'C'),
-    (1, 'G')
-  )) yield BasePair.create(bp, AcceptUnknownDnaEncodingScheme.instance)
-
-  implicit lazy val arbBasePair: Arbitrary[BasePair] = Arbitrary(genBasePair)
-  implicit lazy val arbSequence: Arbitrary[Sequence] = Arbitrary(genSequence)
 
   override def withFixture(test: OneArgTest) = {
     // create the fixture
@@ -159,53 +118,59 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
 
             }
           }
+        }
 
-          it("should work for GCUUAGGUAAGACCCAUA") {
-            aligner => {
-              aligner addSequence seqSimple
+        it("should work for generated sequence") {
+          aligner => {
+            aligner addSequence seqSimple
 
-              aligner.shortestDistance(BasicSequence.create("GCUUAGGUAAGACCCAUA", AcceptUnknownDnaEncodingScheme.instance).get()).size should be >0
-            }
-          }
+            forAll { (seq: Sequence) =>
+              whenever (seq.length() > 0 && seq.length() < seqSimple.length()) {
+                val contained = aligner contains seq
+                val alignments = aligner getAlignments seq
+                val shortDistanceAlignments = aligner shortestDistance seq
+                val allAlignments = aligner distances seq
 
-          it("should work for generated sequence") {
-            aligner => {
-              aligner addSequence seqSimple
+                if (contained) {
+                  alignments.size should be > 0
+                  alignments.map(a => a.getDistance) should contain only 0
+                  alignments.map(a => a.getText) should contain only  seqSimple
+                  alignments.map(a => a.getPattern) should contain only seq
 
-              forAll { (seq: Sequence) =>
-                whenever (seq.length() > 0 && seq.length() < seqSimple.length()) {
-                  val contained = aligner contains seq
-                  val alignments = aligner getAlignments seq
-                  val shortestDistanceAlignments = aligner shortestDistance seq
+                  val numAlignments = alignments.map(a => a.getPosition).toSet.size
+                  alignments.map(a => a.getPosition).size should be (numAlignments)
 
-                  if (contained) {
-                    alignments.size should be > 0
-                    alignments.map(a => a.getDistance) should contain only 0
-                    alignments.map(a => a.getSequence) should contain only seqSimple
-                    val numAlignments = alignments.map(a => a.getPosition).toSet.size
-                    alignments.map(a => a.getPosition).size should be (numAlignments)
-
-                    shortestDistanceAlignments should contain theSameElementsAs alignments
-                  }
-                  else
-                  {
-                    alignments.size should be(0)
-                    shortestDistanceAlignments.size should be >0
-
-                    val dist = shortestDistanceAlignments.head.getDistance
-                    shortestDistanceAlignments.map(a => a.getDistance) should contain only dist
-                    shortestDistanceAlignments.map(a => a.getSequence) should contain only seqSimple
-                    shortestDistanceAlignments.size should be (shortestDistanceAlignments.toSet.size)
-                  }
-
-                  forAll(alignments) { alignment => {
-                    checkDistance(seq, alignment) should be(alignment.getDistance)
-                  }}
-
-                  forAll(shortestDistanceAlignments) { alignment => {
-                    checkDistance(seq, alignment) should be(alignment.getDistance)
-                  }}
+                  shortDistanceAlignments should contain theSameElementsAs alignments
+                  allAlignments.filter(a => a.getDistance == 0) should contain theSameElementsAs alignments
                 }
+                else
+                {
+                  alignments.size should be (0)
+                  shortDistanceAlignments.size should be >0
+                  allAlignments.size should be >0
+
+                  val dist = shortDistanceAlignments.head.getDistance
+                  shortDistanceAlignments.map(a => a.getDistance) should contain only dist
+                  shortDistanceAlignments.map(a => a.getText) should contain only seqSimple
+                  shortDistanceAlignments.map(a => a.getPattern) should contain only seq
+                  shortDistanceAlignments.size should be (shortDistanceAlignments.toSet.size)
+                  allAlignments.filter(a => a.getDistance == dist) should contain theSameElementsAs shortDistanceAlignments
+
+                  allAlignments.map(a => a.getText) should contain only seqSimple
+                  allAlignments.map(a => a.getPattern) should contain only seq
+                }
+
+                forAll(alignments) { alignment => {
+                  checkDistance(alignment) should be(alignment.getDistance)
+                }}
+
+                forAll(shortDistanceAlignments) { alignment => {
+                  checkDistance(alignment) should be(alignment.getDistance)
+                }}
+
+                forAll(allAlignments) { alignment => {
+                  checkDistance(alignment) should be(alignment.getDistance)
+                }}
               }
             }
           }

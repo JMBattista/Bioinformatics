@@ -152,7 +152,7 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
       (aligner) => {
         aligner.addPattern(seqSimple)
         aligner.containedIn(seqSimple) should contain theSameElementsAs  baseSeqs
-        aligner.getAlignments(seqSimple) should contain theSameElementsAs  (List(Alignment.`with`(seqSimple, 0)))
+        aligner.getAlignments(seqSimple) should contain theSameElementsAs  (List(Alignment.`with`(seqSimple, seqSimple, 0)))
       })
   }
 
@@ -185,7 +185,7 @@ abstract class PatternFirstAlignerBaseTest(anAligner: String) extends UnitSpec {
         baseSeqs.map(x => (x.toString, aligner.containedIn(x))) should contain theSameElementsInOrderAs
           bases.zip(List.fill(bases.length)(true))
 
-        val parentSets = baseSeqs.map(pattern => (pattern.toString, aligner.getAlignments(pattern).toList.map(p => p.getSequence).toSet))
+        val parentSets = baseSeqs.map(pattern => (pattern.toString, aligner.getAlignments(pattern).toList.map(p => p.getText).toSet))
 
         forAll (parentSets) {
           set => set._2 should contain theSameElementsAs  sourceSeqs

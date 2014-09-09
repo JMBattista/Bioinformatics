@@ -84,7 +84,7 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
         Collection<Alignment> alignments = tree.getAlignments(subSequence);
-        Set<Sequence> parents = alignments.stream().map(position -> position.getSequence()).collect(Collectors.toSet());
+        Set<Sequence> parents = alignments.stream().map(position -> position.getText()).collect(Collectors.toSet());
         assertEquals(1, parents.size());
 		assertEquals(record1, parents.iterator().next());
 	}
@@ -102,7 +102,7 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record2.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
         Collection<Alignment> alignments = tree.getAlignments(subSequence);
-        Set<Sequence> parents = alignments.stream().map(position -> position.getSequence()).collect(Collectors.toSet());
+        Set<Sequence> parents = alignments.stream().map(position -> position.getText()).collect(Collectors.toSet());
         assertEquals(1, parents.size());
 		assertEquals(record2, parents.iterator().next());
 	}
@@ -120,7 +120,7 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
         Collection<Alignment> alignments = tree.getAlignments(subSequence);
-        Set<Sequence> parents = alignments.stream().map(position -> position.getSequence()).collect(Collectors.toSet());
+        Set<Sequence> parents = alignments.stream().map(position -> position.getText()).collect(Collectors.toSet());
 		assertEquals(1, parents.size());
 		assertEquals(record3, parents.iterator().next());
 	}
@@ -151,7 +151,7 @@ public class BoundedSuffixTreeTest extends SuffixTreeTest {
 		Sequence subSequence = this.sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3.substring(120, 320)).get();
 		assertEquals("The length of the subsequence was wrong", 200, subSequence.length());
         Collection<Alignment> alignments = tree.getAlignments(subSequence);
-        Set<Sequence> parents = alignments.stream().map(position -> position.getSequence()).collect(Collectors.toSet());
+        Set<Sequence> parents = alignments.stream().map(position -> position.getText()).collect(Collectors.toSet());
 		assertEquals(1, parents.size());
 		assertEquals(record3, parents.iterator().next());
 	}

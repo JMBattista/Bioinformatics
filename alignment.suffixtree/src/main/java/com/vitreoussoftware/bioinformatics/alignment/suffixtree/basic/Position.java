@@ -20,7 +20,7 @@ public class Position {
     }
 
 
-    public Sequence getSequence() {
+    public Sequence getText() {
         return this.sequence;
     }
 

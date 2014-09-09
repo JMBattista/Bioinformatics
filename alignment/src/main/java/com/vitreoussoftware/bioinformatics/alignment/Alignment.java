@@ -6,38 +6,43 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
  * Created by John on 12/23/13.
  */
 public class Alignment {
-    final private Sequence sequence;
+    final private Sequence text;
+    final private Sequence pattern;
     final private int position;
     final private int distance;
 
-    private Alignment(Sequence text, int position, int distance) {
-        this.sequence = text;
+    private Alignment(Sequence text, Sequence pattern, int position, int distance) {
+        this.text = text;
+        this.pattern = pattern;
         this.position = position;
         this.distance = distance;
     }
 
 
-    public static Alignment with(Sequence sequence, int position) {
-        return new Alignment(sequence, position, 0);
+    public static Alignment with(Sequence text, Sequence pattern, int position) {
+        return new Alignment(text, pattern, position, 0);
     }
 
-    public static Alignment with(Sequence text, int position, int distance) {
-        return new Alignment(text, position, distance);
+    public static Alignment with(Sequence text, Sequence pattern, int position, int distance) {
+        return new Alignment(text, pattern, position, distance);
     }
 
-    public Sequence getSequence() {
-        return this.sequence;
+    public Sequence getText() {
+        return this.text;
     }
 
-    public int getPosition() {
-        return this.position;
+    public Sequence getPattern() {
+        return this.pattern;
+    }
+
+    public int getPosition() { return this.position;
     }
 
     public int getDistance() { return this.distance; }
 
     @Override
     public String toString() {
-        return String.format("(%d, %d, %s)", this.position, this.distance, this.sequence.toString());
+        return String.format("(%d, %d, %s, %s)", this.position, this.distance, this.pattern.toString(), this.text.toString());
     }
 
     @Override
@@ -49,16 +54,18 @@ public class Alignment {
 
         if (position != alignment1.position) return false;
         if (distance != alignment1.distance) return false;
-        if (sequence != null ? !sequence.equals(alignment1.sequence) : alignment1.sequence != null) return false;
+        if (text != null ? !text.equals(alignment1.text) : alignment1.text != null) return false;
+        if (pattern != null ? !pattern.equals(alignment1.pattern) : alignment1.pattern != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = sequence != null ? sequence.hashCode() : 0;
+        int result = text.hashCode();
+        result = 31 * result + pattern.hashCode();
         result = 31 * result + position;
-        result = 51 * result + distance;
+        result = 31 * result + distance;
         return result;
     }
 }

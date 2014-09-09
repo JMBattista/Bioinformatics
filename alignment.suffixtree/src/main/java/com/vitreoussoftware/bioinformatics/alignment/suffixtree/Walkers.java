@@ -4,9 +4,7 @@ import com.vitreoussoftware.bioinformatics.alignment.Alignment;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic.Position;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import scala.tools.cmd.Opt;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -152,14 +150,14 @@ public class Walkers {
     }
 
     /**
-     * For the given sequence finds the alignment with the minimum shortestDistance, as long as it is less than or equal to maxDistance
+     * For the given pattern finds the alignment with the minimum shortestDistance, as long as it is less than or equal to maxDistance
      * Distance function is 1 for each mismatched BasePair and does not allow gaps.
-     * @param sequence The target sequence we are trying to align
-     * @Param maxDistance The maximum shortestDistance a sequence can be before being rejected
+     * @param pattern The target pattern we are trying to align
+     * @Param maxDistance The maximum shortestDistance a pattern can be before being rejected
      * @return The shortestDistance for the alignment and the list of sequenced position pairs that match the alignment.
      */
     public static Walk<Triplet<Integer, Integer, Collection<Position>>,
-            Optional<Collection<Alignment>>> distance(Sequence sequence, int maxDistance)
+            Optional<Collection<Alignment>>> distance(Sequence pattern, int maxDistance)
     {
         return new Walk<Triplet<Integer, Integer, Collection<Position>>,
                 Optional<Collection<Alignment>>>() {
@@ -179,7 +177,7 @@ public class Walkers {
             @Override
             public Optional<Triplet<Integer, Integer, Collection<Position>>> visit(BasePair basePair, Collection<Position> positions, Triplet<Integer, Integer, Collection<Position>> metadata) {
                 final int position = metadata.getValue0();
-                final int distance = getDistance(metadata.getValue1(), basePair, sequence.get(position));
+                final int distance = getDistance(metadata.getValue1(), basePair, pattern.get(position));
 
                 // A max shortestDistance of 0 means infinity
                 if (maxDistance != 0 && distance > maxDistance)
@@ -191,18 +189,18 @@ public class Walkers {
                 if (resultDistance.map(d -> distance > d).orElse(false))
                     return Optional.empty();
 
-                if (position < sequence.length() - 1) {
+                if (position < pattern.length() - 1) {
                     return Optional.of(Triplet.with(position +1, distance, positions));
                 }
                 else {
                     // If there is no result, or the result is of a higher shortestDistance use the current value
                     if (resultDistance.map(d -> d > distance).orElse(true)) {
-                            result = Optional.of(positions.stream().map(p -> Alignment.with(p.getSequence(), p.getPosition(), distance))
+                            result = Optional.of(positions.stream().map(p -> Alignment.with(p.getText(), pattern, p.getPosition(), distance))
                                     .collect(Collectors.toCollection(HashSet::new)));
                     }
                     // If the result shortestDistance matches current shortestDistance add the positions
                     else if (resultDistance.get() == distance) {
-                        List<Alignment> alignments = positions.stream().map(p -> Alignment.with(p.getSequence(), p.getPosition(), distance))
+                        List<Alignment> alignments = positions.stream().map(p -> Alignment.with(p.getText(), pattern, p.getPosition(), distance))
                                 .collect(Collectors.toList());
                         result.get().addAll(alignments);
                     }
