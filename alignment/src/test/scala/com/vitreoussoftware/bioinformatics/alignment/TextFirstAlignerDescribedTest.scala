@@ -9,9 +9,6 @@ import org.scalatest.junit.JUnitRunner
 import java.util
 import org.scalatest.prop.PropertyChecks
 import com.vitreoussoftware.bioinformatics.sequence.Sequence
-import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence
-import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme
-
 
 /**
  * Created by John on 8/31/14.

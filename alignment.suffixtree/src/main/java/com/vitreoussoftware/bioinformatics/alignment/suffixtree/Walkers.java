@@ -101,16 +101,16 @@ public class Walkers {
     }
 
     /**
-     * Check to see if the SuffixTree contains an exact match for the given sequence
-     * @param sequence
+     * Check to see if the SuffixTree contains an exact match for the given pattern
+     * @param pattern
      * @return true if the exact match was found, false if it was not.
      */
-    public static Walk<Integer, Boolean> contains(Sequence sequence) {
+    public static Walk<Integer, Boolean> contains(Sequence pattern) {
         return new Walk<Integer, Boolean>() {
             boolean result = false;
             @Override
             public boolean isFinished(Integer metadata) {
-                return (result = metadata.equals(sequence.length()));
+                return (result = metadata.equals(pattern.length()));
             }
 
             @Override
@@ -125,7 +125,7 @@ public class Walkers {
 
             @Override
             public Optional<Integer> visit(BasePair basePair, Collection<Position> positions, Integer metadata) {
-                if (sequence.get(metadata).equals(basePair))
+                if (pattern.get(metadata).equals(basePair))
                     return Optional.of(metadata +1);
                 else
                     return Optional.empty();
@@ -139,14 +139,14 @@ public class Walkers {
     }
 
     /**
-     * For the given sequence finds the alignment with the minimum shortestDistance.
+     * For the given pattern finds the alignment with the minimum shortestDistance.
      * Distance function is 1 for each mismatched BasePair and does not allow gaps.
-     * @param sequence The target sequence we are trying to align
+     * @param pattern The target pattern we are trying to align
      * @return The shortestDistance for the alignment and the list of sequenced position pairs that match the alignment.
      */
-    public static Walk<Triplet<Integer, Integer, Collection<Position>>, Collection<Alignment>> distance(Sequence sequence)
+    public static Walk<Triplet<Integer, Integer, Collection<Position>>, Collection<Alignment>> shortestDistances(Sequence pattern)
     {
-        return new WalkWrapper<>(distance(sequence, 0), x -> x.get());
+        return new WalkWrapper<>(shortestDistances(pattern, 0), x -> x.get());
     }
 
     /**
@@ -157,7 +157,7 @@ public class Walkers {
      * @return The shortestDistance for the alignment and the list of sequenced position pairs that match the alignment.
      */
     public static Walk<Triplet<Integer, Integer, Collection<Position>>,
-            Optional<Collection<Alignment>>> distance(Sequence pattern, int maxDistance)
+            Optional<Collection<Alignment>>> shortestDistances(Sequence pattern, int maxDistance)
     {
         return new Walk<Triplet<Integer, Integer, Collection<Position>>,
                 Optional<Collection<Alignment>>>() {
