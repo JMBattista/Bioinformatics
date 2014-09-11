@@ -1,7 +1,7 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 
 import com.vitreoussoftware.bioinformatics.alignment.Alignment;
-import com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic.Position;
+import com.vitreoussoftware.bioinformatics.alignment.Position;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import org.javatuples.Triplet;
@@ -101,7 +101,7 @@ public class Walkers {
     }
 
     /**
-     * Check to see if the SuffixTree contains an exact match for the given pattern
+     * Check to see if the SuffixTree contained an exact match for the given pattern
      * @param pattern
      * @return true if the exact match was found, false if it was not.
      */

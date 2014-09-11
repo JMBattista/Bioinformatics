@@ -23,6 +23,12 @@ import java.util.stream.Collectors;
  */
 public interface TextFirstAligner {
     /**
+     * Adds a new text to the suffix tree
+     * @param text the text to add
+     */
+    public void addText(final Sequence text);
+
+    /**
      * Does the Text contain the pattern?
      * @param pattern the sequence to search for
      * @return if the substring exists in the tree
@@ -55,12 +61,6 @@ public interface TextFirstAligner {
     default public Collection<Pair<Sequence, Collection<Alignment>>> getAlignments(SequenceCollection patterns) {
         return patterns.stream().map(pattern -> Pair.with(pattern, this.getAlignments(pattern))).collect(Collectors.toCollection(LinkedList::new));
     }
-
-    /**
-     * Adds a new text to the suffix tree
-     * @param text the text to add
-     */
-    public void addText(final Sequence text);
 
     /**
      * Return the minimum shortestDistance from the given pattern to each of the sequences making up the Aligner

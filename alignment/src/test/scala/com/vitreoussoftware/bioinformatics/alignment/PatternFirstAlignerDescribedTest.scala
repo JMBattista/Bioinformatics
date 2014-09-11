@@ -1,6 +1,6 @@
 package com.vitreoussoftware.bioinformatics.alignment
 
-import org.scalatest.{Outcome, fixture}
+import org.scalatest.Outcome
 import com.vitreoussoftware.test.BehaviorSpec
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection
 import scala.collection.JavaConversions._
@@ -14,9 +14,17 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence
  * Created by John on 8/31/14.
  */
 @RunWith(classOf[JUnitRunner])
-abstract class TextFirstAlignerDescribedTest(anAligner: String) extends BehaviorSpec with PropertyChecks
-  with AlignerTestData with AlignerHelpers {
-  type FixtureParam = TextFirstAligner
+abstract class PatternFirstAlignerDescribedTest(anAligner: String) extends BehaviorSpec with PropertyChecks
+  with AlignerTestData {
+  type FixtureParam = PatternFirstAligner
+
+  /**
+   * Perform any setup necessary to create and return the aligner for use in tests
+   * @return the aligner to use for the tests
+   */
+  def  getAligner() : PatternFirstAligner
+
+  def destroyAligner(aligner: PatternFirstAligner) = None
 
   override def withFixture(test: OneArgTest) = {
     // create the fixture
@@ -30,13 +38,13 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
 
   describe(anAligner) {
     describe("that is empty") {
-      it("should not contained any patterns") {
+      it("should not be contained by a text") {
         aligner => {
           forAll(baseSeqs) { (seq) => {
-            aligner contains seq shouldBe false
+            aligner contained seq shouldBe false
           }}
 
-          forAll(aligner contains SequenceCollection.from(baseSeqs)) { result => {
+          forAll(aligner contained SequenceCollection.from(baseSeqs)) { result => {
             result.getValue1 shouldBe false
           }}
         }
@@ -59,47 +67,40 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
       }
     }
 
-    describe("populated with") {
+    describe("tested with") {
 
       // Tests for Sequence Simple
       describe("seqSimple") {
         describe("when asked about containment") {
-          it("should find the single base sequences") {
+          it("should report true when build with singe base pair patterns") {
             aligner => {
-              aligner addText seqSimple
+
               forAll(baseSeqs) { (seq) => {
-                aligner contains seq shouldBe true
+                aligner addPattern seq
               }}
 
-              forAll(aligner contains SequenceCollection.from(baseSeqs)) { result => {
-                result.getValue1 shouldBe true
-              }}
+              aligner contained seqSimple shouldBe true
             }
           }
         }
         describe("when asked for shortest distance") {
           it("should work for sequences off by a value of N") {
             aligner => {
-              aligner addText seqSimple
               def assert(x: util.Collection[Alignment]) = {
                 x.map(a => a.getDistance).forall(d => d == 1) shouldBe true
               }
 
               forAll(offByNSeqs) { (seq) => {
-                val alignments = aligner shortestDistance seq
-                assert(alignments)
+                aligner addPattern seq
               }}
 
-              forAll(aligner shortestDistance SequenceCollection.from(offByNSeqs)) { result => {
-                assert(result.getValue1)
-              }}
-
+              assert(aligner shortestDistance seqSimple)
             }
           }
 
           it("should work for long sequences off by a value of N") {
             aligner => {
-              aligner addText seqSimple
+              aligner addPattern seqSimple
               def assert(x: util.Collection[Alignment]) = {
                 x.map(a => a.getDistance()).toList should contain only 6
               }
@@ -118,21 +119,22 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
         }
 
         it("should work for generated sequence") {
-          aligner => {
-            aligner addText seqSimple
+          unused => {
+            forAll { (pattern: Sequence) =>
+              whenever (pattern.length() > 0 && pattern.length() < seqSimple.length()) {
+                val aligner = getAligner()
+                aligner addPattern pattern
 
-            forAll { (seq: Sequence) =>
-              whenever (seq.length() > 0 && seq.length() < seqSimple.length()) {
-                val contained = aligner contains seq
-                val alignments = aligner getAlignments seq
-                val shortDistanceAlignments = aligner shortestDistance seq
-                val allAlignments = aligner distances seq
+                val contained = aligner contained seqSimple
+                val alignments = aligner getAlignments seqSimple
+                val shortDistanceAlignments = aligner shortestDistance seqSimple
+                val allAlignments = aligner distances seqSimple
 
                 if (contained) {
                   alignments.size should be > 0
                   alignments.map(a => a.getDistance) should contain only 0
                   alignments.map(a => a.getText) should contain only  seqSimple
-                  alignments.map(a => a.getPattern) should contain only seq
+                  alignments.map(a => a.getPattern) should contain only pattern
 
                   val numAlignments = alignments.map(a => a.getPosition).toSet.size
                   alignments.map(a => a.getPosition).size should be (numAlignments)
@@ -149,12 +151,12 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
                   val dist = shortDistanceAlignments.head.getDistance
                   shortDistanceAlignments.map(a => a.getDistance) should contain only dist
                   shortDistanceAlignments.map(a => a.getText) should contain only seqSimple
-                  shortDistanceAlignments.map(a => a.getPattern) should contain only seq
+                  shortDistanceAlignments.map(a => a.getPattern) should contain only pattern
                   shortDistanceAlignments.size should be (shortDistanceAlignments.toSet.size)
                   allAlignments.filter(a => a.getDistance == dist) should contain theSameElementsAs shortDistanceAlignments
 
                   allAlignments.map(a => a.getText) should contain only seqSimple
-                  allAlignments.map(a => a.getPattern) should contain only seq
+                  allAlignments.map(a => a.getPattern) should contain only pattern
                 }
 
                 forAll(alignments) { alignment => {

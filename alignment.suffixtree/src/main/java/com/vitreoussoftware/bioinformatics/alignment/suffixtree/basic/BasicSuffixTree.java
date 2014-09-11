@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.vitreoussoftware.bioinformatics.alignment.Alignment;
+import com.vitreoussoftware.bioinformatics.alignment.Position;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Walk;
 import com.vitreoussoftware.bioinformatics.sequence.*;
@@ -66,7 +67,7 @@ public class BasicSuffixTree implements SuffixTree {
 				// return empty list
 				return Collections.EMPTY_LIST;
 		}
-		
+
 		return current.getTexts().stream().map(position -> Alignment.with(position.getText(), pattern, position.getPosition())).collect(Collectors.toCollection(LinkedList::new));
 	}
 	

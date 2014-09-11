@@ -12,7 +12,7 @@ abstract class SuffixTreeTest(val anAligner: String) extends TextFirstAlignerDes
   describe("A SuffixTree") {
     describe("of type " + anAligner) {
       describe("when used with walkers") {
-        it("will behave the same between reference contains and walkers provided contains") {
+        it("will behave the same between reference contained and walkers provided contained") {
           aligner => {
             aligner addText seqSimple
             val tree: SuffixTree = aligner.asInstanceOf[SuffixTree]

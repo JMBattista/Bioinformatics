@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import com.vitreoussoftware.bioinformatics.alignment.Alignment;
+import com.vitreoussoftware.bioinformatics.alignment.Position;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 
