@@ -1,18 +1,18 @@
-package com.vitreoussoftware.bioinformatics.sequence.reader.fasta;
+package com.vitreoussoftware.bioinformatics.sequence.reader.fastq;
+
+import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
+import org.javatuples.Pair;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
-import org.javatuples.Pair;
 
 /**
  * File stream reader for FASTA data files
  * @author John
  *
  */
-public final class FastaStringFileStreamReader implements SequenceStringStreamReader 
+public final class FastqStringFileStreamReader implements SequenceStringStreamReader
 {
 	private static final int DEFAULT_BUFFER_SIZE = 64 * 1024; // 64 KB read size
 	
@@ -28,7 +28,7 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
 	 * Create a FASTA File Stream Reader for the given file
 	 * @param file the file to run on
 	 */
-	private FastaStringFileStreamReader(FileReader file, int pagingSize)
+	private FastqStringFileStreamReader(FileReader file, int pagingSize)
 	{
 		this.file = file;
 
@@ -41,7 +41,7 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
      * Create an input stream for FASTA file format
      * @param fileName the FASTA file
      * @return the input stream
-     * @throws FileNotFoundException the specified file was not found
+     * @throws java.io.FileNotFoundException the specified file was not found
      */
     public static SequenceStringStreamReader create(String fileName) throws FileNotFoundException
     {
@@ -53,13 +53,13 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
      * @param fileName the FASTA file
      * @param pagingSize the size of the buffer for paging data from disk
      * @return the input stream
-     * @throws FileNotFoundException the specified file was not found
+     * @throws java.io.FileNotFoundException the specified file was not found
      */
     public static SequenceStringStreamReader create(String fileName, int pagingSize) throws FileNotFoundException {
         FileReader file = new FileReader(fileName);
-        return new FastaStringFileStreamReader(file, pagingSize);
+        return new FastqStringFileStreamReader(file, pagingSize);
     }
-	
+
 	/**
      * Reads a record from the file
 	 * @return the record
@@ -168,7 +168,7 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
             throw new RuntimeException("Unable to read from file");
         }
 	}
-	
+
 	@Override
 	protected void finalize() throws Throwable {
 		this.file.close();
@@ -178,7 +178,7 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
 	/**
      * Does the stream reader still have a record?
 	 * @return boolean indicator
-	 * @throws IOException If the file cannot be accessed it may fail
+	 * @throws java.io.IOException If the file cannot be accessed it may fail
 	 */
 	@Override
 	public boolean hasNext() {

@@ -1,5 +1,7 @@
 package com.vitreoussoftware.bioinformatics.sequence.reader;
 
+import org.javatuples.Pair;
+
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -8,7 +10,7 @@ import java.util.Iterator;
  * @author John
  *
  */
-public interface SequenceStringStreamReader extends AutoCloseable, Iterable<String>, Iterator<String> {
+public interface SequenceStringStreamReader extends AutoCloseable, Iterable<Pair<String,String>>, Iterator<Pair<String,String>> {
 
 	/**
      * Does the stream reader still have a record?
@@ -22,10 +24,10 @@ public interface SequenceStringStreamReader extends AutoCloseable, Iterable<Stri
 	 * @return the record
 	 * @throws IOException something went wrong reading from the file 
 	 */
-	public abstract String next();
+	public abstract Pair<String,String> next();
 
     @Override
-    default public Iterator<String> iterator() {
+    default public Iterator<Pair<String,String>> iterator() {
         return this;
     }
 }

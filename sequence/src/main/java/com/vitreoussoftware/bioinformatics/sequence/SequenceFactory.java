@@ -10,15 +10,27 @@ import java.util.Optional;
 public interface SequenceFactory {
 	
 	/**
-	 * Create a Sequence object from string input
+	 * Create a Sequence object from string input without metadata
 	 *
      * @param sequence the string sequence to process
      * @return the sequence object
 	 * @throws InvalidDnaFormatException 
 	 */
-	Optional<Sequence> fromString(String sequence) throws InvalidDnaFormatException;
-	
-	/**
+	default Optional<Sequence> fromString(String sequence) throws InvalidDnaFormatException {
+        return fromString("", sequence);
+    }
+
+    /**
+     * Create a Sequence object from string input
+     *
+     * @param metadata the string metadata
+     * @param sequence the string sequence to process
+     * @return the sequence object
+     * @throws InvalidDnaFormatException
+     */
+    Optional<Sequence> fromString(String metadata, String sequence) throws InvalidDnaFormatException;
+
+    /**
 	 * Create a Sequence object from another sequence object.
 	 * Used for changing encoding schemes.
 	 *

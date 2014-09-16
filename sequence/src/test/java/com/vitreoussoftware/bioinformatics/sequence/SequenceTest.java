@@ -1,5 +1,7 @@
 package com.vitreoussoftware.bioinformatics.sequence;
 
+import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence;
+import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import org.junit.Before;
 import org.junit.Test;

@@ -33,13 +33,13 @@ public class FastaSequenceFactory implements SequenceFactory {
 	{
 		this.encodingSheme = encodingScheme;
 	}
-	
-	@Override
-	public Optional<Sequence> fromString(String sequence) throws InvalidDnaFormatException {
-		if (sequence.length() == 0) throw new InvalidDnaFormatException("The DNA sequence was empty!");
-		
-		return BasicSequence.create(sequence, this.encodingSheme);
-	}
+
+    @Override
+    public Optional<Sequence> fromString(String metadata, String sequence) throws InvalidDnaFormatException {
+        if (sequence.length() == 0) throw new InvalidDnaFormatException("The DNA sequence was empty!");
+
+        return BasicSequence.create(metadata, sequence, this.encodingSheme);
+    }
 
 	@Override
 	public Optional<Sequence> fromSequence(Sequence sequence) throws InvalidDnaFormatException {

@@ -6,10 +6,7 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Optional;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
 /**
  * A DNA Sequence representation
@@ -19,39 +16,66 @@ import java.util.function.Consumer;
 public class BasicSequence implements Sequence {
 	private byte[] sequence;
 	private final EncodingScheme encodingScheme;
+    private String metadata;
 
-	private BasicSequence(EncodingScheme encodingSheme)
+    private BasicSequence(EncodingScheme encodingSheme)
 	{
 		this.encodingScheme = encodingSheme;
 	}
 
+    /**
+     * Create a new Sequence from a string and the given encoding scheme
+     * @param sequence the string sequence to encode
+     * @param encodingSheme the scheme to use for encoding
+     * @return the encoded sequence
+     * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException if the input doesn't match the scheme
+     */
+    public static Optional<Sequence> create(String sequence, EncodingScheme encodingSheme)
+    {
+        return create("", sequence, encodingSheme);
+    }
+
 	/**
 	 * Create a new Sequence from a string and the given encoding scheme
-	 * @param sequence the string sequence to encode
+     * @param metadata the string metadata for the sequence
+     * @param sequence the string sequence to encode
 	 * @param encodingSheme the scheme to use for encoding
 	 * @return the encoded sequence
 	 * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException if the input doesn't match the scheme
 	 */
-	public static Optional<Sequence> create(String sequence, EncodingScheme encodingSheme)
+	public static Optional<Sequence> create(String metadata, String sequence, EncodingScheme encodingSheme)
 	{
         try {
-            BasicSequence seq = new BasicSequence(encodingSheme);
-            seq.sequence = new byte[sequence.length()];
-
-            for (int i = 0; i < sequence.length(); i++)
-            {
-                seq.sequence[i] = encodingSheme.getValue(sequence.charAt(i));
-            }
-
-            return Optional.<Sequence>of(seq);
+            return Optional.of(createWithError(metadata, sequence, encodingSheme));
         }
         catch (InvalidDnaFormatException e) {
             System.err.println(e.getMessage());
             System.err.println("\t" + sequence);
-            // TODO allow attaching a 'Reason' to empty, via extending Optional
             return Optional.empty();
         }
 	}
+
+    /**
+     * Create a new Sequence from a string and the given encoding scheme
+     * @param sequence the string sequence to encode
+     * @param encodingSheme the scheme to use for encoding
+     * @return the encoded sequence
+     * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException if the input doesn't match the scheme
+     */
+    public static Sequence createWithError(String metadata, String sequence, EncodingScheme encodingSheme) throws InvalidDnaFormatException
+    {
+        BasicSequence seq = new BasicSequence(encodingSheme);
+        seq.metadata = metadata;
+        seq.sequence = new byte[sequence.length()];
+
+        for (int i = 0; i < sequence.length(); i++)
+        {
+            seq.sequence[i] = encodingSheme.getValue(sequence.charAt(i));
+        }
+
+        return seq;
+    }
+
 
     @Override
 	public BasePair get(int index)
@@ -66,8 +90,13 @@ public class BasicSequence implements Sequence {
 			throw new RuntimeException("We failed to decode a value that was previously encoded in by the same encoding scheme, for value: " + sequence[index] + " encoding scheme " + this.encodingScheme.getClass().getName());
 		}
 	}
-	
-	@Override
+
+    @Override
+    public String getMetadata() {
+        return this.metadata;
+    }
+
+    @Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		try {

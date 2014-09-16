@@ -1,22 +1,21 @@
-package com.vitreoussoftware.bioinformatics.sequence.reader.fasta;
+package com.vitreoussoftware.bioinformatics.sequence.reader.fastq;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
-import java.io.*;
-
+import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.reader.fasta.FastaStringFileStreamReader;
 import org.javatuples.Pair;
 import org.junit.Test;
 
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import static org.junit.Assert.*;
 
 /**
  * Test the FastaFileStreamReader class
  * @author John
  *
  */
-public class FastaStringFileStreamReaderTest {
+public class FastqStringFileStreamReaderTest {
     /**
      * The path where the FASTA test files can be found.
      */
@@ -167,96 +166,96 @@ public class FastaStringFileStreamReaderTest {
     /**
      * Create a SequenceStringStreamReader for the Simple FASTA test file
      * @return the SequenceStringStreamReader
-     * @throws FileNotFoundException the test file could not be found
+     * @throws java.io.FileNotFoundException the test file could not be found
      */
     public static SequenceStringStreamReader getSimpleFastaReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastaStringFileStreamReaderTest.FASTA_PATH + FastaStringFileStreamReaderTest.SSU_PARC_SIMPLE_FASTA);
+        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_SIMPLE_FASTA);
     }
 
     /**
      * Create a SequenceStringStreamReader for the Simple FASTA test file
      * @return the SequenceStringStreamReader
-     * @throws FileNotFoundException the test file could not be found
+     * @throws java.io.FileNotFoundException the test file could not be found
      */
     public static SequenceStringStreamReader getAlternateFastaReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastaStringFileStreamReaderTest.FASTA_PATH + FastaStringFileStreamReaderTest.ALTERNATE_FASTA);
+        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.ALTERNATE_FASTA);
     }
     /**
      * Create a SequenceStringStreamReader for the Example FASTA test file
      * @return the SequenceStringStreamReader
-     * @throws FileNotFoundException the test file could not be found
+     * @throws java.io.FileNotFoundException the test file could not be found
      */
     public static SequenceStringStreamReader getExampleFastaReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastaStringFileStreamReaderTest.FASTA_PATH + FastaStringFileStreamReaderTest.SSU_PARC_EXAMPLE_FASTA);
+        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_EXAMPLE_FASTA);
     }
 
     /**
      * Create a SequenceStringStreamReader for the Example FASTA test file
      * @return the SequenceStringStreamReader
-     * @throws FileNotFoundException the test file could not be found
+     * @throws java.io.FileNotFoundException the test file could not be found
      */
     public static SequenceStringStreamReader getComplexFastaReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastaStringFileStreamReaderTest.FASTA_PATH + FastaStringFileStreamReaderTest.COMPLEX_FASTA);
+        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.COMPLEX_FASTA);
     }
 
     /**
      * Create a SequenceStringStreamReader for the Paged FASTA test file
      * @return the SequenceStringStreamReader
-     * @throws FileNotFoundException the test file could not be found
+     * @throws java.io.FileNotFoundException the test file could not be found
      */
     public static SequenceStringStreamReader getPagedFastaReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastaStringFileStreamReaderTest.FASTA_PATH + FastaStringFileStreamReaderTest.SSU_PARC_PAGED_FASTA);
+        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_PAGED_FASTA);
     }
 
     /**
      * Create a SequenceStringStreamReader for the Paged FASTA test file
      * @return the SequenceStringStreamReader
-     * @throws FileNotFoundException the test file could not be found
+     * @throws java.io.FileNotFoundException the test file could not be found
      */
     public static SequenceStringStreamReader getPagedFastaReader(int pagingSize)
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastaStringFileStreamReaderTest.FASTA_PATH + FastaStringFileStreamReaderTest.SSU_PARC_PAGED_FASTA, pagingSize);
+        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_PAGED_FASTA, pagingSize);
     }
 
     /**
      * Create a SequenceStringStreamReader for the Gapged FASTA test file
      * @return the SequenceStringStreamReader
-     * @throws FileNotFoundException the test file could not be found
+     * @throws java.io.FileNotFoundException the test file could not be found
      */
     public static SequenceStringStreamReader getGappedFastaReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastaStringFileStreamReaderTest.FASTA_PATH + FastaStringFileStreamReaderTest.SSU_PARC_GAPPED_FASTA);
+        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_GAPPED_FASTA);
     }
 
     /**
      * Create a SequenceStringStreamReader for the NoSpace FASTA test file
      * @return the SequenceStringStreamReader
-     * @throws FileNotFoundException the test file could not be found
+     * @throws java.io.FileNotFoundException the test file could not be found
      */
     public static SequenceStringStreamReader getNoSpaceFastaReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastaStringFileStreamReaderTest.FASTA_PATH + FastaStringFileStreamReaderTest.SSU_PARC_NOSPACE_FASTA);
+        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_NOSPACE_FASTA);
     }
 
     /**
      * Create a SequenceStringStreamReader for the Big FASTA test file
      * @return the SequenceStringStreamReader
-     * @throws FileNotFoundException the test file could not be found
+     * @throws java.io.FileNotFoundException the test file could not be found
      */
     public static SequenceStringStreamReader getBigFastaReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastaStringFileStreamReaderTest.FASTA_PATH + FastaStringFileStreamReaderTest.SSU_PARC_BIG_FASTA);
+        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_BIG_FASTA);
     }
 
 
     /**
 	 * Create a FastaFileStreamReader
-	 * @throws IOException 
+	 * @throws java.io.IOException
 	 */
 	@Test
 	public void testCreate() throws IOException {
@@ -265,19 +264,19 @@ public class FastaStringFileStreamReaderTest {
 //        stream.close();
 		FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA);
 	}
-	
+
 	/**
 	 * Create a FastaFileStreamReader
-	 * @throws FileNotFoundException 
+	 * @throws java.io.FileNotFoundException
 	 */
 	@Test(expected=FileNotFoundException.class)
 	public void testCreate_notFound() throws FileNotFoundException {
 		FastaStringFileStreamReader.create("Z:/bobtheexamplefileisnothere.fasta");
 	}
-	
+
 	/**
 	 * Create a FastaFileStreamReader
-	 * @throws FileNotFoundException 
+	 * @throws java.io.FileNotFoundException
 	 */
 	@Test
 	public void testCreate_notFoundAutoCloseable() throws FileNotFoundException {
@@ -294,49 +293,49 @@ public class FastaStringFileStreamReaderTest {
 			fail("We should have been caught by the more specific exception in front of this.");
 		}
 	}
-	
+
 	/**
 	 * Read a record from the reader
-	 * @throws IOException 
+	 * @throws java.io.IOException
 	 */
 	@Test
 	public void testReadRecord_simple() throws IOException {
 		SequenceStringStreamReader reader = getSimpleFastaReader();
-		
+
 		assertEquals(recordSimple, reader.next().getValue1());
 	}
-	
+
 	/**
 	 * Read a record from the reader
-	 * @throws IOException 
+	 * @throws java.io.IOException
 	 */
 	@Test
 	public void testReadRecord_example1() throws IOException {
 		SequenceStringStreamReader reader = getExampleFastaReader();
-		
+
 		assertEquals(record1, reader.next().getValue1());
 	}
-	
+
 	/**
 	 * Read a second record from the reader
-	 * @throws IOException 
+	 * @throws java.io.IOException
 	 */
 	@Test
 	public void testReadRecord_example2() throws IOException {
 		SequenceStringStreamReader reader = getExampleFastaReader();
-		
+
 		assertEquals(record1, reader.next().getValue1());
 		assertEquals(record2, reader.next().getValue1());
 	}
-	
+
 	/**
 	 * Read a third record from the reader
-	 * @throws IOException 
+	 * @throws java.io.IOException
 	 */
 	@Test
 	public void testReadRecord_example3() throws IOException {
 		SequenceStringStreamReader reader = getExampleFastaReader();
-		
+
 		assertEquals(record1, reader.next().getValue1());
 		assertEquals(record2, reader.next().getValue1());
 		assertEquals(record3, reader.next().getValue1());
@@ -344,7 +343,7 @@ public class FastaStringFileStreamReaderTest {
 
     /**
      * Read a third record from the reader
-     * @throws IOException
+     * @throws java.io.IOException
      */
     @Test
     public void testReadRecord_alternate() throws IOException {
@@ -354,10 +353,10 @@ public class FastaStringFileStreamReaderTest {
         assertEquals(alternate2, reader.next().getValue1());
         assertEquals(alternate3, reader.next().getValue1());
     }
-	
+
 	/**
 	 * Read a third record from the reader
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Test
 	public void testReadRecord_autoCloseable() throws Exception {
@@ -402,10 +401,10 @@ public class FastaStringFileStreamReaderTest {
             fail("Should not have hit an exception from reading three records from no space");
         }
     }
-	
+
 	/**
 	 * Read a third record from the reader
-	 * @throws IOException 
+	 * @throws java.io.IOException
 	 */
 	@Test
 	public void testReadRecord_paged() throws IOException {
@@ -413,7 +412,7 @@ public class FastaStringFileStreamReaderTest {
 
         int index = 0;
 		while (reader.hasNext())
-		{	
+		{
 			assertEquals(index+0 + " failed to parse", record1, reader.next().getValue1());
             assertEquals(index+1 + " failed to parse", record2, reader.next().getValue1());
             assertEquals(index+2 + " failed to parse", record3, reader.next().getValue1());
@@ -425,7 +424,7 @@ public class FastaStringFileStreamReaderTest {
 
     /**
      * Read a third record from the reader
-     * @throws IOException
+     * @throws java.io.IOException
      */
     @Test
     public void testReadRecords_paged1() throws IOException {
@@ -445,7 +444,7 @@ public class FastaStringFileStreamReaderTest {
 
     /**
      * Read a third record from the reader
-     * @throws IOException
+     * @throws java.io.IOException
      */
     @Test
     public void testReadRecords_paged10() throws IOException {
@@ -465,7 +464,7 @@ public class FastaStringFileStreamReaderTest {
 
     /**
      * Read a third record from the reader
-     * @throws IOException
+     * @throws java.io.IOException
      */
     @Test
     public void testReadRecords_paged100() throws IOException {
@@ -485,7 +484,7 @@ public class FastaStringFileStreamReaderTest {
 
     /**
      * Read a record from the reader
-     * @throws IOException
+     * @throws java.io.IOException
      */
     @Test
     public void testReadRecord_complex1() throws IOException {
@@ -498,7 +497,7 @@ public class FastaStringFileStreamReaderTest {
 
     /**
      * Read a second record from the reader
-     * @throws IOException
+     * @throws java.io.IOException
      */
     @Test
     public void testReadRecord_complex2() throws IOException {
@@ -512,7 +511,7 @@ public class FastaStringFileStreamReaderTest {
 
     /**
      * Read a third record from the reader
-     * @throws IOException
+     * @throws java.io.IOException
      */
     @Test
     public void testReadRecord_complex3() throws IOException {

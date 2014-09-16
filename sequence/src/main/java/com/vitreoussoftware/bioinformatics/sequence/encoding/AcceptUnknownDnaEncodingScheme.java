@@ -209,7 +209,7 @@ public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
             case '-':
                 return NUCLEOTIDE_GAP;
             default:
-				throw new InvalidDnaFormatException("There was an invalid value for DnaSeqeucne " + nucleotide);
+				throw new InvalidDnaFormatException("There was an invalid value for DnaSequecne " + nucleotide);
 		}
 	}
 		

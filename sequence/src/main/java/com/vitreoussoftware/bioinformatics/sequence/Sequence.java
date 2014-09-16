@@ -14,22 +14,39 @@ import com.vitreoussoftware.collections.Streamable;
  *
  */
 public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
-
-    @Override
-    public default Stream<BasePair> stream() {
-        return StreamSupport.stream(spliterator(), false);
-    }
-
-    @Override
-    public default Stream<BasePair> parallelStream() {
-        return StreamSupport.stream(spliterator(), true);
-    }
+    /**
+	 * Get the BasePair at the specified index
+	 * @param index the index to get the BasePair from
+	 * @return the BasePair
+	 */
+	public BasePair get(int index);
 
     /**
-	 * Return an iterator that proceeds from the back to the front of the sequence
-	 * @return the basepair iterator
+     * Get the metadata string for the sequence
+     * @return The metadata for the sequence
+     */
+    public String getMetadata();
+
+    @Override
+	public String toString();
+
+    @Override
+	public int hashCode();
+
+    @Override
+	public boolean equals(Object obj);
+
+    /**
+	 * The length of the sequence
+	 * @return length
 	 */
-	public default Iterable<BasePair> reverse() {
+	public int length();
+
+    /**
+     * Return an iterator that proceeds from the back to the front of the sequence
+     * @return the basepair iterator
+     */
+    public default Iterable<BasePair> reverse() {
         return new Iterable<BasePair>() {
 
             @Override
@@ -91,27 +108,15 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
         };
     }
 
-    /**
-	 * Get the BasePair at the specified index
-	 * @param index the index to get the BasePair from
-	 * @return the BasePair
-	 */
-	public BasePair get(int index);
+    @Override
+    public default Stream<BasePair> stream() {
+        return StreamSupport.stream(spliterator(), false);
+    }
 
     @Override
-	public String toString();
-
-    @Override
-	public int hashCode();
-
-    @Override
-	public boolean equals(Object obj);
-
-    /**
-	 * The length of the sequence
-	 * @return length
-	 */
-	public int length();
+    public default Stream<BasePair> parallelStream() {
+        return StreamSupport.stream(spliterator(), true);
+    }
 
     @Override
     public default void forEach(Consumer<? super BasePair> consumer) {
