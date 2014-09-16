@@ -83,6 +83,9 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
               aligner addText seqSimple
               def assert(x: util.Collection[Alignment]) = {
                 x.map(a => a.getDistance).forall(d => d == 1) shouldBe true
+                forAll(x) { alignment => {
+                  checkDistance(alignment) should be(alignment.getDistance)
+                }}
               }
 
               forAll(offByNSeqs) { (seq) => {
@@ -102,6 +105,9 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
               aligner addText seqSimple
               def assert(x: util.Collection[Alignment]) = {
                 x.map(a => a.getDistance()).toList should contain only 6
+                forAll(x) { alignment => {
+                  checkDistance(alignment) should be(alignment.getDistance)
+                }}
               }
 
               forAll(offByNSeqsLong) { (seq) => {

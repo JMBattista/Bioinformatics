@@ -42,7 +42,7 @@ public class Alignment {
 
     @Override
     public String toString() {
-        return String.format("(%d, %d, %s, %s)", this.position, this.distance, this.pattern.toString(), this.text.toString());
+        return String.format("(p:%d, d:%d, p:%s, t:%s)", this.position, this.distance, this.pattern.toString(), this.text.toString());
     }
 
     @Override

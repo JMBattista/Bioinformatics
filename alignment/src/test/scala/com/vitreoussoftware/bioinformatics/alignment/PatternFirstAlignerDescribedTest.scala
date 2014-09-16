@@ -9,6 +9,8 @@ import org.scalatest.junit.JUnitRunner
 import java.util
 import org.scalatest.prop.PropertyChecks
 import com.vitreoussoftware.bioinformatics.sequence.Sequence
+import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence
+import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme
 
 /**
  * Created by John on 8/31/14.
@@ -86,34 +88,35 @@ abstract class PatternFirstAlignerDescribedTest(anAligner: String) extends Behav
         describe("when asked for shortest distance") {
           it("should work for sequences off by a value of N") {
             aligner => {
-              def assert(x: util.Collection[Alignment]) = {
-                x.map(a => a.getDistance).forall(d => d == 1) shouldBe true
-              }
-
               forAll(offByNSeqs) { (seq) => {
                 aligner addPattern seq
               }}
 
-              assert(aligner shortestDistance seqSimple)
+              val alignments = aligner shortestDistance seqSimple
+              alignments.map(a => a.getText) should contain only seqSimple
+              alignments.map(a => a.getDistance) should contain only 1
+              alignments.map(a => a.getPattern).toSet should contain theSameElementsAs offByNSeqs
+
+              forAll(alignments) { alignment => {
+                checkDistance(alignment) should be(alignment.getDistance)
+              }}
             }
           }
 
           it("should work for long sequences off by a value of N") {
             aligner => {
-              aligner addPattern seqSimple
-              def assert(x: util.Collection[Alignment]) = {
-                x.map(a => a.getDistance()).toList should contain only 6
-              }
-
               forAll(offByNSeqsLong) { (seq) => {
-                val alignments = aligner shortestDistance seq
-                assert(alignments)
+                aligner addPattern seq
               }}
 
-              forAll(aligner shortestDistance SequenceCollection.from(offByNSeqsLong)) { result => {
-                assert(result.getValue1)
-              }}
+              val alignments = aligner shortestDistance seqSimple
+              alignments.map(a => a.getText) should contain only seqSimple
+              alignments.map(a => a.getDistance) should contain only 6
+              alignments.map(a => a.getPattern).toSet should contain theSameElementsAs offByNSeqsLong
 
+              forAll(alignments) { alignment => {
+                checkDistance(alignment) should be(alignment.getDistance)
+              }}
             }
           }
         }

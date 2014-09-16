@@ -88,13 +88,22 @@ public class KeywordNode {
 
     /**
      *
-     * @return if this node is a terminal
+     * @return The collections of patterns that are teminated at this node
      */
     public Collection<Sequence> getTerminals() {
         return this.terminals;
     }
 
+    /**
+     * Set this node as terminal for the given pattern.
+     * @param pattern the pattern fro which this node is terminal
+     */
     public void setTerminal(Sequence pattern) {
         this.terminals.add(pattern);
+    }
+
+    @Override
+    public String toString() {
+        return this.basePair.toString() + this.terminals;
     }
 }
