@@ -58,7 +58,7 @@ public class SequenceFromFastaStringStreamReaderTest {
             assertTrue("Second record could not be parsed", reader.next().isPresent());
             assertTrue("Third record could not be parsed", reader.next().isPresent());
         } catch (Exception e) {
-            fail("Should not have hit an exception from reading three records from no space");
+            fail("Should not have hit an exception from reading three records from no space\n" + e.getMessage());
         }
     }
 

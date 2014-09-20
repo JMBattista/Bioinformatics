@@ -1,7 +1,6 @@
 package com.vitreoussoftware.bioinformatics.sequence.reader.fastq;
 
 import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.reader.fasta.FastaStringFileStreamReader;
 import org.javatuples.Pair;
 import org.junit.Test;
 
@@ -11,7 +10,7 @@ import java.io.IOException;
 import static org.junit.Assert.*;
 
 /**
- * Test the FastaFileStreamReader class
+ * Test the FastqFileStreamReader class
  * @author John
  *
  */
@@ -19,47 +18,42 @@ public class FastqStringFileStreamReaderTest {
     /**
      * The path where the FASTA test files can be found.
      */
-    private static final String FASTA_PATH = "target/test/sequence/Fasta/";
+    private static final String FASTA_PATH = "target/test/sequence/Fastq/";
 
     /**
      * FASTA file with enough data that pages must be performed
      */
-    private static final String ALTERNATE_FASTA = "alternate.fasta";
+    private static final String ALTERNATE_FASTA = "alternate.fastq";
 
     /**
      * FASTA file with enough data that pages must be performed
      */
-    private static final String SSU_PARC_GAPPED_FASTA = "SSUParc_Gapped.fasta";
+    private static final String SSU_PARC_GAPPED_FASTA = "SSUParc_Gapped.fastq";
 
     /**
      * FASTA file with enough data that pages must be performed
      */
-    private static final String SSU_PARC_NOSPACE_FASTA = "SSUParc_NoSpace.fasta";
-
-    /**
-     * FASTA file with enough data that pages must be performed
-     */
-    private static final String SSU_PARC_BIG_FASTA = "SSUParc_Big.fasta";
+    private static final String SSU_PARC_NOSPACE_FASTA = "SSUParc_NoSpace.fastq";
 
     /**
 	 * FASTA file with enough data that pages must be performed
 	 */
-	private static final String SSU_PARC_PAGED_FASTA = "SSUParc_Paged.fasta";
+	private static final String SSU_PARC_PAGED_FASTA = "SSUParc_Paged.fastq";
 
 	/**
 	 * FASTA file with only a small amount of data
 	 */
-	private static final String SSU_PARC_SIMPLE_FASTA = "SSUParc_Simple.fasta";
+	private static final String SSU_PARC_SIMPLE_FASTA = "SSUParc_Simple.fastq";
 
 	/**
 	 * FASTA file with three full records
 	 */
-	private static final String SSU_PARC_EXAMPLE_FASTA = "SSUParc_Example.fasta";
+	private static final String SSU_PARC_EXAMPLE_FASTA = "SSUParc_Example.fastq";
 
     /**
      * FASTA file with three full records
      */
-    private static final String COMPLEX_FASTA = "ComplexExamples.fasta";
+    private static final String COMPLEX_FASTA = "ComplexExamples.fastq";
 
 	/**
 	 * Shortened FASTA string for basic testing
@@ -144,33 +138,49 @@ public class FastqStringFileStreamReaderTest {
             "GCAATTCCGACCACATAGACCGTATCAATACCACGTTCTTTTAAGTAACCCGTTAAACCT" +
             "GTCATTGTGGTGTGGTCAGCTTCCATAAAAGCCGAGTAAC";
 
-    private final String fastaMultiLineDescriptionMetadata = "LCBO - Prolactin precursor - Bovine";
-    private final String fastaMultiLineDescriptionSequence =
-            "MDSKGSSQKGSRLLLLLVVSNLLLCQGVVSTPVCPNGPGNCQVSLRDLFDRAVMVSHYIHDLSS" +
-            "EMFNEFDKRYAQGKGFITMALNSCHTSSLPTPEDKEQAQQTHHEVLMSLILGLLRSWNDPLYHL" +
-            "VTEVRGMKGAPDAILSRAIEIEEENKRLLEGMEMIFGQVIPGAKETEPYPVWSGLPSLQTKDED" +
-            "ARYSAFYNLLHCLRRDSSKIDTYLKLLNCRIIYNNNC";
-    private final String fastaTerminatedMetadata = "MCHU - Calmodulin - Human, rabbit, bovine, rat, and chicken";
-    private final String fastaTerminatedSequence =
-            "ADQLTEEQIAEFKEAFSLFDKDGDGTITTKELGTVMRSLGQNPTEAELQDMINEVDADGNGTID" +
-            "FPEFLTMMARKMKDTDSEEEIREAFRVFDKDGNGYISAAELRHVMTNLGEKLTDEEVDEMIREA" +
-            "DIDGDGQVNYEEFVQMMTAK";
-    private final String fastaLargeHeaderMetadata = "gi|5524211|gb|AAD44166.1| cytochrome b [Elephas maximus maximus]";
-    private final String fastaLargeHeaderSequence =
-            "LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLV" +
-            "EWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYTIKDFLG" +
-            "LLILILLLLLLALLSPDMLGDPDNHMPADPLNTPLHIKPEWYFLFAYAILRSVPNKLGGVLALFLSIVIL" +
-            "GLMPFLHTSKHRSMMLRPLSQALFWTLTMDLLTLTWIGSQPVEYPYTIIGQMASILYFSIILAFLPIAGX" +
-            "IENY";
+    private final String fastqComplex1_metadata = "SEQ_ID";
+    private final String fastqComplex1_sequence = "GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT";
+    private final String fastqComplex1_comments = "";
+    private final String fastqComplex1_quality  = "!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65";
+
+    private final String fastqComplex2_metadata = "HWUSI-EAS100R:6:73:941:1973#0/1";
+    private final String fastqComplex2_sequence = "ACCGCTTGTGCGGGCCCCCGTCAATTCATTTGAGTTTTAGTCTTGCGACCGTACTCCCCAGGCGGTCTACTTATCGCGTTAGCTGCGCCACTAA";
+    private final String fastqComplex2_comments = "";
+    private final String fastqComplex2_quality  = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+
+    private final String fastqComplex3_metadata = "EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG";
+    private final String fastqComplex3_sequence = "ACCGCTTGTGCGGGCCCCCGTCAATTCATTTGAGTTTTAGTCTTGCGACCGTACTCCCCAGGCGGTCTACTTATCGCGTTAGCTGCGCCACTAA";
+    private final String fastqComplex3_comments = "";
+    private final String fastqComplex3_quality  = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+
+    private final String fastqComplex4_metadata = "SRR001666.1 071112_SLXA-EAS1_s_7:5:1:817:345 length=36";
+    private final String fastqComplex4_sequence = "GGGTGATGGCCGCTGCCGATGGCGTCAAATCCCACC";
+    private final String fastqComplex4_comments = "SRR001666.1 071112_SLXA-EAS1_s_7:5:1:817:345 length=36";
+    private final String fastqComplex4_quality  = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIII9IG9IC";
+
+    private final String fastqComplex5_metadata = "Acinetobacter_806_905_0:0:0_0:0:0_0/1";
+    private final String fastqComplex5_sequence = "ACCGCTTGTGCGGGCCCCCGTCAATTCATTTGAGTTTTAGTCTTGCGACCGTACTCCCCAGGCGGTCTACTTATCGCGTTAGCTGCGCCACTAAAGCCTC";
+    private final String fastqComplex5_comments = "";
+    private final String fastqComplex5_quality  = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII";
+
+    private final String fastqComplex6_metadata = "Bacillus_359_458_0:0:0_0:0:0_100cb/1";
+    private final String fastqComplex6_sequence = "GCCGCGTGAGTGATGAAGGCTTTCGGGTCGTAAAACTCTGTTGTTAGGGAAGAACAAGTGCTAGTTGAATAAGCTGGCACCTTGACGGTACCTAACCAGA";
+    private final String fastqComplex6_comments = "";
+    private final String fastqComplex6_quality  = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII";
+
+    private final String fastqComplex7_metadata = "Actinomyces_79_178_0:0:0_0:0:0_4639/1";
+    private final String fastqComplex7_sequence = "GAACAAACCTTTCCACCAACCCCCATGCGAAGATCAGTGAATATCCAGTATTAGCACCCGTTTCCGGGCGTTATCCCAAAGAAGGGGGCAGGTTACTCAC";
+    private final String fastqComplex7_comments = "";
+    private final String fastqComplex7_quality  = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII";
 
     /**
      * Create a SequenceStringStreamReader for the Simple FASTA test file
      * @return the SequenceStringStreamReader
      * @throws java.io.FileNotFoundException the test file could not be found
      */
-    public static SequenceStringStreamReader getSimpleFastaReader()
+    public static SequenceStringStreamReader getSimpleFastqReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_SIMPLE_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_SIMPLE_FASTA);
     }
 
     /**
@@ -178,18 +188,18 @@ public class FastqStringFileStreamReaderTest {
      * @return the SequenceStringStreamReader
      * @throws java.io.FileNotFoundException the test file could not be found
      */
-    public static SequenceStringStreamReader getAlternateFastaReader()
+    public static SequenceStringStreamReader getAlternateFastqReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.ALTERNATE_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.ALTERNATE_FASTA);
     }
     /**
      * Create a SequenceStringStreamReader for the Example FASTA test file
      * @return the SequenceStringStreamReader
      * @throws java.io.FileNotFoundException the test file could not be found
      */
-    public static SequenceStringStreamReader getExampleFastaReader()
+    public static SequenceStringStreamReader getExampleFastqReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_EXAMPLE_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_EXAMPLE_FASTA);
     }
 
     /**
@@ -197,9 +207,9 @@ public class FastqStringFileStreamReaderTest {
      * @return the SequenceStringStreamReader
      * @throws java.io.FileNotFoundException the test file could not be found
      */
-    public static SequenceStringStreamReader getComplexFastaReader()
+    public static SequenceStringStreamReader getComplexFastqReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.COMPLEX_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.COMPLEX_FASTA);
     }
 
     /**
@@ -207,9 +217,9 @@ public class FastqStringFileStreamReaderTest {
      * @return the SequenceStringStreamReader
      * @throws java.io.FileNotFoundException the test file could not be found
      */
-    public static SequenceStringStreamReader getPagedFastaReader()
+    public static SequenceStringStreamReader getPagedFastqReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_PAGED_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_PAGED_FASTA);
     }
 
     /**
@@ -217,9 +227,9 @@ public class FastqStringFileStreamReaderTest {
      * @return the SequenceStringStreamReader
      * @throws java.io.FileNotFoundException the test file could not be found
      */
-    public static SequenceStringStreamReader getPagedFastaReader(int pagingSize)
+    public static SequenceStringStreamReader getPagedFastqReader(int pagingSize)
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_PAGED_FASTA, pagingSize);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_PAGED_FASTA, pagingSize);
     }
 
     /**
@@ -227,9 +237,9 @@ public class FastqStringFileStreamReaderTest {
      * @return the SequenceStringStreamReader
      * @throws java.io.FileNotFoundException the test file could not be found
      */
-    public static SequenceStringStreamReader getGappedFastaReader()
+    public static SequenceStringStreamReader getGappedFastqReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_GAPPED_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_GAPPED_FASTA);
     }
 
     /**
@@ -237,24 +247,14 @@ public class FastqStringFileStreamReaderTest {
      * @return the SequenceStringStreamReader
      * @throws java.io.FileNotFoundException the test file could not be found
      */
-    public static SequenceStringStreamReader getNoSpaceFastaReader()
+    public static SequenceStringStreamReader getNoSpaceFastqReader()
             throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_NOSPACE_FASTA);
-    }
-
-    /**
-     * Create a SequenceStringStreamReader for the Big FASTA test file
-     * @return the SequenceStringStreamReader
-     * @throws java.io.FileNotFoundException the test file could not be found
-     */
-    public static SequenceStringStreamReader getBigFastaReader()
-            throws FileNotFoundException {
-        return FastaStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_BIG_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_NOSPACE_FASTA);
     }
 
 
     /**
-	 * Create a FastaFileStreamReader
+	 * Create a FastqFileStreamReader
 	 * @throws java.io.IOException
 	 */
 	@Test
@@ -262,25 +262,25 @@ public class FastqStringFileStreamReaderTest {
 //        OutputStreamWriter stream = new OutputStreamWriter(new FileOutputStream(new File("find the path")));
 //        stream.write("test");
 //        stream.close();
-		FastaStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA);
+		FastqStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA);
 	}
 
 	/**
-	 * Create a FastaFileStreamReader
+	 * Create a FastqFileStreamReader
 	 * @throws java.io.FileNotFoundException
 	 */
 	@Test(expected=FileNotFoundException.class)
 	public void testCreate_notFound() throws FileNotFoundException {
-		FastaStringFileStreamReader.create("Z:/bobtheexamplefileisnothere.fasta");
+		FastqStringFileStreamReader.create("Z:/bobtheexamplefileisnothere.fastq");
 	}
 
 	/**
-	 * Create a FastaFileStreamReader
+	 * Create a FastqFileStreamReader
 	 * @throws java.io.FileNotFoundException
 	 */
 	@Test
 	public void testCreate_notFoundAutoCloseable() throws FileNotFoundException {
-		try (SequenceStringStreamReader reader = FastaStringFileStreamReader.create("Z:/bobtheexamplefileisnothere.fasta"))
+		try (SequenceStringStreamReader reader = FastqStringFileStreamReader.create("Z:/bobtheexamplefileisnothere.fastq"))
 		{
 			fail("This should not be reachable");
 		}
@@ -300,7 +300,7 @@ public class FastqStringFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_simple() throws IOException {
-		SequenceStringStreamReader reader = getSimpleFastaReader();
+		SequenceStringStreamReader reader = getSimpleFastqReader();
 
 		assertEquals(recordSimple, reader.next().getValue1());
 	}
@@ -311,7 +311,7 @@ public class FastqStringFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_example1() throws IOException {
-		SequenceStringStreamReader reader = getExampleFastaReader();
+		SequenceStringStreamReader reader = getExampleFastqReader();
 
 		assertEquals(record1, reader.next().getValue1());
 	}
@@ -322,7 +322,7 @@ public class FastqStringFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_example2() throws IOException {
-		SequenceStringStreamReader reader = getExampleFastaReader();
+		SequenceStringStreamReader reader = getExampleFastqReader();
 
 		assertEquals(record1, reader.next().getValue1());
 		assertEquals(record2, reader.next().getValue1());
@@ -334,25 +334,12 @@ public class FastqStringFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_example3() throws IOException {
-		SequenceStringStreamReader reader = getExampleFastaReader();
+		SequenceStringStreamReader reader = getExampleFastqReader();
 
 		assertEquals(record1, reader.next().getValue1());
 		assertEquals(record2, reader.next().getValue1());
 		assertEquals(record3, reader.next().getValue1());
 	}
-
-    /**
-     * Read a third record from the reader
-     * @throws java.io.IOException
-     */
-    @Test
-    public void testReadRecord_alternate() throws IOException {
-        SequenceStringStreamReader reader = getAlternateFastaReader();
-
-        assertEquals(alternate1, reader.next().getValue1());
-        assertEquals(alternate2, reader.next().getValue1());
-        assertEquals(alternate3, reader.next().getValue1());
-    }
 
 	/**
 	 * Read a third record from the reader
@@ -360,7 +347,7 @@ public class FastqStringFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_autoCloseable() throws Exception {
-		try (SequenceStringStreamReader reader	= getExampleFastaReader())
+		try (SequenceStringStreamReader reader	= getExampleFastqReader())
 		{
 			assertEquals(record1, reader.next().getValue1());
 			assertEquals(record2, reader.next().getValue1());
@@ -376,7 +363,7 @@ public class FastqStringFileStreamReaderTest {
      */
     @Test
     public void testReadRecords_gapped() throws Exception {
-        try (SequenceStringStreamReader reader	= getGappedFastaReader())
+        try (SequenceStringStreamReader reader	= getGappedFastqReader())
         {
             assertNotNull(reader.next().getValue1());
             assertNotNull(reader.next().getValue1());
@@ -392,7 +379,7 @@ public class FastqStringFileStreamReaderTest {
      */
     @Test
     public void testReadRecords_noSpace() throws Exception {
-        try (SequenceStringStreamReader reader	= getNoSpaceFastaReader())
+        try (SequenceStringStreamReader reader	= getNoSpaceFastqReader())
         {
             assertNotNull(reader.next().getValue1());
             assertNotNull(reader.next().getValue1());
@@ -408,7 +395,7 @@ public class FastqStringFileStreamReaderTest {
 	 */
 	@Test
 	public void testReadRecord_paged() throws IOException {
-		SequenceStringStreamReader reader = getPagedFastaReader();
+		SequenceStringStreamReader reader = getPagedFastqReader();
 
         int index = 0;
 		while (reader.hasNext())
@@ -428,7 +415,7 @@ public class FastqStringFileStreamReaderTest {
      */
     @Test
     public void testReadRecords_paged1() throws IOException {
-        SequenceStringStreamReader reader = getPagedFastaReader(1);
+        SequenceStringStreamReader reader = getPagedFastqReader(1);
 
         int index = 0;
         while (reader.hasNext())
@@ -448,11 +435,13 @@ public class FastqStringFileStreamReaderTest {
      */
     @Test
     public void testReadRecords_paged10() throws IOException {
-        SequenceStringStreamReader reader = getPagedFastaReader(10);
+        SequenceStringStreamReader reader = getPagedFastqReader(10);
 
         int index = 0;
         while (reader.hasNext())
         {
+            if (index >= 78)
+                index = index -1 + 1;
             assertEquals(index+0 + " failed to parse", record1, reader.next().getValue1());
             assertEquals(index+1 + " failed to parse", record2, reader.next().getValue1());
             assertEquals(index+2 + " failed to parse", record3, reader.next().getValue1());
@@ -468,7 +457,7 @@ public class FastqStringFileStreamReaderTest {
      */
     @Test
     public void testReadRecords_paged100() throws IOException {
-        SequenceStringStreamReader reader = getPagedFastaReader(100);
+        SequenceStringStreamReader reader = getPagedFastqReader(100);
 
         int index = 0;
         while (reader.hasNext())
@@ -488,11 +477,11 @@ public class FastqStringFileStreamReaderTest {
      */
     @Test
     public void testReadRecord_complex1() throws IOException {
-        SequenceStringStreamReader reader = getComplexFastaReader();
+        SequenceStringStreamReader reader = getComplexFastqReader();
 
         Pair<String, String> next = reader.next();
-        assertEquals(fastaMultiLineDescriptionMetadata, next.getValue0());
-        assertEquals(fastaMultiLineDescriptionSequence, next.getValue1());
+        assertEquals(fastqComplex1_metadata, next.getValue0());
+        assertEquals(fastqComplex1_sequence, next.getValue1());
     }
 
     /**
@@ -501,12 +490,12 @@ public class FastqStringFileStreamReaderTest {
      */
     @Test
     public void testReadRecord_complex2() throws IOException {
-        SequenceStringStreamReader reader = getComplexFastaReader();
+        SequenceStringStreamReader reader = getComplexFastqReader();
 
         reader.next();
         Pair<String, String> next = reader.next();
-        assertEquals(fastaTerminatedMetadata, next.getValue0());
-        assertEquals(fastaTerminatedSequence, next.getValue1());
+        assertEquals(fastqComplex2_metadata, next.getValue0());
+        assertEquals(fastqComplex2_sequence, next.getValue1());
     }
 
     /**
@@ -515,12 +504,82 @@ public class FastqStringFileStreamReaderTest {
      */
     @Test
     public void testReadRecord_complex3() throws IOException {
-        SequenceStringStreamReader reader = getComplexFastaReader();
+        SequenceStringStreamReader reader = getComplexFastqReader();
 
         reader.next();
         reader.next();
         Pair<String, String> next = reader.next();
-        assertEquals(fastaLargeHeaderMetadata, next.getValue0());
-        assertEquals(fastaLargeHeaderSequence, next.getValue1());
+        assertEquals(fastqComplex3_metadata, next.getValue0());
+        assertEquals(fastqComplex3_sequence, next.getValue1());
+    }
+
+    /**
+     * Read a third record from the reader
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testReadRecord_complex4() throws IOException {
+        SequenceStringStreamReader reader = getComplexFastqReader();
+
+        reader.next();
+        reader.next();
+        reader.next();
+        Pair<String, String> next = reader.next();
+        assertEquals(fastqComplex4_metadata, next.getValue0());
+        assertEquals(fastqComplex4_sequence, next.getValue1());
+    }
+
+    /**
+     * Read a third record from the reader
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testReadRecord_complex5() throws IOException {
+        SequenceStringStreamReader reader = getComplexFastqReader();
+
+        reader.next();
+        reader.next();
+        reader.next();
+        reader.next();
+        Pair<String, String> next = reader.next();
+        assertEquals(fastqComplex5_metadata, next.getValue0());
+        assertEquals(fastqComplex5_sequence, next.getValue1());
+    }
+
+    /**
+     * Read a third record from the reader
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testReadRecord_complex6() throws IOException {
+        SequenceStringStreamReader reader = getComplexFastqReader();
+
+        reader.next();
+        reader.next();
+        reader.next();
+        reader.next();
+        reader.next();
+        Pair<String, String> next = reader.next();
+        assertEquals(fastqComplex6_metadata, next.getValue0());
+        assertEquals(fastqComplex6_sequence, next.getValue1());
+    }
+
+    /**
+     * Read a third record from the reader
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testReadRecord_complex7() throws IOException {
+        SequenceStringStreamReader reader = getComplexFastqReader();
+
+        reader.next();
+        reader.next();
+        reader.next();
+        reader.next();
+        reader.next();
+        reader.next();
+        Pair<String, String> next = reader.next();
+        assertEquals(fastqComplex7_metadata, next.getValue0());
+        assertEquals(fastqComplex7_sequence, next.getValue1());
     }
 }

@@ -174,17 +174,6 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
     }
   }
 
-  it should "provide positions" in {
-    withAligner {
-      (aligner) => {
-        aligner.addText(seqSimple)
-        val results = baseSeqs.map(x => (x.toString, aligner.getAlignments(x).size()))
-        val expected = bases.zip(List(22, 20, 13, 25))
-        results should contain theSameElementsInOrderAs expected
-      }
-    }
-  }
-
   it should "report zero as the shortest distance for all single base pairs" in {
     withAligner {
       (aligner) => {

@@ -399,7 +399,7 @@ public class FastaStringFileStreamReaderTest {
             assertNotNull(reader.next().getValue1());
             assertNotNull(reader.next().getValue1());
         } catch (Exception e) {
-            fail("Should not have hit an exception from reading three records from no space");
+            fail("Should not have hit an exception from reading three records from no space\n" + e.getMessage());
         }
     }
 	

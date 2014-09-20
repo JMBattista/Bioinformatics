@@ -6,6 +6,7 @@ import org.javatuples.Pair;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.function.Predicate;
 
 /**
  * File stream reader for FASTA data files
@@ -67,101 +68,119 @@ public final class FastqStringFileStreamReader implements SequenceStringStreamRe
 	@Override
 	public Pair<String,String> next() {
         String metadata = readMetadata();
-        String comments = readComments();
         String data = readSequenceData();
+        String comments = readComments();
+        String quality = readQuality(data.length());
 
         return Pair.with(metadata, data);
     }
 
-    private String readMetadata() {
-        StringBuilder sb = new StringBuilder();
-        // if we are out of buffered data read more
-
-        boolean startFound = false;
-        while (index >= length || !startFound) {
+    private void dropUntil(Predicate<Character> pred) {
+        boolean found = false;
+        while (!found) {
             if (index >= length)
                 bufferData();
-
-            while (index < length && !startFound) {
-                startFound = buffer[index] == ';' || buffer[index] == '>';
+            if (length == -1 || pred.test(buffer[index]))
+                return;
+            else
                 index++;
-            }
+
         }
+    }
 
-        do {
+    private void drop(int i) {
+        index += i;
+    }   
+
+    private String takeUntil(Predicate<Character> pred) {
+        StringBuilder sb = new StringBuilder();
+
+        boolean found = false;
+        while (!found) {
             if (index >= length)
                 bufferData();
-
-            // spin until we find the end of the heading row
-            while (index < length && buffer[index] != '\n') {
-                if (buffer[index] != ';' && buffer[index] != '>')
-                    sb.append(buffer[index]);
-                index++;
-            }
-        } while(index >= length || buffer[index] != '\n');
+            if (length == -1 || pred.test(buffer[index]))
+                found = true;
+            else
+                sb.append(buffer[index]);
+            index++;
+        }
 
         return sb.toString().trim();
     }
 
-    private String readComments() {
+    private String readMetadata() {
         StringBuilder sb = new StringBuilder();
 
-        do {
-            // if we are out of buffered data read more
-            if (index >= length)
-                bufferData();
+        // Find the Start symbol
+        dropUntil(x -> x == '@');
 
-            // spin until we are out of white space
-            while (index < length && Character.isWhitespace(buffer[index]))
-                index++;
+        // move past the start symbol
+        drop(1);
 
-            // if we have comments
-            if (index < length && buffer[index] == ';') {
-                sb.append(readMetadata());
-                continue;
-            }
-
-        } while (index >= length);
-
-        return sb.toString().trim();
+        return takeUntil(x -> x == '\n');
     }
 
     private String readSequenceData() {
         StringBuilder sb = new StringBuilder();
         boolean readingSequence = true;
+
         do {
-            // if we are out of buffered data read more
-            if (index >= length)
-                bufferData();
-
-            // spin until we are out of white space
-            while (index < length && Character.isWhitespace(buffer[index]))
-                index++;
-
-            // read elements from the buffer until we find the start of the next sequence, terminator for current sequence
+            // read elements from the buffer takeUntil we find the start of the next sequence, terminator for current sequence
             // or white space
-            while (index < length && buffer[index] != '>' && buffer[index] != '*' &&  ! Character.isWhitespace(buffer[index])) {
-                sb.append(buffer[index]);
-                index++;
-            }
+            sb.append(takeUntil(c -> Character.isWhitespace(c)));
 
+            // Drop white space characters
+            dropUntil(c -> !Character.isWhitespace(c));
 
-            if (index < length && buffer[index] == '*') {
-                readingSequence = false;
-                index++;
-            }
-            if (index < length && buffer[index] == '>') {
+            if (length == -1)
+                throw new RuntimeException("Invalid file format, FASTQ requires quality data to accompany sequence data");
+
+            if (index < length && buffer[index] == '+') {
                 readingSequence = false;
             }
-        } while (length > 0 && (readingSequence || index >= length));
+        } while (readingSequence);
 
         return  sb.toString();
     }
 
-    private void bufferData() {
+    private String readComments() {
+        dropUntil(c -> c == '+');
+        // move past index
+        drop(1);
+
+        return takeUntil(c -> c == '\n');
+    }
+
+    private String readQuality(int sequenceLength) {
+        StringBuilder sb = new StringBuilder();
+        boolean readingQuaility = true;
+
+        do {
+            if (length == -1)
+                throw new RuntimeException("Invalid file format, FASTQ requires quality data to accompany sequence data");
+            // read elements from the buffer takeUntil we find the start of the next sequence, terminator for current sequence
+            // or white space
+            sb.append(takeUntil(c -> Character.isWhitespace(c)));
+
+            // Drop white space characters
+            dropUntil(c -> !Character.isWhitespace(c));
+
+            if (index < length && buffer[index] == '@') {
+                readingQuaility = false;
+            }
+            if (sb.length() == sequenceLength)
+                readingQuaility = false;
+        } while (readingQuaility);
+
+        return  sb.toString();
+    }
+
+    private int bufferData() {
         try {
-		    length = file.read(buffer);
-		    index = 0;
+            index = 0;
+            length = file.read(buffer);
+		    return length;
         }
         catch (IOException e) {
             e.printStackTrace();

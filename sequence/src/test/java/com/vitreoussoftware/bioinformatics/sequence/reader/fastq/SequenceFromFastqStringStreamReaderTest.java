@@ -77,22 +77,4 @@ public class SequenceFromFastqStringStreamReaderTest {
             assertTrue("Third record could not be parsed", reader.next().isPresent());
         }
     }
-
-    /**
-     * Read a third record from the reader
-     * @throws java.io.IOException
-     */
-    @Test
-    public void testReadRecord_big() throws IOException {
-        SequenceStreamReader reader= new SequenceFromFastqStringStreamReader(FastqStringFileStreamReaderTest.getBigFastqReader());
-
-        int index = 0;
-        while (reader.hasNext())
-        {
-            assertTrue(index +"th record could not be parsed", reader.next().isPresent());
-            index++;
-        }
-
-        assertEquals("There were not enough records", 79002, index);
-    }
 }
