@@ -1,17 +1,12 @@
 package com.vitreoussoftware.bioinformatics.sequence.collection.mongodb;
 
-import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.Collection;
 
 import com.mongodb.*;
-import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
-import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
 
 import static com.vitreoussoftware.utility.mongodb.EasyDBObject.field;
 

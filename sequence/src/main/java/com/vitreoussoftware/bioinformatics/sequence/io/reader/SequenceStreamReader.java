@@ -1,4 +1,4 @@
-package com.vitreoussoftware.bioinformatics.sequence.reader;
+package com.vitreoussoftware.bioinformatics.sequence.io.reader;
 
 import java.io.IOException;
 import java.util.Iterator;

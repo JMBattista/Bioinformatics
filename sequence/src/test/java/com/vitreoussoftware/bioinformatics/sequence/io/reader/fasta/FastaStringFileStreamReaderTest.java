@@ -1,4 +1,4 @@
-package com.vitreoussoftware.bioinformatics.sequence.reader.fasta;
+package com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -9,7 +9,7 @@ import java.io.*;
 import org.javatuples.Pair;
 import org.junit.Test;
 
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStringStreamReader;
 
 /**
  * Test the FastaFileStreamReader class

@@ -4,7 +4,7 @@ import com.vitreoussoftware.bioinformatics.alignment.PatternFirstAligner;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
 
 import java.io.IOException;
 

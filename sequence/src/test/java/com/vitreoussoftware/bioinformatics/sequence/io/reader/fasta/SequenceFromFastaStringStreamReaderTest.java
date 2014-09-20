@@ -1,7 +1,6 @@
-package com.vitreoussoftware.bioinformatics.sequence.reader.fasta;
+package com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta;
 
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
 import org.junit.Test;
 
 import java.io.IOException;

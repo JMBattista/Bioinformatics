@@ -1,9 +1,9 @@
-package com.vitreoussoftware.bioinformatics.sequence.reader.fastq;
+package com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta;
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStringStreamReader;
 import org.javatuples.Pair;
 
 import java.util.Optional;
@@ -13,7 +13,7 @@ import java.util.Optional;
  * @author John
  *
  */
-public class SequenceFromFastqStringStreamReader implements SequenceStreamReader {
+public class SequenceFromFastaStringStreamReader implements SequenceStreamReader {
 	private final SequenceStringStreamReader reader;
 	private FastaSequenceFactory factory;
 	
@@ -21,7 +21,7 @@ public class SequenceFromFastqStringStreamReader implements SequenceStreamReader
 	 * Process Sequence Strings into encoded sequences
 	 * @param reader The SequenceStringStreamReader to process sequence strings from
 	 */
-	public SequenceFromFastqStringStreamReader(SequenceStringStreamReader reader)
+	public SequenceFromFastaStringStreamReader(SequenceStringStreamReader reader)
 	{
 		this.reader = reader;
 		this.factory = new FastaSequenceFactory();

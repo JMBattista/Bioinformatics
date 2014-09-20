@@ -1,7 +1,6 @@
-package com.vitreoussoftware.bioinformatics.sequence.reader.fastq;
+package com.vitreoussoftware.bioinformatics.sequence.io.reader.fastq;
 
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.reader.fastq.SequenceFromFastqStringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
 import org.junit.Test;
 
 import java.io.IOException;

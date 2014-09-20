@@ -2,7 +2,6 @@ package com.vitreoussoftware.bioinformatics.sequence.collection.basic;
 
 import static org.junit.Assert.*;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionTest;
@@ -12,9 +11,9 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.reader.fasta.FastaStringFileStreamReaderTest;
-import com.vitreoussoftware.bioinformatics.sequence.reader.fasta.SequenceFromFastaStringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaStringFileStreamReaderTest;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.SequenceFromFastaStringStreamReader;
 
 /**
  * Test the SequenceList basic collection so we have a baseline

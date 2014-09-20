@@ -1,15 +1,9 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 
-import java.io.IOException;
-
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTreeFactory;
-import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
-import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
 import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceListFactory;
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
 
 /**
  * Create suffix trees with bounded size

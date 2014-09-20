@@ -2,11 +2,10 @@ package com.vitreoussoftware.bioinformatics.sequence.collection;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Optional;
 
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
 
 /**
  * @author John

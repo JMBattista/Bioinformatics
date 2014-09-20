@@ -1,10 +1,10 @@
-package com.vitreoussoftware.bioinformatics.sequence.reader.fasta;
+package com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import com.vitreoussoftware.bioinformatics.sequence.reader.SequenceStringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStringStreamReader;
 import org.javatuples.Pair;
 
 /**
