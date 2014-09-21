@@ -1,6 +1,6 @@
 package com.vitreoussoftware.bioinformatics.sequence.io.reader.fastq;
 
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
 import org.javatuples.Pair;
 
 import java.io.FileNotFoundException;
@@ -13,7 +13,7 @@ import java.util.function.Predicate;
  * @author John
  *
  */
-public final class FastqStringFileStreamReader implements SequenceStringStreamReader
+public final class FastqStringFileStreamReader implements StringStreamReader
 {
 	private static final int DEFAULT_BUFFER_SIZE = 64 * 1024; // 64 KB read size
 	
@@ -44,7 +44,7 @@ public final class FastqStringFileStreamReader implements SequenceStringStreamRe
      * @return the input stream
      * @throws java.io.FileNotFoundException the specified file was not found
      */
-    public static SequenceStringStreamReader create(String fileName) throws FileNotFoundException
+    public static StringStreamReader create(String fileName) throws FileNotFoundException
     {
         return create(fileName, DEFAULT_BUFFER_SIZE);
     }
@@ -56,7 +56,7 @@ public final class FastqStringFileStreamReader implements SequenceStringStreamRe
      * @return the input stream
      * @throws java.io.FileNotFoundException the specified file was not found
      */
-    public static SequenceStringStreamReader create(String fileName, int pagingSize) throws FileNotFoundException {
+    public static StringStreamReader create(String fileName, int pagingSize) throws FileNotFoundException {
         FileReader file = new FileReader(fileName);
         return new FastqStringFileStreamReader(file, pagingSize);
     }

@@ -7,7 +7,7 @@ import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
  * @author John
  *
  */
-public final class BasePair {
+public class BasePair {
 	private final byte nucleotide;
 	private EncodingScheme scheme;
 	
@@ -17,7 +17,7 @@ public final class BasePair {
 	 * @param value the nucleotide identifier
 	 * @throws InvalidDnaFormatException The given nucleotide was not valid
 	 */
-	private BasePair(byte value, EncodingScheme encodingScheme) {
+    protected BasePair(byte value, EncodingScheme encodingScheme) {
 		this.nucleotide = value;		
 		this.scheme = encodingScheme;
 	}

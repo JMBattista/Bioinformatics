@@ -212,55 +212,6 @@ public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
 				throw new InvalidDnaFormatException("There was an invalid value for DnaSequecne " + nucleotide);
 		}
 	}
-		
-	/**
-	 * Return the string representation of the encoded nucleotide based on current encoding schema.
-	 * @param nucleotide the byte representation
-	 * @return the string representation
-	 * @throws InvalidDnaFormatException 
-	 */
-	public String toString(byte nucleotide) throws InvalidDnaFormatException {
-		switch (nucleotide) {
-		case NUCLEOTIDE_A:
-			return "A";
-		case NUCLEOTIDE_T:
-			return "T";
-		case NUCLEOTIDE_C:
-			return "C";
-		case NUCLEOTIDE_G:
-			return "G";
-		case NUCLEOTIDE_U:
-			return "U";
-		case NUCLEOTIDE_N:
-			return "N";
-        case NUCLEOTIDE_R:
-            return "R";
-        case NUCLEOTIDE_Y:
-            return "Y";
-        case NUCLEOTIDE_K:
-            return "K";
-        case NUCLEOTIDE_M:
-            return "M";
-        case NUCLEOTIDE_S:
-            return "S";
-        case NUCLEOTIDE_W:
-            return "W";
-        case NUCLEOTIDE_B:
-            return "B";
-        case NUCLEOTIDE_D:
-            return "D";
-        case NUCLEOTIDE_H:
-            return "H";
-        case NUCLEOTIDE_V:
-            return "V";
-        case NUCLEOTIDE_X:
-            return "X";
-        case NUCLEOTIDE_GAP:
-            return "-";
-		default:
-			throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
-		}	 
-	}
 
 	@Override
 	public char toChar(byte nucleotide) throws InvalidDnaFormatException{

@@ -28,7 +28,6 @@ public class BasicSequence implements Sequence {
      * @param sequence the string sequence to encode
      * @param encodingSheme the scheme to use for encoding
      * @return the encoded sequence
-     * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException if the input doesn't match the scheme
      */
     public static Optional<Sequence> create(String sequence, EncodingScheme encodingSheme)
     {
@@ -41,7 +40,6 @@ public class BasicSequence implements Sequence {
      * @param sequence the string sequence to encode
 	 * @param encodingSheme the scheme to use for encoding
 	 * @return the encoded sequence
-	 * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException if the input doesn't match the scheme
 	 */
 	public static Optional<Sequence> create(String metadata, String sequence, EncodingScheme encodingSheme)
 	{
@@ -60,7 +58,6 @@ public class BasicSequence implements Sequence {
      * @param sequence the string sequence to encode
      * @param encodingSheme the scheme to use for encoding
      * @return the encoded sequence
-     * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException if the input doesn't match the scheme
      */
     public static Sequence createWithError(String metadata, String sequence, EncodingScheme encodingSheme) throws InvalidDnaFormatException
     {

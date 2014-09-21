@@ -3,25 +3,25 @@ package com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
 import org.javatuples.Pair;
 
 import java.util.Optional;
 
 /**
- * Maps a SequenceStringStreamReader who's string return values are in FASTA format into encoded sequences
+ * Maps a StringStreamReader who's string return values are in FASTA format into encoded sequences
  * @author John
  *
  */
 public class SequenceFromFastaStringStreamReader implements SequenceStreamReader {
-	private final SequenceStringStreamReader reader;
+	private final StringStreamReader reader;
 	private FastaSequenceFactory factory;
 	
 	/**
 	 * Process Sequence Strings into encoded sequences
-	 * @param reader The SequenceStringStreamReader to process sequence strings from
+	 * @param reader The StringStreamReader to process sequence strings from
 	 */
-	public SequenceFromFastaStringStreamReader(SequenceStringStreamReader reader)
+	public SequenceFromFastaStringStreamReader(StringStreamReader reader)
 	{
 		this.reader = reader;
 		this.factory = new FastaSequenceFactory();

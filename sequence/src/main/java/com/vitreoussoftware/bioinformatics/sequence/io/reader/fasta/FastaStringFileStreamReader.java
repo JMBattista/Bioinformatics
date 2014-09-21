@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
 import org.javatuples.Pair;
 
 /**
@@ -12,7 +12,7 @@ import org.javatuples.Pair;
  * @author John
  *
  */
-public final class FastaStringFileStreamReader implements SequenceStringStreamReader 
+public final class FastaStringFileStreamReader implements StringStreamReader
 {
 	private static final int DEFAULT_BUFFER_SIZE = 64 * 1024; // 64 KB read size
 	
@@ -43,7 +43,7 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
      */
-    public static SequenceStringStreamReader create(String fileName) throws FileNotFoundException
+    public static StringStreamReader create(String fileName) throws FileNotFoundException
     {
         return create(fileName, DEFAULT_BUFFER_SIZE);
     }
@@ -55,7 +55,7 @@ public final class FastaStringFileStreamReader implements SequenceStringStreamRe
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
      */
-    public static SequenceStringStreamReader create(String fileName, int pagingSize) throws FileNotFoundException {
+    public static StringStreamReader create(String fileName, int pagingSize) throws FileNotFoundException {
         FileReader file = new FileReader(fileName);
         return new FastaStringFileStreamReader(file, pagingSize);
     }

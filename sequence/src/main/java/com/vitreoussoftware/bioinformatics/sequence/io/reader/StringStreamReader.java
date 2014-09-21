@@ -10,7 +10,7 @@ import java.util.Iterator;
  * @author John
  *
  */
-public interface SequenceStringStreamReader extends AutoCloseable, Iterable<Pair<String,String>>, Iterator<Pair<String,String>> {
+public interface StringStreamReader extends AutoCloseable, Iterable<Pair<String,String>>, Iterator<Pair<String,String>> {
 
 	/**
      * Does the stream reader still have a record?
