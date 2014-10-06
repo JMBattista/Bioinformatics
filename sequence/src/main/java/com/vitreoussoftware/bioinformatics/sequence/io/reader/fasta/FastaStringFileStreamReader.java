@@ -1,5 +1,6 @@
 package com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -39,14 +40,26 @@ public final class FastaStringFileStreamReader implements StringStreamReader
 
     /**
      * Create an input stream for FASTA file format
+     * @param file the FASTA file
+     * @return the input stream
+     * @throws FileNotFoundException the specified file was not found
+     */
+    public static StringStreamReader create(File file) throws FileNotFoundException
+    {
+        return create(file, DEFAULT_BUFFER_SIZE);
+    }
+
+    /**
+     * Create an input stream for FASTA file format
      * @param fileName the FASTA file
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
      */
     public static StringStreamReader create(String fileName) throws FileNotFoundException
     {
-        return create(fileName, DEFAULT_BUFFER_SIZE);
+        return create(new File(fileName), DEFAULT_BUFFER_SIZE);
     }
+
 
     /**
      * Create an input stream for FASTA file format
@@ -56,8 +69,19 @@ public final class FastaStringFileStreamReader implements StringStreamReader
      * @throws FileNotFoundException the specified file was not found
      */
     public static StringStreamReader create(String fileName, int pagingSize) throws FileNotFoundException {
-        FileReader file = new FileReader(fileName);
-        return new FastaStringFileStreamReader(file, pagingSize);
+        return create(new File(fileName), pagingSize);
+    }
+
+
+    /**
+     * Create an input stream for FASTA file format
+     * @param file the FASTA file
+     * @param pagingSize the size of the buffer for paging data from disk
+     * @return the input stream
+     * @throws FileNotFoundException the specified file was not found
+     */
+    public static StringStreamReader create(File file, int pagingSize) throws FileNotFoundException {
+        return new FastaStringFileStreamReader(new FileReader(file), pagingSize);
     }
 	
 	/**

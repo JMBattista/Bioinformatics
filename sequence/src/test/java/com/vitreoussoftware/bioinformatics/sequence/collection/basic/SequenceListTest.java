@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionTest;
 import com.vitreoussoftware.bioinformatics.sequence.io.FastaData;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaSequenceStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaStringFileStreamReaderTest;
 import org.junit.Test;
 
@@ -14,7 +15,6 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.SequenceFromFastaStringStreamReader;
 
 /**
  * Test the SequenceList basic collection so we have a baseline
@@ -84,7 +84,7 @@ public class SequenceListTest extends SequenceCollectionTest {
 	 */
 	@Test
 	public void testStreamSource_single() throws InvalidDnaFormatException, IOException {
-		SequenceStreamReader reader = new SequenceFromFastaStringStreamReader(FastaStringFileStreamReaderTest.getSimpleFastaReader());
+		SequenceStreamReader reader = new FastaSequenceStreamReader(FastaStringFileStreamReaderTest.getSimpleFastaReader());
 		SequenceCollection sc = this.getFactory().getSequenceCollection(reader);
 		
 		assertNotNull(sc);
@@ -100,7 +100,7 @@ public class SequenceListTest extends SequenceCollectionTest {
 	 */
 	@Test
 	public void testStreamSource_multiple() throws InvalidDnaFormatException, IOException {
-        SequenceStreamReader reader = new SequenceFromFastaStringStreamReader(FastaStringFileStreamReaderTest.getExampleFastaReader());
+        SequenceStreamReader reader = new FastaSequenceStreamReader(FastaStringFileStreamReaderTest.getExampleFastaReader());
 		SequenceCollection sc = this.getFactory().getSequenceCollection(reader);
 
 		assertNotNull(sc);

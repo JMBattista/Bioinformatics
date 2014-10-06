@@ -1,5 +1,6 @@
 package com.vitreoussoftware.bioinformatics.sequence.io.reader.fastq;
 
+import com.vitreoussoftware.bioinformatics.sequence.io.FastqData;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
 import org.javatuples.Pair;
 import org.junit.Test;
@@ -54,124 +55,6 @@ public class FastqStringFileStreamReaderTest {
      * FASTA file with three full records
      */
     private static final String COMPLEX_FASTA = "ComplexExamples.fastq";
-
-	/**
-	 * Shortened FASTA string for basic testing
-	 */
-	public static final String recordSimple = "CAGGCUUAACACAUGCAAGUCGAACGAAGUUAGGAAGCUUGCUUCUGAUACUUAGUGGCGGACGGGUGAGUAAUGCUUAGG";
-	
-	/** 
-	 * First record in the example FASTA file
-	 */
-	public static final String record1 = 
-			"AGGCUUAACACAUGCAAGUCGAACGAAGUUAGGAAGCUUGCUUCUGAUACUUAGUGGCGGACGGGUGAGUAAUGCUUAGG" +
-			"AAUCUGCCUAGUAGUGGGGGAUAACUUGGGGAAACCCAAGCUAAUACCGCAUACGACCUACGGGUGAAAGGGGGCUUUUA" +
-			"GCUCUCGCUAUUAGAUGAGCCUAAGUCGGAUUAGCUGGUUGGUGGGGUAAAGGCCUACCAAGGCGACGAUCUGUAGCUGG" +
-			"UCUGAGAGGAUGAUCAGCCACACUGGGACUGAGACACGGCCCAGACUCCUACGGGAGGCAGCAGUGGGGAAUAUUGGACA" +
-			"AUGGGCGAAAGCCUGAUCCAGCCAUGCCGCGUGUGUGAAGAAGGCCUUUUGGUUGUAAAGCACUUUAAGUGGGGAGGAAA" +
-			"AGCUUAUGGUUAAUACCCAUAAGCCCUGACGUUACCCACAGAAUAAGCACCGGCUAACUCUGUGCCAGCAGCCGCGGUAA" +
-			"UACAGAGGGUGCAAGCGUUAAUCGGAUUACUGGGCGUAAAGCGCGCGUAGGUGGUUAUUUAAGUCAGAUGUGAAAGCCCC" +
-			"GGGCUUAACCUGGGAACUGCAUCUGAUACUGGAUAACUAGAGUAGGUGAGAGGGGNGUAGAAUUCCAGGUGUAGCGGUGA" +
-			"AAUGCGUAGAGAUCUGGAGGAAUACCGAUGGCGAAGGCAGCUCCCUGGCAUCAUACUGACACUGAGGUGCGAAAGCGUGG" +
-			"GUAGCAAACAGGAUUAGAUACCCUGGUAGUCCACGCCGUAAACGAUGUCUACCAGUCGUUGGGUCUUUUAAAGACUUAGU" +
-			"GACGCAGUUAACGCAAUAAGUAGACCGCCUGGGGAGUACGGCCGCAAGGUUAAAACUCAAAUGAAUUGACGGGGGCCCGC" +
-			"ACAAGCGGUGGAGCAUGUGGUUUAAUUCGAUGCAACGCGAAGAACCUUACCUGGUCUUGACAUAGUGAGAAUCUUGCAGA" +
-			"GAUGCGAGAGUGCCUUCGGGAAUUCACAUACAGGUGCUGCAUGGCUGUCGUCAGCUCGUGUCGUGAGAUGUUGGGUUAAG" +
-			"UCCCGCAACGAGCGCAACCCUUUUCCUUAGUUACCAGCGACUCGGUCGGGAACUCUAAGGAUACUGCCAGUGACAAACUG" +
-			"GAGGAAGGCGGGGACGACGUCAAGUCAUCAUGGCCCUUACGACCAGGGCUACACACGUGCUACAAUGGUUGGUACAAAGG" +
-			"GUUGCUACACAGCGAUGUGAUGCUAAUCUCAAAAAGCCAAUCGUAGUCCGGAUUGGAGUCUGCAACUCGACUCCAUGAAG" +
-			"UCGGAAUCGCUAGUAAUCGCAGAUCAGAAUGCUGCGGUGAAUACGUUCCCGGGCCUUGUACACACCGCCCGUCACACCAU" +
-			"GGGAGUUGAUCUCACCAGAAGUGGUUAGCCUAACGCAAGAGGGCGAUCACCACGGUGGGGUCGAUGACUGGGGUGAAGUC" +
-			"GUAACAAGGUAGCCGUAGGGGAACUGCGGCUG";
-	
-	/**
-	 * Second record in the example FASTA file
-	 */
-	public static final String record2 = 
-			"UUAAAAUGAGAGUUUGAUCCUGGCUCAGGACGAACGCUGGCGGCGUGCCUAAUACAUGCAAGUCGAACGAAACUUUCUUA" +
-			"CACCGAAUGCUUGCAUUCACUCGUAAGAAUGAGUGGCGUGGACGGGUGAGUAACACGUGGGUAACCUGCCUAAAAGAAGG" +
-			"GGAUAACACUUGGAAACAGGUGCUAAUACCGUAUAUCUCUAAGGAUCGCAUGAUCCUUAGAUGAAAGAUGGUUCUNGCUA" +
-			"UCGCUUUUAGAUGGACCCGCGGCGUAUUAACUAGUUGGUGGGGUAACGGCCUACCAAGGUGAUGAUACGUAGCCGAACUG" +
-			"AGAGGUUGAUCGGCCACAUUGGGACUGAGACACGGCCCNAACUCCUACGGGAGGCAGCAGUAGGGAAUCUUCCACAAUGG" +
-			"ACGCAAGUCUGAUGGAGCAACGCCGCGUGAGUGAAGAAGGUCUUCGGAUCGUAAAACUCNGUUGUUAGAGAAGAACUCGA" +
-			"GUGAGAGUAACUGUUCAUUCGAUGACGGUAUCUAACCAGCAAGUCACGGCUAACUACGUGCCAGCAGCCGCGGUAAUACG" +
-			"UAGGUGGCAAGCGUUGUCCGGAUUUAUUGGGCGUAAAGGGAACGCAGGCGGUCUUUUAAGUCUGAUGUGAAAGCCUUCGG" +
-			"CUUAACCGGAGUAGUGCUAUGGAAACUGGAAGACUUGAGUGCAGAAGAGGAGAGUGGAACUCCAUGUGUAGCGGUGAAAU" +
-			"GCGUAGAUAUAUGGAAGAACACCAGUGGCGAAAGCGGCUCUCUGGUCUGUAACUGACGCUGAGGUUCGAAAGCGUGGGUA" +
-			"GCAAACAGGAUUAGAUACCCUGGUAGUCCACGCCGUAAACGAUGAAUGCUAGGUGUUGGAGGGUUUCCGCCCUUCAGUGC" +
-			"CGCAGCUAACGCAAUAAGCAUUCCGCCUGGGGAGUACGACCGCAAGGUUGAAACUCAAAGGAAUUGACGGGGGCNNGCAC" +
-			"AAGCGGUGGAGCAUGUGGUUUAAUUCGAANNAACGCGAAGAACCUUACCAGGUCUUGACAUCCUUUGACCACCUAAGAGA" +
-			"UUAGGCUUUCCCUUCGGGGACAAAGUGACAGGUGGNGCAUGGCUGUCGUCAGCUCGUGUCGUGAGAUGUUGGGUUAAGUC" +
-			"CCGCAACGAGCGCAACCCUUGUUGUCAGUUGCCAGCAUUAAGUUGGGCACUCUGGCGAGACUGCCGGUGACAAACCGGAG" +
-			"GAAGGUGGGGACGACGUCAAGUCAUCAUGCCCCUUAUGACCUGGGCUACACACGUGCUACAAUGGACGGUACAACGAGUC" +
-			"GCGAGACCGCGAGGUUUAGCUAAUCUCUUAAAGCCGUUCUCAGUUCGGAUUGUAGGCUGCAACUCGCCUACAUGAAGUCG" +
-			"GAAUCGCUAGUAAUCGCGA";
-	
-	
-	public static final String record3 =
-			"GAUGAACGCUAGCGGCGUGCCUUAUGCAUGCAAGUCGAACGGUCUUAAGCAAUUAAGAUAGUGGCGAACGGGUGAGUAAC" +
-			"GCGUAAGUAACCUACCUCUAAGUGGGGGAUAGCUUCGGGAAACUGAAGGUAAUACCGCAUGUGGUGGGCCGACAUAUGUU" +
-			"GGUUCACUAAAGCCGUAAGGCGCUUGGUGAGGGGCUUGCGUCCGAUUAGCUAGUUGGUGGGGUAAUGGCCUACCAAGGCU" +
-			"UCGAUCGGUAGCUGGUCUGAGAGGAUGAUCAGCCACACUGGGACUGAGACACGGCCCAGACUCCUACGGGAGGCAGCAGC" +
-			"AAGGAAUCUUGGGCAAUGGGCGAAAGCCUGACCCAGCAACGCCGCGUGAGGGAUGAAGGCUUUCGGGUUGUAAACCUCUU" +
-			"UUCAUAGGGAAGAAUAAUGACGGUACCUGUGGAAUAAGCUUCGGCUAACUACGUGCCAGCAGCCGCGGUAAUACGUAGGA" +
-			"AGCAAGCGUUAUCCGGAUUUAUUGGGCGUAAAGUGAGCGUAGGUGGUCUUUCAAGUUGGAUGUGAAAUUUCCCGGCUUAA" +
-			"CCGGGACGAGUCAUUCAAUACUGUUGGACUAGAGUACAGCAGGAGAAAACGGAAUUCCCGGUGUAGUGGUAAAAUGCGUA" +
-			"GAUAUCGGGAGGAACACCAGAGGCGAAGGCGGUUUUCUAGGUUGUCACUGACACUGAGGCUCGAAAGCGUGGGGAGCGAA" +
-			"CAGAAUUAGAUACUCUGGUAGUCCACGCCUUAAACUAUGGACACUAGGUAUAGGGAGUAUCGACCCUCUCUGUGCCGAAG" +
-			"CUAACGCUUUAAGUGUCCCGCCUGGGGAGUACGGUCGCAAGGCUAAAACUCAAAGGAAUUGACGGGGGCCCGCACAAGCA" +
-			"GCGGAGCGUGUGGUUUAAUUCGAUGCUACACGAAGAACCUUACCAAGAUUUGACAUGCAUGUAGUAGUGAACUGAAAGGG" +
-			"GAACGACCUGUUAAGUCAGGAACUUGCACAGGUGCUGCAUGGCUGUCGUCAGCUCGUGCCGUGAGGUGUUUGGUUAAGUC" +
-			"CUGCAACGAGCGCAACCCUUGUUGCUAGUUAAAUUUUCUAGCGAGACUGCCCCGCGAAACGGGGAGGAAGGUGGGGAUGA" +
-			"CGUCAAGUCAGCAUGGCCUUUAUAUCUUGGGCUACACACACGCUACAAUGGACAGAACAAUAGGUUGCAACAGUGUGAAC" +
-			"UGGAGCUAAUCC";
-
-    private String alternate1 =
-            "TGCTCAATTTTATCTAAAGAAAATCAAATTGAGCAAATATATTCACAAAAAATTATTTTT" +
-            "ATAGTATTTTTGAGAAAATAATTGCTCATTTGTACTAATG";
-
-    private String alternate2 =
-            "AAACCACAAGACAAACCATATCGTAAGCTTGATGCAGATAGGCTTTATATAGAAGTCAGA" +
-            "CCAAGTGGGAAAAAAGTTTGGATTCACAAATTCTCCTTAA";
-
-    private String alternate3 =
-            "GCAATTCCGACCACATAGACCGTATCAATACCACGTTCTTTTAAGTAACCCGTTAAACCT" +
-            "GTCATTGTGGTGTGGTCAGCTTCCATAAAAGCCGAGTAAC";
-
-    private final String fastqComplex1_metadata = "SEQ_ID";
-    private final String fastqComplex1_sequence = "GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT";
-    private final String fastqComplex1_comments = "";
-    private final String fastqComplex1_quality  = "!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65";
-
-    private final String fastqComplex2_metadata = "HWUSI-EAS100R:6:73:941:1973#0/1";
-    private final String fastqComplex2_sequence = "ACCGCTTGTGCGGGCCCCCGTCAATTCATTTGAGTTTTAGTCTTGCGACCGTACTCCCCAGGCGGTCTACTTATCGCGTTAGCTGCGCCACTAA";
-    private final String fastqComplex2_comments = "";
-    private final String fastqComplex2_quality  = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-
-    private final String fastqComplex3_metadata = "EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG";
-    private final String fastqComplex3_sequence = "ACCGCTTGTGCGGGCCCCCGTCAATTCATTTGAGTTTTAGTCTTGCGACCGTACTCCCCAGGCGGTCTACTTATCGCGTTAGCTGCGCCACTAA";
-    private final String fastqComplex3_comments = "";
-    private final String fastqComplex3_quality  = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-
-    private final String fastqComplex4_metadata = "SRR001666.1 071112_SLXA-EAS1_s_7:5:1:817:345 length=36";
-    private final String fastqComplex4_sequence = "GGGTGATGGCCGCTGCCGATGGCGTCAAATCCCACC";
-    private final String fastqComplex4_comments = "SRR001666.1 071112_SLXA-EAS1_s_7:5:1:817:345 length=36";
-    private final String fastqComplex4_quality  = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIII9IG9IC";
-
-    private final String fastqComplex5_metadata = "Acinetobacter_806_905_0:0:0_0:0:0_0/1";
-    private final String fastqComplex5_sequence = "ACCGCTTGTGCGGGCCCCCGTCAATTCATTTGAGTTTTAGTCTTGCGACCGTACTCCCCAGGCGGTCTACTTATCGCGTTAGCTGCGCCACTAAAGCCTC";
-    private final String fastqComplex5_comments = "";
-    private final String fastqComplex5_quality  = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII";
-
-    private final String fastqComplex6_metadata = "Bacillus_359_458_0:0:0_0:0:0_100cb/1";
-    private final String fastqComplex6_sequence = "GCCGCGTGAGTGATGAAGGCTTTCGGGTCGTAAAACTCTGTTGTTAGGGAAGAACAAGTGCTAGTTGAATAAGCTGGCACCTTGACGGTACCTAACCAGA";
-    private final String fastqComplex6_comments = "";
-    private final String fastqComplex6_quality  = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII";
-
-    private final String fastqComplex7_metadata = "Actinomyces_79_178_0:0:0_0:0:0_4639/1";
-    private final String fastqComplex7_sequence = "GAACAAACCTTTCCACCAACCCCCATGCGAAGATCAGTGAATATCCAGTATTAGCACCCGTTTCCGGGCGTTATCCCAAAGAAGGGGGCAGGTTACTCAC";
-    private final String fastqComplex7_comments = "";
-    private final String fastqComplex7_quality  = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII";
 
     /**
      * Create a StringStreamReader for the Simple FASTA test file
@@ -302,7 +185,7 @@ public class FastqStringFileStreamReaderTest {
 	public void testReadRecord_simple() throws IOException {
 		StringStreamReader reader = getSimpleFastqReader();
 
-		assertEquals(recordSimple, reader.next().getValue1());
+		assertEquals(FastqData.getRecordSimple(), reader.next().getValue1());
 	}
 
 	/**
@@ -313,7 +196,7 @@ public class FastqStringFileStreamReaderTest {
 	public void testReadRecord_example1() throws IOException {
 		StringStreamReader reader = getExampleFastqReader();
 
-		assertEquals(record1, reader.next().getValue1());
+		assertEquals(FastqData.getRecord1(), reader.next().getValue1());
 	}
 
 	/**
@@ -324,8 +207,8 @@ public class FastqStringFileStreamReaderTest {
 	public void testReadRecord_example2() throws IOException {
 		StringStreamReader reader = getExampleFastqReader();
 
-		assertEquals(record1, reader.next().getValue1());
-		assertEquals(record2, reader.next().getValue1());
+		assertEquals(FastqData.getRecord1(), reader.next().getValue1());
+		assertEquals(FastqData.getRecord2(), reader.next().getValue1());
 	}
 
 	/**
@@ -336,9 +219,9 @@ public class FastqStringFileStreamReaderTest {
 	public void testReadRecord_example3() throws IOException {
 		StringStreamReader reader = getExampleFastqReader();
 
-		assertEquals(record1, reader.next().getValue1());
-		assertEquals(record2, reader.next().getValue1());
-		assertEquals(record3, reader.next().getValue1());
+		assertEquals(FastqData.getRecord1(), reader.next().getValue1());
+		assertEquals(FastqData.getRecord2(), reader.next().getValue1());
+		assertEquals(FastqData.getRecord3(), reader.next().getValue1());
 	}
 
 	/**
@@ -349,9 +232,9 @@ public class FastqStringFileStreamReaderTest {
 	public void testReadRecord_autoCloseable() throws Exception {
 		try (StringStreamReader reader	= getExampleFastqReader())
 		{
-			assertEquals(record1, reader.next().getValue1());
-			assertEquals(record2, reader.next().getValue1());
-			assertEquals(record3, reader.next().getValue1());
+			assertEquals(FastqData.getRecord1(), reader.next().getValue1());
+			assertEquals(FastqData.getRecord2(), reader.next().getValue1());
+			assertEquals(FastqData.getRecord3(), reader.next().getValue1());
 		} catch (Exception e) {
 			fail("Should not have hit an exception from the three");
 		}
@@ -400,9 +283,9 @@ public class FastqStringFileStreamReaderTest {
         int index = 0;
 		while (reader.hasNext())
 		{
-			assertEquals(index+0 + " failed to parse", record1, reader.next().getValue1());
-            assertEquals(index+1 + " failed to parse", record2, reader.next().getValue1());
-            assertEquals(index+2 + " failed to parse", record3, reader.next().getValue1());
+			assertEquals(index+0 + " failed to parse", FastqData.getRecord1(), reader.next().getValue1());
+            assertEquals(index+1 + " failed to parse", FastqData.getRecord2(), reader.next().getValue1());
+            assertEquals(index+2 + " failed to parse", FastqData.getRecord3(), reader.next().getValue1());
             index += 3;
 		}
 
@@ -420,9 +303,9 @@ public class FastqStringFileStreamReaderTest {
         int index = 0;
         while (reader.hasNext())
         {
-            assertEquals(index+0 + " failed to parse", record1, reader.next().getValue1());
-            assertEquals(index+1 + " failed to parse", record2, reader.next().getValue1());
-            assertEquals(index+2 + " failed to parse", record3, reader.next().getValue1());
+            assertEquals(index+0 + " failed to parse", FastqData.getRecord1(), reader.next().getValue1());
+            assertEquals(index+1 + " failed to parse", FastqData.getRecord2(), reader.next().getValue1());
+            assertEquals(index+2 + " failed to parse", FastqData.getRecord3(), reader.next().getValue1());
             index += 3;
         }
 
@@ -442,9 +325,9 @@ public class FastqStringFileStreamReaderTest {
         {
             if (index >= 78)
                 index = index -1 + 1;
-            assertEquals(index+0 + " failed to parse", record1, reader.next().getValue1());
-            assertEquals(index+1 + " failed to parse", record2, reader.next().getValue1());
-            assertEquals(index+2 + " failed to parse", record3, reader.next().getValue1());
+            assertEquals(index+0 + " failed to parse", FastqData.getRecord1(), reader.next().getValue1());
+            assertEquals(index+1 + " failed to parse", FastqData.getRecord2(), reader.next().getValue1());
+            assertEquals(index+2 + " failed to parse", FastqData.getRecord3(), reader.next().getValue1());
             index += 3;
         }
 
@@ -462,9 +345,9 @@ public class FastqStringFileStreamReaderTest {
         int index = 0;
         while (reader.hasNext())
         {
-            assertEquals(index+0 + " failed to parse", record1, reader.next().getValue1());
-            assertEquals(index+1 + " failed to parse", record2, reader.next().getValue1());
-            assertEquals(index+2 + " failed to parse", record3, reader.next().getValue1());
+            assertEquals(index+0 + " failed to parse", FastqData.getRecord1(), reader.next().getValue1());
+            assertEquals(index+1 + " failed to parse", FastqData.getRecord2(), reader.next().getValue1());
+            assertEquals(index+2 + " failed to parse", FastqData.getRecord3(), reader.next().getValue1());
             index += 3;
         }
 
@@ -480,8 +363,8 @@ public class FastqStringFileStreamReaderTest {
         StringStreamReader reader = getComplexFastqReader();
 
         Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex1_metadata, next.getValue0());
-        assertEquals(fastqComplex1_sequence, next.getValue1());
+        assertEquals(FastqData.getComplex1_metadata(), next.getValue0());
+        assertEquals(FastqData.getComplex1_sequence(), next.getValue1());
     }
 
     /**
@@ -494,8 +377,8 @@ public class FastqStringFileStreamReaderTest {
 
         reader.next();
         Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex2_metadata, next.getValue0());
-        assertEquals(fastqComplex2_sequence, next.getValue1());
+        assertEquals(FastqData.getComplex2_metadata(), next.getValue0());
+        assertEquals(FastqData.getComplex2_sequence(), next.getValue1());
     }
 
     /**
@@ -509,8 +392,8 @@ public class FastqStringFileStreamReaderTest {
         reader.next();
         reader.next();
         Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex3_metadata, next.getValue0());
-        assertEquals(fastqComplex3_sequence, next.getValue1());
+        assertEquals(FastqData.getComplex3_metadata(), next.getValue0());
+        assertEquals(FastqData.getComplex3_sequence(), next.getValue1());
     }
 
     /**
@@ -525,8 +408,8 @@ public class FastqStringFileStreamReaderTest {
         reader.next();
         reader.next();
         Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex4_metadata, next.getValue0());
-        assertEquals(fastqComplex4_sequence, next.getValue1());
+        assertEquals(FastqData.getComplex4_metadata(), next.getValue0());
+        assertEquals(FastqData.getComplex4_sequence(), next.getValue1());
     }
 
     /**
@@ -542,8 +425,8 @@ public class FastqStringFileStreamReaderTest {
         reader.next();
         reader.next();
         Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex5_metadata, next.getValue0());
-        assertEquals(fastqComplex5_sequence, next.getValue1());
+        assertEquals(FastqData.getComplex5_metadata(), next.getValue0());
+        assertEquals(FastqData.getComplex5_sequence(), next.getValue1());
     }
 
     /**
@@ -560,8 +443,8 @@ public class FastqStringFileStreamReaderTest {
         reader.next();
         reader.next();
         Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex6_metadata, next.getValue0());
-        assertEquals(fastqComplex6_sequence, next.getValue1());
+        assertEquals(FastqData.getComplex6_metadata(), next.getValue0());
+        assertEquals(FastqData.getComplex6_sequence(), next.getValue1());
     }
 
     /**
@@ -579,7 +462,7 @@ public class FastqStringFileStreamReaderTest {
         reader.next();
         reader.next();
         Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex7_metadata, next.getValue0());
-        assertEquals(fastqComplex7_sequence, next.getValue1());
+        assertEquals(FastqData.getComplex7_metadata(), next.getValue0());
+        assertEquals(FastqData.getComplex7_sequence(), next.getValue1());
     }
 }

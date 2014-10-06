@@ -9,7 +9,7 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
  * @author John
  *
  */
-public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
+    public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
     // Due to a quirk in the java language we have to use the negative sign to set the 8th bit to 1
     // We will restrict usage of the 8th bit to mean 'special thing happening here
 	static final byte NUCLEOTIDE_A =  0b0_00_00_10;

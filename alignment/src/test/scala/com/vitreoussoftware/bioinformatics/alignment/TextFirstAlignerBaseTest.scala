@@ -11,7 +11,6 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectio
 import org.scalatest.{Inside, Matchers}
 import com.vitreoussoftware.bioinformatics.sequence.{BasePair, Sequence}
 import org.scalacheck.{Gen, Arbitrary}
-import com.vitreoussoftware.bioinformatics.sequence.io.FastaData.{record3, record2, record1, recordSimple}
 import com.vitreoussoftware.bioinformatics.sequence.io.FastaData
 
 trait AlignerTestData {
@@ -20,10 +19,10 @@ trait AlignerTestData {
   val offByNSeqs = seqsFrom(List("AAN", "ANA", "NAA"))
   val offByNSeqsLong = seqsFrom(List("AAAAAAAAAAN", "AAAAANAAAAA", "NAAAAAAAAAAA"))
 
-  val seqSimple = BasicSequence.create(FastaStringFileStreamReaderTest.recordSimple, AcceptUnknownDnaEncodingScheme.instance).get()
-  val seqRecord1 = BasicSequence.create(FastaStringFileStreamReaderTest.record1, AcceptUnknownDnaEncodingScheme.instance).get()
-  val seqRecord2 = BasicSequence.create(FastaStringFileStreamReaderTest.record2, AcceptUnknownDnaEncodingScheme.instance).get()
-  val seqRecord3 = BasicSequence.create(FastaStringFileStreamReaderTest.record3, AcceptUnknownDnaEncodingScheme.instance).get()
+  val seqSimple = FastaData.getSimpleSequence();
+  val seqRecord1 = FastaData.getRecord1Sequence();
+  val seqRecord2 = FastaData.getRecord2Sequence();
+  val seqRecord3 = FastaData.getRecord3Sequence();
 
   val sourceSeqs = List(seqSimple, seqRecord1, seqRecord2, seqRecord3)
 
@@ -160,7 +159,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
   it should "should allow adding a sequence" in {
     withAligner {
       (aligner) => {
-        aligner.addText(BasicSequence.create(FastaData.recordSimple, AcceptUnknownDnaEncodingScheme.instance).get())
+        aligner.addText(FastaData.getSimpleSequence)
       }
     }
   }

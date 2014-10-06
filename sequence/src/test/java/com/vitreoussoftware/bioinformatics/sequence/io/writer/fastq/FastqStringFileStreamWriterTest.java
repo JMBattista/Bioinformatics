@@ -1,586 +1,242 @@
 package com.vitreoussoftware.bioinformatics.sequence.io.writer.fastq;
 
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.Sequence;
+import com.vitreoussoftware.bioinformatics.sequence.io.FastqData;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.fastq.FastqSequenceStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.fastq.FastqStringFileStreamReader;
-import org.javatuples.Pair;
+import com.vitreoussoftware.bioinformatics.sequence.io.writer.SequenceStreamWriter;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
 /**
- * Test the FastqFileStreamReader class
+ * Test the FastqFileStreamWriter class
  * @author John
  *
  */
 public class FastqStringFileStreamWriterTest {
+
+    private static final String WRITER_TEST_FILE = "target/Fastqtestwriter.Fastq";
+
     /**
-     * The path where the FASTA test files can be found.
+     * Create a SequenceStreamWriter to write the test file to
+     * @return the SequenceStreamWriter
+     * @throws java.io.IOException the test file could not be found
      */
-    private static final String FASTA_PATH = "target/test/sequence/Fastq/";
-
-    /**
-     * FASTA file with enough data that pages must be performed
-     */
-    private static final String ALTERNATE_FASTA = "alternate.fastq";
-
-    /**
-     * FASTA file with enough data that pages must be performed
-     */
-    private static final String SSU_PARC_GAPPED_FASTA = "SSUParc_Gapped.fastq";
-
-    /**
-     * FASTA file with enough data that pages must be performed
-     */
-    private static final String SSU_PARC_NOSPACE_FASTA = "SSUParc_NoSpace.fastq";
-
-    /**
-	 * FASTA file with enough data that pages must be performed
-	 */
-	private static final String SSU_PARC_PAGED_FASTA = "SSUParc_Paged.fastq";
-
-	/**
-	 * FASTA file with only a small amount of data
-	 */
-	private static final String SSU_PARC_SIMPLE_FASTA = "SSUParc_Simple.fastq";
-
-	/**
-	 * FASTA file with three full records
-	 */
-	private static final String SSU_PARC_EXAMPLE_FASTA = "SSUParc_Example.fastq";
-
-    /**
-     * FASTA file with three full records
-     */
-    private static final String COMPLEX_FASTA = "ComplexExamples.fastq";
-
-	/**
-	 * Shortened FASTA string for basic testing
-	 */
-	public static final String recordSimple = "CAGGCUUAACACAUGCAAGUCGAACGAAGUUAGGAAGCUUGCUUCUGAUACUUAGUGGCGGACGGGUGAGUAAUGCUUAGG";
-	
-	/** 
-	 * First record in the example FASTA file
-	 */
-	public static final String record1 = 
-			"AGGCUUAACACAUGCAAGUCGAACGAAGUUAGGAAGCUUGCUUCUGAUACUUAGUGGCGGACGGGUGAGUAAUGCUUAGG" +
-			"AAUCUGCCUAGUAGUGGGGGAUAACUUGGGGAAACCCAAGCUAAUACCGCAUACGACCUACGGGUGAAAGGGGGCUUUUA" +
-			"GCUCUCGCUAUUAGAUGAGCCUAAGUCGGAUUAGCUGGUUGGUGGGGUAAAGGCCUACCAAGGCGACGAUCUGUAGCUGG" +
-			"UCUGAGAGGAUGAUCAGCCACACUGGGACUGAGACACGGCCCAGACUCCUACGGGAGGCAGCAGUGGGGAAUAUUGGACA" +
-			"AUGGGCGAAAGCCUGAUCCAGCCAUGCCGCGUGUGUGAAGAAGGCCUUUUGGUUGUAAAGCACUUUAAGUGGGGAGGAAA" +
-			"AGCUUAUGGUUAAUACCCAUAAGCCCUGACGUUACCCACAGAAUAAGCACCGGCUAACUCUGUGCCAGCAGCCGCGGUAA" +
-			"UACAGAGGGUGCAAGCGUUAAUCGGAUUACUGGGCGUAAAGCGCGCGUAGGUGGUUAUUUAAGUCAGAUGUGAAAGCCCC" +
-			"GGGCUUAACCUGGGAACUGCAUCUGAUACUGGAUAACUAGAGUAGGUGAGAGGGGNGUAGAAUUCCAGGUGUAGCGGUGA" +
-			"AAUGCGUAGAGAUCUGGAGGAAUACCGAUGGCGAAGGCAGCUCCCUGGCAUCAUACUGACACUGAGGUGCGAAAGCGUGG" +
-			"GUAGCAAACAGGAUUAGAUACCCUGGUAGUCCACGCCGUAAACGAUGUCUACCAGUCGUUGGGUCUUUUAAAGACUUAGU" +
-			"GACGCAGUUAACGCAAUAAGUAGACCGCCUGGGGAGUACGGCCGCAAGGUUAAAACUCAAAUGAAUUGACGGGGGCCCGC" +
-			"ACAAGCGGUGGAGCAUGUGGUUUAAUUCGAUGCAACGCGAAGAACCUUACCUGGUCUUGACAUAGUGAGAAUCUUGCAGA" +
-			"GAUGCGAGAGUGCCUUCGGGAAUUCACAUACAGGUGCUGCAUGGCUGUCGUCAGCUCGUGUCGUGAGAUGUUGGGUUAAG" +
-			"UCCCGCAACGAGCGCAACCCUUUUCCUUAGUUACCAGCGACUCGGUCGGGAACUCUAAGGAUACUGCCAGUGACAAACUG" +
-			"GAGGAAGGCGGGGACGACGUCAAGUCAUCAUGGCCCUUACGACCAGGGCUACACACGUGCUACAAUGGUUGGUACAAAGG" +
-			"GUUGCUACACAGCGAUGUGAUGCUAAUCUCAAAAAGCCAAUCGUAGUCCGGAUUGGAGUCUGCAACUCGACUCCAUGAAG" +
-			"UCGGAAUCGCUAGUAAUCGCAGAUCAGAAUGCUGCGGUGAAUACGUUCCCGGGCCUUGUACACACCGCCCGUCACACCAU" +
-			"GGGAGUUGAUCUCACCAGAAGUGGUUAGCCUAACGCAAGAGGGCGAUCACCACGGUGGGGUCGAUGACUGGGGUGAAGUC" +
-			"GUAACAAGGUAGCCGUAGGGGAACUGCGGCUG";
-	
-	/**
-	 * Second record in the example FASTA file
-	 */
-	public static final String record2 = 
-			"UUAAAAUGAGAGUUUGAUCCUGGCUCAGGACGAACGCUGGCGGCGUGCCUAAUACAUGCAAGUCGAACGAAACUUUCUUA" +
-			"CACCGAAUGCUUGCAUUCACUCGUAAGAAUGAGUGGCGUGGACGGGUGAGUAACACGUGGGUAACCUGCCUAAAAGAAGG" +
-			"GGAUAACACUUGGAAACAGGUGCUAAUACCGUAUAUCUCUAAGGAUCGCAUGAUCCUUAGAUGAAAGAUGGUUCUNGCUA" +
-			"UCGCUUUUAGAUGGACCCGCGGCGUAUUAACUAGUUGGUGGGGUAACGGCCUACCAAGGUGAUGAUACGUAGCCGAACUG" +
-			"AGAGGUUGAUCGGCCACAUUGGGACUGAGACACGGCCCNAACUCCUACGGGAGGCAGCAGUAGGGAAUCUUCCACAAUGG" +
-			"ACGCAAGUCUGAUGGAGCAACGCCGCGUGAGUGAAGAAGGUCUUCGGAUCGUAAAACUCNGUUGUUAGAGAAGAACUCGA" +
-			"GUGAGAGUAACUGUUCAUUCGAUGACGGUAUCUAACCAGCAAGUCACGGCUAACUACGUGCCAGCAGCCGCGGUAAUACG" +
-			"UAGGUGGCAAGCGUUGUCCGGAUUUAUUGGGCGUAAAGGGAACGCAGGCGGUCUUUUAAGUCUGAUGUGAAAGCCUUCGG" +
-			"CUUAACCGGAGUAGUGCUAUGGAAACUGGAAGACUUGAGUGCAGAAGAGGAGAGUGGAACUCCAUGUGUAGCGGUGAAAU" +
-			"GCGUAGAUAUAUGGAAGAACACCAGUGGCGAAAGCGGCUCUCUGGUCUGUAACUGACGCUGAGGUUCGAAAGCGUGGGUA" +
-			"GCAAACAGGAUUAGAUACCCUGGUAGUCCACGCCGUAAACGAUGAAUGCUAGGUGUUGGAGGGUUUCCGCCCUUCAGUGC" +
-			"CGCAGCUAACGCAAUAAGCAUUCCGCCUGGGGAGUACGACCGCAAGGUUGAAACUCAAAGGAAUUGACGGGGGCNNGCAC" +
-			"AAGCGGUGGAGCAUGUGGUUUAAUUCGAANNAACGCGAAGAACCUUACCAGGUCUUGACAUCCUUUGACCACCUAAGAGA" +
-			"UUAGGCUUUCCCUUCGGGGACAAAGUGACAGGUGGNGCAUGGCUGUCGUCAGCUCGUGUCGUGAGAUGUUGGGUUAAGUC" +
-			"CCGCAACGAGCGCAACCCUUGUUGUCAGUUGCCAGCAUUAAGUUGGGCACUCUGGCGAGACUGCCGGUGACAAACCGGAG" +
-			"GAAGGUGGGGACGACGUCAAGUCAUCAUGCCCCUUAUGACCUGGGCUACACACGUGCUACAAUGGACGGUACAACGAGUC" +
-			"GCGAGACCGCGAGGUUUAGCUAAUCUCUUAAAGCCGUUCUCAGUUCGGAUUGUAGGCUGCAACUCGCCUACAUGAAGUCG" +
-			"GAAUCGCUAGUAAUCGCGA";
-	
-	
-	public static final String record3 =
-			"GAUGAACGCUAGCGGCGUGCCUUAUGCAUGCAAGUCGAACGGUCUUAAGCAAUUAAGAUAGUGGCGAACGGGUGAGUAAC" +
-			"GCGUAAGUAACCUACCUCUAAGUGGGGGAUAGCUUCGGGAAACUGAAGGUAAUACCGCAUGUGGUGGGCCGACAUAUGUU" +
-			"GGUUCACUAAAGCCGUAAGGCGCUUGGUGAGGGGCUUGCGUCCGAUUAGCUAGUUGGUGGGGUAAUGGCCUACCAAGGCU" +
-			"UCGAUCGGUAGCUGGUCUGAGAGGAUGAUCAGCCACACUGGGACUGAGACACGGCCCAGACUCCUACGGGAGGCAGCAGC" +
-			"AAGGAAUCUUGGGCAAUGGGCGAAAGCCUGACCCAGCAACGCCGCGUGAGGGAUGAAGGCUUUCGGGUUGUAAACCUCUU" +
-			"UUCAUAGGGAAGAAUAAUGACGGUACCUGUGGAAUAAGCUUCGGCUAACUACGUGCCAGCAGCCGCGGUAAUACGUAGGA" +
-			"AGCAAGCGUUAUCCGGAUUUAUUGGGCGUAAAGUGAGCGUAGGUGGUCUUUCAAGUUGGAUGUGAAAUUUCCCGGCUUAA" +
-			"CCGGGACGAGUCAUUCAAUACUGUUGGACUAGAGUACAGCAGGAGAAAACGGAAUUCCCGGUGUAGUGGUAAAAUGCGUA" +
-			"GAUAUCGGGAGGAACACCAGAGGCGAAGGCGGUUUUCUAGGUUGUCACUGACACUGAGGCUCGAAAGCGUGGGGAGCGAA" +
-			"CAGAAUUAGAUACUCUGGUAGUCCACGCCUUAAACUAUGGACACUAGGUAUAGGGAGUAUCGACCCUCUCUGUGCCGAAG" +
-			"CUAACGCUUUAAGUGUCCCGCCUGGGGAGUACGGUCGCAAGGCUAAAACUCAAAGGAAUUGACGGGGGCCCGCACAAGCA" +
-			"GCGGAGCGUGUGGUUUAAUUCGAUGCUACACGAAGAACCUUACCAAGAUUUGACAUGCAUGUAGUAGUGAACUGAAAGGG" +
-			"GAACGACCUGUUAAGUCAGGAACUUGCACAGGUGCUGCAUGGCUGUCGUCAGCUCGUGCCGUGAGGUGUUUGGUUAAGUC" +
-			"CUGCAACGAGCGCAACCCUUGUUGCUAGUUAAAUUUUCUAGCGAGACUGCCCCGCGAAACGGGGAGGAAGGUGGGGAUGA" +
-			"CGUCAAGUCAGCAUGGCCUUUAUAUCUUGGGCUACACACACGCUACAAUGGACAGAACAAUAGGUUGCAACAGUGUGAAC" +
-			"UGGAGCUAAUCC";
-
-    private String alternate1 =
-            "TGCTCAATTTTATCTAAAGAAAATCAAATTGAGCAAATATATTCACAAAAAATTATTTTT" +
-            "ATAGTATTTTTGAGAAAATAATTGCTCATTTGTACTAATG";
-
-    private String alternate2 =
-            "AAACCACAAGACAAACCATATCGTAAGCTTGATGCAGATAGGCTTTATATAGAAGTCAGA" +
-            "CCAAGTGGGAAAAAAGTTTGGATTCACAAATTCTCCTTAA";
-
-    private String alternate3 =
-            "GCAATTCCGACCACATAGACCGTATCAATACCACGTTCTTTTAAGTAACCCGTTAAACCT" +
-            "GTCATTGTGGTGTGGTCAGCTTCCATAAAAGCCGAGTAAC";
-
-    private final String fastqComplex1_metadata = "SEQ_ID";
-    private final String fastqComplex1_sequence = "GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT";
-    private final String fastqComplex1_comments = "";
-    private final String fastqComplex1_quality  = "!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65";
-
-    private final String fastqComplex2_metadata = "HWUSI-EAS100R:6:73:941:1973#0/1";
-    private final String fastqComplex2_sequence = "ACCGCTTGTGCGGGCCCCCGTCAATTCATTTGAGTTTTAGTCTTGCGACCGTACTCCCCAGGCGGTCTACTTATCGCGTTAGCTGCGCCACTAA";
-    private final String fastqComplex2_comments = "";
-    private final String fastqComplex2_quality  = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-
-    private final String fastqComplex3_metadata = "EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG";
-    private final String fastqComplex3_sequence = "ACCGCTTGTGCGGGCCCCCGTCAATTCATTTGAGTTTTAGTCTTGCGACCGTACTCCCCAGGCGGTCTACTTATCGCGTTAGCTGCGCCACTAA";
-    private final String fastqComplex3_comments = "";
-    private final String fastqComplex3_quality  = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-
-    private final String fastqComplex4_metadata = "SRR001666.1 071112_SLXA-EAS1_s_7:5:1:817:345 length=36";
-    private final String fastqComplex4_sequence = "GGGTGATGGCCGCTGCCGATGGCGTCAAATCCCACC";
-    private final String fastqComplex4_comments = "SRR001666.1 071112_SLXA-EAS1_s_7:5:1:817:345 length=36";
-    private final String fastqComplex4_quality  = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIII9IG9IC";
-
-    private final String fastqComplex5_metadata = "Acinetobacter_806_905_0:0:0_0:0:0_0/1";
-    private final String fastqComplex5_sequence = "ACCGCTTGTGCGGGCCCCCGTCAATTCATTTGAGTTTTAGTCTTGCGACCGTACTCCCCAGGCGGTCTACTTATCGCGTTAGCTGCGCCACTAAAGCCTC";
-    private final String fastqComplex5_comments = "";
-    private final String fastqComplex5_quality  = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII";
-
-    private final String fastqComplex6_metadata = "Bacillus_359_458_0:0:0_0:0:0_100cb/1";
-    private final String fastqComplex6_sequence = "GCCGCGTGAGTGATGAAGGCTTTCGGGTCGTAAAACTCTGTTGTTAGGGAAGAACAAGTGCTAGTTGAATAAGCTGGCACCTTGACGGTACCTAACCAGA";
-    private final String fastqComplex6_comments = "";
-    private final String fastqComplex6_quality  = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII";
-
-    private final String fastqComplex7_metadata = "Actinomyces_79_178_0:0:0_0:0:0_4639/1";
-    private final String fastqComplex7_sequence = "GAACAAACCTTTCCACCAACCCCCATGCGAAGATCAGTGAATATCCAGTATTAGCACCCGTTTCCGGGCGTTATCCCAAAGAAGGGGGCAGGTTACTCAC";
-    private final String fastqComplex7_comments = "";
-    private final String fastqComplex7_quality  = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII";
-
-    /**
-     * Create a StringStreamReader for the Simple FASTA test file
-     * @return the StringStreamReader
-     * @throws java.io.FileNotFoundException the test file could not be found
-     */
-    public static StringStreamReader getSimpleFastqReader()
-            throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamWriterTest.FASTA_PATH + FastqStringFileStreamWriterTest.SSU_PARC_SIMPLE_FASTA);
+    public static SequenceStreamWriter getFastqWriter() throws Exception {
+        return FastqStringFileStreamWriter.create(WRITER_TEST_FILE);
     }
 
     /**
-     * Create a StringStreamReader for the Simple FASTA test file
-     * @return the StringStreamReader
-     * @throws java.io.FileNotFoundException the test file could not be found
+     * Create a SequenceStreamWriter to write the test file to
+     * @return the SequenceStreamWriter
+     * @throws java.io.IOException the test file could not be found
      */
-    public static StringStreamReader getAlternateFastqReader()
-            throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamWriterTest.FASTA_PATH + FastqStringFileStreamWriterTest.ALTERNATE_FASTA);
-    }
-    /**
-     * Create a StringStreamReader for the Example FASTA test file
-     * @return the StringStreamReader
-     * @throws java.io.FileNotFoundException the test file could not be found
-     */
-    public static StringStreamReader getExampleFastqReader()
-            throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamWriterTest.FASTA_PATH + FastqStringFileStreamWriterTest.SSU_PARC_EXAMPLE_FASTA);
-    }
-
-    /**
-     * Create a StringStreamReader for the Example FASTA test file
-     * @return the StringStreamReader
-     * @throws java.io.FileNotFoundException the test file could not be found
-     */
-    public static StringStreamReader getComplexFastqReader()
-            throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamWriterTest.FASTA_PATH + FastqStringFileStreamWriterTest.COMPLEX_FASTA);
-    }
-
-    /**
-     * Create a StringStreamReader for the Paged FASTA test file
-     * @return the StringStreamReader
-     * @throws java.io.FileNotFoundException the test file could not be found
-     */
-    public static StringStreamReader getPagedFastqReader()
-            throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamWriterTest.FASTA_PATH + FastqStringFileStreamWriterTest.SSU_PARC_PAGED_FASTA);
-    }
-
-    /**
-     * Create a StringStreamReader for the Paged FASTA test file
-     * @return the StringStreamReader
-     * @throws java.io.FileNotFoundException the test file could not be found
-     */
-    public static StringStreamReader getPagedFastqReader(int pagingSize)
-            throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamWriterTest.FASTA_PATH + FastqStringFileStreamWriterTest.SSU_PARC_PAGED_FASTA, pagingSize);
-    }
-
-    /**
-     * Create a StringStreamReader for the Gapged FASTA test file
-     * @return the StringStreamReader
-     * @throws java.io.FileNotFoundException the test file could not be found
-     */
-    public static StringStreamReader getGappedFastqReader()
-            throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamWriterTest.FASTA_PATH + FastqStringFileStreamWriterTest.SSU_PARC_GAPPED_FASTA);
-    }
-
-    /**
-     * Create a StringStreamReader for the NoSpace FASTA test file
-     * @return the StringStreamReader
-     * @throws java.io.FileNotFoundException the test file could not be found
-     */
-    public static StringStreamReader getNoSpaceFastqReader()
-            throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamWriterTest.FASTA_PATH + FastqStringFileStreamWriterTest.SSU_PARC_NOSPACE_FASTA);
+    public static SequenceStreamReader getFastqReader() throws Exception {
+        return new FastqSequenceStreamReader(FastqStringFileStreamReader.create(WRITER_TEST_FILE));
     }
 
 
     /**
-	 * Create a FastqFileStreamReader
-	 * @throws java.io.IOException
-	 */
-	@Test
-	public void testCreate() throws IOException {
-//        OutputStreamWriter stream = new OutputStreamWriter(new FileOutputStream(new File("find the path")));
-//        stream.write("test");
-//        stream.close();
-		FastqStringFileStreamReader.create(FASTA_PATH + SSU_PARC_EXAMPLE_FASTA);
-	}
+     * Create a SequenceStreamWriter for the Big Fastq test file
+     * @return the SequenceStreamReader
+     * @throws java.io.IOException the test file could not be found
+     */
+    public static File writeSequence(Sequence sequence) throws Exception {
+        try (SequenceStreamWriter writer = getFastqWriter()) {
+            writer.write(sequence);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
 
-	/**
-	 * Create a FastqFileStreamReader
-	 * @throws java.io.FileNotFoundException
-	 */
-	@Test(expected=FileNotFoundException.class)
-	public void testCreate_notFound() throws FileNotFoundException {
-		FastqStringFileStreamReader.create("Z:/bobtheexamplefileisnothere.fastq");
-	}
-
-	/**
-	 * Create a FastqFileStreamReader
-	 * @throws java.io.FileNotFoundException
-	 */
-	@Test
-	public void testCreate_notFoundAutoCloseable() throws FileNotFoundException {
-		try (StringStreamReader reader = FastqStringFileStreamReader.create("Z:/bobtheexamplefileisnothere.fastq"))
-		{
-			fail("This should not be reachable");
-		}
-		catch (FileNotFoundException e)
-		{
-			// do nothing since this means we passed
-		}
-		catch (Exception e)
-		{
-			fail("We should have been caught by the more specific exception in front of this.");
-		}
-	}
-
-	/**
-	 * Read a record from the reader
-	 * @throws java.io.IOException
-	 */
-	@Test
-	public void testReadRecord_simple() throws IOException {
-		StringStreamReader reader = getSimpleFastqReader();
-
-		assertEquals(recordSimple, reader.next().getValue1());
-	}
-
-	/**
-	 * Read a record from the reader
-	 * @throws java.io.IOException
-	 */
-	@Test
-	public void testReadRecord_example1() throws IOException {
-		StringStreamReader reader = getExampleFastqReader();
-
-		assertEquals(record1, reader.next().getValue1());
-	}
-
-	/**
-	 * Read a second record from the reader
-	 * @throws java.io.IOException
-	 */
-	@Test
-	public void testReadRecord_example2() throws IOException {
-		StringStreamReader reader = getExampleFastqReader();
-
-		assertEquals(record1, reader.next().getValue1());
-		assertEquals(record2, reader.next().getValue1());
-	}
-
-	/**
-	 * Read a third record from the reader
-	 * @throws java.io.IOException
-	 */
-	@Test
-	public void testReadRecord_example3() throws IOException {
-		StringStreamReader reader = getExampleFastqReader();
-
-		assertEquals(record1, reader.next().getValue1());
-		assertEquals(record2, reader.next().getValue1());
-		assertEquals(record3, reader.next().getValue1());
-	}
-
-	/**
-	 * Read a third record from the reader
-	 * @throws Exception
-	 */
-	@Test
-	public void testReadRecord_autoCloseable() throws Exception {
-		try (StringStreamReader reader	= getExampleFastqReader())
-		{
-			assertEquals(record1, reader.next().getValue1());
-			assertEquals(record2, reader.next().getValue1());
-			assertEquals(record3, reader.next().getValue1());
-		} catch (Exception e) {
-			fail("Should not have hit an exception from the three");
-		}
-	}
+        return new File(WRITER_TEST_FILE);
+    }
 
     /**
-     * Read a third record from the reader
+     * Create a SequenceStreamWriter for the Big Fastq test file
+     * @return the SequenceStreamReader
+     */
+    public static void writeAndCheckSequence(Sequence expected) throws Exception {
+        final File written = writeSequence(expected);
+        SequenceStreamReader reader = getFastqReader();
+
+        Optional<Sequence> result = reader.next();
+        assertTrue("Failed to read the written result", result.isPresent());
+        assertEquals("The sequence was not the same once read back", expected, result.get());
+        reader.close();
+    }
+
+
+    /**
+     * Create a FastqFileStreamWriter
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testCreate() throws Exception {
+        FastqStringFileStreamWriter.create(WRITER_TEST_FILE);
+    }
+
+    /**
+     * Create a FastqFileStreamWriter
+     * @throws java.io.IOException
+     */
+    @Test(expected=IOException.class)
+    public void testCreate_notFound() throws Exception {
+        FastqStringFileStreamWriter.create("Z:/bobtheexamplefileisnothere.Fastq");
+    }
+
+    /**
+     * Read a record from the writer
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testReadRecord_simple() throws Exception {
+        writeAndCheckSequence(FastqData.getSimpleSequence());
+    }
+
+    /**
+     * Read a record from the writer
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testReadRecord_example1() throws Exception {
+        writeAndCheckSequence(FastqData.getRecord1Sequence());
+    }
+
+    /**
+     * Read a second record from the writer
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testReadRecord_example2() throws Exception {
+        writeAndCheckSequence(FastqData.getRecord2Sequence());
+    }
+
+    /**
+     * Read a third record from the writer
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testReadRecord_example3() throws Exception {
+        writeAndCheckSequence(FastqData.getRecord3Sequence());
+    }
+
+    /**
+     * Read a third record from the writer
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testReadRecord_alternate1() throws Exception {
+        writeAndCheckSequence(FastqData.getAlternate1Sequence());
+    }
+
+    /**
+     * Read a third record from the writer
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testReadRecord_alternate2() throws Exception {
+        writeAndCheckSequence(FastqData.getAlternate2Sequence());
+    }
+
+    /**
+     * Read a third record from the writer
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testReadRecord_alternate3() throws Exception {
+        writeAndCheckSequence(FastqData.getAlternate3Sequence());
+    }
+
+    /**
+     * Read a third record from the writer
      * @throws Exception
      */
     @Test
-    public void testReadRecords_gapped() throws Exception {
-        try (StringStreamReader reader	= getGappedFastqReader())
+    public void testReadRecord_autoCloseable() throws Exception {
+        try (SequenceStreamWriter writer	= getFastqWriter())
         {
-            assertNotNull(reader.next().getValue1());
-            assertNotNull(reader.next().getValue1());
-            assertNotNull(reader.next().getValue1());
+            writer.write(FastqData.getRecord1Sequence());
+            writer.write(FastqData.getRecord2Sequence());
+            writer.write(FastqData.getRecord3Sequence());
+
         } catch (Exception e) {
-            fail("Should not have hit an exception from reading three records from gapped");
+            fail("Exception writing the files");
+        }
+
+        try (SequenceStreamReader reader = getFastqReader()) {
+            assertEquals(FastqData.getRecord1Sequence(), reader.next().get());
+            assertEquals(FastqData.getRecord2Sequence(), reader.next().get());
+            assertEquals(FastqData.getRecord3Sequence(), reader.next().get());
         }
     }
 
     /**
-     * Read a third record from the reader
-     * @throws Exception
-     */
-    @Test
-    public void testReadRecords_noSpace() throws Exception {
-        try (StringStreamReader reader	= getNoSpaceFastqReader())
-        {
-            assertNotNull(reader.next().getValue1());
-            assertNotNull(reader.next().getValue1());
-            assertNotNull(reader.next().getValue1());
-        } catch (Exception e) {
-            fail("Should not have hit an exception from reading three records from no space");
-        }
-    }
-
-	/**
-	 * Read a third record from the reader
-	 * @throws java.io.IOException
-	 */
-	@Test
-	public void testReadRecord_paged() throws IOException {
-		StringStreamReader reader = getPagedFastqReader();
-
-        int index = 0;
-		while (reader.hasNext())
-		{
-			assertEquals(index+0 + " failed to parse", record1, reader.next().getValue1());
-            assertEquals(index+1 + " failed to parse", record2, reader.next().getValue1());
-            assertEquals(index+2 + " failed to parse", record3, reader.next().getValue1());
-            index += 3;
-		}
-
-        assertEquals("The number of records was not correct", 81, index);
-	}
-
-    /**
-     * Read a third record from the reader
+     * Read a record from the writer
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecords_paged1() throws IOException {
-        StringStreamReader reader = getPagedFastqReader(1);
-
-        int index = 0;
-        while (reader.hasNext())
-        {
-            assertEquals(index+0 + " failed to parse", record1, reader.next().getValue1());
-            assertEquals(index+1 + " failed to parse", record2, reader.next().getValue1());
-            assertEquals(index+2 + " failed to parse", record3, reader.next().getValue1());
-            index += 3;
-        }
-
-        assertEquals("The number of records was not correct", 81, index);
+    public void testReadRecord_complex1() throws Exception {
+        writeAndCheckSequence(FastqData.getComplex1Sequence());
     }
 
     /**
-     * Read a third record from the reader
+     * Read a record from the writer
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecords_paged10() throws IOException {
-        StringStreamReader reader = getPagedFastqReader(10);
-
-        int index = 0;
-        while (reader.hasNext())
-        {
-            if (index >= 78)
-                index = index -1 + 1;
-            assertEquals(index+0 + " failed to parse", record1, reader.next().getValue1());
-            assertEquals(index+1 + " failed to parse", record2, reader.next().getValue1());
-            assertEquals(index+2 + " failed to parse", record3, reader.next().getValue1());
-            index += 3;
-        }
-
-        assertEquals("The number of records was not correct", 81, index);
+    public void testReadRecord_complex2() throws Exception {
+        writeAndCheckSequence(FastqData.getComplex2Sequence());
     }
 
     /**
-     * Read a third record from the reader
+     * Read a record from the writer
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecords_paged100() throws IOException {
-        StringStreamReader reader = getPagedFastqReader(100);
-
-        int index = 0;
-        while (reader.hasNext())
-        {
-            assertEquals(index+0 + " failed to parse", record1, reader.next().getValue1());
-            assertEquals(index+1 + " failed to parse", record2, reader.next().getValue1());
-            assertEquals(index+2 + " failed to parse", record3, reader.next().getValue1());
-            index += 3;
-        }
-
-        assertEquals("The number of records was not correct", 81, index);
+    public void testReadRecord_complex3() throws Exception {
+        writeAndCheckSequence(FastqData.getComplex3Sequence());
     }
 
     /**
-     * Read a record from the reader
+     * Read a record from the writer
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecord_complex1() throws IOException {
-        StringStreamReader reader = getComplexFastqReader();
-
-        Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex1_metadata, next.getValue0());
-        assertEquals(fastqComplex1_sequence, next.getValue1());
+    public void testReadRecord_complex4() throws Exception {
+        writeAndCheckSequence(FastqData.getComplex4Sequence());
     }
 
     /**
-     * Read a second record from the reader
+     * Read a record from the writer
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecord_complex2() throws IOException {
-        StringStreamReader reader = getComplexFastqReader();
-
-        reader.next();
-        Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex2_metadata, next.getValue0());
-        assertEquals(fastqComplex2_sequence, next.getValue1());
+    public void testReadRecord_complex5() throws Exception {
+        writeAndCheckSequence(FastqData.getComplex5Sequence());
     }
 
     /**
-     * Read a third record from the reader
+     * Read a record from the writer
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecord_complex3() throws IOException {
-        StringStreamReader reader = getComplexFastqReader();
-
-        reader.next();
-        reader.next();
-        Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex3_metadata, next.getValue0());
-        assertEquals(fastqComplex3_sequence, next.getValue1());
+    public void testReadRecord_complex6() throws Exception {
+        writeAndCheckSequence(FastqData.getComplex6Sequence());
     }
 
     /**
-     * Read a third record from the reader
+     * Read a record from the writer
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecord_complex4() throws IOException {
-        StringStreamReader reader = getComplexFastqReader();
-
-        reader.next();
-        reader.next();
-        reader.next();
-        Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex4_metadata, next.getValue0());
-        assertEquals(fastqComplex4_sequence, next.getValue1());
-    }
-
-    /**
-     * Read a third record from the reader
-     * @throws java.io.IOException
-     */
-    @Test
-    public void testReadRecord_complex5() throws IOException {
-        StringStreamReader reader = getComplexFastqReader();
-
-        reader.next();
-        reader.next();
-        reader.next();
-        reader.next();
-        Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex5_metadata, next.getValue0());
-        assertEquals(fastqComplex5_sequence, next.getValue1());
-    }
-
-    /**
-     * Read a third record from the reader
-     * @throws java.io.IOException
-     */
-    @Test
-    public void testReadRecord_complex6() throws IOException {
-        StringStreamReader reader = getComplexFastqReader();
-
-        reader.next();
-        reader.next();
-        reader.next();
-        reader.next();
-        reader.next();
-        Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex6_metadata, next.getValue0());
-        assertEquals(fastqComplex6_sequence, next.getValue1());
-    }
-
-    /**
-     * Read a third record from the reader
-     * @throws java.io.IOException
-     */
-    @Test
-    public void testReadRecord_complex7() throws IOException {
-        StringStreamReader reader = getComplexFastqReader();
-
-        reader.next();
-        reader.next();
-        reader.next();
-        reader.next();
-        reader.next();
-        reader.next();
-        Pair<String, String> next = reader.next();
-        assertEquals(fastqComplex7_metadata, next.getValue0());
-        assertEquals(fastqComplex7_sequence, next.getValue1());
+    public void testReadRecord_complex7() throws Exception {
+        writeAndCheckSequence(FastqData.getComplex7Sequence());
     }
 }

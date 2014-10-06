@@ -3,17 +3,14 @@ package com.vitreoussoftware.bioinformatics.sequence.io.writer.fasta;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.io.FastaData;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaSequenceStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaStringFileStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.writer.SequenceStreamWriter;
-import com.vitreoussoftware.bioinformatics.sequence.io.writer.SequenceStreamWriter;
-import com.vitreoussoftware.bioinformatics.sequence.io.writer.fasta.FastaStringFileStreamWriter;
-import org.javatuples.Pair;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.IOException;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -24,15 +21,24 @@ import static org.junit.Assert.*;
  */
 public class FastaStringFileStreamWriterTest {
 
-    private static final String WRITER_TEST_FILE = "fastatestwriter.fasta";
+    private static final String WRITER_TEST_FILE = "target/fastatestwriter.fasta";
 
     /**
      * Create a SequenceStreamWriter to write the test file to
      * @return the SequenceStreamWriter
      * @throws java.io.IOException the test file could not be found
      */
-    public static SequenceStreamWriter getFastaWriter() throws IOException {
+    public static SequenceStreamWriter getFastaWriter() throws Exception {
         return FastaStringFileStreamWriter.create(WRITER_TEST_FILE);
+    }
+
+    /**
+     * Create a SequenceStreamWriter to write the test file to
+     * @return the SequenceStreamWriter
+     * @throws java.io.IOException the test file could not be found
+     */
+    public static SequenceStreamReader getFastaReader() throws Exception {
+        return new FastaSequenceStreamReader(FastaStringFileStreamReader.create(WRITER_TEST_FILE));
     }
 
 
@@ -41,7 +47,7 @@ public class FastaStringFileStreamWriterTest {
      * @return the SequenceStreamReader
      * @throws java.io.IOException the test file could not be found
      */
-    public static File writeSequence(Sequence sequence) throws IOException {
+    public static File writeSequence(Sequence sequence) throws Exception {
         try (SequenceStreamWriter writer = getFastaWriter()) {
             writer.write(sequence);
         } catch (Exception e) {
@@ -52,13 +58,27 @@ public class FastaStringFileStreamWriterTest {
         return new File(WRITER_TEST_FILE);
     }
 
+    /**
+     * Create a SequenceStreamWriter for the Big FASTA test file
+     * @return the SequenceStreamReader
+     */
+    public static void writeAndCheckSequence(Sequence expected) throws Exception {
+        final File written = writeSequence(expected);
+        SequenceStreamReader reader = getFastaReader();
+
+        Optional<Sequence> result = reader.next();
+        assertTrue("Failed to read the written result", result.isPresent());
+        assertEquals("The sequence was not the same once read back", expected, result.get());
+        reader.close();
+    }
+
 
     /**
 	 * Create a FastaFileStreamWriter
 	 * @throws java.io.IOException
 	 */
 	@Test
-	public void testCreate() throws IOException {
+	public void testCreate() throws Exception {
 		FastaStringFileStreamWriter.create(WRITER_TEST_FILE);
 	}
 
@@ -67,28 +87,17 @@ public class FastaStringFileStreamWriterTest {
 	 * @throws java.io.IOException
 	 */
 	@Test(expected=IOException.class)
-	public void testCreate_notFound() throws IOException {
+	public void testCreate_notFound() throws Exception {
 		FastaStringFileStreamWriter.create("Z:/bobtheexamplefileisnothere.fasta");
 	}
 
 	/**
-	 * Create a FastaFileStreamWriter
+	 * Read a record from the writer
 	 * @throws java.io.IOException
 	 */
 	@Test
-	public void testCreate_notFoundAutoCloseable() throws IOException {
-		try (SequenceStreamWriter writer = FastaStringFileStreamWriter.create("Z:/bobtheexamplefileisnothere.fasta"))
-		{
-			fail("This should not be reachable");
-		}
-		catch (IOException e)
-		{
-			// do nothing since this means we passed
-		}
-		catch (Exception e)
-		{
-			fail("We should have been caught by the more specific exception in front of this.");
-		}
+	public void testReadRecord_simple() throws Exception {
+		writeAndCheckSequence(FastaData.getSimpleSequence());
 	}
 
 	/**
@@ -96,19 +105,8 @@ public class FastaStringFileStreamWriterTest {
 	 * @throws java.io.IOException
 	 */
 	@Test
-	public void testReadRecord_simple() throws IOException {
-		writeSequence(FastaData.getSimpleSequence());
-	}
-
-	/**
-	 * Read a record from the writer
-	 * @throws java.io.IOException
-	 */
-	@Test
-	public void testReadRecord_example1() throws IOException {
-		SequenceStreamWriter writer = getFastaWriter();
-
-		assertEquals(record1, writer.next().getValue1());
+	public void testReadRecord_example1() throws Exception {
+		writeAndCheckSequence(FastaData.getRecord1Sequence());
 	}
 
 	/**
@@ -116,11 +114,8 @@ public class FastaStringFileStreamWriterTest {
 	 * @throws java.io.IOException
 	 */
 	@Test
-	public void testReadRecord_example2() throws IOException {
-		SequenceStreamWriter writer = getFastaWriter();
-
-		assertEquals(record1, writer.next().getValue1());
-		assertEquals(record2, writer.next().getValue1());
+	public void testReadRecord_example2() throws Exception {
+        writeAndCheckSequence(FastaData.getRecord2Sequence());
 	}
 
 	/**
@@ -128,12 +123,8 @@ public class FastaStringFileStreamWriterTest {
 	 * @throws java.io.IOException
 	 */
 	@Test
-	public void testReadRecord_example3() throws IOException {
-		SequenceStreamWriter writer = getFastaWriter();
-
-		assertEquals(record1, writer.next().getValue1());
-		assertEquals(record2, writer.next().getValue1());
-		assertEquals(record3, writer.next().getValue1());
+	public void testReadRecord_example3() throws Exception {
+        writeAndCheckSequence(FastaData.getRecord3Sequence());
 	}
 
     /**
@@ -141,12 +132,26 @@ public class FastaStringFileStreamWriterTest {
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecord_alternate() throws IOException {
-        SequenceStreamWriter writer = getFastaWriter();
+    public void testReadRecord_alternate1() throws Exception {
+        writeAndCheckSequence(FastaData.getAlternate1Sequence());
+    }
 
-        assertEquals(alternate1, writer.next().getValue1());
-        assertEquals(alternate2, writer.next().getValue1());
-        assertEquals(alternate3, writer.next().getValue1());
+    /**
+     * Read a third record from the writer
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testReadRecord_alternate2() throws Exception {
+        writeAndCheckSequence(FastaData.getAlternate2Sequence());
+    }
+
+    /**
+     * Read a third record from the writer
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testReadRecord_alternate3() throws Exception {
+        writeAndCheckSequence(FastaData.getAlternate3Sequence());
     }
 
 	/**
@@ -157,137 +162,28 @@ public class FastaStringFileStreamWriterTest {
 	public void testReadRecord_autoCloseable() throws Exception {
 		try (SequenceStreamWriter writer	= getFastaWriter())
 		{
-			assertEquals(record1, writer.next().getValue1());
-			assertEquals(record2, writer.next().getValue1());
-			assertEquals(record3, writer.next().getValue1());
+            writer.write(FastaData.getRecord1Sequence());
+            writer.write(FastaData.getRecord2Sequence());
+            writer.write(FastaData.getRecord3Sequence());
+
 		} catch (Exception e) {
-			fail("Should not have hit an exception from the three");
-		}
-	}
-
-    /**
-     * Read a third record from the writer
-     * @throws Exception
-     */
-    @Test
-    public void testReadRecords_gapped() throws Exception {
-        try (SequenceStreamWriter writer	= getFastaWriter())
-        {
-            assertNotNull(writer.next().getValue1());
-            assertNotNull(writer.next().getValue1());
-            assertNotNull(writer.next().getValue1());
-        } catch (Exception e) {
-            fail("Should not have hit an exception from reading three records from gapped");
-        }
-    }
-
-    /**
-     * Read a third record from the writer
-     * @throws Exception
-     */
-    @Test
-    public void testReadRecords_noSpace() throws Exception {
-        try (SequenceStreamWriter writer	= getFastaWriter())
-        {
-            assertNotNull(writer.next().getValue1());
-            assertNotNull(writer.next().getValue1());
-            assertNotNull(writer.next().getValue1());
-        } catch (Exception e) {
-            fail("Should not have hit an exception from reading three records from no space\n" + e.getMessage());
-        }
-    }
-
-	/**
-	 * Read a third record from the writer
-	 * @throws java.io.IOException
-	 */
-	@Test
-	public void testReadRecord_paged() throws IOException {
-		SequenceStreamWriter writer = getFastaWriter();
-
-        int index = 0;
-		while (writer.hasNext())
-		{
-			assertEquals(index+0 + " failed to parse", record1, writer.next().getValue1());
-            assertEquals(index+1 + " failed to parse", record2, writer.next().getValue1());
-            assertEquals(index+2 + " failed to parse", record3, writer.next().getValue1());
-            index += 3;
+			fail("Exception writing the files");
 		}
 
-        assertEquals("The number of records was not correct", 81, index);
+        try (SequenceStreamReader reader = getFastaReader()) {
+            assertEquals(FastaData.getRecord1Sequence(), reader.next().get());
+            assertEquals(FastaData.getRecord2Sequence(), reader.next().get());
+            assertEquals(FastaData.getRecord3Sequence(), reader.next().get());
+        }
 	}
-
-    /**
-     * Read a third record from the writer
-     * @throws java.io.IOException
-     */
-    @Test
-    public void testReadRecords_paged1() throws IOException {
-        SequenceStreamWriter writer = getFastaWriter(1);
-
-        int index = 0;
-        while (writer.hasNext())
-        {
-            assertEquals(index+0 + " failed to parse", record1, writer.next().getValue1());
-            assertEquals(index+1 + " failed to parse", record2, writer.next().getValue1());
-            assertEquals(index+2 + " failed to parse", record3, writer.next().getValue1());
-            index += 3;
-        }
-
-        assertEquals("The number of records was not correct", 81, index);
-    }
-
-    /**
-     * Read a third record from the writer
-     * @throws java.io.IOException
-     */
-    @Test
-    public void testReadRecords_paged10() throws IOException {
-        SequenceStreamWriter writer = getFastaWriter(10);
-
-        int index = 0;
-        while (writer.hasNext())
-        {
-            assertEquals(index+0 + " failed to parse", record1, writer.next().getValue1());
-            assertEquals(index+1 + " failed to parse", record2, writer.next().getValue1());
-            assertEquals(index+2 + " failed to parse", record3, writer.next().getValue1());
-            index += 3;
-        }
-
-        assertEquals("The number of records was not correct", 81, index);
-    }
-
-    /**
-     * Read a third record from the writer
-     * @throws java.io.IOException
-     */
-    @Test
-    public void testReadRecords_paged100() throws IOException {
-        SequenceStreamWriter writer = getFastaWriter(100);
-
-        int index = 0;
-        while (writer.hasNext())
-        {
-            assertEquals(index+0 + " failed to parse", record1, writer.next().getValue1());
-            assertEquals(index+1 + " failed to parse", record2, writer.next().getValue1());
-            assertEquals(index+2 + " failed to parse", record3, writer.next().getValue1());
-            index += 3;
-        }
-
-        assertEquals("The number of records was not correct", 81, index);
-    }
 
     /**
      * Read a record from the writer
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecord_complex1() throws IOException {
-        SequenceStreamWriter writer = getFastaWriter();
-
-        Pair<String, String> next = writer.next();
-        assertEquals(fastaMultiLineDescriptionMetadata, next.getValue0());
-        assertEquals(fastaMultiLineDescriptionSequence, next.getValue1());
+    public void testReadRecord_complex1() throws Exception {
+        writeAndCheckSequence(FastaData.getFastaTerminatedSequence());
     }
 
     /**
@@ -295,13 +191,8 @@ public class FastaStringFileStreamWriterTest {
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecord_complex2() throws IOException {
-        SequenceStreamWriter writer = getFastaWriter();
-
-        writer.next();
-        Pair<String, String> next = writer.next();
-        assertEquals(fastaTerminatedMetadata, next.getValue0());
-        assertEquals(fastaTerminatedSequence, next.getValue1());
+    public void testReadRecord_complex2() throws Exception {
+        writeAndCheckSequence(FastaData.getFastaMultiLineDescriptionSequence());
     }
 
     /**
@@ -309,13 +200,7 @@ public class FastaStringFileStreamWriterTest {
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecord_complex3() throws IOException {
-        SequenceStreamWriter writer = getFastaWriter();
-
-        writer.next();
-        writer.next();
-        Pair<String, String> next = writer.next();
-        assertEquals(fastaLargeHeaderMetadata, next.getValue0());
-        assertEquals(fastaLargeHeaderSequence, next.getValue1());
+    public void testReadRecord_complex3() throws Exception {
+        writeAndCheckSequence(FastaData.getFastaLargeHeaderSequence());
     }
 }
