@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
  * @author John
  *
  */
-public class FastaStringFileStreamWriterTest {
+public class FastaFileStreamWriterTest {
 
     private static final String WRITER_TEST_FILE = "target/fastatestwriter.fasta";
 
@@ -29,7 +29,7 @@ public class FastaStringFileStreamWriterTest {
      * @throws java.io.IOException the test file could not be found
      */
     public static SequenceStreamWriter getFastaWriter() throws Exception {
-        return FastaStringFileStreamWriter.create(WRITER_TEST_FILE);
+        return FastaFileStreamWriter.create(WRITER_TEST_FILE);
     }
 
     /**
@@ -79,7 +79,7 @@ public class FastaStringFileStreamWriterTest {
 	 */
 	@Test
 	public void testCreate() throws Exception {
-		FastaStringFileStreamWriter.create(WRITER_TEST_FILE);
+		FastaFileStreamWriter.create(WRITER_TEST_FILE);
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class FastaStringFileStreamWriterTest {
 	 */
 	@Test(expected=IOException.class)
 	public void testCreate_notFound() throws Exception {
-		FastaStringFileStreamWriter.create("Z:/bobtheexamplefileisnothere.fasta");
+		FastaFileStreamWriter.create("Z:/bobtheexamplefileisnothere.fasta");
 	}
 
 	/**

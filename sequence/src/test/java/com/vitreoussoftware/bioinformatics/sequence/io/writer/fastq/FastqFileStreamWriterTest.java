@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
  * @author John
  *
  */
-public class FastqStringFileStreamWriterTest {
+public class FastqFileStreamWriterTest {
 
     private static final String WRITER_TEST_FILE = "target/Fastqtestwriter.Fastq";
 
@@ -29,7 +29,7 @@ public class FastqStringFileStreamWriterTest {
      * @throws java.io.IOException the test file could not be found
      */
     public static SequenceStreamWriter getFastqWriter() throws Exception {
-        return FastqStringFileStreamWriter.create(WRITER_TEST_FILE);
+        return FastqFileStreamWriter.create(WRITER_TEST_FILE);
     }
 
     /**
@@ -79,7 +79,7 @@ public class FastqStringFileStreamWriterTest {
      */
     @Test
     public void testCreate() throws Exception {
-        FastqStringFileStreamWriter.create(WRITER_TEST_FILE);
+        FastqFileStreamWriter.create(WRITER_TEST_FILE);
     }
 
     /**
@@ -88,7 +88,7 @@ public class FastqStringFileStreamWriterTest {
      */
     @Test(expected=IOException.class)
     public void testCreate_notFound() throws Exception {
-        FastqStringFileStreamWriter.create("Z:/bobtheexamplefileisnothere.Fastq");
+        FastqFileStreamWriter.create("Z:/bobtheexamplefileisnothere.Fastq");
     }
 
     /**

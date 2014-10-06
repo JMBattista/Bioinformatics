@@ -173,6 +173,7 @@ public final class FastqStringFileStreamReader implements StringStreamReader
                 readingQuaility = false;
         } while (readingQuaility);
 
+        assert(sequenceLength == sb.length());
         return  sb.toString();
     }
 

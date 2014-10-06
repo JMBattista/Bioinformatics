@@ -1,9 +1,8 @@
-package com.vitreoussoftware.bioinformatics.sequence.io.writer.fasta;
+package com.vitreoussoftware.bioinformatics.sequence.io.writer.fastq;
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.io.writer.SequenceStreamWriter;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -12,32 +11,21 @@ import java.io.IOException;
  * @author John
  *
  */
-public final class FastaStringFileStreamWriter implements SequenceStreamWriter
+public final class FastqFileStreamWriter implements SequenceStreamWriter
 {
 
     /**
-	 * The FASTA file
-	 */
-	private FileWriter file;
-
-	/**
-	 * Create a FASTA File Stream Reader for the given file
-	 * @param file the file to run on
-	 */
-	private FastaStringFileStreamWriter(FileWriter file)
-	{
-		this.file = file;
-	}
+     * The FASTA file
+     */
+    private FileWriter file;
 
     /**
-     * Create an input stream for FASTA file format
-     * @param file the FASTA file
-     * @return the input stream
-     * @throws java.io.FileNotFoundException the specified file was not found
+     * Create a FASTA File Stream Reader for the given file
+     * @param file the file to run on
      */
-    public static SequenceStreamWriter create(File file) throws IOException
+    private FastqFileStreamWriter(FileWriter file)
     {
-        return new FastaStringFileStreamWriter(new FileWriter(file));
+        this.file = file;
     }
 
     /**
@@ -48,7 +36,8 @@ public final class FastaStringFileStreamWriter implements SequenceStreamWriter
      */
     public static SequenceStreamWriter create(String fileName) throws IOException
     {
-        return create (new File(fileName));
+        FileWriter file = new FileWriter(fileName);
+        return new FastqFileStreamWriter(file);
     }
 
 
@@ -57,12 +46,14 @@ public final class FastaStringFileStreamWriter implements SequenceStreamWriter
         int charactersWritten = 0;
         charactersWritten += writeMetadata(sequence.getMetadata());
         charactersWritten += writeSequenceData(sequence.toString());
+        charactersWritten += writeComments(sequence.getMetadata());
+        charactersWritten += writeQuality(sequence.toString());
 
         return charactersWritten;
     }
 
     private int writeMetadata(String metadata) throws IOException {
-        file.write(">");
+        file.write("@");
         file.write(metadata);
         file.write("\n");
 
@@ -86,8 +77,42 @@ public final class FastaStringFileStreamWriter implements SequenceStreamWriter
         return charactersWritten;
     }
 
+    private int writeComments(String metadata) throws IOException {
+        file.write("+");
+        file.write(metadata);
+        file.write("\n");
 
-    @Override
+        return metadata.length() + 2;
+    }
+
+    private int writeQuality(String sequenceData) throws IOException {
+        int charactersWritten = 0;
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 80; i++)
+            sb.append("I");
+        String quality = sb.toString();
+
+        for (int start =  0; start < sequenceData.length(); start += 80) {
+            if (start + 80 > sequenceData.length()) {
+                int dist = sequenceData.length() - start;
+                file.write(quality.substring(0, dist));
+                charactersWritten += dist;
+            }
+            else
+            {
+                file.write(quality);
+                charactersWritten += 80;
+            }
+
+            file.write("\n");
+            charactersWritten ++;
+        }
+
+        return charactersWritten;
+    }
+
+	@Override
 	protected void finalize() throws Throwable {
 		this.file.close();
 		super.finalize();
@@ -97,6 +122,4 @@ public final class FastaStringFileStreamWriter implements SequenceStreamWriter
 	public void close() throws IOException {
 		this.file.close();
 	}
-
-
 }
