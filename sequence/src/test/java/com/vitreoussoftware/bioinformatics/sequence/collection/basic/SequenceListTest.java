@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionTest;
+import com.vitreoussoftware.bioinformatics.sequence.io.FastaData;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaStringFileStreamReaderTest;
 import org.junit.Test;
 
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
@@ -12,7 +14,6 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaStringFileStreamReaderTest;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.SequenceFromFastaStringStreamReader;
 
 /**
@@ -88,8 +89,8 @@ public class SequenceListTest extends SequenceCollectionTest {
 		
 		assertNotNull(sc);
 		assertEquals(1,  sc.size());
-		assertEquals(sequenceFactory.fromString(FastaStringFileStreamReaderTest.recordSimple).get(), sc.iterator().next());
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.recordSimple).get()));
+		assertEquals(sequenceFactory.fromString(FastaData.recordSimple).get(), sc.iterator().next());
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.recordSimple).get()));
 	}
 	
 	/**
@@ -104,8 +105,8 @@ public class SequenceListTest extends SequenceCollectionTest {
 
 		assertNotNull(sc);
 		assertEquals(3,  sc.size());
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.record1).get()));
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.record2).get()));
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaStringFileStreamReaderTest.record3).get()));
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.record1).get()));
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.record2).get()));
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.record3).get()));
 	}
 }

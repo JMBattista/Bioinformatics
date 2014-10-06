@@ -13,7 +13,7 @@ import java.util.Optional;
  * @author John
  *
  */
-public class SequenceFromFastaStringStreamReader implements SequenceStreamReader {
+public class FastaSequenceStreamReader implements SequenceStreamReader {
 	private final StringStreamReader reader;
 	private FastaSequenceFactory factory;
 	
@@ -21,7 +21,7 @@ public class SequenceFromFastaStringStreamReader implements SequenceStreamReader
 	 * Process Sequence Strings into encoded sequences
 	 * @param reader The StringStreamReader to process sequence strings from
 	 */
-	public SequenceFromFastaStringStreamReader(StringStreamReader reader)
+	public FastaSequenceStreamReader(StringStreamReader reader)
 	{
 		this.reader = reader;
 		this.factory = new FastaSequenceFactory();

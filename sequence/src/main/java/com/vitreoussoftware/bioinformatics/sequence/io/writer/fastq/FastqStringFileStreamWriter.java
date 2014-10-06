@@ -1,10 +1,13 @@
 package com.vitreoussoftware.bioinformatics.sequence.io.writer.fastq;
 
+import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.writer.SequenceStreamWriter;
 import org.javatuples.Pair;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.function.Predicate;
 
@@ -13,202 +16,111 @@ import java.util.function.Predicate;
  * @author John
  *
  */
-public final class FastqStringFileStreamWriter implements StringStreamReader
+public final class FastqStringFileStreamWriter implements SequenceStreamWriter
 {
-	private static final int DEFAULT_BUFFER_SIZE = 64 * 1024; // 64 KB read size
-	
-	/**
-	 * The FASTA file
-	 */
-	private FileReader file;
-	private char[] buffer;
-	private int length;
-	private int index;
-
-	/**
-	 * Create a FASTA File Stream Reader for the given file
-	 * @param file the file to run on
-	 */
-	private FastqStringFileStreamWriter(FileReader file, int pagingSize)
-	{
-		this.file = file;
-
-		buffer = new char[pagingSize];
-		length = 0;  // we don't have anything in the buffer
-		index = 0;   // index starts at 0
-	}
 
     /**
-     * Create an input stream for FASTA file format
-     * @param fileName the FASTA file
-     * @return the input stream
-     * @throws java.io.FileNotFoundException the specified file was not found
+     * The FASTA file
      */
-    public static StringStreamReader create(String fileName) throws FileNotFoundException
+    private FileWriter file;
+
+    /**
+     * Create a FASTA File Stream Reader for the given file
+     * @param file the file to run on
+     */
+    private FastqStringFileStreamWriter(FileWriter file)
     {
-        return create(fileName, DEFAULT_BUFFER_SIZE);
+        this.file = file;
     }
 
     /**
      * Create an input stream for FASTA file format
      * @param fileName the FASTA file
-     * @param pagingSize the size of the buffer for paging data from disk
      * @return the input stream
      * @throws java.io.FileNotFoundException the specified file was not found
      */
-    public static StringStreamReader create(String fileName, int pagingSize) throws FileNotFoundException {
-        FileReader file = new FileReader(fileName);
-        return new FastqStringFileStreamWriter(file, pagingSize);
+    public static SequenceStreamWriter create(String fileName) throws IOException
+    {
+        FileWriter file = new FileWriter(fileName);
+        return new FastqStringFileStreamWriter(file);
     }
 
-	/**
-     * Reads a record from the file
-	 * @return the record
-	 */
-	@Override
-	public Pair<String,String> next() {
-        String metadata = readMetadata();
-        String data = readSequenceData();
-        String comments = readComments();
-        String quality = readQuality(data.length());
 
-        return Pair.with(metadata, data);
+    @Override
+    public int write(Sequence sequence) throws IOException {
+        int charactersWritten = 0;
+        charactersWritten += writeMetadata(sequence.getMetadata());
+        charactersWritten += writeSequenceData(sequence.toString());
+        charactersWritten += writeComments(sequence.getMetadata());
+        charactersWritten += writeQuality(sequence.toString());
+
+        return charactersWritten;
     }
 
-    private void dropUntil(Predicate<Character> pred) {
-        boolean found = false;
-        while (!found) {
-            if (index >= length)
-                bufferData();
-            if (length == -1 || pred.test(buffer[index]))
-                return;
-            else
-                index++;
+    private int writeMetadata(String metadata) throws IOException {
+        file.write("@");
+        file.write(metadata);
+        file.write("\n");
 
-        }
+        return metadata.length() + 2;
     }
 
-    private void drop(int i) {
-        index += i;
-    }   
+    private int writeSequenceData(String sequenceData) throws IOException {
+        int charactersWritten = 0;
 
-    private String takeUntil(Predicate<Character> pred) {
-        StringBuilder sb = new StringBuilder();
+        for (int start =  0; start < sequenceData.length(); start += 80) {
+            int dist = 80;
+            if (start + 80 > sequenceData.length())
+                dist = sequenceData.length() - start;
 
-        boolean found = false;
-        while (!found) {
-            if (index >= length)
-                bufferData();
-            if (length == -1 || pred.test(buffer[index]))
-                found = true;
-            else
-                sb.append(buffer[index]);
-            index++;
+            String row = sequenceData.substring(start, start + dist);
+            file.write(row);
+            file.write("\n");
+            charactersWritten += dist + 1;
         }
 
-        return sb.toString().trim();
+        return charactersWritten;
     }
 
-    private String readMetadata() {
-        StringBuilder sb = new StringBuilder();
+    private int writeComments(String metadata) throws IOException {
+        file.write("+");
+        file.write(metadata);
+        file.write("\n");
 
-        // Find the Start symbol
-        dropUntil(x -> x == '@');
-
-        // move past the start symbol
-        drop(1);
-
-        return takeUntil(x -> x == '\n');
+        return metadata.length() + 2;
     }
 
-    private String readSequenceData() {
+    private int writeQuality(String sequenceData) throws IOException {
+        int charactersWritten = 0;
+
         StringBuilder sb = new StringBuilder();
-        boolean readingSequence = true;
+        for (int i = 0; i < 80; i++)
+            sb.append("I");
+        String quality = sb.toString();
 
-        do {
-            // read elements from the buffer takeUntil we find the start of the next sequence, terminator for current sequence
-            // or white space
-            sb.append(takeUntil(c -> Character.isWhitespace(c)));
-
-            // Drop white space characters
-            dropUntil(c -> !Character.isWhitespace(c));
-
-            if (length == -1)
-                throw new RuntimeException("Invalid file format, FASTQ requires quality data to accompany sequence data");
-
-            if (index < length && buffer[index] == '+') {
-                readingSequence = false;
+        for (int start =  0; start < sequenceData.length(); start += 80) {
+            if (start + 80 > sequenceData.length()) {
+                int dist = sequenceData.length() - start;
+                file.write(quality.substring(0, dist));
+                charactersWritten += dist;
             }
-        } while (readingSequence);
-
-        return  sb.toString();
-    }
-
-    private String readComments() {
-        dropUntil(c -> c == '+');
-        // move past index
-        drop(1);
-
-        return takeUntil(c -> c == '\n');
-    }
-
-    private String readQuality(int sequenceLength) {
-        StringBuilder sb = new StringBuilder();
-        boolean readingQuaility = true;
-
-        do {
-            if (length == -1)
-                throw new RuntimeException("Invalid file format, FASTQ requires quality data to accompany sequence data");
-            // read elements from the buffer takeUntil we find the start of the next sequence, terminator for current sequence
-            // or white space
-            sb.append(takeUntil(c -> Character.isWhitespace(c)));
-
-            // Drop white space characters
-            dropUntil(c -> !Character.isWhitespace(c));
-
-            if (index < length && buffer[index] == '@') {
-                readingQuaility = false;
+            else
+            {
+                file.write(quality);
+                charactersWritten += 80;
             }
-            if (sb.length() == sequenceLength)
-                readingQuaility = false;
-        } while (readingQuaility);
 
-        return  sb.toString();
+            file.write("\n");
+            charactersWritten ++;
+        }
+
+        return charactersWritten;
     }
-
-    private int bufferData() {
-        try {
-            index = 0;
-            length = file.read(buffer);
-		    return length;
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Unable to read from file");
-        }
-	}
 
 	@Override
 	protected void finalize() throws Throwable {
 		this.file.close();
 		super.finalize();
-	}
-
-	/**
-     * Does the stream reader still have a record?
-	 * @return boolean indicator
-	 * @throws java.io.IOException If the file cannot be accessed it may fail
-	 */
-	@Override
-	public boolean hasNext() {
-		// if we know we have data remaining say so
-		if (length > 0 && index < length)
-			return true;
-		// if we don't know find out
-
-		bufferData();
-		
-		return length > 0 && index < length;
 	}
 
 	@Override

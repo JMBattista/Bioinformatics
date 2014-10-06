@@ -11,6 +11,8 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectio
 import org.scalatest.{Inside, Matchers}
 import com.vitreoussoftware.bioinformatics.sequence.{BasePair, Sequence}
 import org.scalacheck.{Gen, Arbitrary}
+import com.vitreoussoftware.bioinformatics.sequence.io.FastaData.{record3, record2, record1, recordSimple}
+import com.vitreoussoftware.bioinformatics.sequence.io.FastaData
 
 trait AlignerTestData {
   val bases = List("A", "U", "C", "G")
@@ -158,7 +160,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
   it should "should allow adding a sequence" in {
     withAligner {
       (aligner) => {
-        aligner.addText(BasicSequence.create(FastaStringFileStreamReaderTest.recordSimple, AcceptUnknownDnaEncodingScheme.instance).get())
+        aligner.addText(BasicSequence.create(FastaData.recordSimple, AcceptUnknownDnaEncodingScheme.instance).get())
       }
     }
   }
