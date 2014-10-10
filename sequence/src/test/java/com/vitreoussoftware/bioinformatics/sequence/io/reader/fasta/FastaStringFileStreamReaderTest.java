@@ -193,7 +193,7 @@ public class FastaStringFileStreamReaderTest {
 	public void testReadRecord_simple() throws IOException {
 		StringStreamReader reader = getSimpleFastaReader();
 		
-		assertEquals(FastaData.recordSimple, reader.next().getValue1());
+		assertEquals(FastaData.getRecordSimple(), reader.next().getValue1());
 	}
 	
 	/**
@@ -204,7 +204,7 @@ public class FastaStringFileStreamReaderTest {
 	public void testReadRecord_example1() throws IOException {
 		StringStreamReader reader = getExampleFastaReader();
 		
-		assertEquals(FastaData.record1, reader.next().getValue1());
+		assertEquals(FastaData.getRecord1(), reader.next().getValue1());
 	}
 	
 	/**
@@ -215,8 +215,8 @@ public class FastaStringFileStreamReaderTest {
 	public void testReadRecord_example2() throws IOException {
 		StringStreamReader reader = getExampleFastaReader();
 		
-		assertEquals(FastaData.record1, reader.next().getValue1());
-		assertEquals(FastaData.record2, reader.next().getValue1());
+		assertEquals(FastaData.getRecord1(), reader.next().getValue1());
+		assertEquals(FastaData.getRecord2(), reader.next().getValue1());
 	}
 	
 	/**
@@ -227,9 +227,9 @@ public class FastaStringFileStreamReaderTest {
 	public void testReadRecord_example3() throws IOException {
 		StringStreamReader reader = getExampleFastaReader();
 		
-		assertEquals(FastaData.record1, reader.next().getValue1());
-		assertEquals(FastaData.record2, reader.next().getValue1());
-		assertEquals(FastaData.record3, reader.next().getValue1());
+		assertEquals(FastaData.getRecord1(), reader.next().getValue1());
+		assertEquals(FastaData.getRecord2(), reader.next().getValue1());
+		assertEquals(FastaData.getRecord3(), reader.next().getValue1());
 	}
 
     /**
@@ -240,9 +240,9 @@ public class FastaStringFileStreamReaderTest {
     public void testReadRecord_alternate() throws IOException {
         StringStreamReader reader = getAlternateFastaReader();
 
-        assertEquals(FastaData.alternate1, reader.next().getValue1());
-        assertEquals(FastaData.alternate2, reader.next().getValue1());
-        assertEquals(FastaData.alternate3, reader.next().getValue1());
+        assertEquals(FastaData.getAlternate1(), reader.next().getValue1());
+        assertEquals(FastaData.getAlternate2(), reader.next().getValue1());
+        assertEquals(FastaData.getAlternate3(), reader.next().getValue1());
     }
 	
 	/**
@@ -253,9 +253,9 @@ public class FastaStringFileStreamReaderTest {
 	public void testReadRecord_autoCloseable() throws Exception {
 		try (StringStreamReader reader	= getExampleFastaReader())
 		{
-			assertEquals(FastaData.record1, reader.next().getValue1());
-			assertEquals(FastaData.record2, reader.next().getValue1());
-			assertEquals(FastaData.record3, reader.next().getValue1());
+			assertEquals(FastaData.getRecord1(), reader.next().getValue1());
+			assertEquals(FastaData.getRecord2(), reader.next().getValue1());
+			assertEquals(FastaData.getRecord3(), reader.next().getValue1());
 		} catch (Exception e) {
 			fail("Should not have hit an exception from the three");
 		}
@@ -304,9 +304,9 @@ public class FastaStringFileStreamReaderTest {
         int index = 0;
 		while (reader.hasNext())
 		{	
-			assertEquals(index+0 + " failed to parse", FastaData.record1, reader.next().getValue1());
-            assertEquals(index+1 + " failed to parse", FastaData.record2, reader.next().getValue1());
-            assertEquals(index+2 + " failed to parse", FastaData.record3, reader.next().getValue1());
+			assertEquals(index+0 + " failed to parse", FastaData.getRecord1(), reader.next().getValue1());
+            assertEquals(index+1 + " failed to parse", FastaData.getRecord2(), reader.next().getValue1());
+            assertEquals(index+2 + " failed to parse", FastaData.getRecord3(), reader.next().getValue1());
             index += 3;
 		}
 
@@ -324,9 +324,9 @@ public class FastaStringFileStreamReaderTest {
         int index = 0;
         while (reader.hasNext())
         {
-            assertEquals(index+0 + " failed to parse", FastaData.record1, reader.next().getValue1());
-            assertEquals(index+1 + " failed to parse", FastaData.record2, reader.next().getValue1());
-            assertEquals(index+2 + " failed to parse", FastaData.record3, reader.next().getValue1());
+            assertEquals(index+0 + " failed to parse", FastaData.getRecord1(), reader.next().getValue1());
+            assertEquals(index+1 + " failed to parse", FastaData.getRecord2(), reader.next().getValue1());
+            assertEquals(index+2 + " failed to parse", FastaData.getRecord3(), reader.next().getValue1());
             index += 3;
         }
 
@@ -344,9 +344,9 @@ public class FastaStringFileStreamReaderTest {
         int index = 0;
         while (reader.hasNext())
         {
-            assertEquals(index+0 + " failed to parse", FastaData.record1, reader.next().getValue1());
-            assertEquals(index+1 + " failed to parse", FastaData.record2, reader.next().getValue1());
-            assertEquals(index+2 + " failed to parse", FastaData.record3, reader.next().getValue1());
+            assertEquals(index+0 + " failed to parse", FastaData.getRecord1(), reader.next().getValue1());
+            assertEquals(index+1 + " failed to parse", FastaData.getRecord2(), reader.next().getValue1());
+            assertEquals(index+2 + " failed to parse", FastaData.getRecord3(), reader.next().getValue1());
             index += 3;
         }
 
@@ -364,9 +364,9 @@ public class FastaStringFileStreamReaderTest {
         int index = 0;
         while (reader.hasNext())
         {
-            assertEquals(index+0 + " failed to parse", FastaData.record1, reader.next().getValue1());
-            assertEquals(index+1 + " failed to parse", FastaData.record2, reader.next().getValue1());
-            assertEquals(index+2 + " failed to parse", FastaData.record3, reader.next().getValue1());
+            assertEquals(index+0 + " failed to parse", FastaData.getRecord1(), reader.next().getValue1());
+            assertEquals(index+1 + " failed to parse", FastaData.getRecord2(), reader.next().getValue1());
+            assertEquals(index+2 + " failed to parse", FastaData.getRecord3(), reader.next().getValue1());
             index += 3;
         }
 
@@ -382,8 +382,8 @@ public class FastaStringFileStreamReaderTest {
         StringStreamReader reader = getComplexFastaReader();
 
         Pair<String, String> next = reader.next();
-        assertEquals(FastaData.fastaMultiLineDescriptionMetadata, next.getValue0());
-        assertEquals(FastaData.fastaMultiLineDescriptionSequence, next.getValue1());
+        assertEquals(FastaData.getFastaMultiLineDescriptionMetadata(), next.getValue0());
+        assertEquals(FastaData.getFastaMultiLineDescription(), next.getValue1());
     }
 
     /**
@@ -396,8 +396,8 @@ public class FastaStringFileStreamReaderTest {
 
         reader.next();
         Pair<String, String> next = reader.next();
-        assertEquals(FastaData.fastaTerminatedMetadata, next.getValue0());
-        assertEquals(FastaData.fastaTerminatedSequence, next.getValue1());
+        assertEquals(FastaData.getFastaTerminatedMetadata(), next.getValue0());
+        assertEquals(FastaData.getFastaTerminated(), next.getValue1());
     }
 
     /**
@@ -411,7 +411,7 @@ public class FastaStringFileStreamReaderTest {
         reader.next();
         reader.next();
         Pair<String, String> next = reader.next();
-        assertEquals(FastaData.fastaLargeHeaderMetadata, next.getValue0());
-        assertEquals(FastaData.fastaLargeHeaderSequence, next.getValue1());
+        assertEquals(FastaData.getFastaLargeHeaderMetadata(), next.getValue0());
+        assertEquals(FastaData.getFastaLargeHeader(), next.getValue1());
     }
 }

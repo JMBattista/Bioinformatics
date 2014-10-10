@@ -44,6 +44,19 @@ public class FastaData extends AlignerData {
         return record3;
     }
 
+    public static String getFastaMultiLineDescription() {
+        return fastaMultiLineDescriptionSequence;
+    }
+
+    public static String getFastaTerminated() {
+        return fastaTerminatedSequence;
+    }
+
+    public static String getFastaLargeHeader() {
+        return fastaLargeHeaderSequence;
+    }
+
+
     public static String getFastaMultiLineDescriptionMetadata() {
         return fastaMultiLineDescriptionMetadata;
     }

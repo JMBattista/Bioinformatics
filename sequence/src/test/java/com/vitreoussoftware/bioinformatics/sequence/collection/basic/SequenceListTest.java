@@ -89,8 +89,8 @@ public class SequenceListTest extends SequenceCollectionTest {
 		
 		assertNotNull(sc);
 		assertEquals(1,  sc.size());
-		assertEquals(sequenceFactory.fromString(FastaData.recordSimple).get(), sc.iterator().next());
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.recordSimple).get()));
+		assertEquals(sequenceFactory.fromString(FastaData.getRecordSimple()).get(), sc.iterator().next());
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.getRecordSimple()).get()));
 	}
 	
 	/**
@@ -105,8 +105,8 @@ public class SequenceListTest extends SequenceCollectionTest {
 
 		assertNotNull(sc);
 		assertEquals(3,  sc.size());
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.record1).get()));
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.record2).get()));
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.record3).get()));
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.getRecord1()).get()));
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.getRecord2()).get()));
+		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.getRecord3()).get()));
 	}
 }
