@@ -4,14 +4,10 @@ import com.vitreoussoftware.bioinformatics.alignment.Alignment;
 import com.vitreoussoftware.bioinformatics.alignment.PatternFirstAligner;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import javafx.scene.layout.Priority;
-import org.javatuples.Pair;
 import org.javatuples.Triplet;
-import scala.Predef;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by John on 8/27/14.
