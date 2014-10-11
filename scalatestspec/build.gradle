@@ -1,0 +1,14 @@
+description = 'Scala Test Spec'
+
+apply plugin: 'scala'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.scala-lang', name: 'scala-library',   version: '2.11.2'
+    compile group: 'org.scalatest',  name: 'scalatest_2.11',  version: '2.2.1'
+    compile group: 'org.scalacheck', name: 'scalacheck_2.11', version: '1.11.5'
+    runtime group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26'
+}

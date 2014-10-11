@@ -1,0 +1,22 @@
+
+description = 'Alignment framework'
+
+apply plugin: 'java'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+  compile project(':Sequence')
+  compile group: 'org.javatuples', name: 'javatuples', version:'1.2'
+  runtime group: 'ch.qos.logback', name: 'logback-classic', version:'0.9.26'
+
+  testCompile group: 'org.scala-lang', name: 'scala-library',   version: '2.11.2'
+  testCompile project(':Sequence')
+  testCompile project(':ScalaTestSpec')
+}
+
+task packageTests(type: Jar) {
+  from sourceSets.test.output
+  classifier = 'tests'
+}
+artifacts.archives packageTests

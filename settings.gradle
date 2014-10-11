@@ -1,0 +1,14 @@
+rootProject.name = 'bioinformatics'
+include ':ScalaTestSpec'
+include ':Sequence'
+//include ':Sequence.Collection.Mongodb'
+include ':Alignment'
+include ':Alignment.Suffixtree'
+include ':Alignment.StringBased'
+
+project(':ScalaTestSpec').projectDir = "$rootDir/scalatestspec" as File
+project(':Sequence').projectDir = "$rootDir/sequence" as File
+//project(':Sequence.Collection.Mongodb').projectDir = "$rootDir/sequence.collection.mongodb" as File
+project(':Alignment').projectDir = "$rootDir/alignment" as File
+project(':Alignment.Suffixtree').projectDir = "$rootDir/alignment.suffixtree" as File
+project(':Alignment.StringBased').projectDir = "$rootDir/alignment.stringbased" as File
