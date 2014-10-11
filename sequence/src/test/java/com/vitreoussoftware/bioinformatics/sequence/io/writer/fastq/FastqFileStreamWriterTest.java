@@ -9,6 +9,7 @@ import com.vitreoussoftware.bioinformatics.sequence.io.writer.SequenceStreamWrit
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ import static org.junit.Assert.*;
  */
 public class FastqFileStreamWriterTest {
 
-    private static final String WRITER_TEST_FILE = "target/Fastqtestwriter.Fastq";
+    private static final String WRITER_TEST_FILE = "build/Fastqtestwriter.Fastq";
 
     /**
      * Create a SequenceStreamWriter to write the test file to
@@ -39,6 +40,16 @@ public class FastqFileStreamWriterTest {
      */
     public static SequenceStreamReader getFastqReader() throws Exception {
         return new FastqSequenceStreamReader(FastqStringFileStreamReader.create(WRITER_TEST_FILE));
+    }
+
+    /**
+     * Create a SequenceStreamWriter to write the test file to
+     * @param file the file to use
+     * @return the SequenceStreamWriter
+     * @throws java.io.IOException the test file could not be found
+    */
+    public static SequenceStreamReader getFastqReader(File file) throws Exception {
+        return new FastqSequenceStreamReader(FastqStringFileStreamReader.create(new FileReader(file)));
     }
 
 
@@ -63,8 +74,7 @@ public class FastqFileStreamWriterTest {
      * @return the SequenceStreamReader
      */
     public static void writeAndCheckSequence(Sequence expected) throws Exception {
-        final File written = writeSequence(expected);
-        SequenceStreamReader reader = getFastqReader();
+        SequenceStreamReader reader = getFastqReader(writeSequence(expected));
 
         Optional<Sequence> result = reader.next();
         assertTrue("Failed to read the written result", result.isPresent());

@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
  */
 public class FastaFileStreamWriterTest {
 
-    private static final String WRITER_TEST_FILE = "target/fastatestwriter.fasta";
+    private static final String WRITER_TEST_FILE = "build/fastatestwriter.fasta";
 
     /**
      * Create a SequenceStreamWriter to write the test file to
@@ -63,7 +63,7 @@ public class FastaFileStreamWriterTest {
      * @return the SequenceStreamReader
      */
     public static void writeAndCheckSequence(Sequence expected) throws Exception {
-        final File written = writeSequence(expected);
+        writeSequence(expected);
         SequenceStreamReader reader = getFastaReader();
 
         Optional<Sequence> result = reader.next();

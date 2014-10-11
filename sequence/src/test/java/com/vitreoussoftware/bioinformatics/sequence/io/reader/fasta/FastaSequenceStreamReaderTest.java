@@ -67,6 +67,7 @@ public class FastaSequenceStreamReaderTest {
      */
     @Test
     public void testReadRecord_paged() throws IOException {
+
         SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderTest.getPagedFastaReader());
 
         while (reader.hasNext())

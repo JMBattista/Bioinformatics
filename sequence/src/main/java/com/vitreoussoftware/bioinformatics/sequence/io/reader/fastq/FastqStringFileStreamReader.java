@@ -3,6 +3,7 @@ package com.vitreoussoftware.bioinformatics.sequence.io.reader.fastq;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
 import org.javatuples.Pair;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -47,6 +48,27 @@ public final class FastqStringFileStreamReader implements StringStreamReader
     public static StringStreamReader create(String fileName) throws FileNotFoundException
     {
         return create(fileName, DEFAULT_BUFFER_SIZE);
+    }
+
+    /**
+     * Create an input stream for FASTA file format
+     * @param file the FASTA file
+     * @return the input stream
+     * @throws java.io.FileNotFoundException the specified file was not found
+     */
+    public static StringStreamReader create(FileReader file) throws FileNotFoundException {
+        return create(file, DEFAULT_BUFFER_SIZE);
+    }
+
+    /**
+     * Create an input stream for FASTA file format
+     * @param file the FASTA file
+     * @param pagingSize the size of the buffer for paging data from disk
+     * @return the input stream
+     * @throws java.io.FileNotFoundException the specified file was not found
+     */
+    public static StringStreamReader create(FileReader file, int pagingSize) throws FileNotFoundException {
+        return new FastqStringFileStreamReader(file, pagingSize);
     }
 
     /**
@@ -216,4 +238,6 @@ public final class FastqStringFileStreamReader implements StringStreamReader
 	public void close() throws IOException {
 		this.file.close();
 	}
+
+
 }

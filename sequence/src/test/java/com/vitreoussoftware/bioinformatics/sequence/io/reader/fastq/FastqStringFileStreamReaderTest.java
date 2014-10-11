@@ -19,7 +19,7 @@ public class FastqStringFileStreamReaderTest {
     /**
      * The path where the FASTA test files can be found.
      */
-    private static final String FASTA_PATH = "target/test/sequence/Fastq/";
+    private static final String FASTA_PATH = "build/resources/test/Fastq/";
 
     /**
      * FASTA file with enough data that pages must be performed

@@ -20,7 +20,7 @@ public class FastaStringFileStreamReaderTest {
     /**
      * The path where the FASTA test files can be found.
      */
-    private static final String FASTA_PATH = "target/test/sequence/Fasta/";
+    private static final String FASTA_PATH = "build/resources/test/Fasta/";
     /**
      * FASTA file with enough data that pages must be performed
      */
