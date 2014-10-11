@@ -1,0 +1,1 @@
+[ ![Codeship Status for JMBattista/Bioinformatics](https://codeship.io/projects/e2907780-3313-0132-a6d8-3a623e75de45/status)](https://codeship.io/projects/40553)
