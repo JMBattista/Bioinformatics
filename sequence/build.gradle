@@ -1,3 +1,13 @@
+/*
+ * NOTE: When importing this project into IntelliJ, several of the tests will fail because IntelliJ is unable to find certain test resources
+ *       The reason for this is that the resources are referenced by relative path and gradle runs the tests relative to the sequence
+ *       directory, but IntelliJ runs them relative to the root project.
+ *
+ *       In order to resolve this, open Project Settings -> Modules -> Sequence -> Paths and modify Test output path so that it looks like
+ *          C:\absolute\path\Bioinformatics\build\resources\test
+ *       Generally, this will simply require deleting 'sequence\' from the existing path
+ */
+
 description = 'Basic Sequence manipulation'
 
 dependencies {
