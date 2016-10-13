@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Created by John on 12/15/13.
  */
 
-public class FastaSequenceStreamReaderTest {
+public class FastaSequenceStreamReaderIntegrationTest {
 
     /**
      * Read a third record from the reader
@@ -19,7 +19,7 @@ public class FastaSequenceStreamReaderTest {
      */
     @Test
     public void testReadRecord_autoCloseable() throws Exception {
-        try (SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderTest.getExampleFastaReader()))
+        try (SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderIntegrationTest.getExampleFastaReader()))
         {
             assertTrue("First record could not be parsed", reader.next().isPresent());
             assertTrue("Second record could not be parsed", reader.next().isPresent());
@@ -35,7 +35,7 @@ public class FastaSequenceStreamReaderTest {
      */
     @Test
     public void testReadRecords_gapped() throws Exception {
-        try (SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderTest.getGappedFastaReader()))
+        try (SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderIntegrationTest.getGappedFastaReader()))
         {
             assertTrue("First record could not be parsed", reader.next().isPresent());
             assertTrue("Second record could not be parsed", reader.next().isPresent());
@@ -51,7 +51,7 @@ public class FastaSequenceStreamReaderTest {
      */
     @Test
     public void testReadRecords_noSpace() throws Exception {
-        try (SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderTest.getNoSpaceFastaReader()))
+        try (SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderIntegrationTest.getNoSpaceFastaReader()))
         {
             assertTrue("First record could not be parsed", reader.next().isPresent());
             assertTrue("Second record could not be parsed", reader.next().isPresent());
@@ -68,7 +68,7 @@ public class FastaSequenceStreamReaderTest {
     @Test
     public void testReadRecord_paged() throws IOException {
 
-        SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderTest.getPagedFastaReader());
+        SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderIntegrationTest.getPagedFastaReader());
 
         while (reader.hasNext())
         {
@@ -84,7 +84,7 @@ public class FastaSequenceStreamReaderTest {
      */
     @Test
     public void testReadRecord_big() throws IOException {
-        SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderTest.getBigFastaReader());
+        SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderIntegrationTest.getBigFastaReader());
 
         int index = 0;
         while (reader.hasNext())

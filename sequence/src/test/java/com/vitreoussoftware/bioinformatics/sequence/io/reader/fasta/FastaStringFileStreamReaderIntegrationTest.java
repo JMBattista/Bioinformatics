@@ -16,7 +16,7 @@ import org.junit.Test;
  * @author John
  *
  */
-public class FastaStringFileStreamReaderTest {
+public class FastaStringFileStreamReaderIntegrationTest {
     /**
      * The path where the FASTA test files can be found.
      */

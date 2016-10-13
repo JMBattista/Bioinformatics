@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  * @author John
  *
  */
-public class FastqStringFileStreamReaderTest {
+public class FastqStringFileStreamReaderIntegrationTest {
     /**
      * The path where the FASTA test files can be found.
      */
@@ -63,7 +63,7 @@ public class FastqStringFileStreamReaderTest {
      */
     public static StringStreamReader getSimpleFastqReader()
             throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_SIMPLE_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderIntegrationTest.FASTA_PATH + FastqStringFileStreamReaderIntegrationTest.SSU_PARC_SIMPLE_FASTA);
     }
 
     /**
@@ -73,7 +73,7 @@ public class FastqStringFileStreamReaderTest {
      */
     public static StringStreamReader getAlternateFastqReader()
             throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.ALTERNATE_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderIntegrationTest.FASTA_PATH + FastqStringFileStreamReaderIntegrationTest.ALTERNATE_FASTA);
     }
     /**
      * Create a StringStreamReader for the Example FASTA test file
@@ -82,7 +82,7 @@ public class FastqStringFileStreamReaderTest {
      */
     public static StringStreamReader getExampleFastqReader()
             throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_EXAMPLE_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderIntegrationTest.FASTA_PATH + FastqStringFileStreamReaderIntegrationTest.SSU_PARC_EXAMPLE_FASTA);
     }
 
     /**
@@ -92,7 +92,7 @@ public class FastqStringFileStreamReaderTest {
      */
     public static StringStreamReader getComplexFastqReader()
             throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.COMPLEX_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderIntegrationTest.FASTA_PATH + FastqStringFileStreamReaderIntegrationTest.COMPLEX_FASTA);
     }
 
     /**
@@ -102,7 +102,7 @@ public class FastqStringFileStreamReaderTest {
      */
     public static StringStreamReader getPagedFastqReader()
             throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_PAGED_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderIntegrationTest.FASTA_PATH + FastqStringFileStreamReaderIntegrationTest.SSU_PARC_PAGED_FASTA);
     }
 
     /**
@@ -112,7 +112,7 @@ public class FastqStringFileStreamReaderTest {
      */
     public static StringStreamReader getPagedFastqReader(int pagingSize)
             throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_PAGED_FASTA, pagingSize);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderIntegrationTest.FASTA_PATH + FastqStringFileStreamReaderIntegrationTest.SSU_PARC_PAGED_FASTA, pagingSize);
     }
 
     /**
@@ -122,7 +122,7 @@ public class FastqStringFileStreamReaderTest {
      */
     public static StringStreamReader getGappedFastqReader()
             throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_GAPPED_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderIntegrationTest.FASTA_PATH + FastqStringFileStreamReaderIntegrationTest.SSU_PARC_GAPPED_FASTA);
     }
 
     /**
@@ -132,7 +132,7 @@ public class FastqStringFileStreamReaderTest {
      */
     public static StringStreamReader getNoSpaceFastqReader()
             throws FileNotFoundException {
-        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderTest.FASTA_PATH + FastqStringFileStreamReaderTest.SSU_PARC_NOSPACE_FASTA);
+        return FastqStringFileStreamReader.create(FastqStringFileStreamReaderIntegrationTest.FASTA_PATH + FastqStringFileStreamReaderIntegrationTest.SSU_PARC_NOSPACE_FASTA);
     }
 
 

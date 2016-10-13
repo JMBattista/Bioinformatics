@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Created by John on 12/15/13.
  */
 
-public class FastqSequenceStreamReaderTest {
+public class FastqSequenceStreamReaderIntegrationTest {
 
     /**
      * Read a third record from the reader
@@ -19,7 +19,7 @@ public class FastqSequenceStreamReaderTest {
      */
     @Test
     public void testReadRecord_autoCloseable() throws Exception {
-        try (SequenceStreamReader reader= new FastqSequenceStreamReader(FastqStringFileStreamReaderTest.getExampleFastqReader()))
+        try (SequenceStreamReader reader= new FastqSequenceStreamReader(FastqStringFileStreamReaderIntegrationTest.getExampleFastqReader()))
         {
             assertTrue("First record could not be parsed", reader.next().isPresent());
             assertTrue("Second record could not be parsed", reader.next().isPresent());
@@ -35,7 +35,7 @@ public class FastqSequenceStreamReaderTest {
      */
     @Test
     public void testReadRecords_gapped() throws Exception {
-        try (SequenceStreamReader reader= new FastqSequenceStreamReader(FastqStringFileStreamReaderTest.getGappedFastqReader()))
+        try (SequenceStreamReader reader= new FastqSequenceStreamReader(FastqStringFileStreamReaderIntegrationTest.getGappedFastqReader()))
         {
             assertTrue("First record could not be parsed", reader.next().isPresent());
             assertTrue("Second record could not be parsed", reader.next().isPresent());
@@ -51,7 +51,7 @@ public class FastqSequenceStreamReaderTest {
      */
     @Test
     public void testReadRecords_noSpace() throws Exception {
-        try (SequenceStreamReader reader= new FastqSequenceStreamReader(FastqStringFileStreamReaderTest.getNoSpaceFastqReader()))
+        try (SequenceStreamReader reader= new FastqSequenceStreamReader(FastqStringFileStreamReaderIntegrationTest.getNoSpaceFastqReader()))
         {
             assertTrue("First record could not be parsed", reader.next().isPresent());
             assertTrue("Second record could not be parsed", reader.next().isPresent());
@@ -67,7 +67,7 @@ public class FastqSequenceStreamReaderTest {
      */
     @Test
     public void testReadRecord_paged() throws IOException {
-        SequenceStreamReader reader= new FastqSequenceStreamReader(FastqStringFileStreamReaderTest.getPagedFastqReader());
+        SequenceStreamReader reader= new FastqSequenceStreamReader(FastqStringFileStreamReaderIntegrationTest.getPagedFastqReader());
 
         while (reader.hasNext())
         {

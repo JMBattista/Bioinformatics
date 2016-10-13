@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  * @author John
  *
  */
-public class FastqFileStreamWriterTest {
+public class FastqFileStreamWriterIntegrationTest {
 
     private static final String WRITER_TEST_FILE = "build/Fastqtestwriter.Fastq";
 

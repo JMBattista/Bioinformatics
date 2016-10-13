@@ -4,6 +4,7 @@
 
 .gradle
 gradle/
+gradlew
 
 #################
 ## SublimeText

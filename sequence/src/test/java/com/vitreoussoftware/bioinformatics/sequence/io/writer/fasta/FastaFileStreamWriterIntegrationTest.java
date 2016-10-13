@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
  * @author John
  *
  */
-public class FastaFileStreamWriterTest {
+public class FastaFileStreamWriterIntegrationTest {
 
     private static final String WRITER_TEST_FILE = "build/fastatestwriter.fasta";
 
