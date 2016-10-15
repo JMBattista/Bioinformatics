@@ -4,6 +4,8 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
+import com.vitreoussoftware.bioinformatics.sequence.io.FastaData;
+import com.vitreoussoftware.bioinformatics.sequence.io.TestData;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,13 +25,15 @@ import static org.junit.Assert.*;
  *
  */
 public abstract class SequenceCollectionTest {
-
+	protected FastaData testData;
 	protected SequenceFactory sequenceFactory;
 
     @Before
 	public void setUp() throws Exception {
 		this.sequenceFactory = new FastaSequenceFactory();
+		this.testData = new FastaData();
 	}
+
 
     abstract protected SequenceCollectionFactory getFactory();
 

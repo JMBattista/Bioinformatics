@@ -45,8 +45,7 @@ public final class FastqStringFileStreamReader implements StringStreamReader
      * @return the input stream
      * @throws java.io.FileNotFoundException the specified file was not found
      */
-    public static StringStreamReader create(String fileName) throws FileNotFoundException
-    {
+    public static StringStreamReader create(String fileName) throws FileNotFoundException {
         return create(fileName, DEFAULT_BUFFER_SIZE);
     }
 

@@ -1,57 +1,40 @@
 package com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta;
 
+import com.vitreoussoftware.bioinformatics.sequence.io.FastaData;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReaderIntegrationTestBase;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
 import org.junit.Test;
-
-import java.io.IOException;
 
 import static org.junit.Assert.*;
 
 /**
+ * Test the {@link FastaSequenceStreamReader}
  * Created by John on 12/15/13.
  */
+public class FastaSequenceStreamReaderIntegrationTest extends SequenceStreamReaderIntegrationTestBase<FastaData> {
+    @Override
+    protected FastaData getTestData() {
+        return new FastaData();
+    }
 
-public class FastaSequenceStreamReaderIntegrationTest {
+    public SequenceStreamReader getReader(StringStreamReader reader) {
+        return new FastaSequenceStreamReader(reader);
+    }
 
-    /**
-     * Read a third record from the reader
-     * @throws Exception
-     */
-    @Test
-    public void testReadRecord_autoCloseable() throws Exception {
-        try (SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderIntegrationTest.getExampleFastaReader()))
-        {
-            assertTrue("First record could not be parsed", reader.next().isPresent());
-            assertTrue("Second record could not be parsed", reader.next().isPresent());
-            assertTrue("Third record could not be parsed", reader.next().isPresent());
-        } catch (Exception e) {
-            fail("Should not have hit an exception from the three");
-        }
+    @Override
+    protected int getBigFileRecordCount() {
+        return 79002;
     }
 
     /**
-     * Read a third record from the reader
-     * @throws Exception
-     */
-    @Test
-    public void testReadRecords_gapped() throws Exception {
-        try (SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderIntegrationTest.getGappedFastaReader()))
-        {
-            assertTrue("First record could not be parsed", reader.next().isPresent());
-            assertTrue("Second record could not be parsed", reader.next().isPresent());
-            assertTrue("Third record could not be parsed", reader.next().isPresent());
-        } catch (Exception e) {
-            fail("Should not have hit an exception from reading three records from gapped");
-        }
-    }
-
-    /**
-     * Read a third record from the reader
+     * Fasta files contain an optional space at the end of the sequence identifier line before the ';'
+     * Test parsing when the space is missing
      * @throws Exception
      */
     @Test
     public void testReadRecords_noSpace() throws Exception {
-        try (SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderIntegrationTest.getNoSpaceFastaReader()))
+        try (SequenceStreamReader reader = getReader(testData.getNoSpaceReader()))
         {
             assertTrue("First record could not be parsed", reader.next().isPresent());
             assertTrue("Second record could not be parsed", reader.next().isPresent());
@@ -59,40 +42,5 @@ public class FastaSequenceStreamReaderIntegrationTest {
         } catch (Exception e) {
             fail("Should not have hit an exception from reading three records from no space\n" + e.getMessage());
         }
-    }
-
-    /**
-     * Read a third record from the reader
-     * @throws java.io.IOException
-     */
-    @Test
-    public void testReadRecord_paged() throws IOException {
-
-        SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderIntegrationTest.getPagedFastaReader());
-
-        while (reader.hasNext())
-        {
-            assertTrue("First record could not be parsed", reader.next().isPresent());
-            assertTrue("Second record could not be parsed", reader.next().isPresent());
-            assertTrue("Third record could not be parsed", reader.next().isPresent());
-        }
-    }
-
-    /**
-     * Read a third record from the reader
-     * @throws java.io.IOException
-     */
-    @Test
-    public void testReadRecord_big() throws IOException {
-        SequenceStreamReader reader= new FastaSequenceStreamReader(FastaStringFileStreamReaderIntegrationTest.getBigFastaReader());
-
-        int index = 0;
-        while (reader.hasNext())
-        {
-            assertTrue(index +"th record could not be parsed", reader.next().isPresent());
-            index++;
-        }
-
-        assertEquals("There were not enough records", 79002, index);
     }
 }

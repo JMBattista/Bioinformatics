@@ -17,11 +17,12 @@ trait AlignerTestData {
   val baseSeqs = seqsFrom(bases)
   val offByNSeqs = seqsFrom(List("AAN", "ANA", "NAA"))
   val offByNSeqsLong = seqsFrom(List("AAAAAAAAAAN", "AAAAANAAAAA", "NAAAAAAAAAAA"))
+  val testData = new FastaData();
 
-  val seqSimple = FastaData.getSimpleSequence();
-  val seqRecord1 = FastaData.getRecord1Sequence();
-  val seqRecord2 = FastaData.getRecord2Sequence();
-  val seqRecord3 = FastaData.getRecord3Sequence();
+  val seqSimple = testData.getSimpleSequence();
+  val seqRecord1 = testData.getRecord1Sequence();
+  val seqRecord2 = testData.getRecord2Sequence();
+  val seqRecord3 = testData.getRecord3Sequence();
 
   val sourceSeqs = List(seqSimple, seqRecord1, seqRecord2, seqRecord3)
 
@@ -158,7 +159,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
   it should "should allow adding a sequence" in {
     withAligner {
       (aligner) => {
-        aligner.addText(FastaData.getSimpleSequence)
+        aligner.addText(testData.getSimpleSequence)
       }
     }
   }
