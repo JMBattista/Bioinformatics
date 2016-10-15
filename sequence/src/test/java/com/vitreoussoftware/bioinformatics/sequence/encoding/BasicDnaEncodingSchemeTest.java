@@ -1,15 +1,12 @@
 package com.vitreoussoftware.bioinformatics.sequence.encoding;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import org.junit.Test;
 
-import java.nio.channels.AcceptPendingException;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests the AcceptUnkownDnaEncodingScheme class
@@ -17,8 +14,8 @@ import java.nio.channels.AcceptPendingException;
  * @author John
  */
 @SuppressWarnings("AccessStaticViaInstance")
-public class AcceptUnknownDnaEncodingSchemeTest {
-    private AcceptUnknownDnaEncodingScheme scheme = new AcceptUnknownDnaEncodingScheme();
+public class BasicDnaEncodingSchemeTest {
+    private BasicDnaEncodingScheme scheme = new BasicDnaEncodingScheme();
 
     /**
      * Test Equality for AcceptUnkownDnaEncodingScheme default values against byte codes
@@ -30,7 +27,6 @@ public class AcceptUnknownDnaEncodingSchemeTest {
         assertThat(scheme.T, is(scheme.getValue('T')));
         assertThat(scheme.C, is(scheme.getValue('C')));
         assertThat(scheme.G, is(scheme.getValue('G')));
-        assertThat(scheme.U, is(scheme.getValue('U')));
     }
 
     /**
@@ -53,7 +49,6 @@ public class AcceptUnknownDnaEncodingSchemeTest {
         assertThat(scheme.T, is(scheme.create('T')));
         assertThat(scheme.C, is(scheme.create('C')));
         assertThat(scheme.G, is(scheme.create('G')));
-        assertThat(scheme.U, is(scheme.create('U')));
     }
 
     /**
@@ -87,18 +82,18 @@ public class AcceptUnknownDnaEncodingSchemeTest {
      * Test Equality for AcceptUnkownDnaEncodingScheme, against N
      *
           */
-    @Test
+    @Test(expected = InvalidDnaFormatException.class)
     public void testEquality_againstN() throws InvalidDnaFormatException {
-        assertFalse(scheme.create('A').equals(scheme.create('N')));
+        scheme.create('A').equals(scheme.create('N'));
     }
 
     /**
      * Test Equality for AcceptUnkownDnaEncodingScheme, against N
      *
           */
-    @Test
+    @Test(expected = InvalidDnaFormatException.class)
     public void testEquality_TU() throws InvalidDnaFormatException {
-        assertFalse(scheme.create('T').equals(scheme.create('U')));
+        scheme.create('T').equals(scheme.create('U'));
     }
 
     /**
@@ -158,31 +153,18 @@ public class AcceptUnknownDnaEncodingSchemeTest {
     }
 
     /**
-          */
-    @Test
+     * U is not supported in this encoding scheme, break
+     */
+    @Test(expected = InvalidDnaFormatException.class)
     public void testCreation_U() throws InvalidDnaFormatException {
-        assertThat("U", is(scheme.create('U').toString()));
+        scheme.create('U');
     }
 
     /**
-          */
-    @Test
+     * u is not supported in this encoding scheme, break
+      */
+    @Test(expected = InvalidDnaFormatException.class)
     public void testCreation_u() throws InvalidDnaFormatException {
-        assertThat("U", is(scheme.create('u').toString()));
-    }
-
-    @Test
-    public void testCreation_gap() throws InvalidDnaFormatException {
-        assertThat("-", is(scheme.create('-').toString()));
-    }
-
-    @Test
-    public void testCreation_masked_x() throws InvalidDnaFormatException {
-        assertThat("X", is(scheme.create('x').toString()));
-    }
-
-    @Test
-    public void testCreation_masked_X() throws InvalidDnaFormatException {
-        assertThat("X", is(scheme.create('X').toString()));
+        scheme.create('u');
     }
 }
