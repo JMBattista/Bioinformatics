@@ -26,8 +26,7 @@ public interface SequenceFactory {
      * @param metadata the string metadata
      * @param sequence the string sequence to process
      * @return the sequence object
-     * @throws InvalidDnaFormatException
-     */
+          */
     Optional<Sequence> fromString(String metadata, String sequence) throws InvalidDnaFormatException;
 
     /**
