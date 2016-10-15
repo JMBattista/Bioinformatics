@@ -3,7 +3,6 @@ package com.vitreoussoftware.bioinformatics.alignment
 import com.vitreoussoftware.test._
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence
 import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaStringFileStreamReaderTest
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import scala.collection.JavaConversions._

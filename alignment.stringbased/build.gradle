@@ -1,14 +1,16 @@
-
 description = 'String based alignment'
+
+apply plugin: 'scala'
+
 dependencies {
-  compile project(':Sequence')
-  compile project(':Alignment')
-  compile group: 'org.javatuples', name: 'javatuples', version:'1.2'
+    compile project(':Sequence')
+    compile project(':Alignment')
+    compile group: 'org.javatuples', name: 'javatuples', version: '1.2'
 
-  runtime group: 'ch.qos.logback', name: 'logback-classic', version:'0.9.26'
+    runtime group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26'
 
-  testCompile group: 'org.scala-lang', name: 'scala-library',   version: '2.11.2'
-  testCompile project(':Sequence')
-  testCompile project(':ScalaTestSpec')
-  testCompile project(':Alignment')
+    testCompile group: 'org.scala-lang', name: 'scala-library', version: '2.11.8'
+    testCompile project(path: ':Alignment', configuration: 'testArtifacts')
+    testCompile project(path: ':Sequence', configuration: 'testArtifacts')
+    testCompile project(':ScalaTestSpec')
 }

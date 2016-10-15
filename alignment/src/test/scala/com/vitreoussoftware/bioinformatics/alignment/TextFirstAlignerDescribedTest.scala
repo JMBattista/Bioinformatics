@@ -21,9 +21,7 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
   override def withFixture(test: OneArgTest) = {
     // create the fixture
     val aligner = getAligner()
-    val outcome: Outcome = try {
-      withFixture(test.toNoArgTest(aligner)) // "loan" the fixture to the test
-    }
+    val outcome: Outcome = withFixture(test.toNoArgTest(aligner)) // "loan" the fixture to the test
     destroyAligner(aligner)
     outcome
   }

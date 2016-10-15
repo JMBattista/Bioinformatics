@@ -6,8 +6,19 @@ repositories {
     mavenCentral()
 }
 
+/**
+ * https://discuss.gradle.org/t/idea-integration-with-scala-plugin-broken-since-gradle-3-0-no-such-property-daemonserver/19159/2
+ * Monkey patch for Gradle 3.1 compatability with IntelliJ. Needs to be located in any build.gradle file that
+ * uses the scala plugin
+ */
+ScalaCompileOptions.metaClass.daemonServer = true
+ScalaCompileOptions.metaClass.fork = true
+ScalaCompileOptions.metaClass.useAnt = false
+ScalaCompileOptions.metaClass.useCompileDaemon = false
+
 dependencies {
-    compile group: 'org.scala-lang', name: 'scala-library',   version: '2.11.2'
+    compile group: 'org.scala-lang', name: 'scala-reflect',   version: '2.11.8'
+    compile group: 'org.scala-lang', name: 'scala-library',   version: '2.11.8'
     compile group: 'org.scalatest',  name: 'scalatest_2.11',  version: '2.2.1'
     compile group: 'org.scalacheck', name: 'scalacheck_2.11', version: '1.11.5'
     runtime group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26'
