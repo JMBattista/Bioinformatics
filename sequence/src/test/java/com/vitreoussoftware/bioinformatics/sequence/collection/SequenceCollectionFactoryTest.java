@@ -1,16 +1,10 @@
 package com.vitreoussoftware.bioinformatics.sequence.collection;
 
-import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
-import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.net.UnknownHostException;
-
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 /**
  * Test the MongoDBSequenceCollection class
@@ -18,14 +12,6 @@ import static org.junit.Assert.fail;
  *
  */
 public abstract class SequenceCollectionFactoryTest {
-
-	private SequenceFactory sequenceFactory;
-
-	@Before
-	public void setUp() throws Exception {
-		this.sequenceFactory = new FastaSequenceFactory();
-	}
-
     /**
      * Create a working SequenceCollectionFactory for the tests to use
      * @return the SequenceCollectionFactory

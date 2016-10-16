@@ -104,7 +104,7 @@ public class BasicSuffixTree implements SuffixTree {
 			}
 		}
 
-        int shortestDistance = alignments.stream().min((a, b) -> a.getDistance() - b.getDistance()).map(a -> a.getDistance()).orElse(0);
+        int shortestDistance = alignments.stream().min((a, b) -> a.getDistance() - b.getDistance()).map(Alignment::getDistance).orElse(0);
 
         return alignments.stream().filter(alignment -> alignment.getDistance() == shortestDistance).collect(Collectors.toCollection(LinkedList::new));
 	}

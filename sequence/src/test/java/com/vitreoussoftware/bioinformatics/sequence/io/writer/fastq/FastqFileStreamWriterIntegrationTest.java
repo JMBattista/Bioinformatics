@@ -1,20 +1,12 @@
 package com.vitreoussoftware.bioinformatics.sequence.io.writer.fastq;
 
-import com.vitreoussoftware.bioinformatics.sequence.Sequence;
+import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.io.FastqData;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.fastq.FastqSequenceStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.fastq.FastqStringFileStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.writer.SequenceStreamWriter;
 import com.vitreoussoftware.bioinformatics.sequence.io.writer.SequenceStreamWriterIntegrationTestBase;
 import org.junit.Test;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Optional;
-
-import static org.junit.Assert.*;
 
 /**
  * Test the FastqFileStreamWriter class
@@ -36,7 +28,11 @@ public class FastqFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
 
     @Override
     protected SequenceStreamReader getReader(String path) throws Exception {
-        return new FastqSequenceStreamReader(FastqStringFileStreamReader.create(path));
+        final com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader reader = FastqStringFileStreamReader.create(path);
+        return SequenceStreamReader.builder()
+                .reader(reader)
+                .factory(new FastaSequenceFactory())
+                .build();
     }
 
     @Override

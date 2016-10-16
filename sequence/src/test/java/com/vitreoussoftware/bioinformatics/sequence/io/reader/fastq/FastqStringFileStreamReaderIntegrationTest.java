@@ -1,5 +1,7 @@
 package com.vitreoussoftware.bioinformatics.sequence.io.reader.fastq;
 
+import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
+import com.vitreoussoftware.bioinformatics.sequence.fastq.FastqSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.io.FastqData;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringFileStreamReaderIntegrationTestBase;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
@@ -24,6 +26,11 @@ public class FastqStringFileStreamReaderIntegrationTest extends StringFileStream
     @Override
     protected StringStreamReader getReader(String path) throws Exception {
         return FastqStringFileStreamReader.create(path);
+    }
+
+    @Override
+    protected SequenceFactory getFactory() throws Exception {
+        return new FastqSequenceFactory();
     }
 
     /**

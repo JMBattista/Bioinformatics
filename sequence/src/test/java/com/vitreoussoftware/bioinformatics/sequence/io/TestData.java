@@ -4,7 +4,6 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaStringFileStreamReader;
 
 import java.io.FileNotFoundException;
 
@@ -17,14 +16,26 @@ public abstract class TestData {
      *  file with three full records
      */
     private static final String COMPLEX = "ComplexExamples";
+
+    /**
+     *  file with three full records
+     */
+    private static final String EMPTY = "Empty";
+
+    /**
+     *  file with three full records
+     */
+    private static final String EMPTY_WHITESPACE = "EmptyWhitespace";
     /**
      *  file with three full records
      */
     public static final String REAL_EXAMPLES = "RealExamples";
+
     /**
      *  file with only a small amount of data
      */
     private static final String SIMPLE_EXAMPLE = "SimpleExample";
+
     /**
      *  file with enough data that pages must be performed
      */
@@ -36,19 +47,24 @@ public abstract class TestData {
     private static final String EXTRA_NEWLINE = "ExtraNewline";
 
     /**
-     * Shortened FASTA string for basic testing
-     */
-    private final String recordSimple = "CAGGCUUAACACAUGCAAGUCGAACGAAGUUAGGAAGCUUGCUUCUGAUACUUAGUGGCGGACGGGUGAGUAAUGCUUAGG";
-
-    /**
      *  Extremely large file for testing that all records can be loaded
      */
     private static final String BIG = "Big";
 
     /**
-     * First record in the example FASTA file
+     * Example metadata for use when testing reader/writer interation
      */
-    private final String record1 =
+    private final String METADATA = "AB000263 standard; RNA; PRI; 368 BP.";
+
+    /**
+     * Shortened sequence string for basic testing
+     */
+    private final String RECORD_SIMPLE = "CAGGCUUAACACAUGCAAGUCGAACGAAGUUAGGAAGCUUGCUUCUGAUACUUAGUGGCGGACGGGUGAGUAAUGCUUAGG";
+
+    /**
+     * First record in the real examples file
+     */
+    private final String REAL_EXAMPLE_1 =
             "AGGCUUAACACAUGCAAGUCGAACGAAGUUAGGAAGCUUGCUUCUGAUACUUAGUGGCGGACGGGUGAGUAAUGCUUAGG" +
                     "AAUCUGCCUAGUAGUGGGGGAUAACUUGGGGAAACCCAAGCUAAUACCGCAUACGACCUACGGGUGAAAGGGGGCUUUUA" +
                     "GCUCUCGCUAUUAGAUGAGCCUAAGUCGGAUUAGCUGGUUGGUGGGGUAAAGGCCUACCAAGGCGACGAUCUGUAGCUGG" +
@@ -69,9 +85,9 @@ public abstract class TestData {
                     "GGGAGUUGAUCUCACCAGAAGUGGUUAGCCUAACGCAAGAGGGCGAUCACCACGGUGGGGUCGAUGACUGGGGUGAAGUC" +
                     "GUAACAAGGUAGCCGUAGGGGAACUGCGGCUG";
     /**
-     * Second record in the example FASTA file
+     * Second record in the real example file
      */
-    private final String record2 =
+    private final String REAL_EXAMPLE_2 =
             "UUAAAAUGAGAGUUUGAUCCUGGCUCAGGACGAACGCUGGCGGCGUGCCUAAUACAUGCAAGUCGAACGAAACUUUCUUA" +
                     "CACCGAAUGCUUGCAUUCACUCGUAAGAAUGAGUGGCGUGGACGGGUGAGUAACACGUGGGUAACCUGCCUAAAAGAAGG" +
                     "GGAUAACACUUGGAAACAGGUGCUAAUACCGUAUAUCUCUAAGGAUCGCAUGAUCCUUAGAUGAAAGAUGGUUCUNGCUA" +
@@ -90,7 +106,7 @@ public abstract class TestData {
                     "GAAGGUGGGGACGACGUCAAGUCAUCAUGCCCCUUAUGACCUGGGCUACACACGUGCUACAAUGGACGGUACAACGAGUC" +
                     "GCGAGACCGCGAGGUUUAGCUAAUCUCUUAAAGCCGUUCUCAGUUCGGAUUGUAGGCUGCAACUCGCCUACAUGAAGUCG" +
                     "GAAUCGCUAGUAAUCGCGA";
-    private final String record3 =
+    private final String REAL_EXAMPLE_3 =
             "GAUGAACGCUAGCGGCGUGCCUUAUGCAUGCAAGUCGAACGGUCUUAAGCAAUUAAGAUAGUGGCGAACGGGUGAGUAAC" +
                     "GCGUAAGUAACCUACCUCUAAGUGGGGGAUAGCUUCGGGAAACUGAAGGUAAUACCGCAUGUGGUGGGCCGACAUAUGUU" +
                     "GGUUCACUAAAGCCGUAAGGCGCUUGGUGAGGGGCUUGCGUCCGAUUAGCUAGUUGGUGGGGUAAUGGCCUACCAAGGCU" +
@@ -171,6 +187,24 @@ public abstract class TestData {
     }
 
     /**
+     * Create a {@link StringStreamReader} for an empty test file
+     * @return the StringStreamReader
+     */
+    public StringStreamReader getEmptyReader()
+            throws FileNotFoundException {
+        return getReader(EMPTY);
+    }
+
+    /**
+     * Create a {@link StringStreamReader} for a test file containing only whitespace
+     * @return the StringStreamReader
+     */
+    public StringStreamReader getEmptyWhiteSpaceReader()
+            throws FileNotFoundException {
+        return getReader(EMPTY_WHITESPACE);
+    }
+
+    /**
      * Create a StringStreamReader for the Simple test file
      * @return the StringStreamReader
      * @throws FileNotFoundException the test file could not be found
@@ -243,63 +277,63 @@ public abstract class TestData {
      * Get the string expression matching the simple record in {@link AcceptUnknownDnaEncodingScheme} format
      * @return The simple record string
      */
-    public String getRecordSimple() {
-        return recordSimple;
+    public String getSimpleRecord() {
+        return RECORD_SIMPLE;
     }
 
     /**
      * Get the string expression matching Record1 in {@link AcceptUnknownDnaEncodingScheme} format
      * @return The Record1 string
      */
-    public String getRecord1() {
-        return record1;
+    public String getRealExample1() {
+        return REAL_EXAMPLE_1;
     }
 
     /**
      * Get the string expression matching Record2 in {@link AcceptUnknownDnaEncodingScheme} format
      * @return The Record2 string
      */
-    public String getRecord2() {
-        return record2;
+    public String getRealExample2() {
+        return REAL_EXAMPLE_2;
     }
 
     /**
      * Get the string expression matching Record2 in {@link AcceptUnknownDnaEncodingScheme} format
      * @return The Record2 string
      */
-    public String getRecord3() {
-        return record3;
+    public String getRealExample3() {
+        return REAL_EXAMPLE_3;
     }
 
     /**
-     * Get the {@link Sequence} that corresponds to {@see getRecordSimple}
+     * Get the {@link Sequence} that corresponds to {@see getSimpleRecord}
      * @return The sequence
      */
     public Sequence getSimpleSequence() {
-        return BasicSequence.create(recordSimple, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(METADATA, RECORD_SIMPLE, AcceptUnknownDnaEncodingScheme.instance).get();
     }
 
     /**
-     * Get the {@link Sequence} that corresponds to {@see getRecord1}
+     * Get the {@link Sequence} that corresponds to {@see getRealExample1}
      * @return The sequence
      */
-    public Sequence getRecord1Sequence() {
-        return BasicSequence.create(record1, AcceptUnknownDnaEncodingScheme.instance).get();
+    public Sequence getRealExample1Sequence() {
+        return BasicSequence.create(METADATA, REAL_EXAMPLE_1, AcceptUnknownDnaEncodingScheme.instance).get();
     }
 
     /**
-     * Get the {@link Sequence} that corresponds to {@see getRecord2}
+     * Get the {@link Sequence} that corresponds to {@see getRealExample2}
      * @return The sequence
      */
-    public Sequence getRecord2Sequence() {
-        return BasicSequence.create(record2, AcceptUnknownDnaEncodingScheme.instance).get();
+    public Sequence getRealExample2Sequence() {
+        return BasicSequence.create(METADATA, REAL_EXAMPLE_2, AcceptUnknownDnaEncodingScheme.instance).get();
     }
 
     /**
-     * Get the {@link Sequence} that corresponds to {@see getRecord3}
+     * Get the {@link Sequence} that corresponds to {@see getRealExample3}
      * @return The sequence
      */
-    public Sequence getRecord3Sequence() {
-        return BasicSequence.create(record3, AcceptUnknownDnaEncodingScheme.instance).get();
+    public Sequence getRealExample3Sequence() {
+        return BasicSequence.create(METADATA, REAL_EXAMPLE_3, AcceptUnknownDnaEncodingScheme.instance).get();
     }
 }

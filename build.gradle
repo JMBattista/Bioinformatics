@@ -30,7 +30,7 @@ subprojects {
 
 
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.11'
+        compile 'com.google.guava:guava:19.0'
 
         // Lombok dependencies, must be both compile and testcompile
         compileOnly "org.projectlombok:lombok:1.16.10"

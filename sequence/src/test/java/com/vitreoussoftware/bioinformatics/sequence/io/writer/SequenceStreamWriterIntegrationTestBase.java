@@ -3,15 +3,12 @@ package com.vitreoussoftware.bioinformatics.sequence.io.writer;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.io.TestData;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaSequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaStringFileStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.writer.fasta.FastaFileStreamWriter;
+import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -93,7 +90,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
      * @return the SequenceStreamReader
      */
     protected void writeAndCheckSequence(Sequence expected) throws Exception {
-        writeSequence(expected);
+        val file = writeSequence(expected);
         SequenceStreamReader reader = getReader();
 
         Optional<Sequence> result = reader.next();
@@ -132,7 +129,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
      */
     @Test
     public void testReadRecord_example1() throws Exception {
-        writeAndCheckSequence(testData.getRecord1Sequence());
+        writeAndCheckSequence(testData.getRealExample1Sequence());
     }
 
     /**
@@ -141,7 +138,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
      */
     @Test
     public void testReadRecord_example2() throws Exception {
-        writeAndCheckSequence(testData.getRecord2Sequence());
+        writeAndCheckSequence(testData.getRealExample2Sequence());
     }
 
     /**
@@ -150,7 +147,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
      */
     @Test
     public void testReadRecord_example3() throws Exception {
-        writeAndCheckSequence(testData.getRecord3Sequence());
+        writeAndCheckSequence(testData.getRealExample3Sequence());
     }
 
     /**
@@ -161,18 +158,18 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
     public void testReadRecord_autoCloseable() throws Exception {
         try (SequenceStreamWriter writer = getWriter())
         {
-            writer.write(testData.getRecord1Sequence());
-            writer.write(testData.getRecord2Sequence());
-            writer.write(testData.getRecord3Sequence());
+            writer.write(testData.getRealExample1Sequence());
+            writer.write(testData.getRealExample2Sequence());
+            writer.write(testData.getRealExample3Sequence());
 
         } catch (Exception e) {
             fail("Exception writing the files");
         }
 
         try (SequenceStreamReader reader = getReader()) {
-            assertEquals(testData.getRecord1Sequence(), reader.next().get());
-            assertEquals(testData.getRecord2Sequence(), reader.next().get());
-            assertEquals(testData.getRecord3Sequence(), reader.next().get());
+            assertEquals(testData.getRealExample1Sequence(), reader.next().get());
+            assertEquals(testData.getRealExample2Sequence(), reader.next().get());
+            assertEquals(testData.getRealExample3Sequence(), reader.next().get());
         }
     }
 }

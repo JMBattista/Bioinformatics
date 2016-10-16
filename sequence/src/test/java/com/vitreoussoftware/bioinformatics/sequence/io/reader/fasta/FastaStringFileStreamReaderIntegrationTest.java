@@ -6,6 +6,8 @@ import static org.junit.Assert.fail;
 
 import java.io.*;
 
+import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
+import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.io.FastaData;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringFileStreamReaderIntegrationTestBase;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
@@ -27,6 +29,11 @@ public class FastaStringFileStreamReaderIntegrationTest extends StringFileStream
     @Override
     protected StringStreamReader getReader(String path) throws Exception {
         return FastaStringFileStreamReader.create(path);
+    }
+
+    @Override
+    protected SequenceFactory getFactory() throws Exception {
+        return new FastaSequenceFactory();
     }
 
     /**

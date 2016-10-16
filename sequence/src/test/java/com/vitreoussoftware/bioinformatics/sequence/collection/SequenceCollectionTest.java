@@ -5,7 +5,6 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.io.FastaData;
-import com.vitreoussoftware.bioinformatics.sequence.io.TestData;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -100,7 +99,7 @@ public abstract class SequenceCollectionTest {
 
 		Sequence seq = this.sequenceFactory.fromString("ATCGN").get();
 
-		List<Sequence> list = new LinkedList<Sequence>();
+		List<Sequence> list = new LinkedList<>();
 		final int many = 99999;
 		for (int i = 0; i < many; i++) list.add(seq);
 		assertEquals("The list didn't have many elements", many, list.size());
@@ -189,7 +188,7 @@ public abstract class SequenceCollectionTest {
 
 		assertEquals("The collection did not have only one element in it", 1, collection.size());
 
-		List<Sequence> seqs = new LinkedList<Sequence>();
+		List<Sequence> seqs = new LinkedList<>();
 		seqs.add(seq);
 		assertTrue("The sequence was not found in the collection", collection.containsAll(seqs));
 	}
@@ -212,7 +211,7 @@ public abstract class SequenceCollectionTest {
 
 		assertEquals("The collection did not have only one element in it", 1, collection.size());
 
-		List<Sequence> seqs = new LinkedList<Sequence>();
+		List<Sequence> seqs = new LinkedList<>();
 		seqs.add(fail);
 		assertFalse("The sequence was found in the collection", collection.containsAll(seqs));
 	}
@@ -239,7 +238,7 @@ public abstract class SequenceCollectionTest {
 		assertTrue("The first sequence was not contained", collection.contains(seq1));
 		assertTrue("The second sequence was not contained", collection.contains(seq2));
 
-		List<Sequence> seqs = new LinkedList<Sequence>();
+		List<Sequence> seqs = new LinkedList<>();
 		seqs.add(seq1);
 		seqs.add(seq2);
 		assertTrue("The sequence was not found in the collection", collection.containsAll(seqs));
@@ -268,7 +267,7 @@ public abstract class SequenceCollectionTest {
 		assertTrue("The first sequence was not contained", collection.contains(seq1));
 		assertTrue("The second sequence was not contained", collection.contains(seq2));
 
-		List<Sequence> seqs = new LinkedList<Sequence>();
+		List<Sequence> seqs = new LinkedList<>();
 		seqs.add(seq1);
 		seqs.add(seq2);
 		seqs.add(fail);
@@ -474,7 +473,7 @@ public abstract class SequenceCollectionTest {
 		assertTrue("The second sequence was not contained", collection.contains(seq2));
 		assertTrue("The third sequence was not contained", collection.contains(seq3));
 
-		List<Sequence> seqs = new LinkedList<Sequence>();
+		List<Sequence> seqs = new LinkedList<>();
 		seqs.add(seq1);
 		seqs.add(seq3);
 
@@ -552,7 +551,7 @@ public abstract class SequenceCollectionTest {
 		assertTrue("The third sequence was not contained", collection.contains(seq3));
 
 
-		List<Sequence> list = new LinkedList<Sequence>();
+		List<Sequence> list = new LinkedList<>();
 		list.add(seq1);
 		collection.retainAll(list);
 

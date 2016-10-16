@@ -3,8 +3,6 @@ package com.vitreoussoftware.bioinformatics.sequence.io.writer;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Optional;
 
 /**
  * A stream reader for writing Sequence data to another location

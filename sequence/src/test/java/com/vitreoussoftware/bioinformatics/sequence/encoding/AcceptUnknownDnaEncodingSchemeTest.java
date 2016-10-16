@@ -3,13 +3,10 @@ package com.vitreoussoftware.bioinformatics.sequence.encoding;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
-
-import java.nio.channels.AcceptPendingException;
 
 /**
  * Tests the AcceptUnkownDnaEncodingScheme class
