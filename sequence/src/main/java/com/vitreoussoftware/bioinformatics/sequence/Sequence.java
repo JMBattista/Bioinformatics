@@ -183,7 +183,7 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
 
         @Override
         public boolean tryAdvance(Consumer<? super BasePair> action) {
-            if (origin <= fence) {
+            if (origin < fence) {
                 action.accept(sequence.get(origin));
                 origin++;
                 return true;

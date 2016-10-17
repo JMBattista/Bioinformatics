@@ -1,0 +1,27 @@
+description = 'Sequence Generator'
+
+apply plugin: 'scala'
+
+dependencies {
+    compile project(':Sequence')
+    compile group: 'org.javatuples', name: 'javatuples', version: '1.2'
+    compile group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+
+    runtime group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26'
+
+    testCompile group: 'org.scala-lang', name: 'scala-library', version: '2.11.8'
+    testCompile project(path: ':Sequence', configuration: 'testArtifacts')
+    testCompile project(':ScalaTestSpec')
+}
+
+/**
+ * Produce a jar from the test classes that can be consumed to get access to the test bases defined here
+ */
+configurations {
+    testArtifacts
+}
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.testArtifacts packageTests

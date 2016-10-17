@@ -1,13 +1,16 @@
 package com.vitreoussoftware.bioinformatics.sequence;
 
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
+import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 /**
@@ -174,5 +177,62 @@ public class SequenceTest {
             iterator.forEachRemaining(x -> remainingCount.incrementAndGet());
             assertEquals("Number of remaining elements was wrong", seq.length()-i, remainingCount.get());
         }
+    }
+
+    @Test
+	public void testForEach() {
+		final Sequence sequence = this.factory.fromString("AAAA").get();
+
+		sequence.forEach(bp -> assertThat(bp.toChar(), is('A')));
+	}
+
+	/**
+	 * Ensure we can use forEach to iterate over a sequence
+	 */
+	@Test
+	public void testStream_forEach() {
+		final Sequence sequence = this.factory.fromString("AAAA").get();
+
+		sequence.stream()
+				.map(bp -> bp.toChar())
+				.forEach(bp -> assertThat(bp, is('A')));
+	}
+
+    /**
+     * Ensure that we iterate through the correct number of base pairs
+     */
+    @Test
+    public void testStream_count() {
+        val expectedLength = (long)(Math.random() * 100);
+        val sb = new StringBuilder();
+        for (int i = 0; i < expectedLength; i++) {
+            sb.append('A');
+        }
+        final Sequence sequence = this.factory.fromString(sb.toString()).get();
+
+        val actualLength =sequence.stream()
+                .map(bp -> 1)
+                .count();
+
+        assertThat(actualLength, is(expectedLength));
+    }
+
+    /**
+     * Ensure that we iterate through the correct number of base pairs
+     */
+    @Test
+    public void testparallelStream_count() {
+        val expectedLength = (long)(Math.random() * 100);
+        val sb = new StringBuilder();
+        for (int i = 0; i < expectedLength; i++) {
+            sb.append('A');
+        }
+        final Sequence sequence = this.factory.fromString(sb.toString()).get();
+
+        val actualLength =sequence.parallelStream()
+                .map(bp -> 1)
+                .count();
+
+        assertThat(actualLength, is(expectedLength));
     }
 }

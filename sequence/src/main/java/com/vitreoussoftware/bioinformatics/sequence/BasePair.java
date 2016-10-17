@@ -1,6 +1,7 @@
 package com.vitreoussoftware.bioinformatics.sequence;
 
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
+import lombok.Getter;
 
 /**
  * Represents a Nucleotide Base Pair
@@ -9,7 +10,9 @@ import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
  */
 public class BasePair {
 	private final byte nucleotide;
-	private EncodingScheme scheme;
+
+	@Getter
+	private EncodingScheme encodingScheme;
 	
 	/**
 	 * Create a new base pair from the given nucleotide
@@ -19,7 +22,7 @@ public class BasePair {
 	 */
     protected BasePair(byte value, EncodingScheme encodingScheme) {
 		this.nucleotide = value;		
-		this.scheme = encodingScheme;
+		this.encodingScheme = encodingScheme;
 	}
 	
 	/**
@@ -80,7 +83,7 @@ public class BasePair {
 	
 	public String toString() {
 		try {
-			return this.scheme.toString(this.nucleotide);
+			return this.encodingScheme.toString(this.nucleotide);
 		} catch (InvalidDnaFormatException e) {
 			// this should never fail since the encoding came from the encapsulated BasePair
 			e.printStackTrace();
@@ -90,7 +93,7 @@ public class BasePair {
 
 	public char toChar() {
 		try {
-			return this.scheme.toChar(this.nucleotide);	
+			return this.encodingScheme.toChar(this.nucleotide);
 		} catch (InvalidDnaFormatException e) {
 			// this should never fail since the encoding came from the encapsulated BasePair
 			e.printStackTrace();
