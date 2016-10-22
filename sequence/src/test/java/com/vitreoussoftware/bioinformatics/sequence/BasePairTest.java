@@ -2,6 +2,7 @@ package com.vitreoussoftware.bioinformatics.sequence;
 
 import static org.junit.Assert.*;
 
+import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class BasePairTest {
 	 	 */
 	@Test
 	public void testEquality_toSelf() throws InvalidDnaFormatException {
-		BasePair bp = BasePair.create('A', scheme);
+		val bp = BasePair.create('A', scheme);
 		assertEquals(bp, bp);
 	}
 	
