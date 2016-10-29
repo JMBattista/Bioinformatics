@@ -1,11 +1,11 @@
 package com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.BufferFileStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
+import lombok.NonNull;
 import org.javatuples.Pair;
 
 /**
@@ -15,73 +15,46 @@ import org.javatuples.Pair;
  */
 public final class FastaStringFileStreamReader implements StringStreamReader
 {
-	private static final int DEFAULT_BUFFER_SIZE = 64 * 1024; // 64 KB read size
-	
-	/**
-	 * The FASTA file
-	 */
-	private FileReader file;
-	private char[] buffer;
-	private int length;
-	private int index;
-
-	/**
-	 * Create a FASTA File Stream Reader for the given file
-	 * @param file the file to run on
-	 */
-	private FastaStringFileStreamReader(FileReader file, int pagingSize)
-	{
-		this.file = file;
-
-		buffer = new char[pagingSize];
-		length = 0;  // we don't have anything in the buffer
-		index = 0;   // index starts at 0
-	}
+    /**
+     * The FASTA file wrapped in a {@link BufferFileStreamReader}
+     */
+    private final BufferFileStreamReader reader;
 
     /**
-     * Create an input stream for FASTA file format
-     * @param file the FASTA file
-     * @return the input stream
-     * @throws FileNotFoundException the specified file was not found
+     * Create a FASTA File Stream Reader for the given file
+     * @param reader the {@link BufferFileStreamReader} to read from
      */
-    public static StringStreamReader create(File file) throws FileNotFoundException
+    private FastaStringFileStreamReader(@NonNull final BufferFileStreamReader reader)
     {
-        return create(file, DEFAULT_BUFFER_SIZE);
+        this.reader = reader;
     }
 
     /**
      * Create an input stream for FASTA file format
-     * @param fileName the FASTA file
+     * @param filePath the FASTA file
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
      */
-    public static StringStreamReader create(String fileName) throws FileNotFoundException
-    {
-        return create(new File(fileName), DEFAULT_BUFFER_SIZE);
+    public static StringStreamReader create(String filePath) throws FileNotFoundException {
+        return new FastaStringFileStreamReader(
+                BufferFileStreamReader.builder()
+                        .filePath(filePath)
+                        .build());
     }
-
 
     /**
      * Create an input stream for FASTA file format
-     * @param fileName the FASTA file
+     * @param filePath the FASTA file
      * @param pagingSize the size of the buffer for paging data from disk
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
      */
-    public static StringStreamReader create(String fileName, int pagingSize) throws FileNotFoundException {
-        return create(new File(fileName), pagingSize);
-    }
-
-
-    /**
-     * Create an input stream for FASTA file format
-     * @param file the FASTA file
-     * @param pagingSize the size of the buffer for paging data from disk
-     * @return the input stream
-     * @throws FileNotFoundException the specified file was not found
-     */
-    public static StringStreamReader create(File file, int pagingSize) throws FileNotFoundException {
-        return new FastaStringFileStreamReader(new FileReader(file), pagingSize);
+    public static StringStreamReader create(String filePath, int pagingSize) throws FileNotFoundException {
+        return new FastaStringFileStreamReader(
+                BufferFileStreamReader.builder()
+                        .filePath(filePath)
+                        .bufferSize(pagingSize)
+                        .build());
     }
 	
 	/**
@@ -97,108 +70,6 @@ public final class FastaStringFileStreamReader implements StringStreamReader
         return Pair.with(metadata, data);
     }
 
-    private String readMetadata() {
-        StringBuilder sb = new StringBuilder();
-        // if we are out of buffered data read more
-
-        boolean startFound = false;
-        while (index >= length || !startFound) {
-            if (index >= length)
-                bufferData();
-
-            while (index < length && !startFound) {
-                startFound = buffer[index] == ';' || buffer[index] == '>';
-                index++;
-            }
-        }
-
-        do {
-            if (index >= length)
-                bufferData();
-
-            // spin until we find the end of the heading row
-            while (index < length && buffer[index] != '\n') {
-                if (buffer[index] != ';' && buffer[index] != '>')
-                    sb.append(buffer[index]);
-                index++;
-            }
-        } while(index >= length || buffer[index] != '\n');
-
-        return sb.toString().trim();
-    }
-
-    private String readComments() {
-        StringBuilder sb = new StringBuilder();
-
-        do {
-            // if we are out of buffered data read more
-            if (index >= length)
-                bufferData();
-
-            // spin until we are out of white space
-            while (index < length && Character.isWhitespace(buffer[index]))
-                index++;
-
-            // if we have comments
-            if (index < length && buffer[index] == ';') {
-                sb.append(readMetadata());
-                continue;
-            }
-
-        } while (index >= length);
-
-        return sb.toString().trim();
-    }
-
-    private String readSequenceData() {
-        StringBuilder sb = new StringBuilder();
-        boolean readingSequence = true;
-        do {
-            // if we are out of buffered data read more
-            if (index >= length)
-                bufferData();
-
-            // spin until we are out of white space
-            while (index < length && Character.isWhitespace(buffer[index]))
-                index++;
-
-            // read elements from the buffer until we find the start of the next sequence, terminator for current sequence
-            // or white space
-            while (index < length && buffer[index] != '>' && buffer[index] != '*' &&  ! Character.isWhitespace(buffer[index])) {
-                sb.append(buffer[index]);
-                index++;
-            }
-
-
-            if (index < length && buffer[index] == '*') {
-                readingSequence = false;
-                index++;
-            }
-            if (index < length && buffer[index] == '>') {
-                readingSequence = false;
-            }
-        } while (length > 0 && (readingSequence || index >= length));
-
-        return  sb.toString();
-    }
-
-    private void bufferData() {
-        try {
-		    length = file.read(buffer);
-		    index = 0;
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Unable to read from file");
-        }
-	}
-	
-	@Override
-	protected void finalize() throws Throwable {
-		this.file.close();
-		super.finalize();
-	}
-
 	/**
      * Does the stream reader still have a record?
 	 * @return boolean indicator
@@ -206,18 +77,69 @@ public final class FastaStringFileStreamReader implements StringStreamReader
 	 */
 	@Override
 	public boolean hasNext() {
-		// if we know we have data remaining say so
-		if (length > 0 && index < length)
-			return true;
-		// if we don't know find out
+        // Dump whitespace
+        reader.dropUntil(x -> !Character.isWhitespace(x));
 
-		bufferData();
-		
-		return length > 0 && index < length;
+		return !reader.isEof();
 	}
 
 	@Override
 	public void close() throws IOException {
-		this.file.close();
+		this.reader.close();
 	}
+
+    @Override
+    protected void finalize() throws Throwable {
+        this.reader.close();
+        super.finalize();
+    }
+
+    private String readMetadata() {
+        StringBuilder sb = new StringBuilder();
+        // if we are out of buffered data read more
+
+        reader.dropUntil(x -> x == ';' || x == '>');
+        reader.drop();
+
+        sb.append(reader.takeUntil(x -> x == '\n'));
+
+        return sb.toString().trim();
+    }
+
+    private String readComments() {
+        StringBuilder sb = new StringBuilder();
+
+        // spin until we are out of white space
+        reader.dropWhileWhitespace();
+
+        // if we have comments
+        if (reader.is(';'))
+            sb.append(readMetadata());
+
+        return sb.toString();
+    }
+
+    private String readSequenceData() {
+        StringBuilder sb = new StringBuilder();
+        boolean readingSequence = true;
+
+        while (readingSequence && !reader.isEof()) {
+            reader.dropWhileWhitespace();
+
+            // read elements from the buffer until we find the start of the next sequence, terminator for current sequence
+            // or white space
+            sb.append(reader.takeUntil(character -> character == '*' || Character.isWhitespace(character)));
+
+            reader.dropWhileWhitespace();
+
+            if (reader.is('*')) {
+                reader.drop();
+                readingSequence = false;
+            }
+            if (reader.is('>') || reader.is(';'))
+                readingSequence = false;
+        }
+
+        return  sb.toString();
+    }
 }

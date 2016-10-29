@@ -17,11 +17,12 @@ trait AlignerTestData {
   val baseSeqs = seqsFrom(bases)
   val offByNSeqs = seqsFrom(List("AAN", "ANA", "NAA"))
   val offByNSeqsLong = seqsFrom(List("AAAAAAAAAAN", "AAAAANAAAAA", "NAAAAAAAAAAA"))
+  val testData = new FastaData();
 
-  val seqSimple = FastaData.getSimpleSequence();
-  val seqRecord1 = FastaData.getRecord1Sequence();
-  val seqRecord2 = FastaData.getRecord2Sequence();
-  val seqRecord3 = FastaData.getRecord3Sequence();
+  val seqSimple = testData.getSimpleSequence();
+  val seqRecord1 = testData.getRealExample1Sequence();
+  val seqRecord2 = testData.getRealExample2Sequence();
+  val seqRecord3 = testData.getRealExample3Sequence();
 
   val sourceSeqs = List(seqSimple, seqRecord1, seqRecord2, seqRecord3)
 
@@ -77,7 +78,7 @@ trait AlignerTestData {
   )) yield BasePair.create(bp, AcceptUnknownDnaEncodingScheme.instance)
 
   implicit lazy val arbBasePair: Arbitrary[BasePair] = Arbitrary(genBasePair)
-  implicit lazy val arbSequence: Arbitrary[Sequence] = Arbitrary(genSequence)
+  implicit lazy val arbSequence: Arbitrary[Sequence] = Arbitrary(genSequence())
 }
 
 trait AlignerHelpers extends Matchers {
@@ -158,7 +159,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
   it should "should allow adding a sequence" in {
     withAligner {
       (aligner) => {
-        aligner.addText(FastaData.getSimpleSequence)
+        aligner.addText(testData.getSimpleSequence)
       }
     }
   }

@@ -37,7 +37,7 @@ public interface SuffixTreeFactory {
 	 */
 	default public SuffixTree create(SequenceCollection texts) {
         SuffixTree tree = create();
-        texts.forEach(text -> tree.addText(text));
+        texts.forEach(tree::addText);
         return tree;
     }
 	

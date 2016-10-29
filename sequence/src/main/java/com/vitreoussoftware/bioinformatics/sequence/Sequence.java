@@ -195,7 +195,7 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
             @Override
             public Spliterator<BasePair> trySplit() {
             int low = origin;
-            int mid =  ((low + fence) >>> 1) & -1;
+            int mid = ((low + fence) >>> 1);
             if (low < mid) {
                 origin = mid;
                 return new SequenceSpliterator(sequence, low, mid);

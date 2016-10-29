@@ -146,7 +146,7 @@ public class Walkers {
      */
     public static Walk<Triplet<Integer, Integer, Collection<Position>>, Collection<Alignment>> shortestDistances(Sequence pattern)
     {
-        return new WalkWrapper<>(shortestDistances(pattern, 0), x -> x.get());
+        return new WalkWrapper<>(shortestDistances(pattern, 0), Optional::get);
     }
 
     /**
@@ -184,7 +184,7 @@ public class Walkers {
                     return Optional.empty();
 
                 // Stop considering branches that are more costly than current minimum
-                Optional<Integer> resultDistance = result.flatMap(collection -> collection.stream().findFirst()).map(alignment -> alignment.getDistance());
+                Optional<Integer> resultDistance = result.flatMap(collection -> collection.stream().findFirst()).map(Alignment::getDistance);
 
                 if (resultDistance.map(d -> distance > d).orElse(false))
                     return Optional.empty();

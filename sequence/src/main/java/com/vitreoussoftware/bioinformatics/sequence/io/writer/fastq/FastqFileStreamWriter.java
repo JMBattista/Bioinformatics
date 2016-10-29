@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * File stream reader for FASTA data files
+ * File stream reader for FASTQ data files
  * @author John
  *
  */
@@ -15,12 +15,12 @@ public final class FastqFileStreamWriter implements SequenceStreamWriter
 {
 
     /**
-     * The FASTA file
+     * The FASTQ file
      */
     private FileWriter file;
 
     /**
-     * Create a FASTA File Stream Reader for the given file
+     * Create a FASTQ File Stream Reader for the given file
      * @param file the file to run on
      */
     private FastqFileStreamWriter(FileWriter file)
@@ -29,8 +29,8 @@ public final class FastqFileStreamWriter implements SequenceStreamWriter
     }
 
     /**
-     * Create an input stream for FASTA file format
-     * @param fileName the FASTA file
+     * Create an input stream for FASTQ file format
+     * @param fileName the FASTQ file
      * @return the input stream
      * @throws java.io.FileNotFoundException the specified file was not found
      */

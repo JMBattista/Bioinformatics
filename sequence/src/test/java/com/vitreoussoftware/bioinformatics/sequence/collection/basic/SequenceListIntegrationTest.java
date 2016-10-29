@@ -1,14 +1,11 @@
 package com.vitreoussoftware.bioinformatics.sequence.collection.basic;
 
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
-import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionTest;
-import com.vitreoussoftware.bioinformatics.sequence.io.FastaData;
+import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaSequenceStreamReader;
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaStringFileStreamReaderIntegrationTest;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -34,13 +31,17 @@ public class SequenceListIntegrationTest extends SequenceCollectionTest {
 	 */
 	@Test
 	public void testStreamSource_single() throws InvalidDnaFormatException, IOException {
-		SequenceStreamReader reader = new FastaSequenceStreamReader(FastaStringFileStreamReaderIntegrationTest.getSimpleFastaReader());
+        final com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader reader1 = testData.getSimpleExampleReader();
+        SequenceStreamReader reader = SequenceStreamReader.builder()
+			.reader(reader1)
+			.factory(new FastaSequenceFactory())
+			.build();
 		SequenceCollection sc = this.getFactory().getSequenceCollection(reader);
 		
 		assertNotNull(sc);
 		assertEquals(1,  sc.size());
-		assertEquals(sequenceFactory.fromString(FastaData.getRecordSimple()).get(), sc.iterator().next());
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.getRecordSimple()).get()));
+		assertEquals(sequenceFactory.fromString(testData.getSimpleRecord()).get(), sc.iterator().next());
+		assertTrue(sc.contains(sequenceFactory.fromString(testData.getSimpleRecord()).get()));
 	}
 	
 	/**
@@ -50,13 +51,17 @@ public class SequenceListIntegrationTest extends SequenceCollectionTest {
 	 */
 	@Test
 	public void testStreamSource_multiple() throws InvalidDnaFormatException, IOException {
-        SequenceStreamReader reader = new FastaSequenceStreamReader(FastaStringFileStreamReaderIntegrationTest.getExampleFastaReader());
+        final com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader reader1 = testData.getRealExamplesReader();
+        SequenceStreamReader reader = SequenceStreamReader.builder()
+				.reader(reader1)
+				.factory(new FastaSequenceFactory())
+				.build();
 		SequenceCollection sc = this.getFactory().getSequenceCollection(reader);
 
 		assertNotNull(sc);
 		assertEquals(3,  sc.size());
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.getRecord1()).get()));
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.getRecord2()).get()));
-		assertTrue(sc.contains(sequenceFactory.fromString(FastaData.getRecord3()).get()));
+		assertTrue(sc.contains(sequenceFactory.fromString(testData.getRealExample1()).get()));
+		assertTrue(sc.contains(sequenceFactory.fromString(testData.getRealExample2()).get()));
+		assertTrue(sc.contains(sequenceFactory.fromString(testData.getRealExample3()).get()));
 	}
 }

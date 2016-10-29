@@ -3,121 +3,188 @@ package com.vitreoussoftware.bioinformatics.sequence.io;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaStringFileStreamReader;
+
+import java.io.FileNotFoundException;
 
 /**
+ * Test data in the FASTA format uses {@link AcceptUnknownDnaEncodingScheme}
  * Created by John on 9/21/14.
  */
-public class FastaData extends AlignerData {
-    protected static final String fastaMultiLineDescriptionMetadata = "LCBO - Prolactin precursor - Bovine";
-    protected static final String fastaMultiLineDescriptionSequence =
+public class FastaData extends TestData {
+    private static final String fastaMultiLineDescriptionMetadata = "LCBO - Prolactin precursor - Bovine";
+    private static final String fastaMultiLineDescriptionSequence =
             "VCVYTHCGRNCYYGSYVYSTTWNTGCMVVVCTMATAGMGYVVAWGXMSGWGATVCTNVGSACAYCGTNVV" +
                     "TWCWGGGSVDKATVNRGGAGHGCVAGTMVAVAGVHVTGVHTTGSNNAVGVTSDSDKCAGHAYYTCKDGVG" +
                     "VVCVCVVVVVVAVVSADMVGDADNHMAADAVNTAVHCKATWYGVGAYACVRSVANKVGGVVAVGVSCVCV" +
                     "GVMAGVHTSKHRSMMVRAVSXAVGWTVTMDVVTVTWCGSXAVTYAYTCCGXMASCVYGSCCVAGVACAGX" +
                     "CTNY";
-    protected static final String fastaTerminatedMetadata = "MCHU - Calmodulin - Human, rabbit, bovine, rat, and chicken";
-    protected static final String fastaTerminatedSequence =
+    private static final String fastaTerminatedMetadata = "MCHU - Calmodulin - Human, rabbit, bovine, rat, and chicken";
+    private static final String fastaTerminatedSequence =
             "ADXVTTTXCATGKTAGSVGDKDGDGTCTTKTVGTVMRSVGXNATTATVXDMCNTVDADGNGTCD" +
                     "GATGVTMMARKMKDTDSTTTCRTAGRVGDKDGNGYCSAATVRHVMTNVGTKVTDTTVDTMCRTA" +
                     "DCDGDGXVNYTTGVXMMTAK";
-    protected static final String fastaLargeHeaderMetadata = "gi|5524211|gb|AAD44166.1| cytochrome b [Elephas maximus maximus]";
-    protected static final String fastaLargeHeaderSequence =
+    private static final String fastaLargeHeaderMetadata = "gi|5524211|gb|AAD44166.1| cytochrome b [Elephas maximus maximus]";
+    private static final String fastaLargeHeaderSequence =
             "VCVYTHCGRNCYYGSYVYSTTWNTGCMVVVCTMATAGMGYVVAWGXMSGWGATVCTNVGSACAYCGTNVV" +
                     "TWCWGGGSVDKATVNRGGAGHGCVAGTMVAVAGVHVTGVHTTGSNNAVGVTSDSDKCAGHAYYTCKDGVG" +
                     "VVCVCVVVVVVAVVSADMVGDADNHMAADAVNTAVHCKATWYGVGAYACVRSVANKVGGVVAVGVSCVCV" +
                     "GVMAGVHTSKHRSMMVRAVSXAVGWTVTMDVVTVTWCGSXAVTYAYTCCGXMASCVYGSCCVAGVACAGX" +
                     "CTNY";
 
-    public static String getRecordSimple() {
-        return recordSimple;
+    private final String alternate1 =
+            "TGCTCAATTTTATCTAAAGAAAATCAAATTGAGCAAATATATTCACAAAAAATTATTTTT" +
+                    "ATAGTATTTTTGAGAAAATAATTGCTCATTTGTACTAATG";
+    private final String alternate2 =
+            "AAACCACAAGACAAACCATATCGTAAGCTTGATGCAGATAGGCTTTATATAGAAGTCAGA" +
+                    "CCAAGTGGGAAAAAAGTTTGGATTCACAAATTCTCCTTAA";
+    private final String alternate3 =
+            "GCAATTCCGACCACATAGACCGTATCAATACCACGTTCTTTTAAGTAACCCGTTAAACCT" +
+                    "GTCATTGTGGTGTGGTCAGCTTCCATAAAAGCCGAGTAAC";
+
+
+    /**
+     * The path where the FASTA test files can be found.
+     */
+    private static final String PATH = "build/resources/test/Fasta/";
+
+    /**
+     * The FASTA file extension
+     */
+    private static final String EXTENSION = ".fasta";
+
+    /**
+     * FASTA file to test alternate starting character > instead of ;
+     */
+    private static final String ALTERNATE_STARTING_CHARACTER = PATH + "AlternateStartingCharacter.fasta";
+    /**
+     * FASTA with no space between the end of metadata and terminating character
+     */
+    private static final String NO_ENDING_SPACE = PATH + "NoEndingSpace.fasta";
+
+    @Override
+    protected StringStreamReader createReader(String path) throws FileNotFoundException {
+        return FastaStringFileStreamReader.create(path);
     }
 
-    public static String getRecord1() {
-        return record1;
+    @Override
+    protected StringStreamReader createReader(String path, int pagingSize) throws FileNotFoundException {
+        return FastaStringFileStreamReader.create(path, pagingSize);
     }
 
-    public static String getRecord2() {
-        return record2;
+    @Override
+    protected String getExtension() {
+        return EXTENSION;
     }
 
-    public static String getRecord3() {
-        return record3;
+    @Override
+    protected String getBasePath() {
+        return PATH;
     }
 
-    public static String getFastaMultiLineDescription() {
-        return fastaMultiLineDescriptionSequence;
-    }
-
-    public static String getFastaTerminated() {
-        return fastaTerminatedSequence;
-    }
-
-    public static String getFastaLargeHeader() {
-        return fastaLargeHeaderSequence;
-    }
-
-
-    public static String getFastaMultiLineDescriptionMetadata() {
-        return fastaMultiLineDescriptionMetadata;
-    }
-
-    public static String getFastaTerminatedMetadata() {
-        return fastaTerminatedMetadata;
-    }
-
-    public static String getFastaLargeHeaderMetadata() {
-        return fastaLargeHeaderMetadata;
-    }
-
-    public static String getAlternate1() {
+    /**
+     * Get the string expression matching Alternate1 in {@link AcceptUnknownDnaEncodingScheme} format
+     * @return The Alternate1 string
+     */
+    public String getAlternateStartingCharacter1() {
         return alternate1;
     }
 
-    public static String getAlternate2() {
+    /**
+     * Get the string expression matching Alternate2 in {@link AcceptUnknownDnaEncodingScheme} format
+     * @return The Alternate2 string
+     */
+    public String getAlternateStartingCharacter2() {
         return alternate2;
     }
 
-    public static String getAlternate3() {
+    /**
+     * Get the string expression matching Alternate3 in {@link AcceptUnknownDnaEncodingScheme} format
+     * @return The Alternate3 string
+     */
+    public String getAlternateStartingCharacter3() {
         return alternate3;
     }
 
-    public static Sequence getSimpleSequence() {
-        return BasicSequence.create(recordSimple, AcceptUnknownDnaEncodingScheme.instance).get();
+    public String getFastaMultiLineDescription() {
+        return fastaMultiLineDescriptionSequence;
     }
 
-    public static Sequence getRecord1Sequence() {
-		return BasicSequence.create(record1, AcceptUnknownDnaEncodingScheme.instance).get();
-	}
+    public String getFastaTerminated() {
+        return fastaTerminatedSequence;
+    }
 
-    public static Sequence getRecord2Sequence() {
-		return BasicSequence.create(record2, AcceptUnknownDnaEncodingScheme.instance).get();
-	}
+    public String getFastaLargeHeader() {
+        return fastaLargeHeaderSequence;
+    }
 
-    public static Sequence getRecord3Sequence() {
-		return BasicSequence.create(record3, AcceptUnknownDnaEncodingScheme.instance).get();
-	}
+    public String getFastaMultiLineDescriptionMetadata() {
+        return fastaMultiLineDescriptionMetadata;
+    }
 
-    public static Sequence getFastaMultiLineDescriptionSequence() {
+    public String getFastaTerminatedMetadata() {
+        return fastaTerminatedMetadata;
+    }
+
+    public String getFastaLargeHeaderMetadata() {
+        return fastaLargeHeaderMetadata;
+    }
+
+
+    /**
+     * Get the {@link Sequence} that corresponds to {@see getAlternateStartingCharacter1}
+     * @return The sequence
+     */
+    public Sequence getAlternateStartingCharacter1Sequence() {
+        return BasicSequence.create(alternate1, AcceptUnknownDnaEncodingScheme.instance).get();
+    }
+
+    /**
+     * Get the {@link Sequence} that corresponds to {@see getAlternateStartingCharacter2}
+     * @return The sequence
+     */
+    public Sequence getAlternateStartingCharacter2Sequence() {
+        return BasicSequence.create(alternate2, AcceptUnknownDnaEncodingScheme.instance).get();
+    }
+
+    /**
+     * Get the {@link Sequence} that corresponds to {@see getAlternateStartingCharacter3}
+     * @return The sequence
+     */
+    public Sequence getAlternateStartingCharacter3Sequence() {
+        return BasicSequence.create(alternate3, AcceptUnknownDnaEncodingScheme.instance).get();
+    }
+
+    public Sequence getFastaMultiLineDescriptionSequence() {
 		return BasicSequence.create(fastaMultiLineDescriptionMetadata, fastaMultiLineDescriptionSequence, AcceptUnknownDnaEncodingScheme.instance).get();
 	}
 
-    public static Sequence getFastaTerminatedSequence() {
+    public Sequence getFastaTerminatedSequence() {
 		return BasicSequence.create(fastaTerminatedMetadata, fastaTerminatedSequence, AcceptUnknownDnaEncodingScheme.instance).get();
 	}
 
-    public static Sequence getFastaLargeHeaderSequence() {
+    public Sequence getFastaLargeHeaderSequence() {
 		return BasicSequence.create(fastaLargeHeaderMetadata, fastaLargeHeaderSequence, AcceptUnknownDnaEncodingScheme.instance).get();
 	}
 
-    public static Sequence getAlternate1Sequence() {
-		return BasicSequence.create(alternate1, AcceptUnknownDnaEncodingScheme.instance).get();
-	}
+    /**
+     * Create a StringStreamReader for the Simple test file
+     * @return the StringStreamReader
+     * @throws FileNotFoundException the test file could not be found
+     */
+    public StringStreamReader getAlternateStartingCharacterReader()
+            throws FileNotFoundException {
+        return FastaStringFileStreamReader.create(ALTERNATE_STARTING_CHARACTER);
+    }
 
-    public static Sequence getAlternate2Sequence() {
-		return BasicSequence.create(alternate2, AcceptUnknownDnaEncodingScheme.instance).get();
-	}
-
-    public static Sequence getAlternate3Sequence() {
-		return BasicSequence.create(alternate3, AcceptUnknownDnaEncodingScheme.instance).get();
-	}
+    /**
+     * Create a StringStreamReader for the NoSpace FASTA test file
+     * @return the StringStreamReader
+     * @throws FileNotFoundException the test file could not be found
+     */
+    public StringStreamReader getNoSpaceReader()
+            throws FileNotFoundException {
+        return FastaStringFileStreamReader.create(NO_ENDING_SPACE);
+    }
 }

@@ -36,7 +36,7 @@ public interface StringBasedAlignerFactory {
      */
     default public PatternFirstAligner create(SequenceCollection texts) {
         PatternFirstAligner aligner = create();
-        texts.forEach(text -> aligner.addPattern(text));
+        texts.forEach(aligner::addPattern);
         return aligner;
     }
 
