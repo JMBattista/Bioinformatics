@@ -233,7 +233,7 @@ public final class BufferFileStreamReader implements AutoCloseable
         }
         catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Unable to read from file");
+            throw new IllegalStateException("Unable to read from file");
         }
     }
 

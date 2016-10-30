@@ -84,7 +84,7 @@ public class BasicSequence implements Sequence {
 		{
 			// this should not have happened because we encoded everything using this scheme already
 			e.printStackTrace();
-			throw new RuntimeException("We failed to decode a value that was previously encoded in by the same encoding scheme, for value: " + sequence[index] + " encoding scheme " + this.encodingScheme.getClass().getName());
+			throw new InvalidDnaFormatException("We failed to decode a value that was previously encoded in by the same encoding scheme, for value: " + sequence[index] + " encoding scheme " + this.encodingScheme.getClass().getName());
 		}
 	}
 
@@ -103,7 +103,7 @@ public class BasicSequence implements Sequence {
 		} catch (InvalidDnaFormatException e) {
 			// this should never fail since the encoding came from the encapsulated BasePair
 			e.printStackTrace();
-			throw new RuntimeException("We hit an unknown basepair encoding converting to string\n");
+			throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
 		}
 		return sb.toString();
 	}

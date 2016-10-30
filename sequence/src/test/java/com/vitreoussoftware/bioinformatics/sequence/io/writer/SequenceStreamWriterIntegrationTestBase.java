@@ -90,7 +90,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
      * @return the SequenceStreamReader
      */
     protected void writeAndCheckSequence(Sequence expected) throws Exception {
-        val file = writeSequence(expected);
+        writeSequence(expected);
         SequenceStreamReader reader = getReader();
 
         Optional<Sequence> result = reader.next();

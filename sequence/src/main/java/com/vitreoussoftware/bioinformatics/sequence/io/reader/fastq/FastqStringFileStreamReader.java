@@ -74,6 +74,7 @@ public final class FastqStringFileStreamReader implements StringStreamReader
 
     /**
      * Does the stream reader still have a record?
+     *
      * @return boolean indicator
      * @throws IOException If the file cannot be accessed it may fail
      */
@@ -91,11 +92,8 @@ public final class FastqStringFileStreamReader implements StringStreamReader
     }
 
     private String readMetadata() {
-        StringBuilder sb = new StringBuilder();
-
         // Find the Start symbol
         reader.dropUntil(x -> x == '@');
-
         // move past the start symbol
         reader.drop();
 

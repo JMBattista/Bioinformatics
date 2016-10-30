@@ -12,22 +12,22 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
     public final class IupacEncodingScheme implements EncodingScheme {
     // Due to a quirk in the java language we have to use the negative sign to set the 8th bit to 1
     // We will restrict usage of the 8th bit to mean 'special thing happening here
-	static final byte NUCLEOTIDE_A =  0b0_00_00_10;
-    static final byte NUCLEOTIDE_C =  0b0_00_10_00;
-    static final byte NUCLEOTIDE_G =  0b0_00_01_00;
-    static final byte NUCLEOTIDE_T =  0b0_00_00_01;
-	static final byte NUCLEOTIDE_U =  0b0_01_00_01;
-    static final byte NUCLEOTIDE_R =  NUCLEOTIDE_A | NUCLEOTIDE_G;
-    static final byte NUCLEOTIDE_Y =  NUCLEOTIDE_C | NUCLEOTIDE_T;
-    static final byte NUCLEOTIDE_K =  NUCLEOTIDE_G | NUCLEOTIDE_T;
-    static final byte NUCLEOTIDE_M =  NUCLEOTIDE_A | NUCLEOTIDE_C;
-    static final byte NUCLEOTIDE_S =  NUCLEOTIDE_C | NUCLEOTIDE_G;
-    static final byte NUCLEOTIDE_W =  NUCLEOTIDE_C | NUCLEOTIDE_G | 0b0_10_00_00;
-    static final byte NUCLEOTIDE_B =  NUCLEOTIDE_C | NUCLEOTIDE_G | NUCLEOTIDE_T;
-    static final byte NUCLEOTIDE_D =  NUCLEOTIDE_A | NUCLEOTIDE_G | NUCLEOTIDE_T;
-    static final byte NUCLEOTIDE_H =  NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_T;
-    static final byte NUCLEOTIDE_V =  NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G;
-    static final byte NUCLEOTIDE_N =  NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G | NUCLEOTIDE_T;
+    private static final byte NUCLEOTIDE_A =  0b0_00_00_10;
+    private static final byte NUCLEOTIDE_C =  0b0_00_10_00;
+    private static final byte NUCLEOTIDE_G =  0b0_00_01_00;
+    private static final byte NUCLEOTIDE_T =  0b0_00_00_01;
+    private static final byte NUCLEOTIDE_U =  0b0_01_00_01;
+    private static final byte NUCLEOTIDE_R =  NUCLEOTIDE_A | NUCLEOTIDE_G;
+    private static final byte NUCLEOTIDE_Y =  NUCLEOTIDE_C | NUCLEOTIDE_T;
+    private static final byte NUCLEOTIDE_K =  NUCLEOTIDE_G | NUCLEOTIDE_T;
+    private static final byte NUCLEOTIDE_M =  NUCLEOTIDE_A | NUCLEOTIDE_C;
+    private static final byte NUCLEOTIDE_S =  NUCLEOTIDE_C | NUCLEOTIDE_G;
+    private static final byte NUCLEOTIDE_W =  NUCLEOTIDE_C | NUCLEOTIDE_G | 0b0_10_00_00;
+    private static final byte NUCLEOTIDE_B =  NUCLEOTIDE_C | NUCLEOTIDE_G | NUCLEOTIDE_T;
+    private static final byte NUCLEOTIDE_D =  NUCLEOTIDE_A | NUCLEOTIDE_G | NUCLEOTIDE_T;
+    private static final byte NUCLEOTIDE_H =  NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_T;
+    private static final byte NUCLEOTIDE_V =  NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G;
+    private static final byte NUCLEOTIDE_N =  NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G | NUCLEOTIDE_T;
 
     public static EncodingScheme instance = new IupacEncodingScheme();
 
@@ -124,7 +124,7 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 		catch (InvalidDnaFormatException e)
 		{
 			// this should never happen because createSafe is called inside the class and controlled to only send valid values
-			throw new RuntimeException("Bad value passed in statically inside AcceptUnknownDnaEncodingScheme");
+			throw new InvalidDnaFormatException("Bad value passed in statically inside AcceptUnknownDnaEncodingScheme");
 		}
 	}
 
