@@ -14,3 +14,5 @@ I've been working on these libraries to learn more about the Data Structures and
 Enjoy!
 
 [ ![Codeship Status for JMBattista/Bioinformatics](https://codeship.com/projects/e2907780-3313-0132-a6d8-3a623e75de45/status?branch=master)](https://codeship.com/projects/40553)
+[![codecov](https://codecov.io/gh/JMBattista/Bioinformatics/branch/master/graph/badge.svg)](https://codecov.io/gh/JMBattista/Bioinformatics)
+
