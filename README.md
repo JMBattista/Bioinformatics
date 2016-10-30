@@ -15,4 +15,4 @@ Enjoy!
 
 [ ![Codeship Status for JMBattista/Bioinformatics](https://codeship.com/projects/e2907780-3313-0132-a6d8-3a623e75de45/status?branch=master)](https://codeship.com/projects/40553)
 [![codecov](https://codecov.io/gh/JMBattista/Bioinformatics/branch/master/graph/badge.svg)](https://codecov.io/gh/JMBattista/Bioinformatics)
-
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/cf9b65a8715e462d95cebc1279f6fbf8)](https://www.codacy.com/app/jmbattista/Bioinformatics?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=JMBattista/Bioinformatics&amp;utm_campaign=Badge_Grade)
