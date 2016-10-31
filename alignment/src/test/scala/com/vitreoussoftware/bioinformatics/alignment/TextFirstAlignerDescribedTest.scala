@@ -19,7 +19,7 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
   type FixtureParam = TextFirstAligner
 
   override def withFixture(test: OneArgTest) = {
-    // create the fixture
+    // fromCharacter the fixture
     val aligner = getAligner()
     val outcome: Outcome = withFixture(test.toNoArgTest(aligner)) // "loan" the fixture to the test
     destroyAligner(aligner)

@@ -28,7 +28,7 @@ public class SequenceTest {
 	}
 	
 	/**
-	 * Test that we can create a new DnaSequence
+	 * Test that we can fromCharacter a new DnaSequence
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test

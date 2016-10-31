@@ -21,7 +21,7 @@ abstract class PatternFirstAlignerDescribedTest(anAligner: String) extends Behav
   type FixtureParam = PatternFirstAligner
 
   /**
-   * Perform any setup necessary to create and return the aligner for use in tests
+   * Perform any setup necessary to fromCharacter and return the aligner for use in tests
    * @return the aligner to use for the tests
    */
   def  getAligner() : PatternFirstAligner
@@ -29,7 +29,7 @@ abstract class PatternFirstAlignerDescribedTest(anAligner: String) extends Behav
   def destroyAligner(aligner: PatternFirstAligner) = None
 
   override def withFixture(test: OneArgTest) = {
-    // create the fixture
+    // fromCharacter the fixture
     val aligner = getAligner()
     val outcome: Outcome = withFixture(test.toNoArgTest(aligner)) // "loan" the fixture to the test
     destroyAligner(aligner)

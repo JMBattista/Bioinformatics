@@ -23,38 +23,27 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 	/**
 	 * Adenine
 	 */
-	public static final BasePair A = createSafe('A');
+	public static final BasePair A = create('A');
 
-    /**
+	/**
      * Cytosine
      */
-    public static final BasePair C = createSafe('C');
+    public static final BasePair C = create('C');
 
-    /**
+	/**
      * Guanine
      */
-    public static final BasePair G = createSafe('G');
+    public static final BasePair G = create('G');
 
-    /**
+	/**
 	 * Thymine
 	 */
-	public static final BasePair T = createSafe('T');
+	public static final BasePair T = create('T');
 
 	/**
 	 * Create an instance of the encoding scheme
 	 */
 	public BasicDnaEncodingScheme() {
-	}
-
-	private static BasePair createSafe(char value) {
-		try {
-			return create(value);
-		}
-		catch (InvalidDnaFormatException e)
-		{
-			// this should never happen because createSafe is called inside the class and controlled to only send valid values
-			throw new InvalidDnaFormatException("Bad value passed in statically inside AcceptUnknownDnaEncodingScheme");
-		}
 	}
 
 	/**
@@ -66,6 +55,11 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 	public static BasePair create(char nucleotide) throws InvalidDnaFormatException
 	{	
 		return BasePair.create(nucleotide, BasicDnaEncodingScheme.instance);
+	}
+
+	@Override
+	public BasePair fromCharacter(Character character) {
+		return BasicDnaEncodingScheme.create(character);
 	}
 	
 	@Override
@@ -119,5 +113,5 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 		default:
 			throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
 		}
-	}	
+	}
 }

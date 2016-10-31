@@ -45,7 +45,7 @@ public class BoundedSuffixTree extends BasicSuffixTree {
 		while (suffixIter.hasNext() && startPos + this.minLength < length)
 		{
 			SuffixTreeNode current = root;
-			// up to max length create or iterate the nodes and add parents.
+			// up to max length fromCharacter or iterate the nodes and add parents.
 			for (int offset = 0; offset < this.maxLength && offset + startPos < text.length(); offset++) {
                 current = current.getOrCreate(text.get(startPos + offset));
 

@@ -33,7 +33,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
     protected abstract T getTestData();
 
     /**
-     * Attempt to create a {@link StringStreamReader} from the path to test
+     * Attempt to fromCharacter a {@link StringStreamReader} from the path to test
      *
      * @param path The path to the file
      * @return The {@link StringStreamReader} to test
