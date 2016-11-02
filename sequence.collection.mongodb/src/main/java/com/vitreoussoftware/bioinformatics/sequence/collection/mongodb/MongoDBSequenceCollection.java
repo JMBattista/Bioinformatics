@@ -1,7 +1,6 @@
 package com.vitreoussoftware.bioinformatics.sequence.collection.mongodb;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
@@ -205,7 +204,7 @@ public class MongoDBSequenceCollection implements SequenceCollection {
 			}
 
 			public Consumer<Sequence> andThen(Consumer<? super Sequence> arg0) {
-				throw new RuntimeException("Called andThen on custom Consume that was not implemented");
+				throw new NotImplementedException("Called andThen on custom Consume that was not implemented");
 			}
 		});
 		

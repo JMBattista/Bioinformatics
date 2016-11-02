@@ -13,48 +13,37 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
     public final class BasicDnaEncodingScheme implements EncodingScheme {
     // Due to a quirk in the java language we have to use the negative sign to set the 8th bit to 1
     // We will restrict usage of the 8th bit to mean 'special thing happening here
-	static final byte NUCLEOTIDE_A =  0b0_00_00_10;
-    static final byte NUCLEOTIDE_C =  0b0_00_10_00;
-    static final byte NUCLEOTIDE_G =  0b0_00_01_00;
-    static final byte NUCLEOTIDE_T =  0b0_00_00_01;
+	private static final byte NUCLEOTIDE_A =  0b0_00_00_10;
+	private static final byte NUCLEOTIDE_C =  0b0_00_10_00;
+	private static final byte NUCLEOTIDE_G =  0b0_00_01_00;
+	private static final byte NUCLEOTIDE_T =  0b0_00_00_01;
 
     public static EncodingScheme instance = new BasicDnaEncodingScheme();
 
 	/**
 	 * Adenine
 	 */
-	public static final BasePair A = createSafe('A');
+	public static final BasePair A = create('A');
 
-    /**
+	/**
      * Cytosine
      */
-    public static final BasePair C = createSafe('C');
+    public static final BasePair C = create('C');
 
-    /**
+	/**
      * Guanine
      */
-    public static final BasePair G = createSafe('G');
+    public static final BasePair G = create('G');
 
-    /**
+	/**
 	 * Thymine
 	 */
-	public static final BasePair T = createSafe('T');
+	public static final BasePair T = create('T');
 
 	/**
 	 * Create an instance of the encoding scheme
 	 */
 	public BasicDnaEncodingScheme() {
-	}
-
-	private static BasePair createSafe(char value) {
-		try {
-			return create(value);
-		}
-		catch (InvalidDnaFormatException e)
-		{
-			// this should never happen because createSafe is called inside the class and controlled to only send valid values
-			throw new RuntimeException("Bad value passed in statically inside AcceptUnknownDnaEncodingScheme");
-		}
 	}
 
 	/**
@@ -66,6 +55,11 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 	public static BasePair create(char nucleotide) throws InvalidDnaFormatException
 	{	
 		return BasePair.create(nucleotide, BasicDnaEncodingScheme.instance);
+	}
+
+	@Override
+	public BasePair fromCharacter(Character character) {
+		return BasicDnaEncodingScheme.create(character);
 	}
 	
 	@Override
@@ -119,5 +113,5 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 		default:
 			throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
 		}
-	}	
+	}
 }

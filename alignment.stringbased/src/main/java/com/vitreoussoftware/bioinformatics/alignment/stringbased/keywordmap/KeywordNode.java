@@ -27,7 +27,7 @@ public class KeywordNode {
     }
 
     /**
-     * Return the existing KeywordNode for the given BasePair if it exists, otherwise create a new node for that BasePair and return it.
+     * Return the existing KeywordNode for the given BasePair if it exists, otherwise fromCharacter a new node for that BasePair and return it.
      * @param bp the key for the node
      * @return the node for the key
      */

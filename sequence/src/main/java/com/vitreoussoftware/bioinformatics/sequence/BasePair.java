@@ -84,7 +84,7 @@ public class BasePair {
 		} catch (InvalidDnaFormatException e) {
 			// this should never fail since the encoding came from the encapsulated BasePair
 			e.printStackTrace();
-			throw new RuntimeException("We hit an unknown basepair encoding converting to string\n");
+			throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
 		}
 	}
 
@@ -94,7 +94,7 @@ public class BasePair {
 		} catch (InvalidDnaFormatException e) {
 			// this should never fail since the encoding came from the encapsulated BasePair
 			e.printStackTrace();
-			throw new RuntimeException("We hit an unknown basepair encoding converting to string\n");
+			throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
 		}
 		
 	}	

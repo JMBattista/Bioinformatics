@@ -83,7 +83,7 @@ trait AlignerTestData {
 
 trait AlignerHelpers extends Matchers {
   /**
-   * Perform any setup necessary to create and return the aligner for use in tests
+   * Perform any setup necessary to fromCharacter and return the aligner for use in tests
    * @return the aligner to use for the tests
    */
   def getAligner() : TextFirstAligner

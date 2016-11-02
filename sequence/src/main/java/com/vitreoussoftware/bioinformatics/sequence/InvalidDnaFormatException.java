@@ -6,6 +6,7 @@ package com.vitreoussoftware.bioinformatics.sequence;
  *
  */
 public class InvalidDnaFormatException extends RuntimeException {
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create an InvalidDnaFormatException with an error message
@@ -15,9 +16,5 @@ public class InvalidDnaFormatException extends RuntimeException {
 		super(error);
 	}
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 }

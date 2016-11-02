@@ -69,7 +69,7 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
                                 remaining--;
                             }
                         } catch (InvalidDnaFormatException e) {
-                            throw new RuntimeException("We encountered a badly encoded set of base pairs inside sequence iterator");
+                            throw new InvalidDnaFormatException("We encountered a badly encoded set of base pairs inside sequence iterator");
                         }
                     }
 
@@ -85,7 +85,7 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
                             index--;
                             return bp;
                         } catch (InvalidDnaFormatException e) {
-                            throw new RuntimeException("We encountered a badly encoded set of base pairs inside sequence iterator");
+                            throw new InvalidDnaFormatException("We encountered a badly encoded set of base pairs inside sequence iterator");
                         }
                     }
 
@@ -137,7 +137,7 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
                         index++;
                     }
                 } catch (InvalidDnaFormatException e) {
-                    throw new RuntimeException("We encountered a badly encoded set of base pairs inside sequence iterator");
+                    throw new InvalidDnaFormatException("We encountered a badly encoded set of base pairs inside sequence iterator");
                 }
             }
 
@@ -153,7 +153,7 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
                     index++;
                     return bp;
                 } catch (InvalidDnaFormatException e) {
-                    throw new RuntimeException("We encountered a badly encoded set of base pairs inside sequence iterator");
+                    throw new InvalidDnaFormatException("We encountered a badly encoded set of base pairs inside sequence iterator");
                 }
             }
 

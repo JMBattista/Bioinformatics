@@ -1,8 +1,12 @@
 package com.vitreoussoftware.bioinformatics.sequence.encoding;
 
+import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import lombok.val;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
@@ -14,8 +18,23 @@ import static org.junit.Assert.assertThat;
  * @author John
  */
 @SuppressWarnings("AccessStaticViaInstance")
-public class BasicDnaEncodingSchemeTest {
+public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
     private BasicDnaEncodingScheme scheme = new BasicDnaEncodingScheme();
+
+    @Override
+    public List<Character> getAcceptedCharacters() {
+        return ImmutableList.of(
+                'A',
+                'T',
+                'C',
+                'G'
+        );
+    }
+
+    @Override
+    public EncodingScheme getEncodingScheme() {
+        return scheme;
+    }
 
     /**
      * Test Equality for AcceptUnkownDnaEncodingScheme default values against byte codes

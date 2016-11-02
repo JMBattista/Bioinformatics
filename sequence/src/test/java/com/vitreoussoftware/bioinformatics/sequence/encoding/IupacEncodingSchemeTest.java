@@ -1,8 +1,11 @@
 package com.vitreoussoftware.bioinformatics.sequence.encoding;
 
+import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
@@ -14,8 +17,35 @@ import static org.junit.Assert.assertThat;
  * @author John
  */
 @SuppressWarnings("AccessStaticViaInstance")
-public class IupacEncodingSchemeTest {
+public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
     private IupacEncodingScheme scheme = new IupacEncodingScheme();
+
+    @Override
+    public List<Character> getAcceptedCharacters() {
+        return ImmutableList.of(
+                'A',
+                'T',
+                'C',
+                'U',
+                'G',
+                'N',
+                'R',
+                'Y',
+                'K',
+                'M',
+                'S',
+                'W',
+                'B',
+                'D',
+                'H',
+                'V'
+        );
+    }
+
+    @Override
+    public EncodingScheme getEncodingScheme() {
+        return scheme;
+    }
 
     /**
      * Test Equality for AcceptUnkownDnaEncodingScheme default values against byte codes

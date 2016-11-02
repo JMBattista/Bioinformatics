@@ -23,17 +23,14 @@ import org.scalatest.prop.PropertyChecks
 /**
  * Base for setting up tests using ScalaTest
  */
-abstract class UnitSpec extends FlatSpec with Matchers with Inside with OptionValues with EitherValues with Inspectors {
-}
+abstract class UnitSpec extends FlatSpec with Matchers with Inside with OptionValues with EitherValues with Inspectors
 
 /**
  * Base for Property based testing
  */
-abstract class PropertySpec extends UnitSpec with PropertyChecks {
-}
+abstract class PropertySpec extends UnitSpec with PropertyChecks
 
 /**
  * Describe / it syntax Behavioral tests
  */
-abstract class BehaviorSpec extends fixture.FunSpec  with Matchers with Inside with OptionValues with EitherValues with Inspectors {
-}
+abstract class BehaviorSpec extends fixture.FunSpec  with Matchers with Inside with OptionValues with EitherValues with Inspectors

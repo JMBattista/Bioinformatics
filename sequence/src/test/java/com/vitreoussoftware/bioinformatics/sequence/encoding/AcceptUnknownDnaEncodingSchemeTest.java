@@ -3,10 +3,13 @@ package com.vitreoussoftware.bioinformatics.sequence.encoding;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+
+import java.util.List;
 
 /**
  * Tests the AcceptUnkownDnaEncodingScheme class
@@ -14,8 +17,37 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
  * @author John
  */
 @SuppressWarnings("AccessStaticViaInstance")
-public class AcceptUnknownDnaEncodingSchemeTest {
+public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
     private AcceptUnknownDnaEncodingScheme scheme = new AcceptUnknownDnaEncodingScheme();
+
+    @Override
+    public List<Character> getAcceptedCharacters() {
+        return ImmutableList.of(
+                'A',
+                'T',
+                'C',
+                'U',
+                'G',
+                'N',
+                'R',
+                'Y',
+                'K',
+                'M',
+                'S',
+                'W',
+                'B',
+                'D',
+                'H',
+                'V',
+                'X',
+                '-'
+        );
+    }
+
+    @Override
+    public EncodingScheme getEncodingScheme() {
+        return scheme;
+    }
 
     /**
      * Test Equality for AcceptUnkownDnaEncodingScheme default values against byte codes
