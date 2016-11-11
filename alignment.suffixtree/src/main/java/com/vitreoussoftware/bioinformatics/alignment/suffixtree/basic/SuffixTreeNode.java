@@ -30,8 +30,7 @@ class SuffixTreeNode {
 	 * @return the node for the key
 	 */
 	SuffixTreeNode getOrCreate(BasePair bp) {
-		if (!children.containsKey(bp))
-		{
+		if (!children.containsKey(bp)) {
 			children.put(bp, new SuffixTreeNode(bp));
 		}
 		
