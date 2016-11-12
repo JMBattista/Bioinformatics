@@ -52,7 +52,7 @@ public class SequenceGeneratorTest {
      * Attempting to create without an encoding scheme fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreateNo_encodingScheme() {
+    public void testCreateNoEncodingScheme() {
         SequenceGenerator.builder()
                 .lengthDistribution(() -> 10)
                 .basePairDistribution(defaultDistribution)

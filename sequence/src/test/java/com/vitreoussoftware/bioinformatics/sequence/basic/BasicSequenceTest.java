@@ -34,14 +34,14 @@ public class BasicSequenceTest {
     }
 
     @Test
-    public void testCreateListBasePairFail_null() {
+    public void testCreateListBasePairFailNull() {
         val sequence = BasicSequence.create(null);
 
         assertThat(sequence.isPresent(), is(false));
     }
 
     @Test
-    public void testCreateListBasePairFail_0len() {
+    public void testCreateListBasePairFail0len() {
         val sequence = BasicSequence.create(ImmutableList.<BasePair>of());
 
         assertThat(sequence.isPresent(), is(false));

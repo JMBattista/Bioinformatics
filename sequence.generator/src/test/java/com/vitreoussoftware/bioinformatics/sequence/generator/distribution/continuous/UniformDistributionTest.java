@@ -30,7 +30,7 @@ public class UniformDistributionTest {
      * Creating with null lower fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreateFail_null_lower() {
+    public void testCreateFailNullLower() {
         UniformDistribution.<Character>builder()
                 .upper(10.0)
                 .build();
@@ -40,7 +40,7 @@ public class UniformDistributionTest {
      * Creating with null upper fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreateFailNull_upper() {
+    public void testCreateFailNullUpper() {
         UniformDistribution.<Character>builder()
                 .lower(10.0)
                 .build();

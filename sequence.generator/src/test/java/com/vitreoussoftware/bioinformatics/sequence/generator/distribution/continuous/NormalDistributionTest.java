@@ -30,7 +30,7 @@ public class NormalDistributionTest {
      * Creating with null mean fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreateFail_null_mean() {
+    public void testCreateFailNullMean() {
         NormalDistribution.<Character>builder()
                 .standardDeviation(10.0)
                 .build();
@@ -40,7 +40,7 @@ public class NormalDistributionTest {
      * Creating with null standardDeviation fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreateFailNull_standardDeviation() {
+    public void testCreateFailNullStandardDeviation() {
         NormalDistribution.<Character>builder()
                 .mean(10.0)
                 .build();
