@@ -25,7 +25,7 @@ public class BasicSequenceTest {
     }
 
     @Test
-    public void testCreate_listBasePair() {
+    public void testCreateListBasePair() {
         val sequence = BasicSequence.create(ImmutableList.of(AcceptUnknownDnaEncodingScheme.A));
 
         assertThat(sequence.isPresent(), is(true));
@@ -34,14 +34,14 @@ public class BasicSequenceTest {
     }
 
     @Test
-    public void testCreate_listBasePair_fail_null() {
+    public void testCreateListBasePairFail_null() {
         val sequence = BasicSequence.create(null);
 
         assertThat(sequence.isPresent(), is(false));
     }
 
     @Test
-    public void testCreate_listBasePair_fail_0len() {
+    public void testCreateListBasePairFail_0len() {
         val sequence = BasicSequence.create(ImmutableList.<BasePair>of());
 
         assertThat(sequence.isPresent(), is(false));

@@ -77,115 +77,115 @@ public class FastqData extends TestData {
         return PATH;
     }
 
-    public String getComplex1_metadata() {
+    public String getComplex1Metadata() {
         return complex1_metadata;
     }
 
-    public String getComplex1_sequence() {
+    public String getComplex1SequenceString() {
         return complex1_sequence;
     }
 
-    public String getComplex1_comments() {
+    public String getComplex1Comments() {
         return complex1_comments;
     }
 
-    public String getComplex1_quality() {
+    public String getComplex1Quality() {
         return complex1_quality;
     }
 
-    public String getComplex2_metadata() {
+    public String getComplex2Metadata() {
         return complex2_metadata;
     }
 
-    public String getComplex2_sequence() {
+    public String getComplex2SequenceString() {
         return complex2_sequence;
     }
 
-    public String getComplex2_comments() {
+    public String getComplex2Comments() {
         return complex2_comments;
     }
 
-    public String getComplex2_quality() {
+    public String getComplex2Quality() {
         return complex2_quality;
     }
 
-    public String getComplex3_metadata() {
+    public String getComplex3Metadata() {
         return complex3_metadata;
     }
 
-    public String getComplex3_sequence() {
+    public String getComplex3SequenceString() {
         return complex3_sequence;
     }
 
-    public String getComplex3_comments() {
+    public String getComplex3Comments() {
         return complex3_comments;
     }
 
-    public String getComplex3_quality() {
+    public String getComplex3Quality() {
         return complex3_quality;
     }
 
-    public String getComplex4_metadata() {
+    public String getComplex4Metadata() {
         return complex4_metadata;
     }
 
-    public String getComplex4_sequence() {
+    public String getComplex4SequenceString() {
         return complex4_sequence;
     }
 
-    public String getComplex4_comments() {
+    public String getComplex4Comments() {
         return complex4_comments;
     }
 
-    public String getComplex4_quality() {
+    public String getComplex4Quality() {
         return complex4_quality;
     }
 
-    public String getComplex5_metadata() {
+    public String getComplex5Metadata() {
         return complex5_metadata;
     }
 
-    public String getComplex5_sequence() {
+    public String getComplex5SequenceString() {
         return complex5_sequence;
     }
 
-    public String getComplex5_comments() {
+    public String getComplex5Comments() {
         return complex5_comments;
     }
 
-    public String getComplex5_quality() {
+    public String getComplex5Quality() {
         return complex5_quality;
     }
 
-    public String getComplex6_metadata() {
+    public String getComplex6Metadata() {
         return complex6_metadata;
     }
 
-    public String getComplex6_sequence() {
+    public String getComplex6SequenceString() {
         return complex6_sequence;
     }
 
-    public String getComplex6_comments() {
+    public String getComplex6Comments() {
         return complex6_comments;
     }
 
-    public String getComplex6_quality() {
+    public String getComplex6Quality() {
         return complex6_quality;
     }
 
-    public String getComplex7_metadata() {
+    public String getComplex7Metadata() {
         return complex7_metadata;
     }
 
-    public String getComplex7_sequence() {
+    public String getComplex7SequenceString() {
         return complex7_sequence;
     }
 
-    public String getComplex7_comments() {
+    public String getComplex7Comments() {
         return complex7_comments;
     }
 
-    public String getComplex7_quality() {
+    public String getComplex7Quality() {
         return complex7_quality;
     }
 

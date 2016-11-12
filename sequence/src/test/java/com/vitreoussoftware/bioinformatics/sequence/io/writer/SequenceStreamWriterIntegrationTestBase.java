@@ -111,7 +111,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
      * Create a FastaFileStreamWriter
      */
     @Test(expected=IOException.class)
-    public void testCreate_notFound() throws Exception {
+    public void testCreateNotFound() throws Exception {
         FastaFileStreamWriter.create("Z:/bobtheexamplefileisnothere.fasta");
     }
 
@@ -119,7 +119,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
      * Read a record from the writer
      */
     @Test
-    public void testReadRecord_simple() throws Exception {
+    public void testReadRecordSimple() throws Exception {
         writeAndCheckSequence(testData.getSimpleSequence());
     }
 
@@ -128,7 +128,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecord_example1() throws Exception {
+    public void testReadRecordExample1() throws Exception {
         writeAndCheckSequence(testData.getRealExample1Sequence());
     }
 
@@ -137,7 +137,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecord_example2() throws Exception {
+    public void testReadRecordExample2() throws Exception {
         writeAndCheckSequence(testData.getRealExample2Sequence());
     }
 
@@ -146,7 +146,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
      * @throws java.io.IOException
      */
     @Test
-    public void testReadRecord_example3() throws Exception {
+    public void testReadRecordExample3() throws Exception {
         writeAndCheckSequence(testData.getRealExample3Sequence());
     }
 
@@ -155,7 +155,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
      * @throws Exception
      */
     @Test
-    public void testReadRecord_autoCloseable() throws Exception {
+    public void testReadRecordAutoCloseable() throws Exception {
         try (SequenceStreamWriter writer = getWriter())
         {
             writer.write(testData.getRealExample1Sequence());

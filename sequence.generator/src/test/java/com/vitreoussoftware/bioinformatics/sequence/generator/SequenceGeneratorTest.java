@@ -52,7 +52,7 @@ public class SequenceGeneratorTest {
      * Attempting to create without an encoding scheme fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreate_no_encodingScheme() {
+    public void testCreateNo_encodingScheme() {
         SequenceGenerator.builder()
                 .lengthDistribution(() -> 10)
                 .basePairDistribution(defaultDistribution)
@@ -64,7 +64,7 @@ public class SequenceGeneratorTest {
      * Attempting to create without an encoding scheme fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreate_no_lengthDistribution() {
+    public void testCreateNoLengthDistribution() {
         SequenceGenerator.builder()
                 .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
                 .basePairDistribution(defaultDistribution)
@@ -76,7 +76,7 @@ public class SequenceGeneratorTest {
      * Attempting to create without an encoding scheme fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreate_no_basePairDistribution() {
+    public void testCreateNoBasePairDistribution() {
         SequenceGenerator.builder()
                 .lengthDistribution(() -> 10)
                 .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
@@ -87,7 +87,7 @@ public class SequenceGeneratorTest {
      * If the length distribution keeps returning 0 we can't create a sequence and should fail.
      */
     @Test(expected = IllegalArgumentException.class)
-    public void testSample_fail_length0() {
+    public void testSampleFailLength0() {
         val generator = SequenceGenerator.builder()
                 .lengthDistribution(() -> 0)
                 .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
@@ -101,7 +101,7 @@ public class SequenceGeneratorTest {
      * We can create a Random sequence generator for length 1
      */
     @Test
-    public void testSample_length1() {
+    public void testSampleLength1() {
         val length = 1;
         val generator = SequenceGenerator.builder()
                 .lengthDistribution(() -> length)
@@ -116,7 +116,7 @@ public class SequenceGeneratorTest {
      * We can create a Random sequence generator for length 10
      */
     @Test
-    public void testSample_length10() {
+    public void testSampleLength10() {
         val length = 10;
         val generator = SequenceGenerator.builder()
                 .lengthDistribution(() -> length)
@@ -132,7 +132,7 @@ public class SequenceGeneratorTest {
      * Test that we can generate a sequence from an {@link EnumeratedDistribution} containing only one element
      */
     @Test
-    public void testSample_canGenerateAs() {
+    public void testSampleCanGenerateAs() {
         val generator = SequenceGenerator.builder()
                 .lengthDistribution(() -> 10)
                 .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
@@ -153,7 +153,7 @@ public class SequenceGeneratorTest {
      * than {@see testSample_canGenerateAs}
      */
     @Test
-    public void testSample_canGenerateTs() {
+    public void testSampleCanGenerateTs() {
         val generator = SequenceGenerator.builder()
                 .lengthDistribution(() -> 10)
                 .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
@@ -173,7 +173,7 @@ public class SequenceGeneratorTest {
      * Test that we can generate a sample {@link Sequence} containing different base pairs
      */
     @Test
-    public void testSample_canGenerateMany() {
+    public void testSampleCanGenerateMany() {
         val length = 100;
         val generator = SequenceGenerator.builder()
                 .lengthDistribution(() -> length)

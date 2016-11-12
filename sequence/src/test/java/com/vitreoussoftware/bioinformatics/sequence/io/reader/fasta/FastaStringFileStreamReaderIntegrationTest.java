@@ -41,7 +41,7 @@ public class FastaStringFileStreamReaderIntegrationTest extends StringFileStream
      * @throws IOException
      */
     @Test
-    public void testReadRecord_alternate() throws IOException {
+    public void testReadRecordAlternate() throws IOException {
         StringStreamReader reader = testData.getAlternateStartingCharacterReader();
 
         assertEquals(testData.getAlternateStartingCharacter1(), reader.next().getValue1());
@@ -54,7 +54,7 @@ public class FastaStringFileStreamReaderIntegrationTest extends StringFileStream
      * @throws Exception
      */
     @Test
-    public void testReadRecords_noSpace() throws Exception {
+    public void testReadRecordsNoSpace() throws Exception {
         try (StringStreamReader reader	= testData.getNoSpaceReader())
         {
             assertNotNull(reader.next().getValue1());
@@ -70,7 +70,7 @@ public class FastaStringFileStreamReaderIntegrationTest extends StringFileStream
      * @throws IOException
      */
     @Test
-    public void testReadRecord_complex1() throws IOException {
+    public void testReadRecordComplex1() throws IOException {
         StringStreamReader reader = testData.getComplexExamplesReader();
 
         Pair<String, String> next = reader.next();
@@ -83,7 +83,7 @@ public class FastaStringFileStreamReaderIntegrationTest extends StringFileStream
      * @throws IOException
      */
     @Test
-    public void testReadRecord_complex2() throws IOException {
+    public void testReadRecordComplex2() throws IOException {
         StringStreamReader reader = testData.getComplexExamplesReader();
 
         reader.next();
@@ -97,7 +97,7 @@ public class FastaStringFileStreamReaderIntegrationTest extends StringFileStream
      * @throws IOException
      */
     @Test
-    public void testReadRecord_complex3() throws IOException {
+    public void testReadRecordComplex3() throws IOException {
         StringStreamReader reader = testData.getComplexExamplesReader();
 
         reader.next();

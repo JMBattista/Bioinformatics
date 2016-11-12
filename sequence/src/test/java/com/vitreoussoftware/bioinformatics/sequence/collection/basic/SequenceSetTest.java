@@ -53,7 +53,7 @@ public class SequenceSetTest {
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test
-	public void testAdd_duplicate() throws InvalidDnaFormatException {
+	public void testAddDuplicate() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.factory.getSequenceCollection();
 		Sequence seq = sequenceFactory.fromString("AATTCCGGUU").get();
 		
@@ -71,7 +71,7 @@ public class SequenceSetTest {
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test
-	public void testContains_sameRef() throws InvalidDnaFormatException {
+	public void testContainsSameRef() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.factory.getSequenceCollection();
 		Sequence seq = sequenceFactory.fromString("AATTCCGGUU").get();
 		sc.add(seq);
@@ -84,7 +84,7 @@ public class SequenceSetTest {
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test
-	public void testContains_diffRef() throws InvalidDnaFormatException {
+	public void testContainsDiffRef() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.factory.getSequenceCollection();
 		sc.add(sequenceFactory.fromString("AATTCCGGUU").get());
 		assertEquals(1,  sc.size());

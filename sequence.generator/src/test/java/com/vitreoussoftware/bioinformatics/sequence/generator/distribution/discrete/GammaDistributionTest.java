@@ -32,7 +32,7 @@ public class GammaDistributionTest {
      * Creating with null scale fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreate_fail_null_scale() {
+    public void testCreateFail_null_scale() {
         GammaDistribution.<Character>builder()
                 .shape(10.0)
                 .build();
@@ -42,7 +42,7 @@ public class GammaDistributionTest {
      * Creating with null shape fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreate_fail_null_shape() {
+    public void testCreateFailNull_shape() {
         GammaDistribution.<Character>builder()
                 .scale(10.0)
                 .build();

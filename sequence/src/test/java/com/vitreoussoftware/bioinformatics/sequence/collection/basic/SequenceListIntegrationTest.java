@@ -30,7 +30,7 @@ public class SequenceListIntegrationTest extends SequenceCollectionTest {
 	 * @throws IOException 
 	 */
 	@Test
-	public void testStreamSource_single() throws InvalidDnaFormatException, IOException {
+	public void testStreamSourceSingle() throws InvalidDnaFormatException, IOException {
         final com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader reader1 = testData.getSimpleExampleReader();
         SequenceStreamReader reader = SequenceStreamReader.builder()
 			.reader(reader1)
@@ -50,7 +50,7 @@ public class SequenceListIntegrationTest extends SequenceCollectionTest {
 	 * @throws IOException 
 	 */
 	@Test
-	public void testStreamSource_multiple() throws InvalidDnaFormatException, IOException {
+	public void testStreamSourceMultiple() throws InvalidDnaFormatException, IOException {
         final com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader reader1 = testData.getRealExamplesReader();
         SequenceStreamReader reader = SequenceStreamReader.builder()
 				.reader(reader1)

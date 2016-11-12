@@ -32,7 +32,7 @@ public class WeibullDistributionTest {
      * Creating with null alpha fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreate_fail_null_alpha() {
+    public void testCreateFail_null_alpha() {
         WeibullDistribution.<Character>builder()
                 .beta(10.0)
                 .build();
@@ -42,7 +42,7 @@ public class WeibullDistributionTest {
      * Creating with null beta fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreate_fail_null_beta() {
+    public void testCreateFailNull_beta() {
         WeibullDistribution.<Character>builder()
                 .alpha(10.0)
                 .build();

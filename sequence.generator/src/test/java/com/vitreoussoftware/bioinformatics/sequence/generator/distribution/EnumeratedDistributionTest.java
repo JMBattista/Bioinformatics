@@ -23,7 +23,7 @@ public class EnumeratedDistributionTest {
      * Creating a {@link EnumeratedDistribution} without any probability mappings fails
      */
     @Test(expected = IllegalArgumentException.class)
-    public void testCreate_no_probability() {
+    public void testCreateNoProbability() {
         EnumeratedDistribution.builder()
                 .build();
     }
@@ -32,7 +32,7 @@ public class EnumeratedDistributionTest {
      * Creating a {@link EnumeratedDistribution} with only a single value works
      */
     @Test
-    public void testCreate_singleLiklihood() {
+    public void testCreateSingleLiklihood() {
         val probability = EnumeratedDistribution.<Character>builder()
                 .probability('A', 1.0)
                 .build();
@@ -44,7 +44,7 @@ public class EnumeratedDistributionTest {
      * Creating a {@link EnumeratedDistribution} with only a multiple values works
      */
     @Test
-    public void testCreate_multipleLiklihoods() {
+    public void testCreateMultipleLiklihoods() {
         val distribution = EnumeratedDistribution.<Character>builder()
                 .probability('A', 0.5)
                 .probability('B', 0.5)
@@ -57,7 +57,7 @@ public class EnumeratedDistributionTest {
      * Creating a {@link EnumeratedDistribution} with only a multiple values works
      */
     @Test
-    public void testCreate_multipleSmallLiklihoods() {
+    public void testCreateMultipleSmallLiklihoods() {
         val distribution = EnumeratedDistribution.<Character>builder()
                 .probability('A', 0.8888889)
                 .probability('C', 0.01)
@@ -82,7 +82,7 @@ public class EnumeratedDistributionTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testCreate_fail_cumulativeProbabilityTooHigh() {
+    public void testCreateFailCumulativeProbabilityTooHigh() {
         EnumeratedDistribution.<Character>builder()
                 .probability('A', 0.5)
                 .probability('B', 0.5)
@@ -91,7 +91,7 @@ public class EnumeratedDistributionTest {
     }
 
     @Test
-    public void testCreate_overSizedNormalized() {
+    public void testCreateOverSizedNormalized() {
         EnumeratedDistribution.<Character>builder()
                 .probability('A', 0.5)
                 .probability('B', 0.5)
@@ -104,7 +104,7 @@ public class EnumeratedDistributionTest {
      * Exception is thrown for an empty list of probabilities if clear is called after adding an element
      */
     @Test(expected = IllegalArgumentException.class)
-    public void testBuild_clearEndsEmpty() {
+    public void testBuildClearEndsEmpty() {
         EnumeratedDistribution.<Character>builder()
                 .probability('A', 1.0)
                 .clearProbabilities()
@@ -115,7 +115,7 @@ public class EnumeratedDistributionTest {
      * Can add a new element after clearing the probabilities
      */
     @Test
-    public void testBuild_clearAdds() {
+    public void testBuildClearAdds() {
         val distribution = EnumeratedDistribution.<Character>builder()
                 .probability('A', 1.0)
                 .clearProbabilities()
@@ -129,7 +129,7 @@ public class EnumeratedDistributionTest {
      * Can add a map of elements via probabilities
      */
     @Test
-    public void testBuild_probabilitiyMap() {
+    public void testBuildProbabilitiyMap() {
         val distribution = EnumeratedDistribution.<Character>builder()
                 .probabilities(ImmutableMap.of('A', 1.0))
                 .build();
@@ -138,7 +138,7 @@ public class EnumeratedDistributionTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testCreate_fail_cumulativeProbabilityTooLow() {
+    public void testCreateFailCumulativeProbabilityTooLow() {
         EnumeratedDistribution.<Character>builder()
                 .probability('A', 0.5)
                 .build();
@@ -149,7 +149,7 @@ public class EnumeratedDistributionTest {
      * //TODO make it a 99.9 confidence interval specifically
      */
     @Test
-    public void testNext_mixed() {
+    public void testNextMixed() {
         val trials = 10000; // 1,000
         EnumeratedDistribution<Character> distribution = EnumeratedDistribution.<Character>builder()
                 .probability('A', 0.5)

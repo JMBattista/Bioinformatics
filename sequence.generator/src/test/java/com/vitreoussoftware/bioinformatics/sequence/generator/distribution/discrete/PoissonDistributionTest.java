@@ -32,7 +32,7 @@ public class PoissonDistributionTest {
      * Creating with null mean fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreate_fail_null_mean() {
+    public void testCreateFail_null_mean() {
         PoissonDistribution.<Character>builder()
                 .epsilon(10.0)
                 .build();
@@ -42,7 +42,7 @@ public class PoissonDistributionTest {
      * Creating with null epsilon fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreate_fail_null_epsilon() {
+    public void testCreateFailNull_epsilon() {
         PoissonDistribution.<Character>builder()
                 .mean(10.0)
                 .build();

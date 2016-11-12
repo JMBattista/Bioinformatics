@@ -54,7 +54,7 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
      */
     @Test
-    public void testEqualityByte_defaultValues() throws InvalidDnaFormatException {
+    public void testEqualityByteDefaultValues() throws InvalidDnaFormatException {
         assertThat(scheme.A, is(scheme.getValue('A')));
         assertThat(scheme.T, is(scheme.getValue('T')));
         assertThat(scheme.C, is(scheme.getValue('C')));
@@ -67,7 +67,7 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
      */
     @Test
-    public void testEquality_toSelf() throws InvalidDnaFormatException {
+    public void testEqualityToSelf() throws InvalidDnaFormatException {
         BasePair bp = scheme.create('A');
         assertThat(bp, is(bp));
     }
@@ -77,7 +77,7 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_defaultValues() throws InvalidDnaFormatException {
+    public void testEqualityDefaultValues() throws InvalidDnaFormatException {
         assertThat(scheme.A, is(scheme.create('A')));
         assertThat(scheme.T, is(scheme.create('T')));
         assertThat(scheme.C, is(scheme.create('C')));
@@ -90,7 +90,7 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_sameStart() throws InvalidDnaFormatException {
+    public void testEqualitySameStart() throws InvalidDnaFormatException {
         assertThat(scheme.create('A'), is(scheme.create('A')));
     }
 
@@ -99,7 +99,7 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_differentCase() throws InvalidDnaFormatException {
+    public void testEqualityDifferentCase() throws InvalidDnaFormatException {
         assertThat(scheme.create('A'), is(scheme.create('a')));
     }
 
@@ -108,7 +108,7 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_notSame() throws InvalidDnaFormatException {
+    public void testEqualityNotSame() throws InvalidDnaFormatException {
         assertFalse(scheme.create('A').equals(scheme.create('T')));
     }
 
@@ -117,7 +117,7 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_againstN() throws InvalidDnaFormatException {
+    public void testEqualityAgainstN() throws InvalidDnaFormatException {
         assertFalse(scheme.create('A').equals(scheme.create('N')));
     }
 
@@ -126,92 +126,92 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_TU() throws InvalidDnaFormatException {
+    public void testEqualityTU() throws InvalidDnaFormatException {
         assertFalse(scheme.create('T').equals(scheme.create('U')));
     }
 
     /**
           */
     @Test
-    public void testCreation_A() throws InvalidDnaFormatException {
+    public void testCreationA() throws InvalidDnaFormatException {
         assertThat("A", is(scheme.create('A').toString()));
     }
 
     /**
           */
     @Test
-    public void testCreation_a() throws InvalidDnaFormatException {
+    public void testCreationLowerA() throws InvalidDnaFormatException {
         assertThat("A", is(scheme.create('a').toString()));
     }
 
     /**
           */
     @Test
-    public void testCreation_T() throws InvalidDnaFormatException {
+    public void testCreationT() throws InvalidDnaFormatException {
         assertThat("T", is(scheme.create('T').toString()));
     }
 
     /**
           */
     @Test
-    public void testCreation_t() throws InvalidDnaFormatException {
+    public void testCreationLowerT() throws InvalidDnaFormatException {
         assertThat("T", is(scheme.create('t').toString()));
     }
 
     /**
           */
     @Test
-    public void testCreation_C() throws InvalidDnaFormatException {
+    public void testCreationC() throws InvalidDnaFormatException {
         assertThat("C", is(scheme.create('C').toString()));
     }
 
     /**
           */
     @Test
-    public void testCreation_c() throws InvalidDnaFormatException {
+    public void testCreationLowerC() throws InvalidDnaFormatException {
         assertThat("C", is(scheme.create('c').toString()));
     }
 
     /**
           */
     @Test
-    public void testCreation_G() throws InvalidDnaFormatException {
+    public void testCreationG() throws InvalidDnaFormatException {
         assertThat("G", is(scheme.create('G').toString()));
     }
 
     /**
           */
     @Test
-    public void testCreation_g() throws InvalidDnaFormatException {
+    public void testCreationLowerG() throws InvalidDnaFormatException {
         assertThat("G", is(scheme.create('g').toString()));
     }
 
     /**
           */
     @Test
-    public void testCreation_U() throws InvalidDnaFormatException {
+    public void testCreationU() throws InvalidDnaFormatException {
         assertThat("U", is(scheme.create('U').toString()));
     }
 
     /**
           */
     @Test
-    public void testCreation_u() throws InvalidDnaFormatException {
+    public void testCreationLowerU() throws InvalidDnaFormatException {
         assertThat("U", is(scheme.create('u').toString()));
     }
 
     @Test
-    public void testCreation_gap() throws InvalidDnaFormatException {
+    public void testCreationGap() throws InvalidDnaFormatException {
         assertThat("-", is(scheme.create('-').toString()));
     }
 
     @Test
-    public void testCreation_masked_x() throws InvalidDnaFormatException {
+    public void testCreationMaskedLowerX() throws InvalidDnaFormatException {
         assertThat("X", is(scheme.create('x').toString()));
     }
 
     @Test
-    public void testCreation_masked_X() throws InvalidDnaFormatException {
+    public void testCreationMaskedX() throws InvalidDnaFormatException {
         assertThat("X", is(scheme.create('X').toString()));
     }
 }

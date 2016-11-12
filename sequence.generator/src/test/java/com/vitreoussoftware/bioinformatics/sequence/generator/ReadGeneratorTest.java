@@ -22,7 +22,7 @@ public class ReadGeneratorTest {
      * Test that we can sample length 1 reads from a length 1 sequence
      */
     @Test
-    public void testSample_fromSingleA() {
+    public void testSampleFromSingleA() {
         val source = BasicSequence.create("A", BasicDnaEncodingScheme.instance).get();
         val generator = ReadGenerator.builder()
                 .lengthDistribution(() -> 1)
@@ -40,7 +40,7 @@ public class ReadGeneratorTest {
      * Test that we can sample length 1 reads from a length 1 sequence
      */
     @Test
-    public void testSample_fromSingleT() {
+    public void testSampleFromSingleT() {
         val source = BasicSequence.create("T", BasicDnaEncodingScheme.instance).get();
         val generator = ReadGenerator.builder()
                 .lengthDistribution(() -> 1)
@@ -56,7 +56,7 @@ public class ReadGeneratorTest {
      * Test that we can sample repeatedly for a set of valid distributions
      */
     @Test
-    public void testSample_repeatInBounds() {
+    public void testSampleRepeatInBounds() {
         val source = BasicSequence.create("TT", BasicDnaEncodingScheme.instance).get();
         val generator = ReadGenerator.builder()
                 .lengthDistribution(() -> (int)(Math.random() * 2))
@@ -74,7 +74,7 @@ public class ReadGeneratorTest {
      * Test that we can sample repeatedly for a set of distributions that can contain invalid values
      */
     @Test
-    public void testSample_repeat() {
+    public void testSampleRepeat() {
         val source = BasicSequence.create("TT", BasicDnaEncodingScheme.instance).get();
         val generator = ReadGenerator.builder()
                 .lengthDistribution(() -> (int)(Math.random() * 4))
@@ -92,7 +92,7 @@ public class ReadGeneratorTest {
      * Test that we can fail when attempting to sample from invalid distributions
      */
     @Test(expected = IllegalArgumentException.class)
-    public void testSample_failsInvalidLength() {
+    public void testSampleFailsInvalidLength() {
         val source = BasicSequence.create("TT", BasicDnaEncodingScheme.instance).get();
         val generator = ReadGenerator.builder()
                 .lengthDistribution(() -> 0)
@@ -106,7 +106,7 @@ public class ReadGeneratorTest {
      * Test that we can fail when attempting to sample from invalid distributions
      */
     @Test(expected = IllegalArgumentException.class)
-    public void testSample_failsInvalidStartPoint() {
+    public void testSampleFailsInvalidStartPoint() {
         val source = BasicSequence.create("TT", BasicDnaEncodingScheme.instance).get();
         val generator = ReadGenerator.builder()
                 .lengthDistribution(() -> 1)

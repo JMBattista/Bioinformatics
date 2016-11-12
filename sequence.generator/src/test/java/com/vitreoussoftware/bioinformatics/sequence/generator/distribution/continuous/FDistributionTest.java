@@ -32,7 +32,7 @@ public class FDistributionTest {
      * Creating with null denominator fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreate_fail_null_denominatorDegreesOfFreedom() {
+    public void testCreateFail_null_denominatorDegreesOfFreedom() {
         FDistribution.<Character>builder()
                 .numeratorDegreesOfFreedom(10.0)
                 .build();
@@ -42,7 +42,7 @@ public class FDistributionTest {
      * Creating with null denominator fails
      */
     @Test(expected = NullPointerException.class)
-    public void testCreate_fail_null_numeratorDegreesOfFreedom() {
+    public void testCreateFailNull_numeratorDegreesOfFreedom() {
         FDistribution.<Character>builder()
                 .denominatorDegreesOfFreedom(10.0)
                 .build();

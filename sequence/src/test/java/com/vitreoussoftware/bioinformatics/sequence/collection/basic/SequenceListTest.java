@@ -51,7 +51,7 @@ public class SequenceListTest extends SequenceCollectionTest {
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test
-	public void testContains_sameRef() throws InvalidDnaFormatException {
+	public void testContainsSameRef() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.getFactory().getSequenceCollection();
 		Sequence seq = sequenceFactory.fromString("AATTCCGGUU").get();
 		sc.add(seq);
@@ -64,7 +64,7 @@ public class SequenceListTest extends SequenceCollectionTest {
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test
-	public void testContains_diffRef() throws InvalidDnaFormatException {
+	public void testContainsDiffRef() throws InvalidDnaFormatException {
 		SequenceCollection sc = this.getFactory().getSequenceCollection();
 		sc.add(sequenceFactory.fromString("AATTCCGGUU").get());
 		assertEquals(1,  sc.size());
