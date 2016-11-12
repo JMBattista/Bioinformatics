@@ -3,7 +3,6 @@ package com.vitreoussoftware.bioinformatics.sequence.encoding;
 import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
-import lombok.val;
 import org.junit.Test;
 
 import java.util.List;

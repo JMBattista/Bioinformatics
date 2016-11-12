@@ -4,7 +4,6 @@ import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
-import lombok.NonNull;
 import lombok.val;
 
 import java.util.Arrays;

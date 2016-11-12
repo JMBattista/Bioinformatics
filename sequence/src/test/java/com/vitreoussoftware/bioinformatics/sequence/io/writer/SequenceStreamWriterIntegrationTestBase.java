@@ -4,7 +4,6 @@ import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.io.TestData;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.writer.fasta.FastaFileStreamWriter;
-import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 

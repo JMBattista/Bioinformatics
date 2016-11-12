@@ -5,8 +5,6 @@ import com.vitreoussoftware.bioinformatics.sequence.generator.distribution.Enume
 import lombok.Builder;
 import lombok.NonNull;
 
-import java.math.BigInteger;
-
 /**
  * Created by John on 10/20/2016.
  */

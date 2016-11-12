@@ -3,8 +3,6 @@ package com.vitreoussoftware.bioinformatics.sequence.generator.distribution;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
-import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
-import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 import lombok.NonNull;
 import lombok.Singular;
 import lombok.val;

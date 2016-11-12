@@ -8,7 +8,6 @@ import com.vitreoussoftware.bioinformatics.sequence.generator.distribution.Enume
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
-import scala.collection.Seq;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;

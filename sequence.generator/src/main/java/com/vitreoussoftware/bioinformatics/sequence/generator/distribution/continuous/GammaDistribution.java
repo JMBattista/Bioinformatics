@@ -1,11 +1,8 @@
 package com.vitreoussoftware.bioinformatics.sequence.generator.distribution.continuous;
 
 import com.vitreoussoftware.bioinformatics.sequence.generator.distribution.ContinuousDistribution;
-import com.vitreoussoftware.bioinformatics.sequence.generator.distribution.DiscreteDistribution;
 import lombok.Builder;
 import lombok.NonNull;
-import org.apache.commons.math3.distribution.NormalDistribution;
-import org.apache.commons.math3.distribution.UniformIntegerDistribution;
 
 /**
  * Gamma Distribution

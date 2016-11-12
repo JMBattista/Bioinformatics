@@ -2,12 +2,11 @@ package com.vitreoussoftware.bioinformatics.sequence.generator;
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence;
-import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.generator.distribution.Distribution;
 import com.vitreoussoftware.bioinformatics.sequence.generator.distribution.EnumeratedDistribution;
-import lombok.Builder;
 import lombok.NonNull;
+import lombok.Builder;
 import lombok.val;
 
 /**

@@ -1,15 +1,15 @@
 package com.vitreoussoftware.bioinformatics.sequence.io.reader;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Optional;
-
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
-import lombok.Builder;
 import lombok.NonNull;
+import lombok.Builder;
 import org.javatuples.Pair;
+
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Optional;
 
 /**
  * A stream reader for pulling in Sequence data from some external source

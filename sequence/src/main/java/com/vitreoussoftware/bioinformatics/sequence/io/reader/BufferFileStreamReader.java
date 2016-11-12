@@ -1,8 +1,8 @@
 package com.vitreoussoftware.bioinformatics.sequence.io.reader;
 
 import com.google.common.base.Preconditions;
-import lombok.Builder;
 import lombok.NonNull;
+import lombok.Builder;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

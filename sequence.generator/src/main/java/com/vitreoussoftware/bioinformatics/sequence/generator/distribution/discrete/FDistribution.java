@@ -1,8 +1,8 @@
 package com.vitreoussoftware.bioinformatics.sequence.generator.distribution.discrete;
 
 import com.vitreoussoftware.bioinformatics.sequence.generator.distribution.DiscreteDistribution;
-import lombok.Builder;
 import lombok.NonNull;
+import lombok.Builder;
 
 /**
  * Discretized F Distribution
