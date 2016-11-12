@@ -1,15 +1,14 @@
 package com.vitreoussoftware.bioinformatics.sequence.generator.distribution;
 
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableMap;
-import com.vitreoussoftware.bioinformatics.sequence.generator.distribution.EnumeratedDistribution;
 import lombok.val;
 import org.junit.Test;
 
-import static junit.framework.TestCase.fail;
+import java.util.stream.IntStream;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.both;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -156,23 +155,14 @@ public class EnumeratedDistributionTest {
                 .probability('T', 0.5)
                 .build();
 
-        int aCount = 0;
-        int tCount = 0;
+        val multiset = HashMultiset.create();
+        IntStream.range(0, trials)
+                .mapToObj(x -> distribution.sample())
+                .forEach(c -> multiset.add(c));
 
-        for (int i = 0; i < trials; i ++) {
-            switch(distribution.sample()) {
-                case 'A':
-                    aCount++;
-                    break;
-                case 'T':
-                    tCount++;
-                    break;
-                default:
-                    fail(String.format("Unexpected BasePair character after %d iterations", i));
-            }
-        }
 
-        assertThat(aCount, is(both(greaterThan((int)(trials*.45))).and(lessThan((int)(trials*.55)))));
-        assertThat(tCount, is(both(greaterThan((int)(trials*.45))).and(lessThan((int)(trials*.55)))));
+        assertThat(multiset.elementSet().toString(), multiset.elementSet().size(), is(2));
+        assertThat(multiset.count('A'), is(both(greaterThan((int)(trials*.45))).and(lessThan((int)(trials*.55)))));
+        assertThat(multiset.count('T'), is(both(greaterThan((int)(trials*.45))).and(lessThan((int)(trials*.55)))));
     }
 }

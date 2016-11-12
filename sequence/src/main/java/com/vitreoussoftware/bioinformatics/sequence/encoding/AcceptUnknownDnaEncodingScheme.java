@@ -135,7 +135,7 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 	 * @return the base pair representation
 	 * @throws InvalidDnaFormatException The given nucleotide was not valid
 	 */
-	public static BasePair create(char nucleotide) throws InvalidDnaFormatException
+	private static BasePair create(char nucleotide) throws InvalidDnaFormatException
 	{	
 		return BasePair.create(nucleotide, AcceptUnknownDnaEncodingScheme.instance);
 	}
