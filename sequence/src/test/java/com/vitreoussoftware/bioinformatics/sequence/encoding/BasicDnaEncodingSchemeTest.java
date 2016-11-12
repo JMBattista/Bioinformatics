@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.DataPoints;
 
 import java.util.List;
 
@@ -20,8 +22,8 @@ import static org.junit.Assert.assertThat;
 public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
     private BasicDnaEncodingScheme scheme = new BasicDnaEncodingScheme();
 
-    @Override
-    public List<Character> getAcceptedCharacters() {
+    @DataPoints
+    public static List<Character> getAcceptedCharacters() {
         return ImmutableList.of(
                 'A',
                 'T',
@@ -30,9 +32,9 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
         );
     }
 
-    @Override
-    public EncodingScheme getEncodingScheme() {
-        return scheme;
+    @DataPoint
+    public static EncodingScheme getEncodingScheme() {
+        return new BasicDnaEncodingScheme();
     }
 
     /**

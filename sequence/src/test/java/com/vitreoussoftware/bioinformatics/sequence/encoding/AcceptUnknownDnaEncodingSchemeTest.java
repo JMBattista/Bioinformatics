@@ -1,15 +1,19 @@
 package com.vitreoussoftware.bioinformatics.sequence.encoding;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
-
 import com.google.common.collect.ImmutableList;
-import org.junit.Test;
-
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import org.junit.Test;
+import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.runner.RunWith;
 
 import java.util.List;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests the AcceptUnkownDnaEncodingScheme class
@@ -20,8 +24,8 @@ import java.util.List;
 public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
     private AcceptUnknownDnaEncodingScheme scheme = new AcceptUnknownDnaEncodingScheme();
 
-    @Override
-    public List<Character> getAcceptedCharacters() {
+    @DataPoints
+    public static List<Character> getAcceptedCharacters() {
         return ImmutableList.of(
                 'A',
                 'T',
@@ -44,9 +48,9 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
         );
     }
 
-    @Override
-    public EncodingScheme getEncodingScheme() {
-        return scheme;
+    @DataPoint
+    public static EncodingScheme getEncodingScheme() {
+        return new AcceptUnknownDnaEncodingScheme();
     }
 
     /**
