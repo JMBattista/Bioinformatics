@@ -158,7 +158,7 @@ public class EnumeratedDistributionTest {
         val multiset = HashMultiset.create();
         IntStream.range(0, trials)
                 .mapToObj(x -> distribution.sample())
-                .forEach(c -> multiset.add(c));
+                .forEach(multiset::add);
 
 
         assertThat(multiset.elementSet().toString(), multiset.elementSet().size(), is(2));
