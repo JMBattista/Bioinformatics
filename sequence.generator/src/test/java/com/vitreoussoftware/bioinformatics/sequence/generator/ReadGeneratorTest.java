@@ -1,9 +1,16 @@
 package com.vitreoussoftware.bioinformatics.sequence.generator;
 
+import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.BasicDnaEncodingScheme;
 import lombok.val;
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
+
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.AnyOf.anyOf;
@@ -16,14 +23,18 @@ import static org.hamcrest.core.IsNull.nullValue;
  *
  * Created by John on 10/27/2016.
  */
+@RunWith(Theories.class)
 public class ReadGeneratorTest {
+
+    @DataPoints
+    public static List<Character> samples = ImmutableList.of('A', 'T', 'C', 'G');
 
     /**
      * Test that we can sample length 1 reads from a length 1 sequence
      */
-    @Test
-    public void testSampleFromSingleA() {
-        val source = BasicSequence.create("A", BasicDnaEncodingScheme.instance).get();
+    @Theory
+    public void theorySampleFromSingle(Character sample) {
+        val source = BasicSequence.create(sample.toString(), BasicDnaEncodingScheme.instance).get();
         val generator = ReadGenerator.builder()
                 .lengthDistribution(() -> 1)
                 .startPointDistribution(() -> 0)
@@ -33,23 +44,7 @@ public class ReadGeneratorTest {
 
         assertThat(read, is(not(nullValue())));
         assertThat(read.length(), is(1));
-        assertThat(read.get(0).toChar(), is('A'));
-    }
-
-    /**
-     * Test that we can sample length 1 reads from a length 1 sequence
-     */
-    @Test
-    public void testSampleFromSingleT() {
-        val source = BasicSequence.create("T", BasicDnaEncodingScheme.instance).get();
-        val generator = ReadGenerator.builder()
-                .lengthDistribution(() -> 1)
-                .startPointDistribution(() -> 0)
-                .build();
-
-        val read = generator.sample(source);
-
-        assertThat(read.toString(), is("T"));
+        assertThat(read.get(0).toChar(), is(sample));
     }
 
     /**
@@ -62,7 +57,6 @@ public class ReadGeneratorTest {
                 .lengthDistribution(() -> (int)(Math.random() * 2))
                 .startPointDistribution(() -> (int)(Math.random() * 2))
                 .build();
-
 
         for (int i = 0; i < 100; i++) {
             val read = generator.sample(source);

@@ -27,7 +27,7 @@ public class EnumeratedDistribution<T> implements Distribution<T> {
 
     /**
      * Create an instance of {@link EnumeratedDistribution} that can be used to generate outputs
-     * @param probabilities Probabilitis for the elements of the distribution
+     * @param probabilities Probabilities for the elements of the distribution
      * @param normalizeProbabilities EnumeratedDistribution values for BP values we want to accept
      *
      * @throws NullPointerException If the encoding scheme is not set
@@ -39,6 +39,8 @@ public class EnumeratedDistribution<T> implements Distribution<T> {
         Preconditions.checkArgument(probabilities.size() > 0, "Cannot create an empty EnumeratedDistribution");
         val list = new LinkedList<Pair<T, Double>>();
 
+        // if the flag is set then we allow the underlying distribution to automatically normalize the probabilities.
+        // if the flag is not set then we check that the probabilities sum to 1 or throw an exception
         if (!normalizeProbabilities) {
             val sum = new BigDecimal(probabilities.values().stream().mapToDouble(x -> x).sum()).setScale(10, BigDecimal.ROUND_HALF_UP);
             if (sum.compareTo(BigDecimal.ONE) != 0 )
@@ -62,6 +64,11 @@ public class EnumeratedDistribution<T> implements Distribution<T> {
         return distribution.sample();
     }
 
+    /**
+     * This {@link Distribution} builder has been de-lomboked to avoid issues with the IntelliJ lombok plugin where
+     *   it will generate invalid builders when a generic class inherits from another generic class.
+     *   https://github.com/mplushnikov/lombok-intellij-plugin/issues/127
+     */
     public static class DiscreteDistributionBuilder<T> {
         private ImmutableMap.Builder<T, Double> probabilities;
         private boolean normalizeProbabilities;
