@@ -21,7 +21,7 @@ public abstract class PersistentSequenceCollectionTest extends SequenceCollectio
      * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
      */
     @Test
-    public void testPersistent_additionDuringIteratiion() throws UnknownHostException, InvalidDnaFormatException {
+    public void testPersistentAdditionDuringIteratiion() throws UnknownHostException, InvalidDnaFormatException {
         SequenceCollection collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
@@ -53,7 +53,7 @@ public abstract class PersistentSequenceCollectionTest extends SequenceCollectio
      * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
      */
     @Test
-    public void testPersistent_deletionDuringIteration() throws UnknownHostException, InvalidDnaFormatException {
+    public void testPersistentDeletionDuringIteration() throws UnknownHostException, InvalidDnaFormatException {
         SequenceCollection collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
@@ -90,7 +90,7 @@ public abstract class PersistentSequenceCollectionTest extends SequenceCollectio
      * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
      */
     @Test
-    public void testPersistent_clearDuringIteration() throws UnknownHostException, InvalidDnaFormatException {
+    public void testPersistentClearDuringIteration() throws UnknownHostException, InvalidDnaFormatException {
         SequenceCollection collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();

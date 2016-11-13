@@ -45,7 +45,7 @@ public class FastaFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
      * Read a third record from the writer
      */
     @Test
-    public void testReadRecord_alternateStartingCharacter_1() throws Exception {
+    public void testReadRecordAlternateStartingCharacter1() throws Exception {
         writeAndCheckSequence(testData.getAlternateStartingCharacter1Sequence());
     }
 
@@ -53,7 +53,7 @@ public class FastaFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
      * Read a third record from the writer
      */
     @Test
-    public void testReadRecord_alternateStartingCharacter_2() throws Exception {
+    public void testReadRecordAlternateStartingCharacter2() throws Exception {
         writeAndCheckSequence(testData.getAlternateStartingCharacter2Sequence());
     }
 
@@ -61,7 +61,7 @@ public class FastaFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
      * Read a third record from the writer
      */
     @Test
-    public void testReadRecord_alternateStartingCharacter_3() throws Exception {
+    public void testReadRecordAlternateStartingCharacter3() throws Exception {
         writeAndCheckSequence(testData.getAlternateStartingCharacter3Sequence());
     }
 
@@ -69,7 +69,7 @@ public class FastaFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
      * Read a record from the writer
      */
     @Test
-    public void testReadRecord_terminatedSequence() throws Exception {
+    public void testReadRecordTerminatedSequence() throws Exception {
         writeAndCheckSequence(testData.getFastaTerminatedSequence());
     }
 
@@ -77,7 +77,7 @@ public class FastaFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
      * Read a second record from the writer
      */
     @Test
-    public void testReadRecord_multilineDescription() throws Exception {
+    public void testReadRecordMultilineDescription() throws Exception {
         writeAndCheckSequence(testData.getFastaMultiLineDescriptionSequence());
     }
 
@@ -85,7 +85,7 @@ public class FastaFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
      * Read a third record from the writer
      */
     @Test
-    public void testReadRecord_largeHeader() throws Exception {
+    public void testReadRecordLargeHeader() throws Exception {
         writeAndCheckSequence(testData.getFastaLargeHeaderSequence());
     }
 }

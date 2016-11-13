@@ -1,15 +1,17 @@
 package com.vitreoussoftware.bioinformatics.sequence.encoding;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
-
 import com.google.common.collect.ImmutableList;
-import org.junit.Test;
-
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import org.junit.Test;
+import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.DataPoints;
 
 import java.util.List;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests the AcceptUnkownDnaEncodingScheme class
@@ -20,8 +22,8 @@ import java.util.List;
 public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
     private AcceptUnknownDnaEncodingScheme scheme = new AcceptUnknownDnaEncodingScheme();
 
-    @Override
-    public List<Character> getAcceptedCharacters() {
+    @DataPoints
+    public static List<Character> getAcceptedCharacters() {
         return ImmutableList.of(
                 'A',
                 'T',
@@ -44,9 +46,9 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
         );
     }
 
-    @Override
-    public EncodingScheme getEncodingScheme() {
-        return scheme;
+    @DataPoint
+    public static EncodingScheme getEncodingScheme() {
+        return new AcceptUnknownDnaEncodingScheme();
     }
 
     /**
@@ -54,7 +56,7 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
      */
     @Test
-    public void testEqualityByte_defaultValues() throws InvalidDnaFormatException {
+    public void testEqualityByteDefaultValues() throws InvalidDnaFormatException {
         assertThat(scheme.A, is(scheme.getValue('A')));
         assertThat(scheme.T, is(scheme.getValue('T')));
         assertThat(scheme.C, is(scheme.getValue('C')));
@@ -67,8 +69,8 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
      */
     @Test
-    public void testEquality_toSelf() throws InvalidDnaFormatException {
-        BasePair bp = scheme.create('A');
+    public void testEqualityToSelf() throws InvalidDnaFormatException {
+        BasePair bp = scheme.fromCharacter('A');
         assertThat(bp, is(bp));
     }
 
@@ -77,12 +79,12 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_defaultValues() throws InvalidDnaFormatException {
-        assertThat(scheme.A, is(scheme.create('A')));
-        assertThat(scheme.T, is(scheme.create('T')));
-        assertThat(scheme.C, is(scheme.create('C')));
-        assertThat(scheme.G, is(scheme.create('G')));
-        assertThat(scheme.U, is(scheme.create('U')));
+    public void testEqualityDefaultValues() throws InvalidDnaFormatException {
+        assertThat(scheme.A, is(scheme.fromCharacter('A')));
+        assertThat(scheme.T, is(scheme.fromCharacter('T')));
+        assertThat(scheme.C, is(scheme.fromCharacter('C')));
+        assertThat(scheme.G, is(scheme.fromCharacter('G')));
+        assertThat(scheme.U, is(scheme.fromCharacter('U')));
     }
 
     /**
@@ -90,8 +92,8 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_sameStart() throws InvalidDnaFormatException {
-        assertThat(scheme.create('A'), is(scheme.create('A')));
+    public void testEqualitySameStart() throws InvalidDnaFormatException {
+        assertThat(scheme.fromCharacter('A'), is(scheme.fromCharacter('A')));
     }
 
     /**
@@ -99,8 +101,8 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_differentCase() throws InvalidDnaFormatException {
-        assertThat(scheme.create('A'), is(scheme.create('a')));
+    public void testEqualityDifferentCase() throws InvalidDnaFormatException {
+        assertThat(scheme.fromCharacter('A'), is(scheme.fromCharacter('a')));
     }
 
     /**
@@ -108,8 +110,8 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_notSame() throws InvalidDnaFormatException {
-        assertFalse(scheme.create('A').equals(scheme.create('T')));
+    public void testEqualityNotSame() throws InvalidDnaFormatException {
+        assertFalse(scheme.fromCharacter('A').equals(scheme.fromCharacter('T')));
     }
 
     /**
@@ -117,8 +119,8 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_againstN() throws InvalidDnaFormatException {
-        assertFalse(scheme.create('A').equals(scheme.create('N')));
+    public void testEqualityAgainstN() throws InvalidDnaFormatException {
+        assertFalse(scheme.fromCharacter('A').equals(scheme.fromCharacter('N')));
     }
 
     /**
@@ -126,92 +128,8 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_TU() throws InvalidDnaFormatException {
-        assertFalse(scheme.create('T').equals(scheme.create('U')));
+    public void testEqualityTU() throws InvalidDnaFormatException {
+        assertFalse(scheme.fromCharacter('T').equals(scheme.fromCharacter('U')));
     }
 
-    /**
-          */
-    @Test
-    public void testCreation_A() throws InvalidDnaFormatException {
-        assertThat("A", is(scheme.create('A').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_a() throws InvalidDnaFormatException {
-        assertThat("A", is(scheme.create('a').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_T() throws InvalidDnaFormatException {
-        assertThat("T", is(scheme.create('T').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_t() throws InvalidDnaFormatException {
-        assertThat("T", is(scheme.create('t').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_C() throws InvalidDnaFormatException {
-        assertThat("C", is(scheme.create('C').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_c() throws InvalidDnaFormatException {
-        assertThat("C", is(scheme.create('c').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_G() throws InvalidDnaFormatException {
-        assertThat("G", is(scheme.create('G').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_g() throws InvalidDnaFormatException {
-        assertThat("G", is(scheme.create('g').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_U() throws InvalidDnaFormatException {
-        assertThat("U", is(scheme.create('U').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_u() throws InvalidDnaFormatException {
-        assertThat("U", is(scheme.create('u').toString()));
-    }
-
-    @Test
-    public void testCreation_gap() throws InvalidDnaFormatException {
-        assertThat("-", is(scheme.create('-').toString()));
-    }
-
-    @Test
-    public void testCreation_masked_x() throws InvalidDnaFormatException {
-        assertThat("X", is(scheme.create('x').toString()));
-    }
-
-    @Test
-    public void testCreation_masked_X() throws InvalidDnaFormatException {
-        assertThat("X", is(scheme.create('X').toString()));
-    }
 }

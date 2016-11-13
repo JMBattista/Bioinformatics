@@ -3,8 +3,9 @@ package com.vitreoussoftware.bioinformatics.sequence.encoding;
 import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
-import lombok.val;
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.DataPoints;
 
 import java.util.List;
 
@@ -21,8 +22,8 @@ import static org.junit.Assert.assertThat;
 public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
     private BasicDnaEncodingScheme scheme = new BasicDnaEncodingScheme();
 
-    @Override
-    public List<Character> getAcceptedCharacters() {
+    @DataPoints
+    public static List<Character> getAcceptedCharacters() {
         return ImmutableList.of(
                 'A',
                 'T',
@@ -31,9 +32,9 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
         );
     }
 
-    @Override
-    public EncodingScheme getEncodingScheme() {
-        return scheme;
+    @DataPoint
+    public static EncodingScheme getEncodingScheme() {
+        return new BasicDnaEncodingScheme();
     }
 
     /**
@@ -41,7 +42,7 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
      */
     @Test
-    public void testEqualityByte_defaultValues() throws InvalidDnaFormatException {
+    public void testEqualityByteDefaultValues() throws InvalidDnaFormatException {
         assertThat(scheme.A, is(scheme.getValue('A')));
         assertThat(scheme.T, is(scheme.getValue('T')));
         assertThat(scheme.C, is(scheme.getValue('C')));
@@ -53,7 +54,7 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
      */
     @Test
-    public void testEquality_toSelf() throws InvalidDnaFormatException {
+    public void testEqualityToSelf() throws InvalidDnaFormatException {
         BasePair bp = scheme.create('A');
         assertThat(bp, is(bp));
     }
@@ -63,7 +64,7 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_defaultValues() throws InvalidDnaFormatException {
+    public void testEqualityDefaultValues() throws InvalidDnaFormatException {
         assertThat(scheme.A, is(scheme.create('A')));
         assertThat(scheme.T, is(scheme.create('T')));
         assertThat(scheme.C, is(scheme.create('C')));
@@ -75,7 +76,7 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_sameStart() throws InvalidDnaFormatException {
+    public void testEqualitySameStart() throws InvalidDnaFormatException {
         assertThat(scheme.create('A'), is(scheme.create('A')));
     }
 
@@ -84,7 +85,7 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_differentCase() throws InvalidDnaFormatException {
+    public void testEqualityDifferentCase() throws InvalidDnaFormatException {
         assertThat(scheme.create('A'), is(scheme.create('a')));
     }
 
@@ -93,7 +94,7 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test
-    public void testEquality_notSame() throws InvalidDnaFormatException {
+    public void testEqualityNotSame() throws InvalidDnaFormatException {
         assertFalse(scheme.create('A').equals(scheme.create('T')));
     }
 
@@ -102,7 +103,7 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test(expected = InvalidDnaFormatException.class)
-    public void testEquality_againstN() throws InvalidDnaFormatException {
+    public void testEqualityAgainstN() throws InvalidDnaFormatException {
         scheme.create('A').equals(scheme.create('N'));
     }
 
@@ -111,79 +112,7 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      *
           */
     @Test(expected = InvalidDnaFormatException.class)
-    public void testEquality_TU() throws InvalidDnaFormatException {
+    public void testEqualityTU() throws InvalidDnaFormatException {
         scheme.create('T').equals(scheme.create('U'));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_A() throws InvalidDnaFormatException {
-        assertThat("A", is(scheme.create('A').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_a() throws InvalidDnaFormatException {
-        assertThat("A", is(scheme.create('a').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_T() throws InvalidDnaFormatException {
-        assertThat("T", is(scheme.create('T').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_t() throws InvalidDnaFormatException {
-        assertThat("T", is(scheme.create('t').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_C() throws InvalidDnaFormatException {
-        assertThat("C", is(scheme.create('C').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_c() throws InvalidDnaFormatException {
-        assertThat("C", is(scheme.create('c').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_G() throws InvalidDnaFormatException {
-        assertThat("G", is(scheme.create('G').toString()));
-    }
-
-    /**
-          */
-    @Test
-    public void testCreation_g() throws InvalidDnaFormatException {
-        assertThat("G", is(scheme.create('g').toString()));
-    }
-
-    /**
-     * U is not supported in this encoding scheme, break
-     */
-    @Test(expected = InvalidDnaFormatException.class)
-    public void testCreation_U() throws InvalidDnaFormatException {
-        scheme.create('U');
-    }
-
-    /**
-     * u is not supported in this encoding scheme, break
-      */
-    @Test(expected = InvalidDnaFormatException.class)
-    public void testCreation_u() throws InvalidDnaFormatException {
-        scheme.create('u');
     }
 }

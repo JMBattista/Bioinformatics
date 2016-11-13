@@ -1,6 +1,7 @@
 package com.vitreoussoftware.bioinformatics.sequence;
 
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
+import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,6 +9,7 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 /**
@@ -32,7 +34,7 @@ public class SequenceTest {
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test
-	public void testCreation_nominal() throws InvalidDnaFormatException {
+	public void testCreationNominal() throws InvalidDnaFormatException {
 		final String basis = "AATT";
 		
 		Sequence seq = this.factory.fromString(basis).get();
@@ -45,7 +47,7 @@ public class SequenceTest {
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test
-	public void testCreation_full() throws InvalidDnaFormatException {
+	public void testCreationFull() throws InvalidDnaFormatException {
 		final String basis = "AATTCCGGUU";
 		
 		Sequence seq = this.factory.fromString(basis).orElseThrow(() -> new InvalidDnaFormatException("TODO update this exception"));
@@ -58,7 +60,7 @@ public class SequenceTest {
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test(expected=InvalidDnaFormatException.class)
-	public void testCreation_badData() throws InvalidDnaFormatException {
+	public void testCreationBadData() throws InvalidDnaFormatException {
 		final String basis = "AATT132";
 		
 		// We expect an error here so don't do anything about it!
@@ -70,7 +72,7 @@ public class SequenceTest {
      * @throws InvalidDnaFormatException
      */
     @Test
-    public void testCreation_optional() {
+    public void testCreationOptional() {
         final String basis = "AATT132";
 
         // We expect an error here so don't do anything about it!
@@ -85,7 +87,7 @@ public class SequenceTest {
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test(expected=InvalidDnaFormatException.class)
-	public void testCreation_empty() throws InvalidDnaFormatException {
+	public void testCreationEmpty() throws InvalidDnaFormatException {
 		final String basis = "";
 		
 		// We expect an error here so don't do anything about it!
@@ -97,7 +99,7 @@ public class SequenceTest {
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test
-	public void testEquals_sameRef() throws InvalidDnaFormatException {
+	public void testEqualsSameRef() throws InvalidDnaFormatException {
 		final String basis = "AATTCCGGUU";
 		
 		Sequence seq = this.factory.fromString(basis).get();
@@ -110,7 +112,7 @@ public class SequenceTest {
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test
-	public void testEquals_diffRef() throws InvalidDnaFormatException {
+	public void testEqualsDiffRef() throws InvalidDnaFormatException {
 		final String basis = "AATTCCGGUU";
 		
 		Sequence seq1 = this.factory.fromString(basis).get();
@@ -124,7 +126,7 @@ public class SequenceTest {
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test
-	public void testHashCode_sameRef() throws InvalidDnaFormatException {
+	public void testHashCodeSameRef() throws InvalidDnaFormatException {
 		final String basis = "AATTCCGGUU";
 		
 		Sequence seq = this.factory.fromString(basis).get();
@@ -137,7 +139,7 @@ public class SequenceTest {
 	 * @throws InvalidDnaFormatException 
 	 */
 	@Test
-	public void testHashCode_diffRef() throws InvalidDnaFormatException {
+	public void testHashCodeDiffRef() throws InvalidDnaFormatException {
 		final String basis = "AATTCCGGUU";
 		
 		Sequence seq1 = this.factory.fromString(basis).get();
@@ -147,7 +149,7 @@ public class SequenceTest {
 	}
 
     @Test
-    public void testIterator_basic() {
+    public void testIteratorBasic() {
         final Sequence seq = this.factory.fromString("ATCGU").get();
 
         final Iterator<BasePair> iterator = seq.iterator();
@@ -161,7 +163,7 @@ public class SequenceTest {
     }
 
     @Test
-    public void testIterator_forEachRemaining() {
+    public void testIteratorForEachRemaining() {
         final Sequence seq = this.factory.fromString("ATCGU").get();
 
         for (int i = 0; i < seq.length(); i++) {
@@ -174,5 +176,62 @@ public class SequenceTest {
             iterator.forEachRemaining(x -> remainingCount.incrementAndGet());
             assertEquals("Number of remaining elements was wrong", seq.length()-i, remainingCount.get());
         }
+    }
+
+    @Test
+	public void testForEach() {
+		final Sequence sequence = this.factory.fromString("AAAA").get();
+
+		sequence.forEach(bp -> assertThat(bp.toChar(), is('A')));
+	}
+
+	/**
+	 * Ensure we can use forEach to iterate over a sequence
+	 */
+	@Test
+	public void testStreamForEach() {
+		final Sequence sequence = this.factory.fromString("AAAA").get();
+
+		sequence.stream()
+				.map(bp -> bp.toChar())
+				.forEach(bp -> assertThat(bp, is('A')));
+	}
+
+    /**
+     * Ensure that we iterate through the correct number of base pairs
+     */
+    @Test
+    public void testStreamCount() {
+        val expectedLength = (long)(Math.random() * 100);
+        val sb = new StringBuilder();
+        for (int i = 0; i < expectedLength; i++) {
+            sb.append('A');
+        }
+        final Sequence sequence = this.factory.fromString(sb.toString()).get();
+
+        val actualLength =sequence.stream()
+                .map(bp -> 1)
+                .count();
+
+        assertThat(actualLength, is(expectedLength));
+    }
+
+    /**
+     * Ensure that we iterate through the correct number of base pairs
+     */
+    @Test
+    public void testparallelStreamCount() {
+        val expectedLength = (long)(Math.random() * 100);
+        val sb = new StringBuilder();
+        for (int i = 0; i < expectedLength; i++) {
+            sb.append('A');
+        }
+        final Sequence sequence = this.factory.fromString(sb.toString()).get();
+
+        val actualLength =sequence.parallelStream()
+                .map(bp -> 1)
+                .count();
+
+        assertThat(actualLength, is(expectedLength));
     }
 }

@@ -1,12 +1,12 @@
 package com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.BufferFileStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
 import lombok.NonNull;
 import org.javatuples.Pair;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * File stream reader for FASTA data files

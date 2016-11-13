@@ -110,7 +110,9 @@ public class Walkers {
             boolean result = false;
             @Override
             public boolean isFinished(Integer metadata) {
-                return (result = metadata.equals(pattern.length()));
+                result = metadata.equals(pattern.length());
+
+                return result;
             }
 
             @Override

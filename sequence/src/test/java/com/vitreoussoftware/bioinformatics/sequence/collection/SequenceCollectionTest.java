@@ -91,7 +91,7 @@ public abstract class SequenceCollectionTest {
 	 * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
 	 */
 	@Test
-	public void testAddAllSequences_many() throws UnknownHostException, InvalidDnaFormatException {
+	public void testAddAllSequencesMany() throws UnknownHostException, InvalidDnaFormatException {
 		SequenceCollection collection = getFactory().getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();
@@ -115,7 +115,7 @@ public abstract class SequenceCollectionTest {
 	 * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
 	 */
 	@Test
-	public void testContains_single() throws UnknownHostException, InvalidDnaFormatException {
+	public void testContainsSingle() throws UnknownHostException, InvalidDnaFormatException {
 		SequenceCollection collection = getFactory().getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();
@@ -135,7 +135,7 @@ public abstract class SequenceCollectionTest {
 	 * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
 	 */
 	@Test
-	public void testContains_canFailShorter() throws UnknownHostException, InvalidDnaFormatException {
+	public void testContainsCanFailShorter() throws UnknownHostException, InvalidDnaFormatException {
 		SequenceCollection collection = getFactory().getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();
@@ -156,7 +156,7 @@ public abstract class SequenceCollectionTest {
 	 * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
 	 */
 	@Test
-	public void testContains_canFailLonger() throws UnknownHostException, InvalidDnaFormatException {
+	public void testContainsCanFailLonger() throws UnknownHostException, InvalidDnaFormatException {
 		SequenceCollection collection = getFactory().getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();
@@ -177,7 +177,7 @@ public abstract class SequenceCollectionTest {
 	 * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
 	 */
 	@Test
-	public void testContainsAll_single() throws UnknownHostException, InvalidDnaFormatException {
+	public void testContainsAllSingle() throws UnknownHostException, InvalidDnaFormatException {
 		SequenceCollection collection = getFactory().getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();
@@ -199,7 +199,7 @@ public abstract class SequenceCollectionTest {
 	 * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
 	 */
 	@Test
-	public void testContainsAll_singleCanFail() throws UnknownHostException, InvalidDnaFormatException {
+	public void testContainsAllSingleCanFail() throws UnknownHostException, InvalidDnaFormatException {
 		SequenceCollection collection = getFactory().getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();
@@ -222,7 +222,7 @@ public abstract class SequenceCollectionTest {
 	 * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
 	 */
 	@Test
-	public void testContainsAll_multiple() throws UnknownHostException, InvalidDnaFormatException {
+	public void testContainsAllMultiple() throws UnknownHostException, InvalidDnaFormatException {
 		SequenceCollection collection = getFactory().getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();
@@ -250,7 +250,7 @@ public abstract class SequenceCollectionTest {
 	 * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
 	 */
 	@Test
-	public void testContainsAll_multipleCanFail() throws UnknownHostException, InvalidDnaFormatException {
+	public void testContainsAllMultipleCanFail() throws UnknownHostException, InvalidDnaFormatException {
 		SequenceCollection collection = getFactory().getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();
@@ -340,7 +340,7 @@ public abstract class SequenceCollectionTest {
 	 * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
 	 */
 	@Test
-	public void testIterator_remove() throws UnknownHostException, InvalidDnaFormatException {
+	public void testIteratorRemove() throws UnknownHostException, InvalidDnaFormatException {
 		SequenceCollection collection = getFactory().getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();
@@ -382,7 +382,7 @@ public abstract class SequenceCollectionTest {
 	 * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
 	 */
 	@Test
-	public void testIterator_forEachRemaining() throws UnknownHostException, InvalidDnaFormatException {
+	public void testIteratorForEachRemaining() throws UnknownHostException, InvalidDnaFormatException {
 		final SequenceCollection collection = getFactory().getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 		collection.clear();

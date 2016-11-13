@@ -47,7 +47,7 @@ public class MongoDBSequenceCollectionFactoryIT extends SequenceCollectionFactor
 	 * @throws UnknownHostException Failed to connect 
 	 */
 	@Test(expected=UnknownHostException.class)
-	public void testCreateFactory_canFail() throws UnknownHostException {
+	public void testCreateFactoryCanFail() throws UnknownHostException {
 		SequenceCollectionFactory collectionFactory = new MongoDBSequenceCollectionFactory("SXKSAkasdglak@#@KASGlsldfs", 27017, "testSeq", "testColl");
 		fail("We should not have been able to successfully initialize the factory without a connection to the DB");
 	}

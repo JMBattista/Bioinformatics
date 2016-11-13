@@ -68,7 +68,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      * Test the failure of creating a {@link StringStreamReader} for an invalid file path
      */
     @Test
-    public void testCreate_notFoundAutoCloseable() throws FileNotFoundException {
+    public void testCreateNotFoundAutoCloseable() throws FileNotFoundException {
         try (StringStreamReader reader = getReader(getNonExistantPath())) {
             fail("This should not be reachable");
         } catch (FileNotFoundException e) {
@@ -82,7 +82,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      * Test reading a the 'simple' record value
      */
     @Test
-    public void testReadRecord_simple() throws IOException {
+    public void testReadRecordSimple() throws IOException {
         StringStreamReader reader = testData.getSimpleExampleReader();
 
         assertThat(reader.next().getValue1(), is(testData.getSimpleRecord()));
@@ -92,7 +92,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      * Read a record from the reader
      */
     @Test
-    public void testReadRecord_example1() throws IOException {
+    public void testReadRecordExample1() throws IOException {
         StringStreamReader reader = testData.getRealExamplesReader();
 
         assertThat(reader.next().getValue1(), is(testData.getRealExample1()));
@@ -102,7 +102,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      * Read a second record from the reader
      */
     @Test
-    public void testReadRecord_example2() throws IOException {
+    public void testReadRecordExample2() throws IOException {
         StringStreamReader reader = testData.getRealExamplesReader();
 
         assertThat(reader.next().getValue1(), is(testData.getRealExample1()));
@@ -113,7 +113,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      * Read a third record from the reader
      */
     @Test
-    public void testReadRecord_example3() throws IOException {
+    public void testReadRecordExample3() throws IOException {
         StringStreamReader reader = testData.getRealExamplesReader();
 
         assertThat(reader.next().getValue1(), is(testData.getRealExample1()));
@@ -125,7 +125,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      * Read a third record from the reader
      */
     @Test
-    public void testReadRecord_autoCloseable() throws Exception {
+    public void testReadRecordAutoCloseable() throws Exception {
         try (StringStreamReader reader = testData.getRealExamplesReader()) {
             assertThat(reader.next().getValue1(), is(testData.getRealExample1()));
             assertThat(reader.next().getValue1(), is(testData.getRealExample2()));
@@ -139,7 +139,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      * Read a third record from the reader
      */
     @Test
-    public void testReadRecords_gapped() throws Exception {
+    public void testReadRecordsGapped() throws Exception {
         try (StringStreamReader reader = testData.getExtraNewlineReader()) {
             assertNotNull(reader.next().getValue1());
             assertNotNull(reader.next().getValue1());
@@ -153,7 +153,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      * Test that hasNext() returns false on an empty file
      */
     @Test
-    public void testHasNext_empty() throws Exception {
+    public void testHasNextEmpty() throws Exception {
         StringStreamReader reader = testData.getEmptyReader();
 
         assertThat(reader.hasNext(), is(false));
@@ -163,7 +163,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      * Test that hasNext() returns false on an empty file
      */
     @Test
-    public void testHasNext_whiteSpace() throws Exception {
+    public void testHasNextWhiteSpace() throws Exception {
         StringStreamReader reader = testData.getEmptyWhiteSpaceReader();
 
         assertThat(reader.hasNext(), is(false));
@@ -173,7 +173,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      * Read a third record from the reader
      */
     @Test
-    public void testReadRecord_paged() throws IOException {
+    public void testReadRecordPaged() throws IOException {
         StringStreamReader reader = testData.getPagingRequiredReader();
 
         int index = 0;
@@ -191,7 +191,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      * Read a third record from the reader
      */
     @Test
-    public void testReadRecords_paged1() throws IOException {
+    public void testReadRecordsPaged1() throws IOException {
         StringStreamReader reader = testData.getPagingRequiredReader(1);
 
         int index = 0;
@@ -221,7 +221,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      * Read a third record from the reader
      */
     @Test
-    public void testReadRecords_paged10() throws IOException {
+    public void testReadRecordsPaged10() throws IOException {
         StringStreamReader reader = testData.getPagingRequiredReader(10);
 
         int index = 0;
@@ -239,7 +239,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      * Read a third record from the reader
      */
     @Test
-    public void testReadRecords_paged100() throws IOException {
+    public void testReadRecordsPaged100() throws IOException {
         StringStreamReader reader = testData.getPagingRequiredReader(100);
 
         int index = 0;

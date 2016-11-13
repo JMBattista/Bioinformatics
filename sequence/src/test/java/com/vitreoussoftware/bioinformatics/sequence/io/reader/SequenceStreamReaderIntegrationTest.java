@@ -30,7 +30,7 @@ public class SequenceStreamReaderIntegrationTest {
      * Test that the {@link SequenceStreamReader} can be constructed as an auto-closable
      */
     @Test
-    public void testReadRecord_autoCloseable() throws Exception {
+    public void testReadRecordAutoCloseable() throws Exception {
         try (SequenceStreamReader reader = getReader(testData.getRealExamplesReader()))
         {
             assertThat("First record could not be parsed", reader.next().isPresent(), is(true));
@@ -45,7 +45,7 @@ public class SequenceStreamReaderIntegrationTest {
      * Test that we can read from some of the sample inputs
      */
     @Test
-    public void testReadRecords_gapped() throws Exception {
+    public void testReadRecordsGapped() throws Exception {
         try (SequenceStreamReader reader = getReader(testData.getExtraNewlineReader()))
         {
             assertThat("First record could not be parsed", reader.next().isPresent(), is(true));
@@ -60,7 +60,7 @@ public class SequenceStreamReaderIntegrationTest {
      * Test that we can read from some of the sample inputs that require paging
      */
     @Test
-    public void testReadRecord_paged() throws IOException {
+    public void testReadRecordPaged() throws IOException {
 
         SequenceStreamReader reader = getReader(testData.getPagingRequiredReader());
 

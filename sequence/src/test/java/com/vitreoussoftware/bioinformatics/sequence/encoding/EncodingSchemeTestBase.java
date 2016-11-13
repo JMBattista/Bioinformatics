@@ -1,39 +1,70 @@
 package com.vitreoussoftware.bioinformatics.sequence.encoding;
 
 import lombok.val;
-import org.junit.Test;
-
-import java.util.List;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
+ * These theories require that there is an @DataPoints array of the supported {@link Character}s and a
+ *   @DataPoint with the {@link EncodingScheme
  * Created by John on 10/30/2016.
  */
+@RunWith(Theories.class)
 public abstract class EncodingSchemeTestBase {
-    public abstract List<Character> getAcceptedCharacters();
+    /**
+     * Ensure that the base pair created from a character can be converted back to that character
+     */
+    @Theory
+    public void theoryBasePairConversion(EncodingScheme scheme, Character character) {
+            val basePair = scheme.fromCharacter(character);
 
-    public abstract EncodingScheme getEncodingScheme();
+            assertThat("Failed for character " + character, basePair.toChar(), is(character));
+    }
 
     /**
-     * Loop through the set of {@see acceptedCharacters} for this {@link EncodingScheme} and perform some sanity
-     *   checks on those values.
+     * Ensure that the encoded byte for a character can be converted back to that character
      */
-    @Test
-    public void testConsistency() {
-        val acceptedCharacters = getAcceptedCharacters();
-        val scheme = getEncodingScheme();
-
-        for (int i = 0; i < acceptedCharacters.size(); i++) {
-            val character = acceptedCharacters.get(i);
-            val basePairFromCharacter = scheme.fromCharacter(character);
+    @Theory
+    public void theoryEncodedByteConversion(EncodingScheme scheme, Character character) {
             val encodedByte = scheme.getValue(character);
-            val basePairFromByte = scheme.toBasePair(encodedByte);
 
-            assertThat("Failed for character " + character, basePairFromCharacter.toChar(), is(character));
             assertThat("Failed for character " + character, scheme.toChar(encodedByte), is(character));
-            assertThat("Failed for character " + character, basePairFromCharacter, is(basePairFromByte));
-        }
+    }
+
+
+    /**
+     * Ensure that the base pair created from a character is the same as the basepair created from the chars encoded byte
+     */
+    @Theory
+    public void theoryBasePairEquality(EncodingScheme scheme, Character character) {
+        val basePairFromCharacter = scheme.fromCharacter(character);
+        val encodedByte = scheme.getValue(character);
+        val basePairFromByte = scheme.toBasePair(encodedByte);
+
+        assertThat("Failed for character " + character, basePairFromCharacter, is(basePairFromByte));
+    }
+
+    /**
+     * Ensure that the BasePair toString is correct
+     */
+    @Theory
+    public void theoryBasePairToString(EncodingScheme scheme, Character character) {
+        val basePair = scheme.fromCharacter(character);
+
+        assertThat(character.toString(), is(basePair.toString()));
+    }
+
+    /**
+     * Ensure that the BasePair toString is correct
+     */
+    @Theory
+    public void theoryBasePairToStringFromLower(EncodingScheme scheme, Character character) {
+        val basePair = scheme.fromCharacter(Character.toLowerCase(character));
+
+        assertThat(character.toString(), is(basePair.toString()));
     }
 }

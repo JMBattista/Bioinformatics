@@ -4,8 +4,10 @@ import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
+import lombok.val;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,6 +24,31 @@ public class BasicSequence implements Sequence {
 	{
 		this.encodingScheme = encodingSheme;
 	}
+
+    /**
+     * Create a new Sequence from a l{@link List<BasePair>}. We assume the first {@link BasePair} represents the
+	 *   {@link EncodingScheme} of the whole {@link List<BasePair>}. If you have mixed {@link EncodingScheme} in the
+	 *   {@link List<BasePair>} the {@link Sequence} won't work properly.
+	 *
+     * @param sequence the {@link List<BasePair>} that make up this {@link Sequence}
+     * @return the encoded {@link Sequence} created from the {@see sequence}
+     */
+    public static Optional<Sequence> create(final List<BasePair> sequence)
+    {
+		if (sequence == null || sequence.size() == 0)
+			return Optional.empty();
+
+		val encodingSheme = sequence.get(0).getEncodingScheme();
+        val seq = new BasicSequence(encodingSheme);
+
+		seq.sequence = new byte[sequence.size()];
+		val iter = sequence.iterator();
+		for (int i = 0; i < sequence.size(); i++) {
+			seq.sequence[i] = seq.encodingScheme.getValue(iter.next().toChar());
+		}
+
+		return Optional.of(seq);
+    }
 
     /**
      * Create a new Sequence from a string and the given encoding scheme
@@ -107,7 +134,7 @@ public class BasicSequence implements Sequence {
 		}
 		return sb.toString();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

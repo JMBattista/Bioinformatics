@@ -44,7 +44,7 @@ public class FastqFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
      * Read a record from the writer
      */
     @Test
-    public void testReadRecord_complex1() throws Exception {
+    public void testReadRecordComplex1() throws Exception {
         writeAndCheckSequence(testData.getComplex1Sequence());
     }
 
@@ -52,7 +52,7 @@ public class FastqFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
      * Read a record from the writer
      */
     @Test
-    public void testReadRecord_complex2() throws Exception {
+    public void testReadRecordComplex2() throws Exception {
         writeAndCheckSequence(testData.getComplex2Sequence());
     }
 
@@ -60,7 +60,7 @@ public class FastqFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
      * Read a record from the writer
      */
     @Test
-    public void testReadRecord_complex3() throws Exception {
+    public void testReadRecordComplex3() throws Exception {
         writeAndCheckSequence(testData.getComplex3Sequence());
     }
 
@@ -68,7 +68,7 @@ public class FastqFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
      * Read a record from the writer
      */
     @Test
-    public void testReadRecord_complex4() throws Exception {
+    public void testReadRecordComplex4() throws Exception {
         writeAndCheckSequence(testData.getComplex4Sequence());
     }
 
@@ -76,7 +76,7 @@ public class FastqFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
      * Read a record from the writer
      */
     @Test
-    public void testReadRecord_complex5() throws Exception {
+    public void testReadRecordComplex5() throws Exception {
         writeAndCheckSequence(testData.getComplex5Sequence());
     }
 
@@ -84,7 +84,7 @@ public class FastqFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
      * Read a record from the writer
      */
     @Test
-    public void testReadRecord_complex6() throws Exception {
+    public void testReadRecordComplex6() throws Exception {
         writeAndCheckSequence(testData.getComplex6Sequence());
     }
 
@@ -92,7 +92,7 @@ public class FastqFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
      * Read a record from the writer
      */
     @Test
-    public void testReadRecord_complex7() throws Exception {
+    public void testReadRecordComplex7() throws Exception {
         writeAndCheckSequence(testData.getComplex7Sequence());
     }
 }

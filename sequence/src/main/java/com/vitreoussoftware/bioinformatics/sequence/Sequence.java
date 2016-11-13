@@ -1,12 +1,12 @@
 package com.vitreoussoftware.bioinformatics.sequence;
 
+import com.vitreoussoftware.collections.Streamable;
+
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import com.vitreoussoftware.collections.Streamable;
 
 /**
  * A DNA Sequence representation
@@ -14,6 +14,9 @@ import com.vitreoussoftware.collections.Streamable;
  *
  */
 public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
+
+    String INVALID_BASEPAIR_ERROR = "We encountered a badly encoded set of base pairs inside sequence iterator";
+
     /**
 	 * Get the BasePair at the specified index
 	 * @param index the index to get the BasePair from
@@ -69,7 +72,7 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
                                 remaining--;
                             }
                         } catch (InvalidDnaFormatException e) {
-                            throw new InvalidDnaFormatException("We encountered a badly encoded set of base pairs inside sequence iterator");
+                            throw new InvalidDnaFormatException(INVALID_BASEPAIR_ERROR);
                         }
                     }
 
@@ -85,7 +88,7 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
                             index--;
                             return bp;
                         } catch (InvalidDnaFormatException e) {
-                            throw new InvalidDnaFormatException("We encountered a badly encoded set of base pairs inside sequence iterator");
+                            throw new InvalidDnaFormatException(INVALID_BASEPAIR_ERROR);
                         }
                     }
 
@@ -137,7 +140,7 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
                         index++;
                     }
                 } catch (InvalidDnaFormatException e) {
-                    throw new InvalidDnaFormatException("We encountered a badly encoded set of base pairs inside sequence iterator");
+                    throw new InvalidDnaFormatException(INVALID_BASEPAIR_ERROR);
                 }
             }
 
@@ -153,7 +156,7 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
                     index++;
                     return bp;
                 } catch (InvalidDnaFormatException e) {
-                    throw new InvalidDnaFormatException("We encountered a badly encoded set of base pairs inside sequence iterator");
+                    throw new InvalidDnaFormatException(INVALID_BASEPAIR_ERROR);
                 }
             }
 
@@ -183,7 +186,7 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
 
         @Override
         public boolean tryAdvance(Consumer<? super BasePair> action) {
-            if (origin <= fence) {
+            if (origin < fence) {
                 action.accept(sequence.get(origin));
                 origin++;
                 return true;
