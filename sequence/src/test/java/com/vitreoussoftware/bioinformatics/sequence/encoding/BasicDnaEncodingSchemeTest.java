@@ -3,6 +3,7 @@ package com.vitreoussoftware.bioinformatics.sequence.encoding;
 import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import org.javatuples.Pair;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.DataPoints;
@@ -29,6 +30,14 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
                 'T',
                 'C',
                 'G'
+        );
+    }
+
+    @DataPoints
+    public static List<Pair<Character, Character>> getFlipPairs() {
+        return ImmutableList.of(
+                Pair.with('A', 'T'),
+                Pair.with('C', 'G')
         );
     }
 
