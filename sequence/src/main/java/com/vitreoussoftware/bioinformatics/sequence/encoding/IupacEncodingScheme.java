@@ -269,4 +269,9 @@ public final class IupacEncodingScheme implements EncodingScheme {
     public BasePair fromCharacter(final Character character) {
         return IupacEncodingScheme.create(character);
     }
+
+    @Override
+    public BasePair flip(BasePair basePair) {
+        return basePair;
+    }
 }

@@ -294,4 +294,9 @@ public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
     public BasePair fromCharacter(final Character character) {
         return AcceptUnknownDnaEncodingScheme.create(character);
     }
+
+    @Override
+    public BasePair flip(BasePair basePair) {
+        return basePair;
+    }
 }

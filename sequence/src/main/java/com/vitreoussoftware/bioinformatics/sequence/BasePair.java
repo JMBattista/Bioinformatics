@@ -38,6 +38,14 @@ public class BasePair {
         return new BasePair(value, encodingScheme);
     }
 
+	/**
+	 * Flip the value of the {@link BasePair}
+	 * @return the flipped {@link BasePair}
+	 */
+	public BasePair flip() {
+		return encodingScheme.flip(this);
+	}
+
     public int distance(final BasePair bp) {
         if (this.equals(bp))
             return 0;
@@ -79,7 +87,7 @@ public class BasePair {
         return nucleotide == this.nucleotide;
     }
 
-
+    @Override
     public String toString() {
         try {
             return this.encodingScheme.toString(this.nucleotide);
@@ -98,4 +106,13 @@ public class BasePair {
         }
 
     }
+
+	/**
+	 * Return the underlying byte representation of the BasePair
+	 *
+	 * @return the byte representation
+	 */
+	public byte getValue() {
+		return nucleotide;
+	}
 }
