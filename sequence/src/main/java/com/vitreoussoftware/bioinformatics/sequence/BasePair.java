@@ -2,6 +2,7 @@ package com.vitreoussoftware.bioinformatics.sequence;
 
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 import lombok.Getter;
+import lombok.val;
 
 /**
  * Represents a Nucleotide Base Pair
@@ -39,11 +40,11 @@ public class BasePair {
     }
 
 	/**
-	 * Flip the value of the {@link BasePair}
-	 * @return the flipped {@link BasePair}
+	 * Return the complement of the current {@link BasePair}
+	 * @return the complementary {@link BasePair}
 	 */
-	public BasePair flip() {
-		return encodingScheme.flip(this);
+	public BasePair complement() {
+		return encodingScheme.complement(this);
 	}
 
     public int distance(final BasePair bp) {
@@ -51,30 +52,6 @@ public class BasePair {
             return 0;
         else
             return 1;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + nucleotide;
-        return result;
-    }
-
-    @Override
-    public boolean equals(final Object basepair) {
-        if (this == basepair)
-            return true;
-        if (basepair == null)
-            return false;
-        if (getClass() == basepair.getClass()) {
-            final BasePair other = (BasePair) basepair;
-            return this.equals(other.nucleotide);
-        } else if (basepair.getClass() == Byte.class) {
-            return this.equals((byte) basepair);
-        }
-
-        return false;
     }
 
     /**
@@ -85,16 +62,6 @@ public class BasePair {
      */
     public boolean equals(final byte nucleotide) {
         return nucleotide == this.nucleotide;
-    }
-
-    @Override
-    public String toString() {
-        try {
-            return this.encodingScheme.toString(this.nucleotide);
-        } catch (final InvalidDnaFormatException e) {
-            // this should never fail since the encoding came from the encapsulated BasePair
-            throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
-        }
     }
 
     public char toChar() {
@@ -115,4 +82,45 @@ public class BasePair {
 	public byte getValue() {
 		return nucleotide;
 	}
+
+
+
+    @Override
+    public String toString() {
+        try {
+            return this.encodingScheme.toString(this.nucleotide);
+        } catch (InvalidDnaFormatException e) {
+            // this should never fail since the encoding came from the encapsulated BasePair
+            e.printStackTrace();
+            throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
+        }
+    }
+
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + nucleotide;
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object basepair) {
+        if (this == basepair)
+            return true;
+        if (basepair == null)
+            return false;
+        if (getClass() == basepair.getClass())
+        {
+            val other = (BasePair) basepair;
+            return this.equals(other.nucleotide);
+        }
+        else if (basepair.getClass() == Byte.class)
+        {
+            return this.equals((byte)basepair);
+        }
+
+        return false;
+    }
 }

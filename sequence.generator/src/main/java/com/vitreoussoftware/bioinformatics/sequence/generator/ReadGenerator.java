@@ -86,7 +86,7 @@ public final class ReadGenerator implements ConditionalDistribution<Sequence, Se
         for (int i = startPoint; i < startPoint + length; i++) {
             val basePair = source.get(i);
             if (flip)
-                list.add(basePair.flip());
+                list.add(basePair.complement());
             else
                 list.add(basePair);
         }

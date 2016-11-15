@@ -71,24 +71,24 @@ public abstract class EncodingSchemeTestBase {
     }
 
     /**
-     * Given the set of valid pairs ensure we can flip between them in the 'forward' direction
+     * Given the set of valid pairs ensure we can complement between them in the 'forward' direction
      */
     @Theory
-    public void theoryBasePairCanBeFlipped0to1(EncodingScheme scheme, Pair<Character, Character> pair) {
+    public void theoryBasePairComplement0to1(EncodingScheme scheme, Pair<Character, Character> pair) {
         val basePair0 = scheme.fromCharacter(pair.getValue0());
         val basePair1 = scheme.fromCharacter(pair.getValue1());
 
-        assertThat(basePair0.flip(), is(basePair1));
+        assertThat(basePair0.complement(), is(basePair1));
     }
 
     /**
-     * Given the set of valid pairs ensure we can flip between them in the 'backward' direction
+     * Given the set of valid pairs ensure we can complement between them in the 'backward' direction
      */
     @Theory
-    public void theoryBasePairCanBeFlipped1to0(EncodingScheme scheme, Pair<Character, Character> pair) {
+    public void theoryBasePairComplement1to0(EncodingScheme scheme, Pair<Character, Character> pair) {
         val basePair0 = scheme.fromCharacter(pair.getValue0());
         val basePair1 = scheme.fromCharacter(pair.getValue1());
 
-        assertThat(basePair1.flip(), is(basePair0));
+        assertThat(basePair1.complement(), is(basePair0));
     }
 }

@@ -66,7 +66,7 @@ public class ReadGeneratorTest {
 
         assertThat(read, is(not(nullValue())));
         assertThat(read.length(), is(1));
-        assertThat(read.get(0), is(basePair.flip()));
+        assertThat(read.get(0), is(basePair.complement()));
     }
 
     /**

@@ -66,9 +66,9 @@ public final class BasicDnaEncodingScheme implements EncodingScheme {
     }
 
 	@Override
-	public BasePair flip(final BasePair basePair) {
+	public BasePair complement(final BasePair basePair) {
 		if (!basePair.getEncodingScheme().equals(this)) {
-			return flip(fromCharacter(basePair.toChar()));
+			return complement(fromCharacter(basePair.toChar()));
 		}
 
 		val nucleotide = basePair.getValue();

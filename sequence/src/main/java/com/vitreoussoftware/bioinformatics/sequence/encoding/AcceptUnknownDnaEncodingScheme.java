@@ -2,6 +2,7 @@ package com.vitreoussoftware.bioinformatics.sequence.encoding;
 
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import lombok.val;
 
 
 /**
@@ -12,23 +13,40 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
     // Due to a quirk in the java language we have to use the negative sign to set the 8th bit to 1
     // We will restrict usage of the 8th bit to mean 'special thing happening here
-    private static final byte NUCLEOTIDE_A = 0b0_00_00_10;
-    private static final byte NUCLEOTIDE_C = 0b0_00_10_00;
-    private static final byte NUCLEOTIDE_G = 0b0_00_01_00;
-    private static final byte NUCLEOTIDE_T = 0b0_00_00_01;
-    private static final byte NUCLEOTIDE_U = 0b0_01_00_01;
-    private static final byte NUCLEOTIDE_R = NUCLEOTIDE_A | NUCLEOTIDE_G;
-    private static final byte NUCLEOTIDE_Y = NUCLEOTIDE_C | NUCLEOTIDE_T | NUCLEOTIDE_U;
-    private static final byte NUCLEOTIDE_K = NUCLEOTIDE_G | NUCLEOTIDE_T | NUCLEOTIDE_U;
-    private static final byte NUCLEOTIDE_M = NUCLEOTIDE_A | NUCLEOTIDE_C;
-    private static final byte NUCLEOTIDE_S = NUCLEOTIDE_C | NUCLEOTIDE_G;
-    private static final byte NUCLEOTIDE_W = NUCLEOTIDE_C | NUCLEOTIDE_G | 0b0_10_00_00;
-    private static final byte NUCLEOTIDE_B = NUCLEOTIDE_C | NUCLEOTIDE_G | NUCLEOTIDE_T | NUCLEOTIDE_U;
-    private static final byte NUCLEOTIDE_D = NUCLEOTIDE_A | NUCLEOTIDE_G | NUCLEOTIDE_T | NUCLEOTIDE_U;
-    private static final byte NUCLEOTIDE_H = NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_T | NUCLEOTIDE_U;
-    private static final byte NUCLEOTIDE_V = NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G;
-    private static final byte NUCLEOTIDE_N = NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G | NUCLEOTIDE_T | NUCLEOTIDE_U;
-    private static final byte NUCLEOTIDE_X = 0b1_00_00_00;
+    /**
+     * Indicates that we're dealing with an ambiguous base pair.
+     */
+    private static final byte AMBIGUITY = 0b0_10_00_00;
+    /**
+     * Indicates that the nucleotides complement is just its self
+     */
+    private static final byte REFLECTED = 0b1_00_00_00;
+    /**
+     * Used to test if the byte contains higher order bits
+     */
+    private static final byte SHIFT_RIGHT = 0b0_00_10_10;
+    /**
+     * Used to test if the encoded nucleotide contains higher order bits or not
+     */
+    private static final byte LOWER_ORDER = 0b0_00_11_11;
+
+    private static final byte NUCLEOTIDE_A =  0b0_00_00_10;
+    private static final byte NUCLEOTIDE_T =  0b0_00_00_01;
+    private static final byte NUCLEOTIDE_U =  0b0_01_00_01;
+    private static final byte NUCLEOTIDE_C =  0b0_00_10_00;
+    private static final byte NUCLEOTIDE_G =  0b0_00_01_00;
+    private static final byte NUCLEOTIDE_R =  NUCLEOTIDE_A | NUCLEOTIDE_G | AMBIGUITY;                // 0b0_10_01_10
+    private static final byte NUCLEOTIDE_Y =  NUCLEOTIDE_C | NUCLEOTIDE_T | NUCLEOTIDE_U | AMBIGUITY; // 0b0_11_10_01
+    private static final byte NUCLEOTIDE_K =  NUCLEOTIDE_G | NUCLEOTIDE_T | NUCLEOTIDE_U | AMBIGUITY; // 0b0_11_01_01
+    private static final byte NUCLEOTIDE_M =  NUCLEOTIDE_A | NUCLEOTIDE_C | AMBIGUITY;                // 0b0_10_10_10
+    private static final byte NUCLEOTIDE_S =  NUCLEOTIDE_C | NUCLEOTIDE_G | AMBIGUITY | REFLECTED;    // 0b1_10_11_00
+    private static final byte NUCLEOTIDE_W =  NUCLEOTIDE_A | NUCLEOTIDE_T | AMBIGUITY | REFLECTED;    // 0b1_10_00_11
+    private static final byte NUCLEOTIDE_B =  NUCLEOTIDE_C | NUCLEOTIDE_G | NUCLEOTIDE_T | NUCLEOTIDE_U | AMBIGUITY;    // 0b0_11_11_01
+    private static final byte NUCLEOTIDE_D =  NUCLEOTIDE_A | NUCLEOTIDE_G | NUCLEOTIDE_T | NUCLEOTIDE_U | AMBIGUITY;    // 0b0_11_01_11
+    private static final byte NUCLEOTIDE_H =  NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_T | NUCLEOTIDE_U | AMBIGUITY;    // 0b0_11_10_11
+    private static final byte NUCLEOTIDE_V =  NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G | AMBIGUITY;                   // 0b0_10_11_10
+    private static final byte NUCLEOTIDE_N =  NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G | NUCLEOTIDE_T | NUCLEOTIDE_U | AMBIGUITY | REFLECTED;
+    private static final byte NUCLEOTIDE_X =  0b1_00_00_00 | AMBIGUITY;
     private static final byte NUCLEOTIDE_GAP = 0b0_00_00_00;
 
     public static EncodingScheme instance = new AcceptUnknownDnaEncodingScheme();
@@ -296,7 +314,28 @@ public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
     }
 
     @Override
-    public BasePair flip(BasePair basePair) {
-        return basePair;
+    public BasePair complement(final BasePair basePair) {
+        if (!basePair.getEncodingScheme().equals(this)) {
+            return complement(fromCharacter(basePair.toChar()));
+        }
+
+        val nucleotide = basePair.getValue();
+        if ((nucleotide & AMBIGUITY) == 0) {
+            if ((nucleotide & SHIFT_RIGHT) != 0)
+                return toBasePair((byte) (nucleotide >>> 1));
+            return toBasePair((byte) ((nucleotide & LOWER_ORDER) << 1));
+        }
+        else if ((nucleotide & REFLECTED) != 0) {
+            return basePair;
+        }
+        else if ((nucleotide & 0b0_10_11_11) > 0b0_10_11_00) {
+            return toBasePair((byte) (nucleotide ^ 0b0_01_00_11));
+        }
+        else if ((nucleotide & 0b0_00_00_11) == 0b0_00_00_11) {
+            return toBasePair((byte) (nucleotide ^ 0b0_00_11_00));
+        }
+        else {
+            return toBasePair((byte) (nucleotide ^ 0b0_01_11_11));
+        }
     }
 }

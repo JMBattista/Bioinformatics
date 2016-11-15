@@ -62,5 +62,5 @@ public interface EncodingScheme {
 	 * @param basePair The input {@link BasePair}
 	 * @return the flipped {@link BasePair}
 	 */
-    BasePair flip(BasePair basePair);
+    BasePair complement(BasePair basePair);
 }

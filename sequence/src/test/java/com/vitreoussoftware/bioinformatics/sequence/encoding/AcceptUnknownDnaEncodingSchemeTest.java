@@ -3,6 +3,7 @@ package com.vitreoussoftware.bioinformatics.sequence.encoding;
 import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import lombok.val;
 import org.javatuples.Pair;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoint;
@@ -49,16 +50,36 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
 
     @DataPoints
     public static List<Pair<Character, Character>> getFlipPairs() {
-        // TODO add other bases
+        // See https://en.wikipedia.org/wiki/Complementarity_(molecular_biology)
         return ImmutableList.of(
                 Pair.with('A', 'T'),
-                Pair.with('C', 'G')
+                Pair.with('C', 'G'),
+                Pair.with('R', 'Y'),
+                Pair.with('S', 'S'),
+                Pair.with('W', 'W'),
+                Pair.with('K', 'M'),
+                Pair.with('B', 'V'), // Not A -> Not T
+                Pair.with('D', 'H'), // Not C -> Not G
+                Pair.with('N', 'N'),
+                Pair.with('X', 'X'),
+                Pair.with('-', '-')
         );
     }
 
     @DataPoint
     public static EncodingScheme getEncodingScheme() {
         return new AcceptUnknownDnaEncodingScheme();
+    }
+
+    /**
+     * Demonstrate that A is the complement of U
+     */
+    @Test
+    public void theoryBasePairComplementUtoA() {
+        val initial = scheme.fromCharacter('U');
+        val complement = scheme.fromCharacter('A');
+
+        assertThat(initial.complement(), is(complement));
     }
 
     /**
