@@ -6,11 +6,11 @@ import lombok.val;
 
 
 /**
- * Represents a Nucleotide Base Pair
- *
+ * Represents a Nucleotide Base Pair based on the IUPAC encoding scheme with support for Gaps and X
+ * {@see http://www.bioinformatics.org/sms/iupac.html}
  * @author John
  */
-public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
+    public final class ExpandedIupacEncodingScheme implements EncodingScheme {
     // Due to a quirk in the java language we have to use the negative sign to set the 8th bit to 1
     // We will restrict usage of the 8th bit to mean 'special thing happening here
     /**
@@ -49,12 +49,12 @@ public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
     private static final byte NUCLEOTIDE_X =  0b1_00_00_00 | AMBIGUITY;
     private static final byte NUCLEOTIDE_GAP = 0b0_00_00_00;
 
-    public static EncodingScheme instance = new AcceptUnknownDnaEncodingScheme();
-
-    /**
-     * Adenine
-     */
-    public static final BasePair A = create('A');
+    public static EncodingScheme instance = new ExpandedIupacEncodingScheme();
+	
+	/**
+	 * Adenine
+	 */
+	public static final BasePair A = create('A');
 
     /**
      * Cytosine
@@ -142,43 +142,44 @@ public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
     public static final BasePair GAP = create('-');
 
     /**
-     * Create an instance of the encoding scheme
-     */
-    public AcceptUnknownDnaEncodingScheme() {
-    }
+	 * Create an instance of the encoding scheme 
+	 */
+	public ExpandedIupacEncodingScheme() {
+	}
 
     /**
-     * Create a new base pair from the given nucleotide
-     *
-     * @param nucleotide the nucleotide identifier
-     * @return the base pair representation
-     * @throws InvalidDnaFormatException The given nucleotide was not valid
-     */
-    private static BasePair create(final char nucleotide) throws InvalidDnaFormatException {
-        return BasePair.create(nucleotide, AcceptUnknownDnaEncodingScheme.instance);
-    }
-
-    @Override
-    public byte getValue(final char nucleotide) throws InvalidDnaFormatException {
-        switch (nucleotide) {
-            case 'a':
-            case 'A':
-                return NUCLEOTIDE_A;
-            case 't':
-            case 'T':
-                return NUCLEOTIDE_T;
-            case 'u':
-            case 'U':
-                return NUCLEOTIDE_U;
-            case 'c':
-            case 'C':
-                return NUCLEOTIDE_C;
-            case 'g':
-            case 'G':
-                return NUCLEOTIDE_G;
-            case 'n':
-            case 'N':
-                return NUCLEOTIDE_N;
+	 * Create a new base pair from the given nucleotide
+	 * @param nucleotide the nucleotide identifier
+	 * @return the base pair representation
+	 * @throws InvalidDnaFormatException The given nucleotide was not valid
+	 */
+	private static BasePair create(final char nucleotide) throws InvalidDnaFormatException
+	{	
+		return BasePair.create(nucleotide, ExpandedIupacEncodingScheme.instance);
+	}
+	
+	@Override
+	public byte getValue(final char nucleotide) throws InvalidDnaFormatException {
+		switch (nucleotide)
+		{
+			case 'a':
+			case 'A':
+				return NUCLEOTIDE_A;
+			case 't':
+			case 'T':
+				return NUCLEOTIDE_T;
+			case 'u':
+			case 'U':
+				return NUCLEOTIDE_U;
+			case 'c':
+			case 'C':
+				return NUCLEOTIDE_C;
+			case 'g':
+			case 'G':
+				return NUCLEOTIDE_G;
+			case 'n':
+			case 'N':
+				return NUCLEOTIDE_N;
             case 'r':
             case 'R':
                 return NUCLEOTIDE_R;
@@ -310,7 +311,7 @@ public final class AcceptUnknownDnaEncodingScheme implements EncodingScheme {
 
     @Override
     public BasePair fromCharacter(final Character character) {
-        return AcceptUnknownDnaEncodingScheme.create(character);
+        return ExpandedIupacEncodingScheme.create(character);
     }
 
     @Override

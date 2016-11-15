@@ -21,8 +21,8 @@ import static org.junit.Assert.assertThat;
  * @author John
  */
 @SuppressWarnings("AccessStaticViaInstance")
-public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
-    private AcceptUnknownDnaEncodingScheme scheme = new AcceptUnknownDnaEncodingScheme();
+public class ExpandedIupacEncodingSchemeTest extends EncodingSchemeTestBase {
+    private ExpandedIupacEncodingScheme scheme = new ExpandedIupacEncodingScheme();
 
     @DataPoints
     public static List<Character> getAcceptedCharacters() {
@@ -68,7 +68,7 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
 
     @DataPoint
     public static EncodingScheme getEncodingScheme() {
-        return new AcceptUnknownDnaEncodingScheme();
+        return new ExpandedIupacEncodingScheme();
     }
 
     /**

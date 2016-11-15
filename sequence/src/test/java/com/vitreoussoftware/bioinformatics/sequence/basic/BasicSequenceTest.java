@@ -2,9 +2,9 @@ package com.vitreoussoftware.bioinformatics.sequence.basic;
 
 import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
-import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.BasicDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
+import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme;
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +12,7 @@ import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
+
 
 /**
  * Test parts of the {@link BasicSequence} also {@see SequenceTest}
@@ -24,17 +25,17 @@ public class BasicSequenceTest {
 
     @Before
     public void setup() {
-        this.schemeA = AcceptUnknownDnaEncodingScheme.instance;
+        this.schemeA = ExpandedIupacEncodingScheme.instance;
         this.schemeB = BasicDnaEncodingScheme.instance;
     }
 
     @Test
     public void testCreateListBasePair() {
-        val sequence = BasicSequence.create(ImmutableList.of(AcceptUnknownDnaEncodingScheme.A));
+        val sequence = BasicSequence.create(ImmutableList.of(ExpandedIupacEncodingScheme.A));
 
         assertThat(sequence.isPresent(), is(true));
         assertThat(sequence.get().length(), is(1));
-        assertThat(sequence.get().get(0), is(AcceptUnknownDnaEncodingScheme.A));
+        assertThat(sequence.get().get(0), is(ExpandedIupacEncodingScheme.A));
     }
 
     @Test

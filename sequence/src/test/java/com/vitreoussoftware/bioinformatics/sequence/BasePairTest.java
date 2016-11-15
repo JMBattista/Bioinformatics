@@ -1,6 +1,5 @@
 package com.vitreoussoftware.bioinformatics.sequence;
 
-import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.BasicDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingSchemeTestBase;
@@ -11,6 +10,7 @@ import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
+import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme;
 
 /**
  * Tests the BasePair class
@@ -27,7 +27,7 @@ public class BasePairTest {
     @Before
     public void setup()
     {
-        this.scheme = AcceptUnknownDnaEncodingScheme.instance;
+        this.scheme = ExpandedIupacEncodingScheme.instance;
         this.otherScheme = BasicDnaEncodingScheme.instance;
     }
 

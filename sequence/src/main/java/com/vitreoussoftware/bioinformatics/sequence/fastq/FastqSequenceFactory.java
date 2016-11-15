@@ -4,7 +4,7 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence;
-import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
+import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 
 import java.util.Optional;
@@ -18,12 +18,12 @@ public class FastqSequenceFactory implements SequenceFactory {
 
     private EncodingScheme encodingSheme;
 
-    /**
-     * Initialize a new FastaSequenceFactory with default encoding scheme
-     */
-    public FastqSequenceFactory() {
-        this.encodingSheme = new AcceptUnknownDnaEncodingScheme();
-    }
+	/**
+	 * Initialize a new FastaSequenceFactory with default encoding scheme
+	 */
+	public FastqSequenceFactory() {
+		this.encodingSheme = new ExpandedIupacEncodingScheme();
+	}
 
     /**
      * Initialize a new FastaSequenceFactory with a custom encoding scheme

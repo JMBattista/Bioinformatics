@@ -1,17 +1,19 @@
 package com.vitreoussoftware.bioinformatics.alignment
 
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection
-import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme
-import com.vitreoussoftware.bioinformatics.sequence.io.FastaData
-import com.vitreoussoftware.bioinformatics.sequence.{BasePair, Sequence}
-import com.vitreoussoftware.test._
 import org.junit.runner.RunWith
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.Matchers
 import org.scalatest.junit.JUnitRunner
 
 import scala.collection.JavaConversions._
+import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection
+import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme
+import org.scalatest.{Inside, Matchers}
+import com.vitreoussoftware.bioinformatics.sequence.{BasePair, Sequence}
+import org.scalacheck.{Arbitrary, Gen}
+import com.vitreoussoftware.bioinformatics.sequence.io.FastaData
+import com.vitreoussoftware.test.UnitSpec
 
 trait AlignerTestData {
   val bases = List("A", "U", "C", "G")
@@ -28,7 +30,7 @@ trait AlignerTestData {
   val sourceSeqs = List(seqSimple, seqRecord1, seqRecord2, seqRecord3)
 
   def seqsFrom(seqs: List[String]) = {
-    seqs.map(seq => BasicSequence.create(seq, AcceptUnknownDnaEncodingScheme.instance).get())
+    seqs.map(seq => BasicSequence.create(seq, ExpandedIupacEncodingScheme.instance).get())
   }
 
   def zip[T1, T2](list: List[T1], value: T2) = {
@@ -52,7 +54,7 @@ trait AlignerTestData {
     def makeSeq(seq: List[String]) = {
       var builder = new StringBuilder
       seq.foreach(bp => builder = builder append bp)
-      BasicSequence.create(builder.toString(), AcceptUnknownDnaEncodingScheme.instance).get()
+      BasicSequence.create(builder.toString(), ExpandedIupacEncodingScheme.instance).get()
     }
 
     def genSeq(len: Int): Gen[Sequence] = {
@@ -76,7 +78,7 @@ trait AlignerTestData {
     (1, 'U'),
     (1, 'C'),
     (1, 'G')
-  )) yield BasePair.create(bp, AcceptUnknownDnaEncodingScheme.instance)
+  )) yield BasePair.create(bp, ExpandedIupacEncodingScheme.instance)
 
   implicit lazy val arbBasePair: Arbitrary[BasePair] = Arbitrary(genBasePair)
   implicit lazy val arbSequence: Arbitrary[Sequence] = Arbitrary(genSequence())

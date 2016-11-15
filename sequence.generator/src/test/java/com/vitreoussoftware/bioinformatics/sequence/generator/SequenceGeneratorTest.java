@@ -3,7 +3,7 @@ package com.vitreoussoftware.bioinformatics.sequence.generator;
 import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
+import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.generator.distribution.Distribution;
 import com.vitreoussoftware.bioinformatics.sequence.generator.distribution.EnumeratedDistribution;
@@ -55,7 +55,7 @@ public class SequenceGeneratorTest {
     public void testCreate() {
         SequenceGenerator.builder()
                 .lengthDistribution(() -> 10)
-                .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
+                .encodingScheme(ExpandedIupacEncodingScheme.instance)
                 .basePairDistribution(defaultDistribution)
                 .build();
     }
@@ -78,7 +78,7 @@ public class SequenceGeneratorTest {
     @Test(expected = NullPointerException.class)
     public void testCreateNoLengthDistribution() {
         SequenceGenerator.builder()
-                .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
+                .encodingScheme(ExpandedIupacEncodingScheme.instance)
                 .basePairDistribution(defaultDistribution)
                 .build();
     }
@@ -91,7 +91,7 @@ public class SequenceGeneratorTest {
     public void testCreateNoBasePairDistribution() {
         SequenceGenerator.builder()
                 .lengthDistribution(() -> 10)
-                .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
+                .encodingScheme(ExpandedIupacEncodingScheme.instance)
                 .build();
     }
 
@@ -102,7 +102,7 @@ public class SequenceGeneratorTest {
     public void testSampleFailLength0() {
         val generator = SequenceGenerator.builder()
                 .lengthDistribution(() -> 0)
-                .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
+                .encodingScheme(ExpandedIupacEncodingScheme.instance)
                 .basePairDistribution(defaultDistribution)
                 .build();
 
@@ -117,7 +117,7 @@ public class SequenceGeneratorTest {
         val length = 1;
         val generator = SequenceGenerator.builder()
                 .lengthDistribution(() -> length)
-                .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
+                .encodingScheme(ExpandedIupacEncodingScheme.instance)
                 .basePairDistribution(defaultDistribution)
                 .build();
 
@@ -132,7 +132,7 @@ public class SequenceGeneratorTest {
         val length = 10;
         val generator = SequenceGenerator.builder()
                 .lengthDistribution(() -> length)
-                .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
+                .encodingScheme(ExpandedIupacEncodingScheme.instance)
                 .basePairDistribution(defaultDistribution)
                 .build();
 
@@ -147,7 +147,7 @@ public class SequenceGeneratorTest {
     public void theorySampleCanGenerateFromSingleCharacter(final Character sample) {
         val generator = SequenceGenerator.builder()
                 .lengthDistribution(() -> 10)
-                .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
+                .encodingScheme(ExpandedIupacEncodingScheme.instance)
                 .basePairDistribution(getDistribution()
                         .probability(sample, 1.0)
                         .build())
@@ -169,7 +169,7 @@ public class SequenceGeneratorTest {
         val length = 100;
         val generator = SequenceGenerator.builder()
                 .lengthDistribution(() -> length)
-                .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
+                .encodingScheme(ExpandedIupacEncodingScheme.instance)
                 .basePairDistribution(getDistribution()
                         .probability('A', 0.5)
                         .probability('T', 0.5)

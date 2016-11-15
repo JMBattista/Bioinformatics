@@ -2,7 +2,7 @@ package com.vitreoussoftware.bioinformatics.sequence.io;
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence;
-import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
+import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
 
 import java.io.FileNotFoundException;
@@ -293,8 +293,12 @@ public abstract class TestData {
     }
 
     /**
+<<<<<<< HEAD
      * Get the string expression matching the simple record in {@link AcceptUnknownDnaEncodingScheme} format
      *
+=======
+     * Get the string expression matching the simple record in {@link ExpandedIupacEncodingScheme} format
+>>>>>>> a38137e... Fix naming of AcceptUnknownEncodingScheme
      * @return The simple record string
      */
     public String getSimpleRecord() {
@@ -302,8 +306,12 @@ public abstract class TestData {
     }
 
     /**
+<<<<<<< HEAD
      * Get the string expression matching Record1 in {@link AcceptUnknownDnaEncodingScheme} format
      *
+=======
+     * Get the string expression matching Record1 in {@link ExpandedIupacEncodingScheme} format
+>>>>>>> a38137e... Fix naming of AcceptUnknownEncodingScheme
      * @return The Record1 string
      */
     public String getRealExample1() {
@@ -311,8 +319,12 @@ public abstract class TestData {
     }
 
     /**
+<<<<<<< HEAD
      * Get the string expression matching Record2 in {@link AcceptUnknownDnaEncodingScheme} format
      *
+=======
+     * Get the string expression matching Record2 in {@link ExpandedIupacEncodingScheme} format
+>>>>>>> a38137e... Fix naming of AcceptUnknownEncodingScheme
      * @return The Record2 string
      */
     public String getRealExample2() {
@@ -320,8 +332,12 @@ public abstract class TestData {
     }
 
     /**
+<<<<<<< HEAD
      * Get the string expression matching Record2 in {@link AcceptUnknownDnaEncodingScheme} format
      *
+=======
+     * Get the string expression matching Record2 in {@link ExpandedIupacEncodingScheme} format
+>>>>>>> a38137e... Fix naming of AcceptUnknownEncodingScheme
      * @return The Record2 string
      */
     public String getRealExample3() {
@@ -334,7 +350,7 @@ public abstract class TestData {
      * @return The sequence
      */
     public Sequence getSimpleSequence() {
-        return BasicSequence.create(METADATA, RECORD_SIMPLE, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(METADATA, RECORD_SIMPLE, ExpandedIupacEncodingScheme.instance).get();
     }
 
     /**
@@ -343,7 +359,7 @@ public abstract class TestData {
      * @return The sequence
      */
     public Sequence getRealExample1Sequence() {
-        return BasicSequence.create(METADATA, REAL_EXAMPLE_1, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(METADATA, REAL_EXAMPLE_1, ExpandedIupacEncodingScheme.instance).get();
     }
 
     /**
@@ -352,7 +368,7 @@ public abstract class TestData {
      * @return The sequence
      */
     public Sequence getRealExample2Sequence() {
-        return BasicSequence.create(METADATA, REAL_EXAMPLE_2, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(METADATA, REAL_EXAMPLE_2, ExpandedIupacEncodingScheme.instance).get();
     }
 
     /**
@@ -361,6 +377,6 @@ public abstract class TestData {
      * @return The sequence
      */
     public Sequence getRealExample3Sequence() {
-        return BasicSequence.create(METADATA, REAL_EXAMPLE_3, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(METADATA, REAL_EXAMPLE_3, ExpandedIupacEncodingScheme.instance).get();
     }
 }

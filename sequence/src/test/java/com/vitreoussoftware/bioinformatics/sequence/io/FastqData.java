@@ -2,7 +2,7 @@ package com.vitreoussoftware.bioinformatics.sequence.io;
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence;
-import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
+import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.fastq.FastqStringFileStreamReader;
 
@@ -190,30 +190,30 @@ public class FastqData extends TestData {
     }
 
     public Sequence getComplex1Sequence() {
-        return BasicSequence.create(complex1_metadata, complex1_sequence, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(complex1_metadata, complex1_sequence, ExpandedIupacEncodingScheme.instance).get();
     }
 
     public Sequence getComplex2Sequence() {
-        return BasicSequence.create(complex2_metadata, complex2_sequence, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(complex2_metadata, complex2_sequence, ExpandedIupacEncodingScheme.instance).get();
     }
 
     public Sequence getComplex3Sequence() {
-        return BasicSequence.create(complex3_metadata, complex3_sequence, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(complex3_metadata, complex3_sequence, ExpandedIupacEncodingScheme.instance).get();
     }
 
     public Sequence getComplex4Sequence() {
-        return BasicSequence.create(complex4_metadata, complex4_sequence, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(complex4_metadata, complex4_sequence, ExpandedIupacEncodingScheme.instance).get();
     }
 
     public Sequence getComplex5Sequence() {
-        return BasicSequence.create(complex5_metadata, complex5_sequence, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(complex5_metadata, complex5_sequence, ExpandedIupacEncodingScheme.instance).get();
     }
 
     public Sequence getComplex6Sequence() {
-        return BasicSequence.create(complex6_metadata, complex6_sequence, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(complex6_metadata, complex6_sequence, ExpandedIupacEncodingScheme.instance).get();
     }
 
     public Sequence getComplex7Sequence() {
-        return BasicSequence.create(complex7_metadata, complex7_sequence, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(complex7_metadata, complex7_sequence, ExpandedIupacEncodingScheme.instance).get();
     }
 }

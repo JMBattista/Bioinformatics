@@ -2,14 +2,14 @@ package com.vitreoussoftware.bioinformatics.sequence.io;
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence;
-import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
+import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaStringFileStreamReader;
 
 import java.io.FileNotFoundException;
 
 /**
- * Test data in the FASTA format uses {@link AcceptUnknownDnaEncodingScheme}
+ * Test data in the FASTA format uses {@link ExpandedIupacEncodingScheme}
  * Created by John on 9/21/14.
  */
 public class FastaData extends TestData {
@@ -84,8 +84,7 @@ public class FastaData extends TestData {
     }
 
     /**
-     * Get the string expression matching Alternate1 in {@link AcceptUnknownDnaEncodingScheme} format
-     *
+     * Get the string expression matching Alternate1 in {@link ExpandedIupacEncodingScheme} format
      * @return The Alternate1 string
      */
     public String getAlternateStartingCharacter1() {
@@ -93,8 +92,7 @@ public class FastaData extends TestData {
     }
 
     /**
-     * Get the string expression matching Alternate2 in {@link AcceptUnknownDnaEncodingScheme} format
-     *
+     * Get the string expression matching Alternate2 in {@link ExpandedIupacEncodingScheme} format
      * @return The Alternate2 string
      */
     public String getAlternateStartingCharacter2() {
@@ -102,8 +100,7 @@ public class FastaData extends TestData {
     }
 
     /**
-     * Get the string expression matching Alternate3 in {@link AcceptUnknownDnaEncodingScheme} format
-     *
+     * Get the string expression matching Alternate3 in {@link ExpandedIupacEncodingScheme} format
      * @return The Alternate3 string
      */
     public String getAlternateStartingCharacter3() {
@@ -141,7 +138,7 @@ public class FastaData extends TestData {
      * @return The sequence
      */
     public Sequence getAlternateStartingCharacter1Sequence() {
-        return BasicSequence.create(alternate1, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(alternate1, ExpandedIupacEncodingScheme.instance).get();
     }
 
     /**
@@ -150,7 +147,7 @@ public class FastaData extends TestData {
      * @return The sequence
      */
     public Sequence getAlternateStartingCharacter2Sequence() {
-        return BasicSequence.create(alternate2, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(alternate2, ExpandedIupacEncodingScheme.instance).get();
     }
 
     /**
@@ -159,20 +156,20 @@ public class FastaData extends TestData {
      * @return The sequence
      */
     public Sequence getAlternateStartingCharacter3Sequence() {
-        return BasicSequence.create(alternate3, AcceptUnknownDnaEncodingScheme.instance).get();
+        return BasicSequence.create(alternate3, ExpandedIupacEncodingScheme.instance).get();
     }
 
     public Sequence getFastaMultiLineDescriptionSequence() {
-        return BasicSequence.create(fastaMultiLineDescriptionMetadata, fastaMultiLineDescriptionSequence, AcceptUnknownDnaEncodingScheme.instance).get();
-    }
+		return BasicSequence.create(fastaMultiLineDescriptionMetadata, fastaMultiLineDescriptionSequence, ExpandedIupacEncodingScheme.instance).get();
+	}
 
     public Sequence getFastaTerminatedSequence() {
-        return BasicSequence.create(fastaTerminatedMetadata, fastaTerminatedSequence, AcceptUnknownDnaEncodingScheme.instance).get();
-    }
+		return BasicSequence.create(fastaTerminatedMetadata, fastaTerminatedSequence, ExpandedIupacEncodingScheme.instance).get();
+	}
 
     public Sequence getFastaLargeHeaderSequence() {
-        return BasicSequence.create(fastaLargeHeaderMetadata, fastaLargeHeaderSequence, AcceptUnknownDnaEncodingScheme.instance).get();
-    }
+		return BasicSequence.create(fastaLargeHeaderMetadata, fastaLargeHeaderSequence, ExpandedIupacEncodingScheme.instance).get();
+	}
 
     /**
      * Create a StringStreamReader for the Simple test file
