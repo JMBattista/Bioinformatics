@@ -67,8 +67,18 @@ public class ExpandedIupacEncodingSchemeTest extends EncodingSchemeTestBase {
     }
 
     @DataPoint
-    public static EncodingScheme getEncodingScheme() {
+    public static EncodingScheme getEncodingSchemeDataPoint() {
         return new ExpandedIupacEncodingScheme();
+    }
+
+    @Override
+    public EncodingScheme getEncodingScheme() {
+        return getEncodingSchemeDataPoint();
+    }
+
+    @Override
+    public EncodingScheme getOtherEncodingScheme() {
+        return BasicDnaEncodingScheme.instance;
     }
 
     /**

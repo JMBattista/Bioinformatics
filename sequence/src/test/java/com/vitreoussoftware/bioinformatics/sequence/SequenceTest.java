@@ -227,7 +227,7 @@ public class SequenceTest {
      */
     @Test
     public void testparallelStreamCount() {
-        val expectedLength = (long)(Math.random() * 100) + 1;
+        val expectedLength = (long)(Math.random() * 100) + 1; // ensure we get a positive number
         val sb = new StringBuilder();
         for (int i = 0; i < expectedLength; i++) {
             sb.append('A');

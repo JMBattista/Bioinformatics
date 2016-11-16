@@ -314,4 +314,11 @@ public final class IupacEncodingScheme implements EncodingScheme {
             return toBasePair((byte) (nucleotide ^ 0b0_01_11_11));
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        return obj.getClass().equals(instance.getClass());
+    }
 }

@@ -42,8 +42,18 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
     }
 
     @DataPoint
-    public static EncodingScheme getEncodingScheme() {
+    public static EncodingScheme getEncodingSchemeDataPoint() {
         return new BasicDnaEncodingScheme();
+    }
+
+    @Override
+    public EncodingScheme getEncodingScheme() {
+        return getEncodingSchemeDataPoint();
+    }
+
+    @Override
+    public EncodingScheme getOtherEncodingScheme() {
+        return IupacEncodingScheme.instance;
     }
 
     /**

@@ -64,10 +64,19 @@ public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
     }
 
     @DataPoint
-    public static EncodingScheme getEncodingScheme() {
+    public static EncodingScheme getEncodingSchemeDataPoint() {
         return new IupacEncodingScheme();
     }
 
+    @Override
+    public EncodingScheme getEncodingScheme() {
+        return getEncodingSchemeDataPoint();
+    }
+
+    @Override
+    public EncodingScheme getOtherEncodingScheme() {
+        return BasicDnaEncodingScheme.instance;
+    }
 
     /**
      * Demonstrate that A is the complement of U
@@ -151,5 +160,10 @@ public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
     @Test
     public void testEqualityTU() throws InvalidDnaFormatException {
         assertFalse(scheme.create('T').equals(scheme.create('U')));
+    }
+
+    @Test(expected = InvalidDnaFormatException.class)
+    public void testGetValueInvalidCharacter() {
+        scheme.getValue('&');
     }
 }

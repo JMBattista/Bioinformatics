@@ -1,7 +1,9 @@
 package com.vitreoussoftware.bioinformatics.sequence.encoding;
 
+import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import lombok.val;
 import org.javatuples.Pair;
+import org.junit.Test;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -17,6 +19,9 @@ import static org.junit.Assert.assertThat;
  */
 @RunWith(Theories.class)
 public abstract class EncodingSchemeTestBase {
+    public abstract EncodingScheme getEncodingScheme();
+    public abstract EncodingScheme getOtherEncodingScheme();
+
     /**
      * Ensure that the base pair created from a character can be converted back to that character
      */
@@ -90,5 +95,28 @@ public abstract class EncodingSchemeTestBase {
         val basePair1 = scheme.fromCharacter(pair.getValue1());
 
         assertThat(basePair1.complement(), is(basePair0));
+    }
+
+    @Test(expected = InvalidDnaFormatException.class)
+    public void testToBasePairInvalidByte() {
+        val scheme = getEncodingScheme();
+        scheme.toBasePair((byte) -1);
+    }
+
+    @Test(expected = InvalidDnaFormatException.class)
+    public void testToCharInvalidByte() {
+        val scheme = getEncodingScheme();
+        scheme.toChar((byte) -1);
+    }
+
+    @Test
+    public void testBasePairComplementOtherEncodingScheme() {
+        val scheme = getEncodingScheme();
+        val otherScheme = getOtherEncodingScheme();
+
+        val bp = otherScheme.fromCharacter('A');
+        val expected = scheme.fromCharacter('T');
+
+        assertThat(scheme.complement(bp), is(expected));
     }
 }

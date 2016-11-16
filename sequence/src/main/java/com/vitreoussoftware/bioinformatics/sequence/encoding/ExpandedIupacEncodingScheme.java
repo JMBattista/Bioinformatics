@@ -142,12 +142,6 @@ import lombok.val;
     public static final BasePair GAP = create('-');
 
     /**
-	 * Create an instance of the encoding scheme 
-	 */
-	public ExpandedIupacEncodingScheme() {
-	}
-
-    /**
 	 * Create a new base pair from the given nucleotide
 	 * @param nucleotide the nucleotide identifier
 	 * @return the base pair representation
@@ -338,5 +332,12 @@ import lombok.val;
         else {
             return toBasePair((byte) (nucleotide ^ 0b0_01_11_11));
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        return obj.getClass().equals(instance.getClass());
     }
 }
