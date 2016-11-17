@@ -41,10 +41,11 @@ subprojects {
     pitest {
         threads = 4
 
-        if (project.name in ['module-without-any-test']) {
+        if (project.name in ['ScalaTestSpec']) {
             failWhenNoMutations = false
         }
     }
+    check.dependsOn "pitest"
 
     /**
       * Defining scalaTest task here to share with sub projects
