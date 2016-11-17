@@ -43,7 +43,7 @@ public class BasePair {
         else
             return 1;
     }
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -67,7 +67,7 @@ public class BasePair {
 		{
 			return this.equals((byte)basepair);
 		}
-		
+
 		return false;
 	}
 	
@@ -86,7 +86,6 @@ public class BasePair {
 			return this.encodingScheme.toString(this.nucleotide);
 		} catch (InvalidDnaFormatException e) {
 			// this should never fail since the encoding came from the encapsulated BasePair
-			e.printStackTrace();
 			throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
 		}
 	}
@@ -96,7 +95,6 @@ public class BasePair {
 			return this.encodingScheme.toChar(this.nucleotide);
 		} catch (InvalidDnaFormatException e) {
 			// this should never fail since the encoding came from the encapsulated BasePair
-			e.printStackTrace();
 			throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
 		}
 		
