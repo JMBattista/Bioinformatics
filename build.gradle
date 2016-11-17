@@ -1,3 +1,12 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.10'
+    }
+}
+
 plugins {
     id 'jacoco'
 }
@@ -21,11 +30,20 @@ subprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
-
     repositories {
         mavenLocal()
 
         maven { url "http://repo.maven.apache.org/maven2" }
+    }
+
+    //'pitest' for plugin versions <1.1.0
+    apply plugin: 'info.solidsoft.pitest'
+    pitest {
+        threads = 4
+
+        if (project.name in ['module-without-any-test']) {
+            failWhenNoMutations = false
+        }
     }
 
     /**
