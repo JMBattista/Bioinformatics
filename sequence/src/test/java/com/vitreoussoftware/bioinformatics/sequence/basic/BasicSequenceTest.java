@@ -3,8 +3,11 @@ package com.vitreoussoftware.bioinformatics.sequence.basic;
 import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
+import com.vitreoussoftware.bioinformatics.sequence.encoding.BasicDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 import lombok.val;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,6 +25,15 @@ public class BasicSequenceTest {
     @Before
     public void setup() {
         encodingScheme = AcceptUnknownDnaEncodingScheme.instance;
+    }
+
+
+    @Test
+    public void equalsContract() {
+        EqualsVerifier.forClass(BasicSequence.class)
+                .suppress(Warning.STRICT_INHERITANCE)
+                .withPrefabValues(EncodingScheme.class, BasicDnaEncodingScheme.instance, encodingScheme)
+                .verify();
     }
 
     @Test

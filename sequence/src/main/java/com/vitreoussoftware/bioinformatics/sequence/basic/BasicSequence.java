@@ -1,14 +1,18 @@
 package com.vitreoussoftware.bioinformatics.sequence.basic;
 
+import com.google.common.base.Preconditions;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
+import lombok.NonNull;
 import lombok.val;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  * A DNA Sequence representation
@@ -16,13 +20,17 @@ import java.util.Optional;
  * @author John
  */
 public final class BasicSequence implements Sequence {
-    private byte[] sequence;
-    private final EncodingScheme encodingScheme;
-    private String metadata;
+	@NonNull private final byte[] sequence;
+    @NonNull private final EncodingScheme encodingScheme;
+    private final String metadata;
 
-    private BasicSequence(final EncodingScheme encodingSheme) {
+    private BasicSequence(EncodingScheme encodingSheme, int size, String metadata)
+	{
+        Preconditions.checkArgument(size > 0, "Cannot construct an empty Sequence");
+        this.sequence = new byte[size];
         this.encodingScheme = encodingSheme;
-    }
+        this.metadata = metadata;
+	}
 
     /**
      * Create a new Sequence from a l{@link List<BasePair>}. We assume the first {@link BasePair} represents the
@@ -36,14 +44,13 @@ public final class BasicSequence implements Sequence {
         if (sequence == null || sequence.size() == 0)
             return Optional.empty();
 
-        val encodingSheme = sequence.get(0).getEncodingScheme();
-        val seq = new BasicSequence(encodingSheme);
+		val encodingSheme = sequence.get(0).getEncodingScheme();
+        val seq = new BasicSequence(encodingSheme, sequence.size(), null);
 
-        seq.sequence = new byte[sequence.size()];
-        val iter = sequence.iterator();
-        for (int i = 0; i < sequence.size(); i++) {
-            seq.sequence[i] = seq.encodingScheme.getValue(iter.next().toChar());
-        }
+		val iter = sequence.iterator();
+		for (int i = 0; i < sequence.size(); i++) {
+			seq.sequence[i] = seq.encodingScheme.getValue(iter.next().toChar());
+		}
 
         return Optional.of(seq);
     }
@@ -84,10 +91,9 @@ public final class BasicSequence implements Sequence {
      * @param encodingSheme the scheme to use for encoding
      * @return the encoded sequence
      */
+
     public static Sequence createWithError(final String metadata, final String sequence, final EncodingScheme encodingSheme) throws InvalidDnaFormatException {
-        final BasicSequence seq = new BasicSequence(encodingSheme);
-        seq.metadata = metadata;
-        seq.sequence = new byte[sequence.length()];
+        val seq = new BasicSequence(encodingSheme, sequence.length(), metadata);
 
         for (int i = 0; i < sequence.length(); i++) {
             seq.sequence[i] = encodingSheme.getValue(sequence.charAt(i));
@@ -114,19 +120,19 @@ public final class BasicSequence implements Sequence {
     }
 
     @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        try {
-            for (final byte bp : sequence) {
-                sb.append(this.encodingScheme.toString(bp));
-            }
-        } catch (final InvalidDnaFormatException e) {
-            // this should never fail since the encoding came from the encapsulated BasePair
-            e.printStackTrace();
-            throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
-        }
-        return sb.toString();
-    }
+	public String toString() {
+		val sb = new StringBuilder();
+		try {
+			for (final byte bp : sequence) {
+				sb.append(this.encodingScheme.toString(bp));
+			}
+		} catch (final InvalidDnaFormatException e) {
+			// this should never fail since the encoding came from the encapsulated BasePair
+			e.printStackTrace();
+			throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
+		}
+		return sb.toString();
+	}
 
     @Override
     public int hashCode() {
@@ -143,13 +149,19 @@ public final class BasicSequence implements Sequence {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (!(obj instanceof Sequence))
             return false;
-        final BasicSequence other = (BasicSequence) obj;
+        if (!(obj instanceof BasicSequence)) {
+            // We don't really want to hit this as it slows the system down, but it should be uncommon to mix sequence types
+            return obj.toString().equals(toString());
+        }
+        val other = (BasicSequence) obj;
         if (this.encodingScheme == null || other.encodingScheme == null)
             return false;
-        if (!encodingScheme.getClass().equals(other.encodingScheme.getClass()))
-            return false;
+        if (!encodingScheme.equals(other.encodingScheme)) {
+            // We don't really want to hit this as it slows the system down, but it should be uncommon to mix encoding schemes
+            return obj.toString().equals(toString());
+        }
 
         return Arrays.equals(sequence, other.sequence);
     }
