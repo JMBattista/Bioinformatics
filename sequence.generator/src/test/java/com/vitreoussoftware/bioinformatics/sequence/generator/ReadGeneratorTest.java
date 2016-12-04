@@ -20,7 +20,7 @@ import static org.hamcrest.core.IsNull.nullValue;
 
 /**
  * Test the {@link ReadGenerator}
- *
+ * <p>
  * Created by John on 10/27/2016.
  */
 @RunWith(Theories.class)
@@ -54,8 +54,8 @@ public class ReadGeneratorTest {
     public void testSampleRepeatInBounds() {
         val source = BasicSequence.create("TT", BasicDnaEncodingScheme.instance).get();
         val generator = ReadGenerator.builder()
-                .lengthDistribution(() -> (int)(Math.random() * 2))
-                .startPointDistribution(() -> (int)(Math.random() * 2))
+                .lengthDistribution(() -> (int) (Math.random() * 2))
+                .startPointDistribution(() -> (int) (Math.random() * 2))
                 .build();
 
         for (int i = 0; i < 100; i++) {
@@ -71,8 +71,8 @@ public class ReadGeneratorTest {
     public void testSampleRepeat() {
         val source = BasicSequence.create("TT", BasicDnaEncodingScheme.instance).get();
         val generator = ReadGenerator.builder()
-                .lengthDistribution(() -> (int)(Math.random() * 4))
-                .startPointDistribution(() -> (int)(Math.random() * 4))
+                .lengthDistribution(() -> (int) (Math.random() * 4))
+                .startPointDistribution(() -> (int) (Math.random() * 4))
                 .build();
 
 

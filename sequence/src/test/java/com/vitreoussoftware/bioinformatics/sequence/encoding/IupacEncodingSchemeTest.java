@@ -46,12 +46,11 @@ public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
 
     @DataPoint
     public static EncodingScheme getEncodingScheme() {
-        return  new IupacEncodingScheme();
+        return new IupacEncodingScheme();
     }
 
     /**
      * Test Equality for AcceptUnkownDnaEncodingScheme default values against byte codes
-     *
      */
     @Test
     public void testEqualityByteDefaultValues() throws InvalidDnaFormatException {
@@ -64,7 +63,6 @@ public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
 
     /**
      * Test Equality for AcceptUnkownDnaEncodingScheme, with same start
-     *
      */
     @Test
     public void testEqualityToSelf() throws InvalidDnaFormatException {
@@ -74,8 +72,7 @@ public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
 
     /**
      * Test Equality for AcceptUnkownDnaEncodingScheme default values
-     *
-          */
+     */
     @Test
     public void testEqualityDefaultValues() throws InvalidDnaFormatException {
         assertThat(scheme.A, is(scheme.create('A')));
@@ -87,8 +84,7 @@ public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
 
     /**
      * Test Equality for AcceptUnkownDnaEncodingScheme, with same start
-     *
-          */
+     */
     @Test
     public void testEqualitySameStart() throws InvalidDnaFormatException {
         assertThat(scheme.create('A'), is(scheme.create('A')));
@@ -96,8 +92,7 @@ public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
 
     /**
      * Test Equality for AcceptUnkownDnaEncodingScheme, with different cases
-     *
-          */
+     */
     @Test
     public void testEqualityDifferentCase() throws InvalidDnaFormatException {
         assertThat(scheme.create('A'), is(scheme.create('a')));
@@ -105,8 +100,7 @@ public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
 
     /**
      * Test Equality for AcceptUnkownDnaEncodingScheme, different base pair
-     *
-          */
+     */
     @Test
     public void testEqualityNotSame() throws InvalidDnaFormatException {
         assertFalse(scheme.create('A').equals(scheme.create('T')));
@@ -114,8 +108,7 @@ public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
 
     /**
      * Test Equality for AcceptUnkownDnaEncodingScheme, against N
-     *
-          */
+     */
     @Test
     public void testEqualityAgainstN() throws InvalidDnaFormatException {
         assertFalse(scheme.create('A').equals(scheme.create('N')));
@@ -123,8 +116,7 @@ public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
 
     /**
      * Test Equality for AcceptUnkownDnaEncodingScheme, against N
-     *
-          */
+     */
     @Test
     public void testEqualityTU() throws InvalidDnaFormatException {
         assertFalse(scheme.create('T').equals(scheme.create('U')));

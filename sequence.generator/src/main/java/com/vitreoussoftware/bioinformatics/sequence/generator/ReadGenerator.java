@@ -14,7 +14,7 @@ import java.util.LinkedList;
 
 /**
  * Generate {@link Sequence} reads from some sample {@link Sequence} based on user configuration.
- *
+ * <p>
  * Created by John on 10/25/2016.
  */
 public final class ReadGenerator implements ConditionalDistribution<Sequence, Sequence> {

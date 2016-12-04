@@ -7,12 +7,11 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectio
  * Create instances of SequenceList
  *
  * @author John
- *
  */
 public class SequenceListFactory implements SequenceCollectionFactory {
 
-	@Override
-	public SequenceCollection getSequenceCollection() {
-		return new SequenceList();
-	}
+    @Override
+    public SequenceCollection getSequenceCollection() {
+        return new SequenceList();
+    }
 }

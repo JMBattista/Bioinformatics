@@ -13,9 +13,9 @@ public class GammaDistribution implements ContinuousDistribution<Double> {
 
     /**
      * Create an instance of {@link GammaDistribution} that can be used to generate outputs
+     *
      * @param shape
      * @param scale
-     *
      * @throws NullPointerException if the arguments are null or unset
      */
     @Builder

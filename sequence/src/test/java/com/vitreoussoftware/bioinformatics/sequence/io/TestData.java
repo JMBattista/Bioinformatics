@@ -13,41 +13,41 @@ import java.io.FileNotFoundException;
  */
 public abstract class TestData {
     /**
-     *  file with three full records
+     * file with three full records
      */
     private static final String COMPLEX = "ComplexExamples";
 
     /**
-     *  file with three full records
+     * file with three full records
      */
     private static final String EMPTY = "Empty";
 
     /**
-     *  file with three full records
+     * file with three full records
      */
     private static final String EMPTY_WHITESPACE = "EmptyWhitespace";
     /**
-     *  file with three full records
+     * file with three full records
      */
     public static final String REAL_EXAMPLES = "RealExamples";
 
     /**
-     *  file with only a small amount of data
+     * file with only a small amount of data
      */
     private static final String SIMPLE_EXAMPLE = "SimpleExample";
 
     /**
-     *  file with enough data that pages must be performed
+     * file with enough data that pages must be performed
      */
     private static final String PAGING_REQUIRED = "PagingRequired";
 
     /**
-     *  file with enough data that pages must be performed
+     * file with enough data that pages must be performed
      */
     private static final String EXTRA_NEWLINE = "ExtraNewline";
 
     /**
-     *  Extremely large file for testing that all records can be loaded
+     * Extremely large file for testing that all records can be loaded
      */
     private static final String BIG = "Big";
 
@@ -126,6 +126,7 @@ public abstract class TestData {
 
     /**
      * Get the full path for a file
+     *
      * @param fileName the name of the file
      * @return The completed path
      */
@@ -135,15 +136,18 @@ public abstract class TestData {
 
     /**
      * Get the {@link StringStreamReader} instance to use on this test data
+     *
      * @param path The data file to load
      * @return The {@link StringStreamReader}
      */
     private StringStreamReader getReader(final String path) throws FileNotFoundException {
         return createReader(getPath(path));
     }
+
     /**
      * Get the {@link StringStreamReader} instance to use on this test data
-     * @param path The data file to load
+     *
+     * @param path       The data file to load
      * @param pagingSize The paging size for the {@link StringStreamReader}
      * @return The {@link StringStreamReader}
      */
@@ -153,6 +157,7 @@ public abstract class TestData {
 
     /**
      * Get the {@link StringStreamReader} instance to use on this test data
+     *
      * @param path The data file to load
      * @return The {@link StringStreamReader}
      */
@@ -160,7 +165,8 @@ public abstract class TestData {
 
     /**
      * Get the {@link StringStreamReader} instance to use on this test data
-     * @param path The data file to load
+     *
+     * @param path       The data file to load
      * @param pagingSize The paging size for the {@link StringStreamReader}
      * @return The {@link StringStreamReader}
      */
@@ -168,18 +174,21 @@ public abstract class TestData {
 
     /**
      * Get the extension for the files
+     *
      * @return the file extension
      */
     protected abstract String getExtension();
 
     /**
      * Get the base path to the files
+     *
      * @return the base path for the files
      */
     protected abstract String getBasePath();
 
     /**
      * Return the file path used by the {@see getSimpleExampleReader} function
+     *
      * @return The file path
      */
     public String getSimpleExamplePath() {
@@ -188,6 +197,7 @@ public abstract class TestData {
 
     /**
      * Create a {@link StringStreamReader} for an empty test file
+     *
      * @return the StringStreamReader
      */
     public StringStreamReader getEmptyReader()
@@ -197,6 +207,7 @@ public abstract class TestData {
 
     /**
      * Create a {@link StringStreamReader} for a test file containing only whitespace
+     *
      * @return the StringStreamReader
      */
     public StringStreamReader getEmptyWhiteSpaceReader()
@@ -206,6 +217,7 @@ public abstract class TestData {
 
     /**
      * Create a StringStreamReader for the Simple test file
+     *
      * @return the StringStreamReader
      * @throws FileNotFoundException the test file could not be found
      */
@@ -216,6 +228,7 @@ public abstract class TestData {
 
     /**
      * Create a StringStreamReader for the Example test file
+     *
      * @return the StringStreamReader
      * @throws FileNotFoundException the test file could not be found
      */
@@ -226,6 +239,7 @@ public abstract class TestData {
 
     /**
      * Create a StringStreamReader for the Example test file
+     *
      * @return the StringStreamReader
      * @throws FileNotFoundException the test file could not be found
      */
@@ -236,6 +250,7 @@ public abstract class TestData {
 
     /**
      * Create a StringStreamReader for the Paged test file
+     *
      * @return the StringStreamReader
      * @throws FileNotFoundException the test file could not be found
      */
@@ -243,8 +258,10 @@ public abstract class TestData {
             throws FileNotFoundException {
         return getReader(PAGING_REQUIRED);
     }
+
     /**
      * Create a StringStreamReader for the Paged test file
+     *
      * @return the StringStreamReader
      * @throws FileNotFoundException the test file could not be found
      */
@@ -255,6 +272,7 @@ public abstract class TestData {
 
     /**
      * Create a StringStreamReader for the test file with extra blank lines
+     *
      * @return the StringStreamReader
      * @throws FileNotFoundException the test file could not be found
      */
@@ -265,6 +283,7 @@ public abstract class TestData {
 
     /**
      * Create a StringStreamReader for the Big test file
+     *
      * @return the StringStreamReader
      * @throws FileNotFoundException the test file could not be found
      */
@@ -275,6 +294,7 @@ public abstract class TestData {
 
     /**
      * Get the string expression matching the simple record in {@link AcceptUnknownDnaEncodingScheme} format
+     *
      * @return The simple record string
      */
     public String getSimpleRecord() {
@@ -283,6 +303,7 @@ public abstract class TestData {
 
     /**
      * Get the string expression matching Record1 in {@link AcceptUnknownDnaEncodingScheme} format
+     *
      * @return The Record1 string
      */
     public String getRealExample1() {
@@ -291,6 +312,7 @@ public abstract class TestData {
 
     /**
      * Get the string expression matching Record2 in {@link AcceptUnknownDnaEncodingScheme} format
+     *
      * @return The Record2 string
      */
     public String getRealExample2() {
@@ -299,6 +321,7 @@ public abstract class TestData {
 
     /**
      * Get the string expression matching Record2 in {@link AcceptUnknownDnaEncodingScheme} format
+     *
      * @return The Record2 string
      */
     public String getRealExample3() {
@@ -307,6 +330,7 @@ public abstract class TestData {
 
     /**
      * Get the {@link Sequence} that corresponds to {@see getSimpleRecord}
+     *
      * @return The sequence
      */
     public Sequence getSimpleSequence() {
@@ -315,6 +339,7 @@ public abstract class TestData {
 
     /**
      * Get the {@link Sequence} that corresponds to {@see getRealExample1}
+     *
      * @return The sequence
      */
     public Sequence getRealExample1Sequence() {
@@ -323,6 +348,7 @@ public abstract class TestData {
 
     /**
      * Get the {@link Sequence} that corresponds to {@see getRealExample2}
+     *
      * @return The sequence
      */
     public Sequence getRealExample2Sequence() {
@@ -331,6 +357,7 @@ public abstract class TestData {
 
     /**
      * Get the {@link Sequence} that corresponds to {@see getRealExample3}
+     *
      * @return The sequence
      */
     public Sequence getRealExample3Sequence() {

@@ -1,86 +1,87 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import com.vitreoussoftware.bioinformatics.alignment.Alignment;
 import com.vitreoussoftware.bioinformatics.alignment.Position;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.SuffixTree;
 import com.vitreoussoftware.bioinformatics.alignment.suffixtree.Walk;
-import com.vitreoussoftware.bioinformatics.sequence.*;
+import com.vitreoussoftware.bioinformatics.sequence.BasePair;
+import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
-import org.javatuples.*;
+import org.javatuples.Pair;
+import org.javatuples.Triplet;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
  * Suffix Tree implementation for Sequence data
- * @author John
  *
+ * @author John
  */
 public class BasicSuffixTree implements SuffixTree {
-	
-	protected SuffixTreeNode root;
-	private SequenceCollectionFactory factory;
 
-	/**
-	 * Create the suffix tree
-	 */
-	BasicSuffixTree(final SequenceCollectionFactory factory) {
-		this.factory = factory;
-		root = new SuffixTreeNode(null);
-	}
+    protected SuffixTreeNode root;
+    private SequenceCollectionFactory factory;
 
-	/**
-	 * Does the tree contain the specified substring?
-	 * @param pattern the substring to search for
-	 * @return if the substring exists in the tree
-	 */
-	public boolean contains(final Sequence pattern) {
-		return !this.getAlignments(pattern).isEmpty();
-	}
-	
-	/**
-	 * Returns the depth of the suffix tree.
-	 * @return the depth
-	 */
-	public int depth() {
-		// The root is a null element
-		return root.depth() -1;	
-	}
+    /**
+     * Create the suffix tree
+     */
+    BasicSuffixTree(final SequenceCollectionFactory factory) {
+        this.factory = factory;
+        root = new SuffixTreeNode(null);
+    }
 
-	/**
-	 * Find the set of parents for the sequence of interest
-	 *
+    /**
+     * Does the tree contain the specified substring?
+     *
+     * @param pattern the substring to search for
+     * @return if the substring exists in the tree
+     */
+    public boolean contains(final Sequence pattern) {
+        return !this.getAlignments(pattern).isEmpty();
+    }
+
+    /**
+     * Returns the depth of the suffix tree.
+     *
+     * @return the depth
+     */
+    public int depth() {
+        // The root is a null element
+        return root.depth() - 1;
+    }
+
+    /**
+     * Find the set of parents for the sequence of interest
+     *
      * @param pattern the sequence to find parents for
      * @return the set of parents, or empty list if no parents
-	 */
-	public Collection<Alignment> getAlignments(final Sequence pattern) {
-		final Iterator<BasePair> iter = pattern.iterator();
-		
-		SuffixTreeNode current = root;
-		while (iter.hasNext())
-		{
-			final BasePair bp = iter.next();
-			if (current.contains(bp))
-				current = current.get(bp);
-			else
-				// return empty list
-				return Collections.EMPTY_LIST;
-		}
+     */
+    public Collection<Alignment> getAlignments(final Sequence pattern) {
+        final Iterator<BasePair> iter = pattern.iterator();
 
-		return current.getTexts().stream().map(position -> Alignment.with(position.getText(), pattern, position.getPosition())).collect(Collectors.toCollection(LinkedList::new));
-	}
-	
-	
+        SuffixTreeNode current = root;
+        while (iter.hasNext()) {
+            final BasePair bp = iter.next();
+            if (current.contains(bp))
+                current = current.get(bp);
+            else
+                // return empty list
+                return Collections.EMPTY_LIST;
+        }
 
-	@Override
-	public Collection<Alignment> shortestDistance(final Sequence pattern, final int maxDistance) {
-		final PriorityQueue<Triplet<Integer, Integer, SuffixTreeNode>> queue = new PriorityQueue<>(50, (a, b) -> a.getValue0() - b.getValue0());
-		queue.add(new Triplet<>(0, 0, root));
+        return current.getTexts().stream().map(position -> Alignment.with(position.getText(), pattern, position.getPosition())).collect(Collectors.toCollection(LinkedList::new));
+    }
+
+
+    @Override
+    public Collection<Alignment> shortestDistance(final Sequence pattern, final int maxDistance) {
+        final PriorityQueue<Triplet<Integer, Integer, SuffixTreeNode>> queue = new PriorityQueue<>(50, (a, b) -> a.getValue0() - b.getValue0());
+        queue.add(new Triplet<>(0, 0, root));
         final List<Alignment> alignments = new LinkedList<>();
 
-		while (queue.size() > 0)
-		{
+        while (queue.size() > 0) {
             final int distance = queue.peek().getValue0();
 
             if (alignments.size() > 0 && alignments.get(0).getDistance() < distance)
@@ -89,34 +90,32 @@ public class BasicSuffixTree implements SuffixTree {
             final int position = queue.peek().getValue1();
             final SuffixTreeNode node = queue.poll().getValue2();
 
-			final BasePair bp = pattern.get(position);
+            final BasePair bp = pattern.get(position);
 
-			for (final BasePair candidate: node.keySet())
-			{
-				final int newDistance = candidate.distance(bp) + distance;
+            for (final BasePair candidate : node.keySet()) {
+                final int newDistance = candidate.distance(bp) + distance;
                 if (maxDistance == -1 || newDistance <= maxDistance) {
-                    if (position == pattern.length() -1)
-                        for (final Position pos: node.get(candidate).getTexts())
-                        alignments.add(Alignment.with(pos.getText(), pattern, pos.getPosition(), newDistance));
+                    if (position == pattern.length() - 1)
+                        for (final Position pos : node.get(candidate).getTexts())
+                            alignments.add(Alignment.with(pos.getText(), pattern, pos.getPosition(), newDistance));
                     else
-                        queue.add(Triplet.with(newDistance, position+1, node.get(candidate)));
+                        queue.add(Triplet.with(newDistance, position + 1, node.get(candidate)));
                 }
-			}
-		}
+            }
+        }
 
         final int shortestDistance = alignments.stream().min((a, b) -> a.getDistance() - b.getDistance()).map(Alignment::getDistance).orElse(0);
 
         return alignments.stream().filter(alignment -> alignment.getDistance() == shortestDistance).collect(Collectors.toCollection(LinkedList::new));
-	}
-	
-	@Override
-	public Collection<Alignment> distances(final Sequence pattern, final int maxDistance) {
+    }
+
+    @Override
+    public Collection<Alignment> distances(final Sequence pattern, final int maxDistance) {
         final PriorityQueue<Triplet<Integer, Integer, SuffixTreeNode>> queue = new PriorityQueue<>(50, (a, b) -> a.getValue0() - b.getValue0());
         queue.add(new Triplet<>(0, 0, root));
         final List<Alignment> alignments = new LinkedList<>();
 
-        while (queue.size() > 0)
-        {
+        while (queue.size() > 0) {
             final int distance = queue.peek().getValue0();
 
             final int position = queue.peek().getValue1();
@@ -124,21 +123,20 @@ public class BasicSuffixTree implements SuffixTree {
 
             final BasePair bp = pattern.get(position);
 
-            for (final BasePair candidate: node.keySet())
-            {
+            for (final BasePair candidate : node.keySet()) {
                 final int newDistance = candidate.distance(bp) + distance;
                 if (maxDistance == -1 || newDistance <= maxDistance) {
-                    if (position == pattern.length() -1)
-                        for (final Position pos: node.get(candidate).getTexts())
+                    if (position == pattern.length() - 1)
+                        for (final Position pos : node.get(candidate).getTexts())
                             alignments.add(Alignment.with(pos.getText(), pattern, pos.getPosition(), newDistance));
                     else
-                        queue.add(Triplet.with(newDistance, position+1, node.get(candidate)));
+                        queue.add(Triplet.with(newDistance, position + 1, node.get(candidate)));
                 }
             }
         }
 
         return alignments.stream().collect(Collectors.toCollection(LinkedList::new));
-	}
+    }
 
     @Override
     public <T, R> R walk(final Walk<T, R> walker) {
@@ -168,16 +166,16 @@ public class BasicSuffixTree implements SuffixTree {
         return walker.getResult();
     }
 
-	/**
-	 * Adds a new sequence to the suffix tree
-	 * @param text the sequence to add
-	 */
-	public void addText(final Sequence text) {
-		if (text == null) throw new IllegalArgumentException("Sequence cannot be null");
+    /**
+     * Adds a new sequence to the suffix tree
+     *
+     * @param text the sequence to add
+     */
+    public void addText(final Sequence text) {
+        if (text == null) throw new IllegalArgumentException("Sequence cannot be null");
 
         // Start from the front of the sequence and then for each position
-		for (int offset = 0; offset < text.length(); offset++)
-		{
+        for (int offset = 0; offset < text.length(); offset++) {
             SuffixTreeNode current = root;
             // Add the sub-sequence of elements remaining in the sequence to the SuffixTree
             for (int j = offset; j < text.length(); j++) {
@@ -188,6 +186,6 @@ public class BasicSuffixTree implements SuffixTree {
                 //  alignment and then knowing what its starting point was
                 current.addPosition(text, offset);
             }
-		}
-	}
+        }
+    }
 }

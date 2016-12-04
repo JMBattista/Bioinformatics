@@ -9,46 +9,45 @@ import java.io.IOException;
 
 /**
  * File stream reader for FASTA data files
- * @author John
  *
+ * @author John
  */
-public final class FastaFileStreamWriter implements SequenceStreamWriter
-{
+public final class FastaFileStreamWriter implements SequenceStreamWriter {
 
     /**
-	 * The FASTA file
-	 */
-	private FileWriter file;
+     * The FASTA file
+     */
+    private FileWriter file;
 
-	/**
-	 * Create a FASTA File Stream Reader for the given file
-	 * @param file the file to run on
-	 */
-	private FastaFileStreamWriter(final FileWriter file)
-	{
-		this.file = file;
-	}
+    /**
+     * Create a FASTA File Stream Reader for the given file
+     *
+     * @param file the file to run on
+     */
+    private FastaFileStreamWriter(final FileWriter file) {
+        this.file = file;
+    }
 
     /**
      * Create an input stream for FASTA file format
+     *
      * @param file the FASTA file
      * @return the input stream
      * @throws java.io.FileNotFoundException the specified file was not found
      */
-    public static SequenceStreamWriter create(final File file) throws IOException
-    {
+    public static SequenceStreamWriter create(final File file) throws IOException {
         return new FastaFileStreamWriter(new FileWriter(file));
     }
 
     /**
      * Create an input stream for FASTA file format
+     *
      * @param fileName the FASTA file
      * @return the input stream
      * @throws java.io.FileNotFoundException the specified file was not found
      */
-    public static SequenceStreamWriter create(final String fileName) throws IOException
-    {
-        return create (new File(fileName));
+    public static SequenceStreamWriter create(final String fileName) throws IOException {
+        return create(new File(fileName));
     }
 
 
@@ -72,7 +71,7 @@ public final class FastaFileStreamWriter implements SequenceStreamWriter
     private int writeSequenceData(final String sequenceData) throws IOException {
         int charactersWritten = 0;
 
-        for (int start =  0; start < sequenceData.length(); start += 80) {
+        for (int start = 0; start < sequenceData.length(); start += 80) {
             int dist = 80;
             if (start + 80 > sequenceData.length())
                 dist = sequenceData.length() - start;
@@ -88,15 +87,15 @@ public final class FastaFileStreamWriter implements SequenceStreamWriter
 
 
     @Override
-	protected void finalize() throws Throwable {
-		this.file.close();
-		super.finalize();
-	}
+    protected void finalize() throws Throwable {
+        this.file.close();
+        super.finalize();
+    }
 
-	@Override
-	public void close() throws IOException {
-		this.file.close();
-	}
+    @Override
+    public void close() throws IOException {
+        this.file.close();
+    }
 
 
 }

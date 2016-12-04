@@ -10,43 +10,47 @@ import java.util.stream.StreamSupport;
 
 /**
  * A DNA Sequence representation
- * @author John
  *
+ * @author John
  */
 public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
 
     String INVALID_BASEPAIR_ERROR = "We encountered a badly encoded set of base pairs inside sequence iterator";
 
     /**
-	 * Get the BasePair at the specified index
-	 * @param index the index to get the BasePair from
-	 * @return the BasePair
-	 */
-	public BasePair get(int index);
+     * Get the BasePair at the specified index
+     *
+     * @param index the index to get the BasePair from
+     * @return the BasePair
+     */
+    public BasePair get(int index);
 
     /**
      * Get the metadata string for the sequence
+     *
      * @return The metadata for the sequence
      */
     public String getMetadata();
 
     @Override
-	public String toString();
+    public String toString();
 
     @Override
-	public int hashCode();
+    public int hashCode();
 
     @Override
-	public boolean equals(Object obj);
+    public boolean equals(Object obj);
 
     /**
-	 * The length of the sequence
-	 * @return length
-	 */
-	public int length();
+     * The length of the sequence
+     *
+     * @return length
+     */
+    public int length();
 
     /**
      * Return an iterator that proceeds from the back to the front of the sequence
+     *
      * @return the basepair iterator
      */
     public default Iterable<BasePair> reverse() {
@@ -60,14 +64,14 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
             @Override
             public Iterator<BasePair> iterator() {
                 return new Iterator<BasePair>() {
-                    int index = length() -1;
+                    int index = length() - 1;
+
                     @Override
                     public void forEachRemaining(final Consumer<? super BasePair> consumer) {
                         int remaining = index;
 
                         try {
-                            while (remaining >= 0)
-                            {
+                            while (remaining >= 0) {
                                 consumer.accept(getBasePair(remaining));
                                 remaining--;
                             }
@@ -134,8 +138,7 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
             @Override
             public void forEachRemaining(final Consumer<? super BasePair> consumer) {
                 try {
-                    while (index < length())
-                    {
+                    while (index < length()) {
                         consumer.accept(get(index));
                         index++;
                     }
@@ -195,8 +198,8 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
             return false;
         }
 
-            @Override
-            public Spliterator<BasePair> trySplit() {
+        @Override
+        public Spliterator<BasePair> trySplit() {
             final int low = origin;
             final int mid = ((low + fence) >>> 1);
             if (low < mid) {
@@ -207,13 +210,13 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
             return null;
         }
 
-            @Override
-            public long estimateSize() {
+        @Override
+        public long estimateSize() {
             return (fence - origin) / 2;
         }
 
-            @Override
-            public int characteristics() {
+        @Override
+        public int characteristics() {
             return ORDERED | SIZED | IMMUTABLE | SUBSIZED | NONNULL;
         }
     }

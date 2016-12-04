@@ -9,8 +9,8 @@ import com.vitreoussoftware.bioinformatics.sequence.io.writer.SequenceStreamWrit
 
 /**
  * Test the {@link EmblFileStreamWriter} class
- * @author John
  *
+ * @author John
  */
 public class EmblFileStreamWriterIntegrationTest extends SequenceStreamWriterIntegrationTestBase<EmblData> {
     private static final String WRITER_TEST_FILE = "build/embltestwriter.embl";

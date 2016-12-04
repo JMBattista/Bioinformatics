@@ -8,10 +8,10 @@ import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader
 
 /**
  * Test the FastqFileStreamReader class
- * @author John
  *
+ * @author John
  */
-public class EmblStringFileStreamReaderIntegrationTest extends StringFileStreamReaderIntegrationTestBase<EmblData>{
+public class EmblStringFileStreamReaderIntegrationTest extends StringFileStreamReaderIntegrationTestBase<EmblData> {
     @Override
     protected EmblData getTestData() {
         return new EmblData();

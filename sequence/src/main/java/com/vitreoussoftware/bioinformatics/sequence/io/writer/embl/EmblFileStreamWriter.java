@@ -8,8 +8,8 @@ import java.io.IOException;
 
 /**
  * File stream reader for EMBL data files
- * @author John 2016/10/16
  *
+ * @author John 2016/10/16
  */
 public final class EmblFileStreamWriter implements SequenceStreamWriter {
 
@@ -51,21 +51,21 @@ public final class EmblFileStreamWriter implements SequenceStreamWriter {
 
     /**
      * Create a EMBL File Stream Reader for the given file
+     *
      * @param file the file to run on
      */
-    private EmblFileStreamWriter(final FileWriter file)
-    {
+    private EmblFileStreamWriter(final FileWriter file) {
         this.file = file;
     }
 
     /**
      * Create an input stream for EMBL file format
+     *
      * @param fileName the EMBL file
      * @return the input stream
      * @throws java.io.FileNotFoundException the specified file was not found
      */
-    public static SequenceStreamWriter create(final String fileName) throws IOException
-    {
+    public static SequenceStreamWriter create(final String fileName) throws IOException {
         final FileWriter file = new FileWriter(fileName);
         return new EmblFileStreamWriter(file);
     }

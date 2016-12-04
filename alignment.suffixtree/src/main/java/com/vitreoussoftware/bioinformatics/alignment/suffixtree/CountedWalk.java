@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by John on 12/19/13.
  */
-public class CountedWalk<T,R> implements Walk<T,R> {
+public class CountedWalk<T, R> implements Walk<T, R> {
     private final Walk<T, R> walker;
     private final AtomicInteger isFinished;
     private final AtomicInteger getResult;
@@ -28,6 +28,7 @@ public class CountedWalk<T,R> implements Walk<T,R> {
 
     /**
      * Gets the number of time the isFinished method was called
+     *
      * @return the number of calls
      */
     public int getIsFinishedCount() {
@@ -36,6 +37,7 @@ public class CountedWalk<T,R> implements Walk<T,R> {
 
     /**
      * Gets the number of times the initialValue method was called
+     *
      * @return the number of calls
      */
     public int getInitialValueCount() {
@@ -44,6 +46,7 @@ public class CountedWalk<T,R> implements Walk<T,R> {
 
     /**
      * Gets the number of times the visit method was called
+     *
      * @return the number of nodes visited
      */
     public int getVisitCount() {
@@ -52,6 +55,7 @@ public class CountedWalk<T,R> implements Walk<T,R> {
 
     /**
      * Gets the number of times the getResult method was called as part of the walk
+     *
      * @return the number of calls
      */
     public int getResultcount() {

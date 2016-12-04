@@ -41,6 +41,7 @@ public class SequenceGeneratorTest {
 
     /**
      * Create a {@link EnumeratedDistribution.DiscreteDistributionBuilder} with a default {@link EncodingScheme}
+     *
      * @return the {@link EnumeratedDistribution.DiscreteDistributionBuilder} instance
      */
     private EnumeratedDistribution.DiscreteDistributionBuilder<Character> getDistribution() {
@@ -148,8 +149,8 @@ public class SequenceGeneratorTest {
                 .lengthDistribution(() -> 10)
                 .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
                 .basePairDistribution(getDistribution()
-                    .probability(sample, 1.0)
-                    .build())
+                        .probability(sample, 1.0)
+                        .build())
                 .build();
 
         val sequence = generator.sample();

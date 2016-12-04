@@ -10,7 +10,8 @@ import static org.junit.Assert.assertThat;
 
 /**
  * These theories require that there is an @DataPoints array of the supported {@link Character}s and a
- *   @DataPoint with the {@link EncodingScheme
+ *
+ * @DataPoint with the {@link EncodingScheme
  * Created by John on 10/30/2016.
  */
 @RunWith(Theories.class)
@@ -20,9 +21,9 @@ public abstract class EncodingSchemeTestBase {
      */
     @Theory
     public void theoryBasePairConversion(final EncodingScheme scheme, final Character character) {
-            val basePair = scheme.fromCharacter(character);
+        val basePair = scheme.fromCharacter(character);
 
-            assertThat("Failed for character " + character, basePair.toChar(), is(character));
+        assertThat("Failed for character " + character, basePair.toChar(), is(character));
     }
 
     /**
@@ -30,9 +31,9 @@ public abstract class EncodingSchemeTestBase {
      */
     @Theory
     public void theoryEncodedByteConversion(final EncodingScheme scheme, final Character character) {
-            val encodedByte = scheme.getValue(character);
+        val encodedByte = scheme.getValue(character);
 
-            assertThat("Failed for character " + character, scheme.toChar(encodedByte), is(character));
+        assertThat("Failed for character " + character, scheme.toChar(encodedByte), is(character));
     }
 
 

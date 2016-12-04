@@ -6,14 +6,15 @@ import java.io.IOException;
 
 /**
  * A stream reader for writing Sequence data to another location
- * @author John
  *
+ * @author John
  */
 public interface SequenceStreamWriter extends AutoCloseable {
 
-	/**
+    /**
      * Write the sequence to the stream
-	 * @return the number of characters written
-	 */
-	public int write(Sequence sequence) throws IOException;
+     *
+     * @return the number of characters written
+     */
+    public int write(Sequence sequence) throws IOException;
 }

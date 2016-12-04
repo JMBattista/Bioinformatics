@@ -13,9 +13,9 @@ public class FDistribution implements ContinuousDistribution<Double> {
 
     /**
      * Create an instance of {@link FDistribution} that can be used to generate outputs
-     * @param numeratorDegreesOfFreedom Numberator degrees of freedom
-     * @param denominatorDegreesOfFreedom Denominator degrees of freedom
      *
+     * @param numeratorDegreesOfFreedom   Numberator degrees of freedom
+     * @param denominatorDegreesOfFreedom Denominator degrees of freedom
      * @throws NullPointerException if the arguments are null or unset
      */
     @Builder

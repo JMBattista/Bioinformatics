@@ -6,7 +6,10 @@ import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import org.javatuples.Triplet;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -19,13 +22,15 @@ public final class Walkers {
     /**
      * This class should never be instantiated, it is just a holder for a set of pre-provided walkers
      */
-    private Walkers() {}
+    private Walkers() {
+    }
 
     /**
      * Walks all nodes and keeps a count of the number that were visited.
      * This does not correspond to the underlying structure of the SuffixTree. So two implementations that store a full
      * sized SuffixTree should have the same 'count' of virtual nodes.
      * Caution: This visits every node, which can make it extremely slow!
+     *
      * @return the number of 'nodes' encountered on the walk.
      */
     public static Walk<Integer, Integer> size() {
@@ -60,6 +65,7 @@ public final class Walkers {
      * This does not rely on the underlying structure of the SuffixTree, so two implementations should return the same
      * value for depth, unless the SuffixTree is bounded somehow.
      * Caution: This visits every node, which can make it extremely slow!
+     *
      * @return The depth of the longest chain of elements in the SuffixTree
      */
     public static Walk<Integer, Integer> depth() {
@@ -102,12 +108,14 @@ public final class Walkers {
 
     /**
      * Check to see if the SuffixTree contained an exact match for the given pattern
+     *
      * @param pattern
      * @return true if the exact match was found, false if it was not.
      */
     public static Walk<Integer, Boolean> contains(final Sequence pattern) {
         return new Walk<Integer, Boolean>() {
             boolean result = false;
+
             @Override
             public boolean isFinished(final Integer metadata) {
                 result = metadata.equals(pattern.length());
@@ -128,7 +136,7 @@ public final class Walkers {
             @Override
             public Optional<Integer> visit(final BasePair basePair, final Collection<Position> positions, final Integer metadata) {
                 if (pattern.get(metadata).equals(basePair))
-                    return Optional.of(metadata +1);
+                    return Optional.of(metadata + 1);
                 else
                     return Optional.empty();
             }
@@ -143,24 +151,24 @@ public final class Walkers {
     /**
      * For the given pattern finds the alignment with the minimum shortestDistance.
      * Distance function is 1 for each mismatched BasePair and does not allow gaps.
+     *
      * @param pattern The target pattern we are trying to align
      * @return The shortestDistance for the alignment and the list of sequenced position pairs that match the alignment.
      */
-    public static Walk<Triplet<Integer, Integer, Collection<Position>>, Collection<Alignment>> shortestDistances(final Sequence pattern)
-    {
+    public static Walk<Triplet<Integer, Integer, Collection<Position>>, Collection<Alignment>> shortestDistances(final Sequence pattern) {
         return new WalkWrapper<>(shortestDistances(pattern, 0), Optional::get);
     }
 
     /**
      * For the given pattern finds the alignment with the minimum shortestDistance, as long as it is less than or equal to maxDistance
      * Distance function is 1 for each mismatched BasePair and does not allow gaps.
+     *
      * @param pattern The target pattern we are trying to align
-     * @Param maxDistance The maximum shortestDistance a pattern can be before being rejected
      * @return The shortestDistance for the alignment and the list of sequenced position pairs that match the alignment.
+     * @Param maxDistance The maximum shortestDistance a pattern can be before being rejected
      */
     public static Walk<Triplet<Integer, Integer, Collection<Position>>,
-            Optional<Collection<Alignment>>> shortestDistances(final Sequence pattern, final int maxDistance)
-    {
+            Optional<Collection<Alignment>>> shortestDistances(final Sequence pattern, final int maxDistance) {
         return new Walk<Triplet<Integer, Integer, Collection<Position>>,
                 Optional<Collection<Alignment>>>() {
             Optional<Collection<Alignment>> result = Optional.empty();
@@ -192,13 +200,12 @@ public final class Walkers {
                     return Optional.empty();
 
                 if (position < pattern.length() - 1) {
-                    return Optional.of(Triplet.with(position +1, distance, positions));
-                }
-                else {
+                    return Optional.of(Triplet.with(position + 1, distance, positions));
+                } else {
                     // If there is no result, or the result is of a higher shortestDistance use the current value
                     if (resultDistance.map(d -> d > distance).orElse(true)) {
-                            result = Optional.of(positions.stream().map(p -> Alignment.with(p.getText(), pattern, p.getPosition(), distance))
-                                    .collect(Collectors.toCollection(HashSet::new)));
+                        result = Optional.of(positions.stream().map(p -> Alignment.with(p.getText(), pattern, p.getPosition(), distance))
+                                .collect(Collectors.toCollection(HashSet::new)));
                     }
                     // If the result shortestDistance matches current shortestDistance add the positions
                     else if (resultDistance.get() == distance) {

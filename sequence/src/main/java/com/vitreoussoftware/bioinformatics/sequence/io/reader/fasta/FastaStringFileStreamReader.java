@@ -10,11 +10,10 @@ import java.io.IOException;
 
 /**
  * File stream reader for FASTA data files
- * @author John
  *
+ * @author John
  */
-public final class FastaStringFileStreamReader implements StringStreamReader
-{
+public final class FastaStringFileStreamReader implements StringStreamReader {
     /**
      * The FASTA file wrapped in a {@link BufferFileStreamReader}
      */
@@ -22,15 +21,16 @@ public final class FastaStringFileStreamReader implements StringStreamReader
 
     /**
      * Create a FASTA File Stream Reader for the given file
+     *
      * @param reader the {@link BufferFileStreamReader} to read from
      */
-    private FastaStringFileStreamReader(@NonNull final BufferFileStreamReader reader)
-    {
+    private FastaStringFileStreamReader(@NonNull final BufferFileStreamReader reader) {
         this.reader = reader;
     }
 
     /**
      * Create an input stream for FASTA file format
+     *
      * @param filePath the FASTA file
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
@@ -44,7 +44,8 @@ public final class FastaStringFileStreamReader implements StringStreamReader
 
     /**
      * Create an input stream for FASTA file format
-     * @param filePath the FASTA file
+     *
+     * @param filePath   the FASTA file
      * @param pagingSize the size of the buffer for paging data from disk
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
@@ -56,13 +57,14 @@ public final class FastaStringFileStreamReader implements StringStreamReader
                         .bufferSize(pagingSize)
                         .build());
     }
-	
-	/**
+
+    /**
      * Reads a record from the file
-	 * @return the record
-	 */
-	@Override
-	public Pair<String,String> next() {
+     *
+     * @return the record
+     */
+    @Override
+    public Pair<String, String> next() {
         final String metadata = readMetadata();
         final String comments = readComments();
         final String data = readSequenceData();
@@ -70,23 +72,24 @@ public final class FastaStringFileStreamReader implements StringStreamReader
         return Pair.with(metadata, data);
     }
 
-	/**
+    /**
      * Does the stream reader still have a record?
-	 * @return boolean indicator
-	 * @throws IOException If the file cannot be accessed it may fail
-	 */
-	@Override
-	public boolean hasNext() {
+     *
+     * @return boolean indicator
+     * @throws IOException If the file cannot be accessed it may fail
+     */
+    @Override
+    public boolean hasNext() {
         // Dump whitespace
         reader.dropUntil(x -> !Character.isWhitespace(x));
 
-		return !reader.isEof();
-	}
+        return !reader.isEof();
+    }
 
-	@Override
-	public void close() throws IOException {
-		this.reader.close();
-	}
+    @Override
+    public void close() throws IOException {
+        this.reader.close();
+    }
 
     @Override
     protected void finalize() throws Throwable {
@@ -140,6 +143,6 @@ public final class FastaStringFileStreamReader implements StringStreamReader
                 readingSequence = false;
         }
 
-        return  sb.toString();
+        return sb.toString();
     }
 }

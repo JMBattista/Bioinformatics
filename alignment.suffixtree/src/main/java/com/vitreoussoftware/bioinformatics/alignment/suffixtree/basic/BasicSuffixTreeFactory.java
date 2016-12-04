@@ -7,27 +7,28 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceLis
 
 /**
  * Create a BasicSuffixTree
- * @author John
  *
+ * @author John
  */
 public class BasicSuffixTreeFactory implements SuffixTreeFactory {
 
-	private SequenceCollectionFactory factory;
+    private SequenceCollectionFactory factory;
 
-	/**
-	 * Create a BasicSuffixTreeFactory with a custom SequenceCollectionFactory
-	 * @param factory the SequenceCollectionFactory to use with the SuffixTree
-	 */
-	public BasicSuffixTreeFactory(final SequenceCollectionFactory factory) {
-		this.factory = factory;
-	}
-	
-	/**
-	 * Create a BasicSuffixTreeFactory with default configuration
-	 */
-	public BasicSuffixTreeFactory() {
-		this.factory = new SequenceListFactory();
-	}
+    /**
+     * Create a BasicSuffixTreeFactory with a custom SequenceCollectionFactory
+     *
+     * @param factory the SequenceCollectionFactory to use with the SuffixTree
+     */
+    public BasicSuffixTreeFactory(final SequenceCollectionFactory factory) {
+        this.factory = factory;
+    }
+
+    /**
+     * Create a BasicSuffixTreeFactory with default configuration
+     */
+    public BasicSuffixTreeFactory() {
+        this.factory = new SequenceListFactory();
+    }
 
     @Override
     public SuffixTree create() {

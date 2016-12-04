@@ -8,11 +8,10 @@ import java.io.IOException;
 
 /**
  * File stream reader for FASTQ data files
- * @author John
  *
+ * @author John
  */
-public final class FastqFileStreamWriter implements SequenceStreamWriter
-{
+public final class FastqFileStreamWriter implements SequenceStreamWriter {
 
     /**
      * The FASTQ file
@@ -21,21 +20,21 @@ public final class FastqFileStreamWriter implements SequenceStreamWriter
 
     /**
      * Create a FASTQ File Stream Reader for the given file
+     *
      * @param file the file to run on
      */
-    private FastqFileStreamWriter(final FileWriter file)
-    {
+    private FastqFileStreamWriter(final FileWriter file) {
         this.file = file;
     }
 
     /**
      * Create an input stream for FASTQ file format
+     *
      * @param fileName the FASTQ file
      * @return the input stream
      * @throws java.io.FileNotFoundException the specified file was not found
      */
-    public static SequenceStreamWriter create(final String fileName) throws IOException
-    {
+    public static SequenceStreamWriter create(final String fileName) throws IOException {
         final FileWriter file = new FileWriter(fileName);
         return new FastqFileStreamWriter(file);
     }
@@ -63,7 +62,7 @@ public final class FastqFileStreamWriter implements SequenceStreamWriter
     private int writeSequenceData(final String sequenceData) throws IOException {
         int charactersWritten = 0;
 
-        for (int start =  0; start < sequenceData.length(); start += 80) {
+        for (int start = 0; start < sequenceData.length(); start += 80) {
             int dist = 80;
             if (start + 80 > sequenceData.length())
                 dist = sequenceData.length() - start;
@@ -93,33 +92,31 @@ public final class FastqFileStreamWriter implements SequenceStreamWriter
             sb.append("I");
         final String quality = sb.toString();
 
-        for (int start =  0; start < sequenceData.length(); start += 80) {
+        for (int start = 0; start < sequenceData.length(); start += 80) {
             if (start + 80 > sequenceData.length()) {
                 final int dist = sequenceData.length() - start;
                 file.write(quality.substring(0, dist));
                 charactersWritten += dist;
-            }
-            else
-            {
+            } else {
                 file.write(quality);
                 charactersWritten += 80;
             }
 
             file.write("\n");
-            charactersWritten ++;
+            charactersWritten++;
         }
 
         return charactersWritten;
     }
 
-	@Override
-	protected void finalize() throws Throwable {
-		this.file.close();
-		super.finalize();
-	}
+    @Override
+    protected void finalize() throws Throwable {
+        this.file.close();
+        super.finalize();
+    }
 
-	@Override
-	public void close() throws IOException {
-		this.file.close();
-	}
+    @Override
+    public void close() throws IOException {
+        this.file.close();
+    }
 }

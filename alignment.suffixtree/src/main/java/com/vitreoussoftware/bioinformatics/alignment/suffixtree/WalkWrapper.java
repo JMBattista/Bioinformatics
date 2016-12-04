@@ -13,11 +13,11 @@ import java.util.function.Function;
  * need to provide a Function<R, R2> to perform the conversion.
  * For example converting from Optional<Integer> to <Integer>, when it is certain to contain a value.
  * new WalkWrapper<T, Optional<Integer>, Integer>(walk, (x) -> x.get())
- *
+ * <p>
  * Created by John on 12/22/13.
  */
 public final class WalkWrapper<T, R, R2> implements Walk<T, R2> {
-    private final Walk<T,R> wrappedWalk;
+    private final Walk<T, R> wrappedWalk;
     private final Function<R, R2> convert;
 
     public WalkWrapper(final Walk<T, R> wrappedWalk) {

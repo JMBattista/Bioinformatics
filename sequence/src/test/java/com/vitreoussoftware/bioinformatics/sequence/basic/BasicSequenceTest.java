@@ -13,7 +13,7 @@ import static org.hamcrest.core.Is.is;
 
 /**
  * Test parts of the {@link BasicSequence} also {@see SequenceTest}
- *
+ * <p>
  * Created by John on 10/26/2016.
  */
 public class BasicSequenceTest {

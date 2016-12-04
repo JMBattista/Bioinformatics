@@ -13,9 +13,9 @@ public class WeibullDistribution implements DiscreteDistribution<Integer> {
 
     /**
      * Create an instance of {@link WeibullDistribution} that can be used to generate outputs
-     * @param alpha Shape parameter
-     * @param beta Scale parameter
      *
+     * @param alpha Shape parameter
+     * @param beta  Scale parameter
      * @throws NullPointerException if the arguments are null or unset
      */
     @Builder

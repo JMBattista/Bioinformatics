@@ -10,14 +10,14 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test the FastqFileStreamReader class
- * @author John
  *
+ * @author John
  */
-public class FastqStringFileStreamReaderIntegrationTest extends StringFileStreamReaderIntegrationTestBase<FastqData>{
+public class FastqStringFileStreamReaderIntegrationTest extends StringFileStreamReaderIntegrationTestBase<FastqData> {
     @Override
     protected FastqData getTestData() {
         return new FastqData();
@@ -35,6 +35,7 @@ public class FastqStringFileStreamReaderIntegrationTest extends StringFileStream
 
     /**
      * Read a record from the reader
+     *
      * @throws java.io.IOException
      */
     @Test
@@ -48,6 +49,7 @@ public class FastqStringFileStreamReaderIntegrationTest extends StringFileStream
 
     /**
      * Read a second record from the reader
+     *
      * @throws java.io.IOException
      */
     @Test
@@ -62,6 +64,7 @@ public class FastqStringFileStreamReaderIntegrationTest extends StringFileStream
 
     /**
      * Read a third record from the reader
+     *
      * @throws java.io.IOException
      */
     @Test
@@ -77,6 +80,7 @@ public class FastqStringFileStreamReaderIntegrationTest extends StringFileStream
 
     /**
      * Read a third record from the reader
+     *
      * @throws java.io.IOException
      */
     @Test
@@ -93,6 +97,7 @@ public class FastqStringFileStreamReaderIntegrationTest extends StringFileStream
 
     /**
      * Read a third record from the reader
+     *
      * @throws java.io.IOException
      */
     @Test
@@ -110,6 +115,7 @@ public class FastqStringFileStreamReaderIntegrationTest extends StringFileStream
 
     /**
      * Read a third record from the reader
+     *
      * @throws java.io.IOException
      */
     @Test
@@ -128,6 +134,7 @@ public class FastqStringFileStreamReaderIntegrationTest extends StringFileStream
 
     /**
      * Read a third record from the reader
+     *
      * @throws java.io.IOException
      */
     @Test

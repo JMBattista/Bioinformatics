@@ -19,8 +19,7 @@ public class KeywordNode {
     private final BasePair basePair;
     private final LinkedList<Sequence> terminals;
 
-    KeywordNode(final BasePair basePair)
-    {
+    KeywordNode(final BasePair basePair) {
         this.children = new HashMap<>();
         this.basePair = basePair;
         this.terminals = new LinkedList<>();
@@ -28,12 +27,12 @@ public class KeywordNode {
 
     /**
      * Return the existing KeywordNode for the given BasePair if it exists, otherwise fromCharacter a new node for that BasePair and return it.
+     *
      * @param bp the key for the node
      * @return the node for the key
      */
     KeywordNode getOrCreate(final BasePair bp) {
-        if (!children.containsKey(bp))
-        {
+        if (!children.containsKey(bp)) {
             children.put(bp, new KeywordNode(bp));
         }
 
@@ -46,6 +45,7 @@ public class KeywordNode {
 
     /**
      * Retrieve the child that matches the given BasePair
+     *
      * @param bp the BasePair to match against
      * @return the matching child
      */
@@ -59,6 +59,7 @@ public class KeywordNode {
 
     /**
      * Retrieve all children of this node
+     *
      * @return return all the children
      */
     Collection<? extends KeywordNode> values() {
@@ -67,6 +68,7 @@ public class KeywordNode {
 
     /**
      * Retrieve all Keys for the children
+     *
      * @return return all the keys
      */
     Collection<BasePair> keySet() {
@@ -75,7 +77,7 @@ public class KeywordNode {
 
     int depth() {
         int max = 0;
-        for (final KeywordNode node: this.children.values()) {
+        for (final KeywordNode node : this.children.values()) {
             max = Math.max(max, node.depth());
         }
 
@@ -87,7 +89,6 @@ public class KeywordNode {
     }
 
     /**
-     *
      * @return The collections of patterns that are teminated at this node
      */
     public Collection<Sequence> getTerminals() {
@@ -96,6 +97,7 @@ public class KeywordNode {
 
     /**
      * Set this node as terminal for the given pattern.
+     *
      * @param pattern the pattern fro which this node is terminal
      */
     public void setTerminal(final Sequence pattern) {

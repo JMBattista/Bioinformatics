@@ -13,10 +13,10 @@ public class UniformDistribution implements ContinuousDistribution<Double> {
 
     /**
      * Create an instance of {@link UniformDistribution} that can be used to generate outputs
+     *
      * @param lower lower bound of values returned by this distribution [inclusive]
      * @param upper upper boudn of values returned by this distribution (exclusive)
-     *
-     * @throws NullPointerException if the arguments are null or unset
+     * @throws NullPointerException     if the arguments are null or unset
      * @throws IllegalArgumentException if the lower bound is >= upper bound
      */
     @Builder

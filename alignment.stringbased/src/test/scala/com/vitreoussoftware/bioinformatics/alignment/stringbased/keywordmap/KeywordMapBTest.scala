@@ -7,5 +7,5 @@ import com.vitreoussoftware.bioinformatics.alignment.PatternFirstAlignerDescribe
   * Created by John on 8/24/14.
   */
 class KeywordMapBTest extends PatternFirstAlignerDescribedTest("KeywordMap") {
-   def getAligner() = new KeywordMapFactory create
+  def getAligner() = new KeywordMapFactory create
 }

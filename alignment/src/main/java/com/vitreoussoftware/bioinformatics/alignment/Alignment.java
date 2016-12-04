@@ -1,7 +1,7 @@
 package com.vitreoussoftware.bioinformatics.alignment;
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import lombok.Value;
+import lombok.experimental.Value;
 
 /**
  * Created by John on 12/23/13.
@@ -37,10 +37,13 @@ public class Alignment {
         return this.pattern;
     }
 
-    public int getPosition() { return this.position;
+    public int getPosition() {
+        return this.position;
     }
 
-    public int getDistance() { return this.distance; }
+    public int getDistance() {
+        return this.distance;
+    }
 
     @Override
     public String toString() {

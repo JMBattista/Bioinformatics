@@ -10,8 +10,8 @@ import org.junit.Test;
 
 /**
  * Test the FastqFileStreamWriter class
- * @author John
  *
+ * @author John
  */
 public class FastqFileStreamWriterIntegrationTest extends SequenceStreamWriterIntegrationTestBase<FastqData> {
     private static final String WRITER_TEST_FILE = "build/fastqtestwriter.fastq";

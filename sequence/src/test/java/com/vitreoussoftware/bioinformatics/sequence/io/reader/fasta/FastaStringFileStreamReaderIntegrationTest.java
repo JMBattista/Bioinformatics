@@ -1,11 +1,5 @@
 package com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
-import java.io.*;
-
 import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.io.FastaData;
@@ -14,10 +8,14 @@ import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader
 import org.javatuples.Pair;
 import org.junit.Test;
 
+import java.io.IOException;
+
+import static org.junit.Assert.*;
+
 /**
  * Test the FastaFileStreamReader class
- * @author John
  *
+ * @author John
  */
 public class FastaStringFileStreamReaderIntegrationTest extends StringFileStreamReaderIntegrationTestBase<FastaData> {
 
@@ -38,6 +36,7 @@ public class FastaStringFileStreamReaderIntegrationTest extends StringFileStream
 
     /**
      * Read a third record from the reader
+     *
      * @throws IOException
      */
     @Test
@@ -51,12 +50,12 @@ public class FastaStringFileStreamReaderIntegrationTest extends StringFileStream
 
     /**
      * Read a third record from the reader
+     *
      * @throws Exception
      */
     @Test
     public void testReadRecordsNoSpace() throws Exception {
-        try (StringStreamReader reader	= testData.getNoSpaceReader())
-        {
+        try (StringStreamReader reader = testData.getNoSpaceReader()) {
             assertNotNull(reader.next().getValue1());
             assertNotNull(reader.next().getValue1());
             assertNotNull(reader.next().getValue1());
@@ -67,6 +66,7 @@ public class FastaStringFileStreamReaderIntegrationTest extends StringFileStream
 
     /**
      * Read a record from the reader
+     *
      * @throws IOException
      */
     @Test
@@ -80,6 +80,7 @@ public class FastaStringFileStreamReaderIntegrationTest extends StringFileStream
 
     /**
      * Read a second record from the reader
+     *
      * @throws IOException
      */
     @Test
@@ -94,6 +95,7 @@ public class FastaStringFileStreamReaderIntegrationTest extends StringFileStream
 
     /**
      * Read a third record from the reader
+     *
      * @throws IOException
      */
     @Test

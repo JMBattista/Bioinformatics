@@ -11,24 +11,26 @@ import java.util.stream.Collectors;
 /**
  * Aligners allow users to determine the locations of a set of Patterns from within a set of Texts,
  * based on a matching function.
- *
+ * <p>
  * A TextFirstAligner pre-processes the Text that is to be aligned against, then runs the Patterns
  * against that pre-processed Text.
- *
+ * <p>
  * An Example would be creating a SuffixTree from the set of sequences making up GreenGenes and then
  * aligning a set of read data from an experiment.
- *
+ * <p>
  * Created by John on 8/23/14.
  */
 public interface TextFirstAligner {
     /**
      * Adds a new text to the suffix tree
+     *
      * @param text the text to add
      */
     public void addText(final Sequence text);
 
     /**
      * Does the Text contain the pattern?
+     *
      * @param pattern the sequence to search for
      * @return if the substring exists in the tree
      */
@@ -36,11 +38,12 @@ public interface TextFirstAligner {
 
     /**
      * For all patterns which are contained in the Text
+     *
      * @param patterns collection of sequnces to search for in the Text
      * @return List of (Pattern, contained?) pairs.
      */
     default public Collection<Pair<Sequence, Boolean>> contains(final SequenceCollection patterns) {
-        return patterns.stream().map(pattern ->  Pair.with(pattern, this.contains(pattern))).collect(Collectors.toCollection(LinkedList::new));
+        return patterns.stream().map(pattern -> Pair.with(pattern, this.contains(pattern))).collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
@@ -63,6 +66,7 @@ public interface TextFirstAligner {
 
     /**
      * Return the minimum shortestDistance from the given pattern to each of the sequences making up the Aligner
+     *
      * @param pattern the DNA pattern to check shortestDistance for
      * @return The collection of tuples showing the shortestDistance and the collection of sequences for that shortestDistance
      */
@@ -73,6 +77,7 @@ public interface TextFirstAligner {
 
     /**
      * Return the minimum shortestDistance from the given patterns to each of the sequences making up the Aligner
+     *
      * @param patterns the DNA patterns to check shortestDistance for
      * @return The collection of tuples showing the shortestDistance and the collection of sequences for that shortestDistance
      */
@@ -83,7 +88,8 @@ public interface TextFirstAligner {
 
     /**
      * Return the minimum shortestDistance from the given pattern to each of the sequences making up the Aligner
-     * @param pattern the DNA pattern to check shortestDistance for
+     *
+     * @param pattern     the DNA pattern to check shortestDistance for
      * @param maxDistance the maximum shortestDistance before which we give up
      * @return The collection of tuples showing the shortestDistance and the collection of sequences for that shortestDistance
      */
@@ -91,7 +97,8 @@ public interface TextFirstAligner {
 
     /**
      * Return the minimum shortestDistance from the given patterns to each of the sequences making up the Aligner
-     * @param patterns the DNA patterns to check shortestDistance for
+     *
+     * @param patterns    the DNA patterns to check shortestDistance for
      * @param maxDistance the maximum shortestDistance before which we give up
      * @return The collection of tuples showing the shortestDistance and the collection of sequences for that shortestDistance
      */
@@ -124,7 +131,7 @@ public interface TextFirstAligner {
     /**
      * Return the set of distances for each text Sequence within the maximum for the given pattern Sequence
      *
-     * @param pattern the target Sequence
+     * @param pattern     the target Sequence
      * @param maxDistance the maximum shortestDistance that will be considered
      * @return the tuples of parent Sequences and the shortestDistance lists
      */
@@ -133,7 +140,7 @@ public interface TextFirstAligner {
     /**
      * Return the set of distances for each parent Sequence within the maximum for the given pattern Sequences
      *
-     * @param patterns the target Sequences
+     * @param patterns    the target Sequences
      * @param maxDistance the maximum shortestDistance that will be considered
      * @return the tuples of parent Sequences and the shortestDistance lists
      */
