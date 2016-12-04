@@ -32,11 +32,11 @@ public class SequenceListIntegrationTest extends SequenceCollectionTest {
 	@Test
 	public void testStreamSourceSingle() throws InvalidDnaFormatException, IOException {
         final com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader reader1 = testData.getSimpleExampleReader();
-        SequenceStreamReader reader = SequenceStreamReader.builder()
+        final SequenceStreamReader reader = SequenceStreamReader.builder()
 			.reader(reader1)
 			.factory(new FastaSequenceFactory())
 			.build();
-		SequenceCollection sc = this.getFactory().getSequenceCollection(reader);
+		final SequenceCollection sc = this.getFactory().getSequenceCollection(reader);
 		
 		assertNotNull(sc);
 		assertEquals(1,  sc.size());
@@ -52,11 +52,11 @@ public class SequenceListIntegrationTest extends SequenceCollectionTest {
 	@Test
 	public void testStreamSourceMultiple() throws InvalidDnaFormatException, IOException {
         final com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader reader1 = testData.getRealExamplesReader();
-        SequenceStreamReader reader = SequenceStreamReader.builder()
+        final SequenceStreamReader reader = SequenceStreamReader.builder()
 				.reader(reader1)
 				.factory(new FastaSequenceFactory())
 				.build();
-		SequenceCollection sc = this.getFactory().getSequenceCollection(reader);
+		final SequenceCollection sc = this.getFactory().getSequenceCollection(reader);
 
 		assertNotNull(sc);
 		assertEquals(3,  sc.size());

@@ -20,12 +20,12 @@ public final class WalkWrapper<T, R, R2> implements Walk<T, R2> {
     private final Walk<T,R> wrappedWalk;
     private final Function<R, R2> convert;
 
-    public WalkWrapper(Walk<T, R> wrappedWalk) {
+    public WalkWrapper(final Walk<T, R> wrappedWalk) {
         this.wrappedWalk = wrappedWalk;
         this.convert = (x) -> (R2) x;
     }
 
-    public WalkWrapper(Walk<T, R> wrappedWalk, Function<R, R2> convert) {
+    public WalkWrapper(final Walk<T, R> wrappedWalk, final Function<R, R2> convert) {
         this.wrappedWalk = wrappedWalk;
         this.convert = convert;
     }
@@ -41,17 +41,17 @@ public final class WalkWrapper<T, R, R2> implements Walk<T, R2> {
     }
 
     @Override
-    public Optional<T> visit(BasePair basePair, Collection<Position> positions, T metadata) {
+    public Optional<T> visit(final BasePair basePair, final Collection<Position> positions, final T metadata) {
         return wrappedWalk.visit(basePair, positions, metadata);
     }
 
     @Override
-    public boolean isFinished(T metadata) {
+    public boolean isFinished(final T metadata) {
         return wrappedWalk.isFinished(metadata);
     }
 
     @Override
-    public int compare(T a, T b) {
+    public int compare(final T a, final T b) {
         return wrappedWalk.compare(a, b);
     }
 }

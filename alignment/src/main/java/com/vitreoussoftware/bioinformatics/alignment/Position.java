@@ -11,13 +11,13 @@ public class Position {
     final private Sequence text;
     final private int position;
 
-    private Position(Sequence text, int position) {
+    private Position(final Sequence text, final int position) {
         this.text = text;
         this.position = position;
     }
 
 
-    public static Position with(Sequence sequence, int position) {
+    public static Position with(final Sequence sequence, final int position) {
         return new Position(sequence, position);
     }
 

@@ -19,7 +19,7 @@ public class PoissonDistribution implements DiscreteDistribution<Integer> {
      * @throws NullPointerException if the arguments are null or unset
      */
     @Builder
-    public PoissonDistribution(@NonNull Double mean, @NonNull Double epsilon) {
+    public PoissonDistribution(@NonNull final Double mean, @NonNull final Double epsilon) {
         this.distribution = new org.apache.commons.math3.distribution.PoissonDistribution(mean, epsilon);
     }
 

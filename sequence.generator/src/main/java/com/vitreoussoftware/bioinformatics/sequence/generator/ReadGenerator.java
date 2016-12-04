@@ -44,7 +44,7 @@ public class ReadGenerator implements ConditionalDistribution<Sequence, Sequence
     }
 
     @Override
-    public Sequence sample(Sequence source) {
+    public Sequence sample(final Sequence source) {
         int length = 0;
         int startPoint = 0;
         int attempts = 0;

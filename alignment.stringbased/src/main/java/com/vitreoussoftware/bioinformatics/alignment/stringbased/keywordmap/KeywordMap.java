@@ -22,14 +22,14 @@ public class KeywordMap implements PatternFirstAligner{
     @Override
     public void addPattern(final Sequence pattern) {
         KeywordNode current = root;
-        for (BasePair bp: pattern) {
+        for (final BasePair bp: pattern) {
             current = current.getOrCreate(bp);
         }
         current.setTerminal(pattern);
     }
 
     @Override
-    public boolean contained(Sequence text) {
+    public boolean contained(final Sequence text) {
         for (int startPos = 0; startPos < text.length(); startPos++) {
             Optional<KeywordNode> current = Optional.of(root);
             for (int index = 0; startPos + index < text.length() && current.isPresent(); index++) {
@@ -44,8 +44,8 @@ public class KeywordMap implements PatternFirstAligner{
     }
 
     @Override
-    public Collection<Alignment> getAlignments(Sequence text) {
-        Collection<Alignment> alignments = new LinkedList<>();
+    public Collection<Alignment> getAlignments(final Sequence text) {
+        final Collection<Alignment> alignments = new LinkedList<>();
 
         for (int startPos = 0; startPos < text.length(); startPos++) {
             Optional<KeywordNode> current = Optional.of(root);
@@ -53,7 +53,7 @@ public class KeywordMap implements PatternFirstAligner{
                 final int position = startPos + index;
                 current = current.flatMap(n -> n.get(text.get(position)));
                 if (current.isPresent()) {
-                    List<Alignment> results = current.get().getTerminals().stream().map(pattern -> Alignment.with(text, pattern, position-pattern.length()+1, 0))
+                    final List<Alignment> results = current.get().getTerminals().stream().map(pattern -> Alignment.with(text, pattern, position-pattern.length()+1, 0))
                             .collect(Collectors.toList());
                     alignments.addAll(results);
                 }
@@ -64,9 +64,9 @@ public class KeywordMap implements PatternFirstAligner{
     }
 
     @Override
-    public Collection<Alignment> shortestDistance(Sequence text, int maxDistance) {
-        Collection<Alignment> alignments = new LinkedList<>();
-        PriorityQueue<Triplet<Integer, Integer, KeywordNode>> queue = new PriorityQueue<>(30, (a,b) -> a.getValue0() - b.getValue0());
+    public Collection<Alignment> shortestDistance(final Sequence text, final int maxDistance) {
+        final Collection<Alignment> alignments = new LinkedList<>();
+        final PriorityQueue<Triplet<Integer, Integer, KeywordNode>> queue = new PriorityQueue<>(30, (a, b) -> a.getValue0() - b.getValue0());
         // Initialize the queue for each position
         for (int position = 0; position < text.length(); position ++)
             queue.add(Triplet.with(0, position, root));
@@ -74,19 +74,19 @@ public class KeywordMap implements PatternFirstAligner{
         while(!queue.isEmpty()) {
             final int distance = queue.peek().getValue0();
             final int position = queue.peek().getValue1();
-            KeywordNode current = queue.poll().getValue2();
+            final KeywordNode current = queue.poll().getValue2();
 
-            Optional<Integer> shortestDistance = alignments.stream().findFirst().map(Alignment::getDistance);
+            final Optional<Integer> shortestDistance = alignments.stream().findFirst().map(Alignment::getDistance);
             if (shortestDistance.map(d -> d < distance).orElse(false)) {
                 return alignments;
             }
 
-            for (BasePair bp: current.keySet()) {
+            for (final BasePair bp: current.keySet()) {
                 final int totalDistance = text.get(position).distance(bp) + distance;
 
                 if ((maxDistance == -1 || totalDistance < maxDistance)
                         && shortestDistance.map(d -> d >= totalDistance).orElse(true)){
-                    Optional<KeywordNode> node = current.get(bp);
+                    final Optional<KeywordNode> node = current.get(bp);
                     if (node.isPresent()) {
                         if (position +1 < text.length())
                             queue.add(Triplet.with(totalDistance, position+1, node.get()));
@@ -94,7 +94,7 @@ public class KeywordMap implements PatternFirstAligner{
                         if (shortestDistance.map(d -> d > totalDistance && node.get().getTerminals().size() > 0).orElse(false))
                             alignments.clear();
 
-                        List<Alignment> results = node.get().getTerminals().stream().map(pattern -> Alignment.with(text, pattern, position - pattern.length()+1, totalDistance))
+                        final List<Alignment> results = node.get().getTerminals().stream().map(pattern -> Alignment.with(text, pattern, position - pattern.length()+1, totalDistance))
                                 .collect(Collectors.toList());
                         alignments.addAll(results);
                     }
@@ -106,9 +106,9 @@ public class KeywordMap implements PatternFirstAligner{
     }
 
     @Override
-    public Collection<Alignment> distances(Sequence text, int maxDistance) {
-        Collection<Alignment> alignments = new LinkedList<>();
-        PriorityQueue<Triplet<Integer, Integer, KeywordNode>> queue = new PriorityQueue<>(30, (a,b) -> a.getValue0() - b.getValue0());
+    public Collection<Alignment> distances(final Sequence text, final int maxDistance) {
+        final Collection<Alignment> alignments = new LinkedList<>();
+        final PriorityQueue<Triplet<Integer, Integer, KeywordNode>> queue = new PriorityQueue<>(30, (a, b) -> a.getValue0() - b.getValue0());
         // Initialize the queue for each position
         for (int position = 0; position < text.length(); position ++)
             queue.add(Triplet.with(0, position, root));
@@ -116,18 +116,18 @@ public class KeywordMap implements PatternFirstAligner{
         while(!queue.isEmpty()) {
             final int distance = queue.peek().getValue0();
             final int position = queue.peek().getValue1();
-            KeywordNode current = queue.poll().getValue2();
+            final KeywordNode current = queue.poll().getValue2();
 
-            for (BasePair bp: current.keySet()) {
+            for (final BasePair bp: current.keySet()) {
                 final int totalDistance = text.get(position).distance(bp) + distance;
 
                 if (maxDistance == -1 || totalDistance < maxDistance) {
-                    Optional<KeywordNode> node = current.get(bp);
+                    final Optional<KeywordNode> node = current.get(bp);
                     if (node.isPresent()) {
                         if (position +1 < text.length())
                             queue.add(Triplet.with(totalDistance, position+1, node.get()));
 
-                        List<Alignment> results = node.get().getTerminals().stream().map(pattern -> Alignment.with(text, pattern, position - pattern.length() + 1, totalDistance))
+                        final List<Alignment> results = node.get().getTerminals().stream().map(pattern -> Alignment.with(text, pattern, position - pattern.length() + 1, totalDistance))
                                 .collect(Collectors.toList());
                         alignments.addAll(results);
                     }

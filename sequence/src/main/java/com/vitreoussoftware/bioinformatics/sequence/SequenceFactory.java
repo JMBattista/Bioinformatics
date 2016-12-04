@@ -16,7 +16,7 @@ public interface SequenceFactory {
      * @return the sequence object
 	 * @throws InvalidDnaFormatException 
 	 */
-	default Optional<Sequence> fromString(String sequence) throws InvalidDnaFormatException {
+	default Optional<Sequence> fromString(final String sequence) throws InvalidDnaFormatException {
         return fromString("", sequence);
     }
 

@@ -20,7 +20,7 @@ public class UniformDistribution implements DiscreteDistribution<Integer> {
      * @throws IllegalArgumentException if the lower bound is >= upper bound
      */
     @Builder
-    public UniformDistribution(@NonNull Double lower, @NonNull Double upper) {
+    public UniformDistribution(@NonNull final Double lower, @NonNull final Double upper) {
         this.distribution = com.vitreoussoftware.bioinformatics.sequence.generator.distribution.continuous.UniformDistribution
                 .builder()
                 .lower(lower)

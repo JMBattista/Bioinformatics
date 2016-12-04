@@ -21,12 +21,12 @@ public class EmblFileStreamWriterIntegrationTest extends SequenceStreamWriterInt
     }
 
     @Override
-    protected SequenceStreamWriter getWriter(String path) throws Exception {
+    protected SequenceStreamWriter getWriter(final String path) throws Exception {
         return EmblFileStreamWriter.create(path);
     }
 
     @Override
-    protected SequenceStreamReader getReader(String path) throws Exception {
+    protected SequenceStreamReader getReader(final String path) throws Exception {
         final com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader reader = EmblStringFileStreamReader.create(path);
         return SequenceStreamReader.builder()
                 .reader(reader)

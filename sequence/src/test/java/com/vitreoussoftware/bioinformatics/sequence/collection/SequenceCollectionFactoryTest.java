@@ -25,7 +25,7 @@ public abstract class SequenceCollectionFactoryTest {
 	 */
 	@Test
 	public void testCreateFactory() {
-		SequenceCollectionFactory collectionFactory = getFactory();
+		final SequenceCollectionFactory collectionFactory = getFactory();
 		assertNotNull("The collectionFactory initialized to null", collectionFactory);
 	}
 
@@ -35,9 +35,9 @@ public abstract class SequenceCollectionFactoryTest {
 	 */
 	@Test
 	public void testGetCollection() {
-		SequenceCollectionFactory collectionFactory = getFactory();
+		final SequenceCollectionFactory collectionFactory = getFactory();
 		assertNotNull("The collectionFactory initialized to null", collectionFactory);
-		SequenceCollection collection = collectionFactory.getSequenceCollection();
+		final SequenceCollection collection = collectionFactory.getSequenceCollection();
 		assertNotNull("The collection returned was nulll", collection);
 	}	
 }

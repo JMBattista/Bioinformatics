@@ -14,7 +14,7 @@ public class JavaCollectionWrapper implements SequenceCollection {
 
     private final Collection<Sequence> collection;
 
-    public JavaCollectionWrapper(Collection<Sequence> collection) {
+    public JavaCollectionWrapper(final Collection<Sequence> collection) {
         this.collection = collection;
     }
 
@@ -22,15 +22,15 @@ public class JavaCollectionWrapper implements SequenceCollection {
         return collection.iterator();
     }
 
-    public boolean add(Sequence basePairs) {
+    public boolean add(final Sequence basePairs) {
         return collection.add(basePairs);
     }
 
-    public boolean containsAll(Collection<?> c) {
+    public boolean containsAll(final Collection<?> c) {
         return collection.containsAll(c);
     }
 
-    public boolean addAll(Collection<? extends Sequence> c) {
+    public boolean addAll(final Collection<? extends Sequence> c) {
         return collection.addAll(c);
     }
 
@@ -38,7 +38,7 @@ public class JavaCollectionWrapper implements SequenceCollection {
         return collection.toString();
     }
 
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         return collection.equals(o);
     }
 
@@ -54,7 +54,7 @@ public class JavaCollectionWrapper implements SequenceCollection {
         return collection.isEmpty();
     }
 
-    public boolean contains(Object o) {
+    public boolean contains(final Object o) {
         return collection.contains(o);
     }
 
@@ -62,11 +62,11 @@ public class JavaCollectionWrapper implements SequenceCollection {
         return collection.toArray();
     }
 
-    public <T> T[] toArray(T[] a) {
+    public <T> T[] toArray(final T[] a) {
         return collection.toArray(a);
     }
 
-    public boolean remove(Object o) {
+    public boolean remove(final Object o) {
         return collection.remove(o);
     }
 
@@ -74,11 +74,11 @@ public class JavaCollectionWrapper implements SequenceCollection {
         collection.clear();
     }
 
-    public boolean removeAll(Collection<?> c) {
+    public boolean removeAll(final Collection<?> c) {
         return collection.removeAll(c);
     }
 
-    public boolean retainAll(Collection<?> c) {
+    public boolean retainAll(final Collection<?> c) {
         return collection.retainAll(c);
     }
 

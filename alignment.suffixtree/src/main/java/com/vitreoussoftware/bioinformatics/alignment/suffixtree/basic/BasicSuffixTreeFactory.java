@@ -18,7 +18,7 @@ public class BasicSuffixTreeFactory implements SuffixTreeFactory {
 	 * Create a BasicSuffixTreeFactory with a custom SequenceCollectionFactory
 	 * @param factory the SequenceCollectionFactory to use with the SuffixTree
 	 */
-	public BasicSuffixTreeFactory(SequenceCollectionFactory factory) {
+	public BasicSuffixTreeFactory(final SequenceCollectionFactory factory) {
 		this.factory = factory;
 	}
 	

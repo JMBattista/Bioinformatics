@@ -26,7 +26,7 @@ public interface Streamable<T> {
      * @param <T> The type of the collection
      * @return the streamable object
      */
-    public static <T> Streamable<T> from(Collection<T> collection) {
+    public static <T> Streamable<T> from(final Collection<T> collection) {
         return (Streamable<T>) collection;
     }
 }

@@ -29,7 +29,7 @@ public final class BufferFileStreamReader implements AutoCloseable
      * @param bufferSize Optionally set the size of the buffer
 	 */
 	@Builder
-	private BufferFileStreamReader(@NonNull String filePath, int bufferSize) throws FileNotFoundException {
+	private BufferFileStreamReader(@NonNull final String filePath, final int bufferSize) throws FileNotFoundException {
         Preconditions.checkArgument(bufferSize > 0, "bufferSize must be a positive integer");
 
         file = new FileReader(filePath);
@@ -82,7 +82,7 @@ public final class BufferFileStreamReader implements AutoCloseable
      *
      * @return true if they match, false if they do not OR eof {@see isEof}
      */
-    public boolean is(char character) {
+    public boolean is(final char character) {
         if (index >= length)
             bufferData();
         return index < length && character == buffer[index];
@@ -93,7 +93,7 @@ public final class BufferFileStreamReader implements AutoCloseable
      *
      * @param flag The {@link String} to search for
      */
-    public void dropUntil(String flag) {
+    public void dropUntil(final String flag) {
         final int maxPosition = flag.length();
         int position = 0;
 
@@ -116,7 +116,7 @@ public final class BufferFileStreamReader implements AutoCloseable
      * Ignore characters in the buffer until the {@link Predicate} {@see predicate} evaluates to true
      * @param predicate The {@link Predicate} to test
      */
-    public void dropUntil(Predicate<Character> predicate) {
+    public void dropUntil(final Predicate<Character> predicate) {
         while (true) {
             if (index >= length)
                 bufferData();
@@ -168,7 +168,7 @@ public final class BufferFileStreamReader implements AutoCloseable
      * @param characters The number of characters to drop
      * @return How many characters were dropped
      */
-    public int drop(int characters) {
+    public int drop(final int characters) {
         index += characters;
 
         return characters;
@@ -180,8 +180,8 @@ public final class BufferFileStreamReader implements AutoCloseable
      *
      * @return The characters taken from the buffer
      */
-    public String takeUntil(Predicate<Character> predicate) {
-        StringBuilder sb = new StringBuilder();
+    public String takeUntil(final Predicate<Character> predicate) {
+        final StringBuilder sb = new StringBuilder();
 
         boolean found = false;
         while (!found) {
@@ -203,7 +203,7 @@ public final class BufferFileStreamReader implements AutoCloseable
      * @return The characters taken from the buffer
      */
     public String takeUntilWhitespace() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
 
         boolean found = false;
         while (!found) {
@@ -231,7 +231,7 @@ public final class BufferFileStreamReader implements AutoCloseable
             length = file.read(buffer);
             return length;
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             e.printStackTrace();
             throw new IllegalStateException("Unable to read from file");
         }

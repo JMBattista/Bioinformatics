@@ -23,8 +23,8 @@ public interface StringBasedAlignerFactory {
      * @param text the text
      * @return the suffix tree for that text
      */
-    default public PatternFirstAligner create(Sequence text) {
-        PatternFirstAligner aligner = create();
+    default public PatternFirstAligner create(final Sequence text) {
+        final PatternFirstAligner aligner = create();
         aligner.addPattern(text);
         return aligner;
     }
@@ -34,8 +34,8 @@ public interface StringBasedAlignerFactory {
      * @param texts the collection of sequences
      * @return the StringBasedAlignerFactory for that collection of Sequences
      */
-    default public PatternFirstAligner create(SequenceCollection texts) {
-        PatternFirstAligner aligner = create();
+    default public PatternFirstAligner create(final SequenceCollection texts) {
+        final PatternFirstAligner aligner = create();
         texts.forEach(aligner::addPattern);
         return aligner;
     }
@@ -48,9 +48,9 @@ public interface StringBasedAlignerFactory {
      * @throws com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException
      * @throws java.io.IOException
      */
-    default public PatternFirstAligner create(SequenceStreamReader sequenceReader) throws IOException, InvalidDnaFormatException
+    default public PatternFirstAligner create(final SequenceStreamReader sequenceReader) throws IOException, InvalidDnaFormatException
     {
-        PatternFirstAligner aligner = create();
+        final PatternFirstAligner aligner = create();
         while (sequenceReader.hasNext())
             aligner.addPattern(sequenceReader.next().orElseThrow(() -> new RuntimeException("TODO update this exception")));
 

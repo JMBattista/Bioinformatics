@@ -37,7 +37,7 @@ public class SequenceTest {
 	public void testCreationNominal() throws InvalidDnaFormatException {
 		final String basis = "AATT";
 		
-		Sequence seq = this.factory.fromString(basis).get();
+		final Sequence seq = this.factory.fromString(basis).get();
 		
 		assertEquals(basis, seq.toString());
 	}
@@ -50,7 +50,7 @@ public class SequenceTest {
 	public void testCreationFull() throws InvalidDnaFormatException {
 		final String basis = "AATTCCGGUU";
 		
-		Sequence seq = this.factory.fromString(basis).orElseThrow(() -> new InvalidDnaFormatException("TODO update this exception"));
+		final Sequence seq = this.factory.fromString(basis).orElseThrow(() -> new InvalidDnaFormatException("TODO update this exception"));
 		
 		assertEquals(basis, seq.toString());
 	}
@@ -76,7 +76,7 @@ public class SequenceTest {
         final String basis = "AATT132";
 
         // We expect an error here so don't do anything about it!
-        Optional<Sequence> sequenceOptional = this.factory.fromString(basis);
+        final Optional<Sequence> sequenceOptional = this.factory.fromString(basis);
         assertNotNull("optional value was null", sequenceOptional);
         assertFalse("isPresent was true", sequenceOptional.isPresent());
     }
@@ -102,7 +102,7 @@ public class SequenceTest {
 	public void testEqualsSameRef() throws InvalidDnaFormatException {
 		final String basis = "AATTCCGGUU";
 		
-		Sequence seq = this.factory.fromString(basis).get();
+		final Sequence seq = this.factory.fromString(basis).get();
 		
 		assertEquals(seq, seq);
 	}
@@ -115,8 +115,8 @@ public class SequenceTest {
 	public void testEqualsDiffRef() throws InvalidDnaFormatException {
 		final String basis = "AATTCCGGUU";
 		
-		Sequence seq1 = this.factory.fromString(basis).get();
-		Sequence seq2 = this.factory.fromString(basis).get();
+		final Sequence seq1 = this.factory.fromString(basis).get();
+		final Sequence seq2 = this.factory.fromString(basis).get();
 		
 		assertEquals(seq1, seq2);
 	}
@@ -129,7 +129,7 @@ public class SequenceTest {
 	public void testHashCodeSameRef() throws InvalidDnaFormatException {
 		final String basis = "AATTCCGGUU";
 		
-		Sequence seq = this.factory.fromString(basis).get();
+		final Sequence seq = this.factory.fromString(basis).get();
 		
 		assertEquals(seq.hashCode(), seq.hashCode());
 	}
@@ -142,8 +142,8 @@ public class SequenceTest {
 	public void testHashCodeDiffRef() throws InvalidDnaFormatException {
 		final String basis = "AATTCCGGUU";
 		
-		Sequence seq1 = this.factory.fromString(basis).get();
-		Sequence seq2 = this.factory.fromString(basis).get();
+		final Sequence seq1 = this.factory.fromString(basis).get();
+		final Sequence seq2 = this.factory.fromString(basis).get();
 		
 		assertEquals(seq1.hashCode(), seq2.hashCode());
 	}

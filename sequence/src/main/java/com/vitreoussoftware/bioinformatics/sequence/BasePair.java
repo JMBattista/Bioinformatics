@@ -20,7 +20,7 @@ public class BasePair {
 	 * @param value the nucleotide identifier
 	 * @throws InvalidDnaFormatException The given nucleotide was not valid
 	 */
-    protected BasePair(byte value, EncodingScheme encodingScheme) {
+    protected BasePair(final byte value, final EncodingScheme encodingScheme) {
 		this.nucleotide = value;		
 		this.encodingScheme = encodingScheme;
 	}
@@ -31,13 +31,13 @@ public class BasePair {
 	 * @return the base pair representation
 	 * @throws InvalidDnaFormatException The given nucleotide was not valid
 	 */
-	public static BasePair create(char nucleotide, EncodingScheme encodingScheme) throws InvalidDnaFormatException
+	public static BasePair create(final char nucleotide, final EncodingScheme encodingScheme) throws InvalidDnaFormatException
 	{	
-		byte value = encodingScheme.getValue(nucleotide);
+		final byte value = encodingScheme.getValue(nucleotide);
 		return new BasePair(value, encodingScheme);
 	}
 
-    public int distance(BasePair bp) {
+    public int distance(final BasePair bp) {
         if (this.equals(bp))
             return 0;
         else
@@ -53,14 +53,14 @@ public class BasePair {
 	}
 
 	@Override
-	public boolean equals(Object basepair) {
+	public boolean equals(final Object basepair) {
 		if (this == basepair)
 			return true;
 		if (basepair == null)
 			return false;
 		if (getClass() == basepair.getClass())
 		{
-			BasePair other = (BasePair) basepair;
+			final BasePair other = (BasePair) basepair;
 			return this.equals(other.nucleotide);
 		}
 		else if (basepair.getClass() == Byte.class)
@@ -76,7 +76,7 @@ public class BasePair {
 	 * @param nucleotide the byte representation
 	 * @return the result
 	 */
-	public boolean equals(byte nucleotide) {
+	public boolean equals(final byte nucleotide) {
 		return nucleotide == this.nucleotide;
 	}
 
@@ -84,7 +84,7 @@ public class BasePair {
 	public String toString() {
 		try {
 			return this.encodingScheme.toString(this.nucleotide);
-		} catch (InvalidDnaFormatException e) {
+		} catch (final InvalidDnaFormatException e) {
 			// this should never fail since the encoding came from the encapsulated BasePair
 			throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
 		}
@@ -93,7 +93,7 @@ public class BasePair {
 	public char toChar() {
 		try {
 			return this.encodingScheme.toChar(this.nucleotide);
-		} catch (InvalidDnaFormatException e) {
+		} catch (final InvalidDnaFormatException e) {
 			// this should never fail since the encoding came from the encapsulated BasePair
 			throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
 		}

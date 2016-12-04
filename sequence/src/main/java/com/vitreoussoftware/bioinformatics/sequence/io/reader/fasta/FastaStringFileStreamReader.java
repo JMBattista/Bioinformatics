@@ -35,7 +35,7 @@ public final class FastaStringFileStreamReader implements StringStreamReader
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
      */
-    public static StringStreamReader create(String filePath) throws FileNotFoundException {
+    public static StringStreamReader create(final String filePath) throws FileNotFoundException {
         return new FastaStringFileStreamReader(
                 BufferFileStreamReader.builder()
                         .filePath(filePath)
@@ -49,7 +49,7 @@ public final class FastaStringFileStreamReader implements StringStreamReader
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
      */
-    public static StringStreamReader create(String filePath, int pagingSize) throws FileNotFoundException {
+    public static StringStreamReader create(final String filePath, final int pagingSize) throws FileNotFoundException {
         return new FastaStringFileStreamReader(
                 BufferFileStreamReader.builder()
                         .filePath(filePath)
@@ -63,9 +63,9 @@ public final class FastaStringFileStreamReader implements StringStreamReader
 	 */
 	@Override
 	public Pair<String,String> next() {
-        String metadata = readMetadata();
-        String comments = readComments();
-        String data = readSequenceData();
+        final String metadata = readMetadata();
+        final String comments = readComments();
+        final String data = readSequenceData();
 
         return Pair.with(metadata, data);
     }
@@ -95,7 +95,7 @@ public final class FastaStringFileStreamReader implements StringStreamReader
     }
 
     private String readMetadata() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         // if we are out of buffered data read more
 
         reader.dropUntil(x -> x == ';' || x == '>');
@@ -107,7 +107,7 @@ public final class FastaStringFileStreamReader implements StringStreamReader
     }
 
     private String readComments() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
 
         // spin until we are out of white space
         reader.dropWhileWhitespace();
@@ -120,7 +120,7 @@ public final class FastaStringFileStreamReader implements StringStreamReader
     }
 
     private String readSequenceData() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         boolean readingSequence = true;
 
         while (readingSequence && !reader.isEof()) {

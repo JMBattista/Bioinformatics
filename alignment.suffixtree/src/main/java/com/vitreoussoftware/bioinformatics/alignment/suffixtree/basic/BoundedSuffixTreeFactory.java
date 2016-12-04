@@ -22,7 +22,7 @@ public class BoundedSuffixTreeFactory implements SuffixTreeFactory {
 	 * @param minLength the minimum length of a suffix contained in the tree.
 	 * @param maxLength the maximum length of a suffix contained in the tree.
 	 */
-	public BoundedSuffixTreeFactory(SequenceCollectionFactory factory, int minLength, int maxLength) {
+	public BoundedSuffixTreeFactory(final SequenceCollectionFactory factory, final int minLength, final int maxLength) {
 		this.factory = factory;
 		this.minLength = minLength;
 		this.maxLength = maxLength;
@@ -33,7 +33,7 @@ public class BoundedSuffixTreeFactory implements SuffixTreeFactory {
 	 * @param minlength the minimum length of a suffix contained in the tree.
 	 * @param maxLength the maximum length of a suffix contained in the tree.
 	 */
-	public BoundedSuffixTreeFactory(int minlength, int maxLength) {
+	public BoundedSuffixTreeFactory(final int minlength, final int maxLength) {
 		this(new SequenceListFactory(), minlength, maxLength);
 	}
 

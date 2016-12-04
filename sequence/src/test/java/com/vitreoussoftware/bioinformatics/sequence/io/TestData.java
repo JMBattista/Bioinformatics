@@ -129,7 +129,7 @@ public abstract class TestData {
      * @param fileName the name of the file
      * @return The completed path
      */
-    private String getPath(String fileName) {
+    private String getPath(final String fileName) {
         return getBasePath() + fileName + getExtension();
     }
 
@@ -138,7 +138,7 @@ public abstract class TestData {
      * @param path The data file to load
      * @return The {@link StringStreamReader}
      */
-    private StringStreamReader getReader(String path) throws FileNotFoundException {
+    private StringStreamReader getReader(final String path) throws FileNotFoundException {
         return createReader(getPath(path));
     }
     /**
@@ -147,7 +147,7 @@ public abstract class TestData {
      * @param pagingSize The paging size for the {@link StringStreamReader}
      * @return The {@link StringStreamReader}
      */
-    private StringStreamReader getReader(String path, int pagingSize) throws FileNotFoundException {
+    private StringStreamReader getReader(final String path, final int pagingSize) throws FileNotFoundException {
         return createReader(getPath(path), pagingSize);
     }
 
@@ -248,7 +248,7 @@ public abstract class TestData {
      * @return the StringStreamReader
      * @throws FileNotFoundException the test file could not be found
      */
-    public StringStreamReader getPagingRequiredReader(int pagingSize)
+    public StringStreamReader getPagingRequiredReader(final int pagingSize)
             throws FileNotFoundException {
         return getReader(PAGING_REQUIRED, pagingSize);
     }

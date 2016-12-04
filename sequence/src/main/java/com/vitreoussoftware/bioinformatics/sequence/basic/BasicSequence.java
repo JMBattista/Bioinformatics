@@ -20,7 +20,7 @@ public class BasicSequence implements Sequence {
 	private final EncodingScheme encodingScheme;
     private String metadata;
 
-    private BasicSequence(EncodingScheme encodingSheme)
+    private BasicSequence(final EncodingScheme encodingSheme)
 	{
 		this.encodingScheme = encodingSheme;
 	}
@@ -56,7 +56,7 @@ public class BasicSequence implements Sequence {
      * @param encodingSheme the scheme to use for encoding
      * @return the encoded sequence
      */
-    public static Optional<Sequence> create(String sequence, EncodingScheme encodingSheme)
+    public static Optional<Sequence> create(final String sequence, final EncodingScheme encodingSheme)
     {
         return create("", sequence, encodingSheme);
     }
@@ -68,12 +68,12 @@ public class BasicSequence implements Sequence {
 	 * @param encodingSheme the scheme to use for encoding
 	 * @return the encoded sequence
 	 */
-	public static Optional<Sequence> create(String metadata, String sequence, EncodingScheme encodingSheme)
+	public static Optional<Sequence> create(final String metadata, final String sequence, final EncodingScheme encodingSheme)
 	{
         try {
             return Optional.of(createWithError(metadata, sequence, encodingSheme));
         }
-        catch (InvalidDnaFormatException e) {
+        catch (final InvalidDnaFormatException e) {
             System.err.println(e.getMessage());
             System.err.println("\t" + sequence);
             return Optional.empty();
@@ -86,9 +86,9 @@ public class BasicSequence implements Sequence {
      * @param encodingSheme the scheme to use for encoding
      * @return the encoded sequence
      */
-    public static Sequence createWithError(String metadata, String sequence, EncodingScheme encodingSheme) throws InvalidDnaFormatException
+    public static Sequence createWithError(final String metadata, final String sequence, final EncodingScheme encodingSheme) throws InvalidDnaFormatException
     {
-        BasicSequence seq = new BasicSequence(encodingSheme);
+        final BasicSequence seq = new BasicSequence(encodingSheme);
         seq.metadata = metadata;
         seq.sequence = new byte[sequence.length()];
 
@@ -102,12 +102,12 @@ public class BasicSequence implements Sequence {
 
 
     @Override
-	public BasePair get(int index)
+	public BasePair get(final int index)
 	{
 		try {
 			return this.encodingScheme.toBasePair(sequence[index]);
 		}
-		catch (InvalidDnaFormatException e)
+		catch (final InvalidDnaFormatException e)
 		{
 			// this should not have happened because we encoded everything using this scheme already
 			e.printStackTrace();
@@ -122,12 +122,12 @@ public class BasicSequence implements Sequence {
 
     @Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		try {
-			for (byte bp : sequence) {
+			for (final byte bp : sequence) {
 				sb.append(this.encodingScheme.toString(bp));
 			}
-		} catch (InvalidDnaFormatException e) {
+		} catch (final InvalidDnaFormatException e) {
 			// this should never fail since the encoding came from the encapsulated BasePair
 			e.printStackTrace();
 			throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
@@ -145,14 +145,14 @@ public class BasicSequence implements Sequence {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BasicSequence other = (BasicSequence) obj;
+		final BasicSequence other = (BasicSequence) obj;
 		if (this.encodingScheme == null || other.encodingScheme == null)
 			return false;
 		if (!encodingScheme.getClass().equals(other.encodingScheme.getClass()))

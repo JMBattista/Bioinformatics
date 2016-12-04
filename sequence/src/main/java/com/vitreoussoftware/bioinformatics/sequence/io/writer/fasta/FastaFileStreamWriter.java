@@ -24,7 +24,7 @@ public final class FastaFileStreamWriter implements SequenceStreamWriter
 	 * Create a FASTA File Stream Reader for the given file
 	 * @param file the file to run on
 	 */
-	private FastaFileStreamWriter(FileWriter file)
+	private FastaFileStreamWriter(final FileWriter file)
 	{
 		this.file = file;
 	}
@@ -35,7 +35,7 @@ public final class FastaFileStreamWriter implements SequenceStreamWriter
      * @return the input stream
      * @throws java.io.FileNotFoundException the specified file was not found
      */
-    public static SequenceStreamWriter create(File file) throws IOException
+    public static SequenceStreamWriter create(final File file) throws IOException
     {
         return new FastaFileStreamWriter(new FileWriter(file));
     }
@@ -46,14 +46,14 @@ public final class FastaFileStreamWriter implements SequenceStreamWriter
      * @return the input stream
      * @throws java.io.FileNotFoundException the specified file was not found
      */
-    public static SequenceStreamWriter create(String fileName) throws IOException
+    public static SequenceStreamWriter create(final String fileName) throws IOException
     {
         return create (new File(fileName));
     }
 
 
     @Override
-    public int write(Sequence sequence) throws IOException {
+    public int write(final Sequence sequence) throws IOException {
         int charactersWritten = 0;
         charactersWritten += writeMetadata(sequence.getMetadata());
         charactersWritten += writeSequenceData(sequence.toString());
@@ -61,7 +61,7 @@ public final class FastaFileStreamWriter implements SequenceStreamWriter
         return charactersWritten;
     }
 
-    private int writeMetadata(String metadata) throws IOException {
+    private int writeMetadata(final String metadata) throws IOException {
         file.write(">");
         file.write(metadata);
         file.write("\n");
@@ -69,7 +69,7 @@ public final class FastaFileStreamWriter implements SequenceStreamWriter
         return metadata.length() + 2;
     }
 
-    private int writeSequenceData(String sequenceData) throws IOException {
+    private int writeSequenceData(final String sequenceData) throws IOException {
         int charactersWritten = 0;
 
         for (int start =  0; start < sequenceData.length(); start += 80) {
@@ -77,7 +77,7 @@ public final class FastaFileStreamWriter implements SequenceStreamWriter
             if (start + 80 > sequenceData.length())
                 dist = sequenceData.length() - start;
 
-            String row = sequenceData.substring(start, start + dist);
+            final String row = sequenceData.substring(start, start + dist);
             file.write(row);
             file.write("\n");
             charactersWritten += dist + 1;

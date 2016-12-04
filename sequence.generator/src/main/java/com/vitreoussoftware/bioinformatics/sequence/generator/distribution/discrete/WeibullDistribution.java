@@ -19,7 +19,7 @@ public class WeibullDistribution implements DiscreteDistribution<Integer> {
      * @throws NullPointerException if the arguments are null or unset
      */
     @Builder
-    public WeibullDistribution(@NonNull Double alpha, @NonNull Double beta) {
+    public WeibullDistribution(@NonNull final Double alpha, @NonNull final Double beta) {
         this.distribution = com.vitreoussoftware.bioinformatics.sequence.generator.distribution.continuous.WeibullDistribution
                 .builder()
                 .alpha(alpha)

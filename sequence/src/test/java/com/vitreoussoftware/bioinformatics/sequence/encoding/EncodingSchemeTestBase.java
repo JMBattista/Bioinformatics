@@ -19,7 +19,7 @@ public abstract class EncodingSchemeTestBase {
      * Ensure that the base pair created from a character can be converted back to that character
      */
     @Theory
-    public void theoryBasePairConversion(EncodingScheme scheme, Character character) {
+    public void theoryBasePairConversion(final EncodingScheme scheme, final Character character) {
             val basePair = scheme.fromCharacter(character);
 
             assertThat("Failed for character " + character, basePair.toChar(), is(character));
@@ -29,7 +29,7 @@ public abstract class EncodingSchemeTestBase {
      * Ensure that the encoded byte for a character can be converted back to that character
      */
     @Theory
-    public void theoryEncodedByteConversion(EncodingScheme scheme, Character character) {
+    public void theoryEncodedByteConversion(final EncodingScheme scheme, final Character character) {
             val encodedByte = scheme.getValue(character);
 
             assertThat("Failed for character " + character, scheme.toChar(encodedByte), is(character));
@@ -40,7 +40,7 @@ public abstract class EncodingSchemeTestBase {
      * Ensure that the base pair created from a character is the same as the basepair created from the chars encoded byte
      */
     @Theory
-    public void theoryBasePairEquality(EncodingScheme scheme, Character character) {
+    public void theoryBasePairEquality(final EncodingScheme scheme, final Character character) {
         val basePairFromCharacter = scheme.fromCharacter(character);
         val encodedByte = scheme.getValue(character);
         val basePairFromByte = scheme.toBasePair(encodedByte);
@@ -52,7 +52,7 @@ public abstract class EncodingSchemeTestBase {
      * Ensure that the BasePair toString is correct
      */
     @Theory
-    public void theoryBasePairToString(EncodingScheme scheme, Character character) {
+    public void theoryBasePairToString(final EncodingScheme scheme, final Character character) {
         val basePair = scheme.fromCharacter(character);
 
         assertThat(character.toString(), is(basePair.toString()));
@@ -62,7 +62,7 @@ public abstract class EncodingSchemeTestBase {
      * Ensure that the BasePair toString is correct
      */
     @Theory
-    public void theoryBasePairToStringFromLower(EncodingScheme scheme, Character character) {
+    public void theoryBasePairToStringFromLower(final EncodingScheme scheme, final Character character) {
         val basePair = scheme.fromCharacter(Character.toLowerCase(character));
 
         assertThat(character.toString(), is(basePair.toString()));

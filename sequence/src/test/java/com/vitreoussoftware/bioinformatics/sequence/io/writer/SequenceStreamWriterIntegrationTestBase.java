@@ -73,10 +73,10 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
      * @return the SequenceStreamReader
      * @throws java.io.IOException the test file could not be found
      */
-    protected File writeSequence(Sequence sequence) throws Exception {
+    protected File writeSequence(final Sequence sequence) throws Exception {
         try (SequenceStreamWriter writer = getWriter()) {
             writer.write(sequence);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
             fail();
         }
@@ -88,11 +88,11 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
      * Create a SequenceStreamWriter for the Big FASTA test file
      * @return the SequenceStreamReader
      */
-    protected void writeAndCheckSequence(Sequence expected) throws Exception {
+    protected void writeAndCheckSequence(final Sequence expected) throws Exception {
         writeSequence(expected);
-        SequenceStreamReader reader = getReader();
+        final SequenceStreamReader reader = getReader();
 
-        Optional<Sequence> result = reader.next();
+        final Optional<Sequence> result = reader.next();
         assertTrue("Failed to read the written result", result.isPresent());
         assertEquals("The sequence was not the same once read back", expected, result.get());
         reader.close();
@@ -161,7 +161,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
             writer.write(testData.getRealExample2Sequence());
             writer.write(testData.getRealExample3Sequence());
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail("Exception writing the files");
         }
 

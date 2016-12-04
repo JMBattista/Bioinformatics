@@ -55,7 +55,7 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      */
     @Test
     public void testEqualityToSelf() throws InvalidDnaFormatException {
-        BasePair bp = scheme.create('A');
+        final BasePair bp = scheme.create('A');
         assertThat(bp, is(bp));
     }
 

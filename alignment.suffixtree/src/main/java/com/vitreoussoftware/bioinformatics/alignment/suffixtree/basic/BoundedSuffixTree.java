@@ -25,7 +25,7 @@ public class BoundedSuffixTree extends BasicSuffixTree {
 	 * @param minLength the minimum length of a suffix contained in the tree.
 	 * @param maxLength the maximum length of a suffix contained in the tree.
 	 */
-	BoundedSuffixTree(SequenceCollectionFactory factory, int minLength, int maxLength) {
+	BoundedSuffixTree(final SequenceCollectionFactory factory, final int minLength, final int maxLength) {
 		super(factory);
 		this.minLength = minLength;
 		this.maxLength = maxLength;
@@ -38,7 +38,7 @@ public class BoundedSuffixTree extends BasicSuffixTree {
 	 */
 	public void addText(final Sequence text) {
 		if (text == null) throw new IllegalArgumentException("Sequence cannot be null");
-		Iterator<BasePair> suffixIter = text.iterator();
+		final Iterator<BasePair> suffixIter = text.iterator();
 
 		int startPos = 0;
 		final int length = text.length();

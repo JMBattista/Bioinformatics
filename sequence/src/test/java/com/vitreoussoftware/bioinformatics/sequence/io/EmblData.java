@@ -58,12 +58,12 @@ public class EmblData extends TestData {
     private static final String EXTENSION = ".embl";
 
     @Override
-    protected StringStreamReader createReader(String path) throws FileNotFoundException {
+    protected StringStreamReader createReader(final String path) throws FileNotFoundException {
         return EmblStringFileStreamReader.create(path);
     }
 
     @Override
-    protected StringStreamReader createReader(String path, int pagingSize) throws FileNotFoundException {
+    protected StringStreamReader createReader(final String path, final int pagingSize) throws FileNotFoundException {
         return EmblStringFileStreamReader.create(path, pagingSize);
     }
 

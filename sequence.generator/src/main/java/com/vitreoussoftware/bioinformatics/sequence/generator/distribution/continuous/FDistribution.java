@@ -19,7 +19,7 @@ public class FDistribution implements ContinuousDistribution<Double> {
      * @throws NullPointerException if the arguments are null or unset
      */
     @Builder
-    public FDistribution(@NonNull Double numeratorDegreesOfFreedom, @NonNull Double denominatorDegreesOfFreedom) {
+    public FDistribution(@NonNull final Double numeratorDegreesOfFreedom, @NonNull final Double denominatorDegreesOfFreedom) {
         this.distribution = new org.apache.commons.math3.distribution.FDistribution(numeratorDegreesOfFreedom, denominatorDegreesOfFreedom);
     }
 

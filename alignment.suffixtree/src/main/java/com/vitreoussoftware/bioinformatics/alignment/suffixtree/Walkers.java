@@ -33,7 +33,7 @@ public class Walkers {
             AtomicInteger size = new AtomicInteger();
 
             @Override
-            public boolean isFinished(Integer metadata) {
+            public boolean isFinished(final Integer metadata) {
                 return false;
             }
 
@@ -48,7 +48,7 @@ public class Walkers {
             }
 
             @Override
-            public Optional<Integer> visit(BasePair basePair, Collection<Position> positions, Integer metadata) {
+            public Optional<Integer> visit(final BasePair basePair, final Collection<Position> positions, final Integer metadata) {
                 size.incrementAndGet();
                 return Optional.of(0);
             }
@@ -67,7 +67,7 @@ public class Walkers {
             int depth = initialValue();
 
             @Override
-            public boolean isFinished(Integer metadata) {
+            public boolean isFinished(final Integer metadata) {
                 return false;
             }
 
@@ -85,8 +85,8 @@ public class Walkers {
             }
 
             @Override
-            public Optional<Integer> visit(BasePair basePair, Collection<Position> positions, Integer metadata) {
-                int result = metadata + 1;
+            public Optional<Integer> visit(final BasePair basePair, final Collection<Position> positions, final Integer metadata) {
+                final int result = metadata + 1;
 
                 // No need to enter syncronized block unless there is a chance it will be changed
                 if (result > depth) {
@@ -105,11 +105,11 @@ public class Walkers {
      * @param pattern
      * @return true if the exact match was found, false if it was not.
      */
-    public static Walk<Integer, Boolean> contains(Sequence pattern) {
+    public static Walk<Integer, Boolean> contains(final Sequence pattern) {
         return new Walk<Integer, Boolean>() {
             boolean result = false;
             @Override
-            public boolean isFinished(Integer metadata) {
+            public boolean isFinished(final Integer metadata) {
                 result = metadata.equals(pattern.length());
 
                 return result;
@@ -126,7 +126,7 @@ public class Walkers {
             }
 
             @Override
-            public Optional<Integer> visit(BasePair basePair, Collection<Position> positions, Integer metadata) {
+            public Optional<Integer> visit(final BasePair basePair, final Collection<Position> positions, final Integer metadata) {
                 if (pattern.get(metadata).equals(basePair))
                     return Optional.of(metadata +1);
                 else
@@ -134,7 +134,7 @@ public class Walkers {
             }
 
             @Override
-            public int compare(Integer a, Integer b) {
+            public int compare(final Integer a, final Integer b) {
                 return -1 * (a - b);
             }
         };
@@ -146,7 +146,7 @@ public class Walkers {
      * @param pattern The target pattern we are trying to align
      * @return The shortestDistance for the alignment and the list of sequenced position pairs that match the alignment.
      */
-    public static Walk<Triplet<Integer, Integer, Collection<Position>>, Collection<Alignment>> shortestDistances(Sequence pattern)
+    public static Walk<Triplet<Integer, Integer, Collection<Position>>, Collection<Alignment>> shortestDistances(final Sequence pattern)
     {
         return new WalkWrapper<>(shortestDistances(pattern, 0), Optional::get);
     }
@@ -159,7 +159,7 @@ public class Walkers {
      * @return The shortestDistance for the alignment and the list of sequenced position pairs that match the alignment.
      */
     public static Walk<Triplet<Integer, Integer, Collection<Position>>,
-            Optional<Collection<Alignment>>> shortestDistances(Sequence pattern, int maxDistance)
+            Optional<Collection<Alignment>>> shortestDistances(final Sequence pattern, final int maxDistance)
     {
         return new Walk<Triplet<Integer, Integer, Collection<Position>>,
                 Optional<Collection<Alignment>>>() {
@@ -177,7 +177,7 @@ public class Walkers {
             }
 
             @Override
-            public Optional<Triplet<Integer, Integer, Collection<Position>>> visit(BasePair basePair, Collection<Position> positions, Triplet<Integer, Integer, Collection<Position>> metadata) {
+            public Optional<Triplet<Integer, Integer, Collection<Position>>> visit(final BasePair basePair, final Collection<Position> positions, final Triplet<Integer, Integer, Collection<Position>> metadata) {
                 final int position = metadata.getValue0();
                 final int distance = getDistance(metadata.getValue1(), basePair, pattern.get(position));
 
@@ -186,7 +186,7 @@ public class Walkers {
                     return Optional.empty();
 
                 // Stop considering branches that are more costly than current minimum
-                Optional<Integer> resultDistance = result.flatMap(collection -> collection.stream().findFirst()).map(Alignment::getDistance);
+                final Optional<Integer> resultDistance = result.flatMap(collection -> collection.stream().findFirst()).map(Alignment::getDistance);
 
                 if (resultDistance.map(d -> distance > d).orElse(false))
                     return Optional.empty();
@@ -202,7 +202,7 @@ public class Walkers {
                     }
                     // If the result shortestDistance matches current shortestDistance add the positions
                     else if (resultDistance.get() == distance) {
-                        List<Alignment> alignments = positions.stream().map(p -> Alignment.with(p.getText(), pattern, p.getPosition(), distance))
+                        final List<Alignment> alignments = positions.stream().map(p -> Alignment.with(p.getText(), pattern, p.getPosition(), distance))
                                 .collect(Collectors.toList());
                         result.get().addAll(alignments);
                     }
@@ -212,18 +212,18 @@ public class Walkers {
                 }
             }
 
-            private int getDistance(int initialDistance, BasePair value, BasePair target) {
+            private int getDistance(final int initialDistance, final BasePair value, final BasePair target) {
                 return value.equals(target) ? initialDistance : initialDistance + 1;
             }
 
             @Override
-            public boolean isFinished(Triplet<Integer, Integer, Collection<Position>> metadata) {
+            public boolean isFinished(final Triplet<Integer, Integer, Collection<Position>> metadata) {
                 // We only know we're finished if we found an exact match or we've exhausted all search paths
                 return result.isPresent() && result.get().stream().findFirst().get().getDistance() == 0;
             }
 
             @Override
-            public int compare(Triplet<Integer, Integer, Collection<Position>> a, Triplet<Integer, Integer, Collection<Position>> b) {
+            public int compare(final Triplet<Integer, Integer, Collection<Position>> a, final Triplet<Integer, Integer, Collection<Position>> b) {
                 // Value 1 is shortestDistance
                 return a.getValue1() - b.getValue1();
             }

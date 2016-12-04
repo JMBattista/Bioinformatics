@@ -29,20 +29,20 @@ public class FastaSequenceFactory implements SequenceFactory {
 	 * Initialize a new FastaSequenceFactory with a custom encoding scheme
 	 * @param encodingScheme the encoding scheme to use
 	 */
-	public FastaSequenceFactory(EncodingScheme encodingScheme)
+	public FastaSequenceFactory(final EncodingScheme encodingScheme)
 	{
 		this.encodingSheme = encodingScheme;
 	}
 
     @Override
-    public Optional<Sequence> fromString(String metadata, String sequence) throws InvalidDnaFormatException {
+    public Optional<Sequence> fromString(final String metadata, final String sequence) throws InvalidDnaFormatException {
         if (sequence.length() == 0) throw new InvalidDnaFormatException("The DNA sequence was empty!");
 
         return BasicSequence.create(metadata, sequence, this.encodingSheme);
     }
 
 	@Override
-	public Optional<Sequence> fromSequence(Sequence sequence) throws InvalidDnaFormatException {
+	public Optional<Sequence> fromSequence(final Sequence sequence) throws InvalidDnaFormatException {
 		return BasicSequence.create(sequence.toString(), this.encodingSheme);
 	}
 }

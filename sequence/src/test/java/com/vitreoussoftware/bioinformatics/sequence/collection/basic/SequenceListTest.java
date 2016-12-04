@@ -28,7 +28,7 @@ public class SequenceListTest extends SequenceCollectionTest {
 	 */
 	@Test
 	public void testCreation() throws InvalidDnaFormatException {
-		SequenceCollection sc = this.getFactory().getSequenceCollection();
+		final SequenceCollection sc = this.getFactory().getSequenceCollection();
 		
 		assertNotNull(sc);
 	}
@@ -39,7 +39,7 @@ public class SequenceListTest extends SequenceCollectionTest {
 	 */
 	@Test
 	public void testAdd() throws InvalidDnaFormatException {
-		SequenceCollection sc = this.getFactory().getSequenceCollection();
+		final SequenceCollection sc = this.getFactory().getSequenceCollection();
 		
 		assertNotNull(sc);
 		sc.add(sequenceFactory.fromString("AATTCCGGUU").get());
@@ -52,8 +52,8 @@ public class SequenceListTest extends SequenceCollectionTest {
 	 */
 	@Test
 	public void testContainsSameRef() throws InvalidDnaFormatException {
-		SequenceCollection sc = this.getFactory().getSequenceCollection();
-		Sequence seq = sequenceFactory.fromString("AATTCCGGUU").get();
+		final SequenceCollection sc = this.getFactory().getSequenceCollection();
+		final Sequence seq = sequenceFactory.fromString("AATTCCGGUU").get();
 		sc.add(seq);
 		assertEquals(1,  sc.size());
 		assertTrue(sc.contains(seq));
@@ -65,7 +65,7 @@ public class SequenceListTest extends SequenceCollectionTest {
 	 */
 	@Test
 	public void testContainsDiffRef() throws InvalidDnaFormatException {
-		SequenceCollection sc = this.getFactory().getSequenceCollection();
+		final SequenceCollection sc = this.getFactory().getSequenceCollection();
 		sc.add(sequenceFactory.fromString("AATTCCGGUU").get());
 		assertEquals(1,  sc.size());
 		assertTrue(sc.contains(sequenceFactory.fromString("AATTCCGGUU").get()));

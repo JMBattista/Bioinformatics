@@ -42,7 +42,7 @@ public interface Walk<T, R> {
      * @param metadata the metadata returned after visiting the most recent node.
      * @return true if the walk is finished and should return getResult, false otherwise.
      */
-    public default boolean isFinished(T metadata) {
+    public default boolean isFinished(final T metadata) {
         return false;
     }
 
@@ -53,7 +53,7 @@ public interface Walk<T, R> {
      * @param b The second value
      * @return a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object.
      */
-    public default int compare(T a, T b) {
+    public default int compare(final T a, final T b) {
         if (a instanceof Comparable) {
             return ((Comparable) a).compareTo(b);
         }

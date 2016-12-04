@@ -30,7 +30,7 @@ public class SequenceSetTest {
 	 */
 	@Test
 	public void testCreation() throws InvalidDnaFormatException {
-		SequenceCollection sc = this.factory.getSequenceCollection();
+		final SequenceCollection sc = this.factory.getSequenceCollection();
 		
 		assertNotNull(sc);
 	}
@@ -41,7 +41,7 @@ public class SequenceSetTest {
 	 */
 	@Test
 	public void testAdd() throws InvalidDnaFormatException {
-		SequenceCollection sc = this.factory.getSequenceCollection();
+		final SequenceCollection sc = this.factory.getSequenceCollection();
 		
 		assertNotNull(sc);
 		sc.add(sequenceFactory.fromString("AATTCCGGUU").get());
@@ -54,8 +54,8 @@ public class SequenceSetTest {
 	 */
 	@Test
 	public void testAddDuplicate() throws InvalidDnaFormatException {
-		SequenceCollection sc = this.factory.getSequenceCollection();
-		Sequence seq = sequenceFactory.fromString("AATTCCGGUU").get();
+		final SequenceCollection sc = this.factory.getSequenceCollection();
+		final Sequence seq = sequenceFactory.fromString("AATTCCGGUU").get();
 		
 		assertNotNull(sc);
 		sc.add(sequenceFactory.fromString("AATTCCGGUU").get());
@@ -72,8 +72,8 @@ public class SequenceSetTest {
 	 */
 	@Test
 	public void testContainsSameRef() throws InvalidDnaFormatException {
-		SequenceCollection sc = this.factory.getSequenceCollection();
-		Sequence seq = sequenceFactory.fromString("AATTCCGGUU").get();
+		final SequenceCollection sc = this.factory.getSequenceCollection();
+		final Sequence seq = sequenceFactory.fromString("AATTCCGGUU").get();
 		sc.add(seq);
 		assertEquals(1,  sc.size());
 		assertTrue(sc.contains(seq));
@@ -85,7 +85,7 @@ public class SequenceSetTest {
 	 */
 	@Test
 	public void testContainsDiffRef() throws InvalidDnaFormatException {
-		SequenceCollection sc = this.factory.getSequenceCollection();
+		final SequenceCollection sc = this.factory.getSequenceCollection();
 		sc.add(sequenceFactory.fromString("AATTCCGGUU").get());
 		assertEquals(1,  sc.size());
 		assertTrue(sc.contains(sequenceFactory.fromString("AATTCCGGUU").get()));

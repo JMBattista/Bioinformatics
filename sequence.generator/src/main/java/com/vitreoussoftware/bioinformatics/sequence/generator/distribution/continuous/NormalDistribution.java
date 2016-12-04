@@ -19,7 +19,7 @@ public class NormalDistribution implements ContinuousDistribution<Double> {
      * @throws NullPointerException if the arguments are null or unset
      */
     @Builder
-    public NormalDistribution(@NonNull Double mean, @NonNull Double standardDeviation) {
+    public NormalDistribution(@NonNull final Double mean, @NonNull final Double standardDeviation) {
         this.distribution = new org.apache.commons.math3.distribution.NormalDistribution(mean, standardDeviation);
     }
 

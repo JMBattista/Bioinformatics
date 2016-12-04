@@ -123,13 +123,13 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 	 * @return the base pair representation
 	 * @throws InvalidDnaFormatException The given nucleotide was not valid
 	 */
-	public static BasePair create(char nucleotide) throws InvalidDnaFormatException
+	public static BasePair create(final char nucleotide) throws InvalidDnaFormatException
 	{	
 		return BasePair.create(nucleotide, IupacEncodingScheme.instance);
 	}
 	
 	@Override
-	public byte getValue(char nucleotide) throws InvalidDnaFormatException {
+	public byte getValue(final char nucleotide) throws InvalidDnaFormatException {
 		switch (nucleotide)
 		{
 			case 'a':
@@ -186,7 +186,7 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 	}
 
 	@Override
-	public char toChar(byte nucleotide) throws InvalidDnaFormatException{
+	public char toChar(final byte nucleotide) throws InvalidDnaFormatException{
 		switch (nucleotide) {
 		case NUCLEOTIDE_A:
 			return 'A';
@@ -227,7 +227,7 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 	}
 
 	@Override
-	public BasePair toBasePair(byte nucleotide) throws InvalidDnaFormatException {
+	public BasePair toBasePair(final byte nucleotide) throws InvalidDnaFormatException {
 		switch (nucleotide) {
 		case NUCLEOTIDE_A:
 			return A;
@@ -267,7 +267,7 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 	}
 
     @Override
-    public BasePair fromCharacter(Character character) {
+    public BasePair fromCharacter(final Character character) {
         return IupacEncodingScheme.create(character);
     }
 }

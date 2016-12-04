@@ -19,7 +19,7 @@ public class FDistribution implements DiscreteDistribution<Integer> {
      * @throws NullPointerException if the arguments are null or unset
      */
     @Builder
-    public FDistribution(@NonNull Double numeratorDegreesOfFreedom, @NonNull Double denominatorDegreesOfFreedom) {
+    public FDistribution(@NonNull final Double numeratorDegreesOfFreedom, @NonNull final Double denominatorDegreesOfFreedom) {
         this.distribution = com.vitreoussoftware.bioinformatics.sequence.generator.distribution.continuous.FDistribution
                 .builder()
                 .numeratorDegreesOfFreedom(numeratorDegreesOfFreedom)

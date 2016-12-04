@@ -19,7 +19,7 @@ public class WeibullDistribution implements ContinuousDistribution<Double> {
      * @throws NullPointerException if the arguments are null or unset
      */
     @Builder
-    public WeibullDistribution(@NonNull Double alpha, @NonNull Double beta) {
+    public WeibullDistribution(@NonNull final Double alpha, @NonNull final Double beta) {
         this.distribution = new org.apache.commons.math3.distribution.WeibullDistribution(alpha, beta);
     }
 

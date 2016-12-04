@@ -70,7 +70,7 @@ public class AcceptUnknownDnaEncodingSchemeTest extends EncodingSchemeTestBase {
      */
     @Test
     public void testEqualityToSelf() throws InvalidDnaFormatException {
-        BasePair bp = scheme.fromCharacter('A');
+        final BasePair bp = scheme.fromCharacter('A');
         assertThat(bp, is(bp));
     }
 

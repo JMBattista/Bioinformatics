@@ -36,7 +36,7 @@ public final class FastqStringFileStreamReader implements StringStreamReader
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
      */
-    public static StringStreamReader create(String filePath) throws FileNotFoundException {
+    public static StringStreamReader create(final String filePath) throws FileNotFoundException {
         return new FastqStringFileStreamReader(
                 BufferFileStreamReader.builder()
                         .filePath(filePath)
@@ -50,7 +50,7 @@ public final class FastqStringFileStreamReader implements StringStreamReader
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
      */
-    public static StringStreamReader create(String filePath, int pagingSize) throws FileNotFoundException {
+    public static StringStreamReader create(final String filePath, final int pagingSize) throws FileNotFoundException {
         return new FastqStringFileStreamReader(
                 BufferFileStreamReader.builder()
                         .filePath(filePath)
@@ -64,10 +64,10 @@ public final class FastqStringFileStreamReader implements StringStreamReader
 	 */
 	@Override
 	public Pair<String,String> next() {
-        String metadata = readMetadata();
-        String data = readSequenceData();
-        String comments = readComments();
-        String quality = readQuality(data.length());
+        final String metadata = readMetadata();
+        final String data = readSequenceData();
+        final String comments = readComments();
+        final String quality = readQuality(data.length());
 
         return Pair.with(metadata, data);
     }
@@ -101,7 +101,7 @@ public final class FastqStringFileStreamReader implements StringStreamReader
     }
 
     private String readSequenceData() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         boolean readingSequence = true;
 
         do {
@@ -131,8 +131,8 @@ public final class FastqStringFileStreamReader implements StringStreamReader
         return reader.takeUntil(c -> c == '\n' || c == '\r');
     }
 
-    private String readQuality(int sequenceLength) {
-        StringBuilder sb = new StringBuilder();
+    private String readQuality(final int sequenceLength) {
+        final StringBuilder sb = new StringBuilder();
         boolean readingQuaility = true;
 
         do {

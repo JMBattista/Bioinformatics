@@ -42,7 +42,7 @@ public interface PatternFirstAligner {
      * @param texts collection of sequences to search in
      * @return List of (Text, contained?) pairs.
      */
-    default public Collection<Pair<Sequence, Boolean>> contained(SequenceCollection texts) {
+    default public Collection<Pair<Sequence, Boolean>> contained(final SequenceCollection texts) {
         return texts.stream().map(pattern -> Pair.with(pattern, this.contained(pattern))).collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -60,7 +60,7 @@ public interface PatternFirstAligner {
      * @param texts to find alignments for
      * @return List of (Pattern, Collection<Alignment) pairs.
      */
-    default public Collection<Pair<Sequence, Collection<Alignment>>> getAlignments(SequenceCollection texts) {
+    default public Collection<Pair<Sequence, Collection<Alignment>>> getAlignments(final SequenceCollection texts) {
         return texts.stream().map(pattern -> Pair.with(pattern, this.getAlignments(pattern))).collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -69,7 +69,7 @@ public interface PatternFirstAligner {
      * @param text the DNA text to check shortestDistance for
      * @return The collection of tuples showing the shortestDistance and the collection of sequences for that shortestDistance
      */
-    default public Collection<Alignment> shortestDistance(Sequence text) {
+    default public Collection<Alignment> shortestDistance(final Sequence text) {
         // Negative number used to indicate no distance cap
         return shortestDistance(text, -1);
     }
@@ -79,7 +79,7 @@ public interface PatternFirstAligner {
      * @param texts the DNA texts to check shortestDistance for
      * @return The collection of tuples showing the shortestDistance and the collection of sequences for that shortestDistance
      */
-    default public Collection<Pair<Sequence, Collection<Alignment>>> shortestDistance(SequenceCollection texts) {
+    default public Collection<Pair<Sequence, Collection<Alignment>>> shortestDistance(final SequenceCollection texts) {
         // Negative number used to indicate no distance cap
         return shortestDistance(texts, -1);
     }
@@ -98,7 +98,7 @@ public interface PatternFirstAligner {
      * @param maxDistance the maximum shortestDistance before which we give up
      * @return The collection of tuples showing the shortestDistance and the collection of sequences for that shortestDistance
      */
-    default public Collection<Pair<Sequence, Collection<Alignment>>> shortestDistance(SequenceCollection texts, int maxDistance) {
+    default public Collection<Pair<Sequence, Collection<Alignment>>> shortestDistance(final SequenceCollection texts, final int maxDistance) {
         return texts.stream().map(pattern -> Pair.with(pattern, shortestDistance(pattern, maxDistance))).collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -108,7 +108,7 @@ public interface PatternFirstAligner {
      * @param text the target Sequence
      * @return the tuples of parent Sequences and the shortestDistance lists
      */
-    default public Collection<Alignment> distances(Sequence text) {
+    default public Collection<Alignment> distances(final Sequence text) {
         // Negative number used to indicate no distance cap
         return distances(text, -1);
     }
@@ -119,7 +119,7 @@ public interface PatternFirstAligner {
      * @param texts the target Sequence
      * @return the tuples of parent Sequences and the shortestDistance lists
      */
-    default public Collection<Pair<Sequence, Collection<Alignment>>> distances(SequenceCollection texts) {
+    default public Collection<Pair<Sequence, Collection<Alignment>>> distances(final SequenceCollection texts) {
         // Negative number used to indicate no distance cap
         return distances(texts, -1);
     }
@@ -140,7 +140,7 @@ public interface PatternFirstAligner {
      * @param maxDistance the maximum shortestDistance that will be considered
      * @return the tuples of parent Sequences and the shortestDistance lists
      */
-    default public Collection<Pair<Sequence, Collection<Alignment>>> distances(SequenceCollection texts, int maxDistance) {
+    default public Collection<Pair<Sequence, Collection<Alignment>>> distances(final SequenceCollection texts, final int maxDistance) {
         return texts.stream().map(pattern -> Pair.with(pattern, distances(pattern, maxDistance))).collect(Collectors.toCollection(LinkedList::new));
     }
 }

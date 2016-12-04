@@ -23,12 +23,12 @@ public class FastaFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
     }
 
     @Override
-    protected SequenceStreamWriter getWriter(String path) throws Exception {
+    protected SequenceStreamWriter getWriter(final String path) throws Exception {
         return FastaFileStreamWriter.create(path);
     }
 
     @Override
-    protected SequenceStreamReader getReader(String path) throws Exception {
+    protected SequenceStreamReader getReader(final String path) throws Exception {
         final StringStreamReader reader = FastaStringFileStreamReader.create(path);
         return SequenceStreamReader.builder()
                 .reader(reader)

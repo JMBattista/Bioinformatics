@@ -24,8 +24,8 @@ public interface SuffixTreeFactory {
 	 * @param text the text
 	 * @return the suffix tree for that text
 	 */
-	default public SuffixTree create(Sequence text) {
-        SuffixTree tree = create();
+	default public SuffixTree create(final Sequence text) {
+        final SuffixTree tree = create();
         tree.addText(text);
         return tree;
     }
@@ -35,8 +35,8 @@ public interface SuffixTreeFactory {
 	 * @param texts the collection of sequences
 	 * @return the SuffixTree for that collection of Sequences
 	 */
-	default public SuffixTree create(SequenceCollection texts) {
-        SuffixTree tree = create();
+	default public SuffixTree create(final SequenceCollection texts) {
+        final SuffixTree tree = create();
         texts.forEach(tree::addText);
         return tree;
     }
@@ -49,9 +49,9 @@ public interface SuffixTreeFactory {
 	 * @throws InvalidDnaFormatException 
 	 * @throws IOException 
 	 */
-	default public SuffixTree create(SequenceStreamReader sequenceReader) throws IOException, InvalidDnaFormatException
+	default public SuffixTree create(final SequenceStreamReader sequenceReader) throws IOException, InvalidDnaFormatException
     {
-        SuffixTree tree = create();
+        final SuffixTree tree = create();
         while (sequenceReader.hasNext())
             tree.addText(sequenceReader.next().orElseThrow(() -> new RuntimeException("TODO update this exception")));
 

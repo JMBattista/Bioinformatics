@@ -58,12 +58,12 @@ public class FastqData extends TestData {
     private static final String EXTENSION = ".fastq";
 
     @Override
-    protected StringStreamReader createReader(String path) throws FileNotFoundException {
+    protected StringStreamReader createReader(final String path) throws FileNotFoundException {
         return FastqStringFileStreamReader.create(path);
     }
 
     @Override
-    protected StringStreamReader createReader(String path, int pagingSize) throws FileNotFoundException {
+    protected StringStreamReader createReader(final String path, final int pagingSize) throws FileNotFoundException {
         return FastqStringFileStreamReader.create(path, pagingSize);
     }
 

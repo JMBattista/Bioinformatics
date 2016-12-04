@@ -20,7 +20,7 @@ public class UniformDistribution implements ContinuousDistribution<Double> {
      * @throws IllegalArgumentException if the lower bound is >= upper bound
      */
     @Builder
-    public UniformDistribution(@NonNull Double lower, @NonNull Double upper) {
+    public UniformDistribution(@NonNull final Double lower, @NonNull final Double upper) {
         this.distribution = new org.apache.commons.math3.distribution.UniformRealDistribution(lower, upper);
     }
 

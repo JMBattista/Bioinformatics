@@ -76,13 +76,13 @@ public class EnumeratedDistribution<T> implements Distribution<T> {
         DiscreteDistributionBuilder() {
         }
 
-        public DiscreteDistributionBuilder<T> probability(T key, Double value) {
+        public DiscreteDistributionBuilder<T> probability(final T key, final Double value) {
             if (this.probabilities == null) this.probabilities = ImmutableMap.builder();
             this.probabilities.put(key, value);
             return this;
         }
 
-        public DiscreteDistributionBuilder<T> probabilities(Map<? extends T, ? extends Double> probabilities) {
+        public DiscreteDistributionBuilder<T> probabilities(final Map<? extends T, ? extends Double> probabilities) {
             if (this.probabilities == null) this.probabilities = ImmutableMap.builder();
             this.probabilities.putAll(probabilities);
             return this;
@@ -94,13 +94,13 @@ public class EnumeratedDistribution<T> implements Distribution<T> {
             return this;
         }
 
-        public DiscreteDistributionBuilder<T> normalizeProbabilities(boolean normalizeProbabilities) {
+        public DiscreteDistributionBuilder<T> normalizeProbabilities(final boolean normalizeProbabilities) {
             this.normalizeProbabilities = normalizeProbabilities;
             return this;
         }
 
         public EnumeratedDistribution<T> build() {
-            ImmutableMap<T, Double> probabilities = this.probabilities == null ? ImmutableMap.of() : this.probabilities.build();
+            final ImmutableMap<T, Double> probabilities = this.probabilities == null ? ImmutableMap.of() : this.probabilities.build();
 
             return new EnumeratedDistribution<>(probabilities, normalizeProbabilities);
         }

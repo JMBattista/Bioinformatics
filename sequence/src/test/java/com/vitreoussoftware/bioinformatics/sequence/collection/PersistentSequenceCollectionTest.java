@@ -22,7 +22,7 @@ public abstract class PersistentSequenceCollectionTest extends SequenceCollectio
      */
     @Test
     public void testPersistentAdditionDuringIteratiion() throws UnknownHostException, InvalidDnaFormatException {
-        SequenceCollection collection = getFactory().getSequenceCollection();
+        final SequenceCollection collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop",  0, collection.size());
@@ -54,7 +54,7 @@ public abstract class PersistentSequenceCollectionTest extends SequenceCollectio
      */
     @Test
     public void testPersistentDeletionDuringIteration() throws UnknownHostException, InvalidDnaFormatException {
-        SequenceCollection collection = getFactory().getSequenceCollection();
+        final SequenceCollection collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop",  0, collection.size());
@@ -91,7 +91,7 @@ public abstract class PersistentSequenceCollectionTest extends SequenceCollectio
      */
     @Test
     public void testPersistentClearDuringIteration() throws UnknownHostException, InvalidDnaFormatException {
-        SequenceCollection collection = getFactory().getSequenceCollection();
+        final SequenceCollection collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop",  0, collection.size());

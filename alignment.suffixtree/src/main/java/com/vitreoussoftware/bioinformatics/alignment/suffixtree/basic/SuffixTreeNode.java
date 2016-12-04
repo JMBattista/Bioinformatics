@@ -17,7 +17,7 @@ class SuffixTreeNode {
 	private final Collection<Position> texts;
     private final BasePair basePair;
 
-    SuffixTreeNode(BasePair basePair)
+    SuffixTreeNode(final BasePair basePair)
 	{
 		this.texts = new LinkedList<>();
 		this.children = new HashMap<>();
@@ -29,7 +29,7 @@ class SuffixTreeNode {
 	 * @param bp the key for the node
 	 * @return the node for the key
 	 */
-	SuffixTreeNode getOrCreate(BasePair bp) {
+	SuffixTreeNode getOrCreate(final BasePair bp) {
 		if (!children.containsKey(bp)) {
 			children.put(bp, new SuffixTreeNode(bp));
 		}
@@ -37,7 +37,7 @@ class SuffixTreeNode {
 		return children.get(bp);
 	}
 
-	boolean contains(BasePair bp) {
+	boolean contains(final BasePair bp) {
 		return this.children.containsKey(bp);
 	}
 
@@ -46,7 +46,7 @@ class SuffixTreeNode {
 	 * @param bp the BasePair to match against
 	 * @return the matching child
 	 */
-	SuffixTreeNode get(BasePair bp) {
+	SuffixTreeNode get(final BasePair bp) {
 		return this.children.get(bp);
 	}
 	
@@ -68,7 +68,7 @@ class SuffixTreeNode {
 
 	int depth() {
 		int max = 0;
-		for (SuffixTreeNode node: this.children.values()) {
+		for (final SuffixTreeNode node: this.children.values()) {
 			max = Math.max(max, node.depth());
 		}
 		
@@ -79,7 +79,7 @@ class SuffixTreeNode {
 		return this.texts;
 	}
 
-	void addPosition(Sequence sequence, int index) {
+	void addPosition(final Sequence sequence, final int index) {
 		this.texts.add(Position.with(sequence, index));
 	}
 

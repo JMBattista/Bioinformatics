@@ -12,7 +12,7 @@ public class InvalidDnaFormatException extends RuntimeException {
 	 * Create an InvalidDnaFormatException with an error message
 	 * @param error The error message
 	 */
-	public InvalidDnaFormatException(String error) {
+	public InvalidDnaFormatException(final String error) {
 		super(error);
 	}
 

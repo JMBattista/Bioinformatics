@@ -19,7 +19,7 @@ public class KeywordNode {
     private final BasePair basePair;
     private final LinkedList<Sequence> terminals;
 
-    KeywordNode(BasePair basePair)
+    KeywordNode(final BasePair basePair)
     {
         this.children = new HashMap<>();
         this.basePair = basePair;
@@ -31,7 +31,7 @@ public class KeywordNode {
      * @param bp the key for the node
      * @return the node for the key
      */
-    KeywordNode getOrCreate(BasePair bp) {
+    KeywordNode getOrCreate(final BasePair bp) {
         if (!children.containsKey(bp))
         {
             children.put(bp, new KeywordNode(bp));
@@ -40,7 +40,7 @@ public class KeywordNode {
         return children.get(bp);
     }
 
-    boolean contains(BasePair bp) {
+    boolean contains(final BasePair bp) {
         return this.children.containsKey(bp);
     }
 
@@ -49,8 +49,8 @@ public class KeywordNode {
      * @param bp the BasePair to match against
      * @return the matching child
      */
-    Optional<KeywordNode> get(BasePair bp) {
-        KeywordNode node = this.children.get(bp);
+    Optional<KeywordNode> get(final BasePair bp) {
+        final KeywordNode node = this.children.get(bp);
         if (node != null)
             return Optional.of(node);
 
@@ -75,7 +75,7 @@ public class KeywordNode {
 
     int depth() {
         int max = 0;
-        for (KeywordNode node: this.children.values()) {
+        for (final KeywordNode node: this.children.values()) {
             max = Math.max(max, node.depth());
         }
 
@@ -98,7 +98,7 @@ public class KeywordNode {
      * Set this node as terminal for the given pattern.
      * @param pattern the pattern fro which this node is terminal
      */
-    public void setTerminal(Sequence pattern) {
+    public void setTerminal(final Sequence pattern) {
         this.terminals.add(pattern);
     }
 

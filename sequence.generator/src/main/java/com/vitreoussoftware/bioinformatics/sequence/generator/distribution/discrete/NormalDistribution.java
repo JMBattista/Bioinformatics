@@ -19,7 +19,7 @@ public class NormalDistribution implements DiscreteDistribution<Integer> {
      * @throws NullPointerException if the arguments are null or unset
      */
     @Builder
-    public NormalDistribution(@NonNull Double mean, @NonNull Double standardDeviation) {
+    public NormalDistribution(@NonNull final Double mean, @NonNull final Double standardDeviation) {
         this.distribution = com.vitreoussoftware.bioinformatics.sequence.generator.distribution.continuous.NormalDistribution
                 .builder()
                 .mean(mean)

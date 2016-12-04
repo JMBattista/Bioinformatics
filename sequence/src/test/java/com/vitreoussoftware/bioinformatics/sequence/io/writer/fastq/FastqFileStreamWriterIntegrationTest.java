@@ -22,12 +22,12 @@ public class FastqFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
     }
 
     @Override
-    protected SequenceStreamWriter getWriter(String path) throws Exception {
+    protected SequenceStreamWriter getWriter(final String path) throws Exception {
         return FastqFileStreamWriter.create(path);
     }
 
     @Override
-    protected SequenceStreamReader getReader(String path) throws Exception {
+    protected SequenceStreamReader getReader(final String path) throws Exception {
         final com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader reader = FastqStringFileStreamReader.create(path);
         return SequenceStreamReader.builder()
                 .reader(reader)

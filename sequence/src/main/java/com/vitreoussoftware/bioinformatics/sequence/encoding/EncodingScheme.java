@@ -26,7 +26,7 @@ public interface EncodingScheme {
 	 * @return the string representation
 	 * @throws InvalidDnaFormatException 
 	 */
-	default String toString(byte nucleotide) throws InvalidDnaFormatException {
+	default String toString(final byte nucleotide) throws InvalidDnaFormatException {
         return toChar(nucleotide) + "";
     }
 

@@ -33,7 +33,7 @@ public class ReadGeneratorTest {
      * Test that we can sample length 1 reads from a length 1 sequence
      */
     @Theory
-    public void theorySampleFromSingle(Character sample) {
+    public void theorySampleFromSingle(final Character sample) {
         val source = BasicSequence.create(sample.toString(), BasicDnaEncodingScheme.instance).get();
         val generator = ReadGenerator.builder()
                 .lengthDistribution(() -> 1)

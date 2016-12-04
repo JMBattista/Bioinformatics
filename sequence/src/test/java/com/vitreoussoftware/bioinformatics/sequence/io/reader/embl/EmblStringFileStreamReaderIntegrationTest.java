@@ -18,7 +18,7 @@ public class EmblStringFileStreamReaderIntegrationTest extends StringFileStreamR
     }
 
     @Override
-    protected StringStreamReader getReader(String path) throws Exception {
+    protected StringStreamReader getReader(final String path) throws Exception {
         return EmblStringFileStreamReader.create(path);
     }
 

@@ -41,7 +41,7 @@ public class SequenceGenerator implements Distribution<Sequence> {
     private final EncodingScheme encodingScheme;
 
     /**
-     * Partial implementation for {@link Builder} to support default values
+     * Partial implementation for Builder to support default values
      */
     @SuppressWarnings("unused")
     public static class SequenceGeneratorBuilder {

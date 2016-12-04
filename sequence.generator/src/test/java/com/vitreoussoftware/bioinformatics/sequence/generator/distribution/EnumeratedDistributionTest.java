@@ -150,7 +150,7 @@ public class EnumeratedDistributionTest {
     @Test
     public void testNextMixed() {
         val trials = 10000; // 1,000
-        EnumeratedDistribution<Character> distribution = EnumeratedDistribution.<Character>builder()
+        final EnumeratedDistribution<Character> distribution = EnumeratedDistribution.<Character>builder()
                 .probability('A', 0.5)
                 .probability('T', 0.5)
                 .build();

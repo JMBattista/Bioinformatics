@@ -26,8 +26,8 @@ public interface SequenceCollectionFactory {
 	 * @throws IOException errors reading from the stream 
 	 * @throws InvalidDnaFormatException 
 	 */
-	public default SequenceCollection getSequenceCollection(SequenceStreamReader reader) throws IOException, InvalidDnaFormatException {
-        SequenceCollection sequenceCollection = getSequenceCollection();
+	public default SequenceCollection getSequenceCollection(final SequenceStreamReader reader) throws IOException, InvalidDnaFormatException {
+        final SequenceCollection sequenceCollection = getSequenceCollection();
         while (reader.hasNext()) {
             sequenceCollection.add(reader.next().orElseThrow(() -> new RuntimeException("TODO use reason Optional")));
         }
@@ -40,7 +40,7 @@ public interface SequenceCollectionFactory {
 	 * @param collection the other SequenceCollection
 	 * @return the new collection
 	 */
-	public default SequenceCollection getSequenceCollection(SequenceCollection collection) {
+	public default SequenceCollection getSequenceCollection(final SequenceCollection collection) {
         return getSequenceCollection((Collection<Sequence>)collection);
     }
 
@@ -49,9 +49,9 @@ public interface SequenceCollectionFactory {
      * @param collection the Collection of sequences
      * @return the new collection
      */
-    public default SequenceCollection getSequenceCollection(Collection<Sequence> collection) {
-        SequenceCollection sequenceCollection = getSequenceCollection();
-        for (Sequence seq : collection) {
+    public default SequenceCollection getSequenceCollection(final Collection<Sequence> collection) {
+        final SequenceCollection sequenceCollection = getSequenceCollection();
+        for (final Sequence seq : collection) {
             sequenceCollection.add(seq);
         }
 

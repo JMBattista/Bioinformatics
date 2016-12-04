@@ -13,7 +13,7 @@ public class Alignment {
     final private int position;
     final private int distance;
 
-    private Alignment(Sequence text, Sequence pattern, int position, int distance) {
+    private Alignment(final Sequence text, final Sequence pattern, final int position, final int distance) {
         this.text = text;
         this.pattern = pattern;
         this.position = position;
@@ -21,11 +21,11 @@ public class Alignment {
     }
 
 
-    public static Alignment with(Sequence text, Sequence pattern, int position) {
+    public static Alignment with(final Sequence text, final Sequence pattern, final int position) {
         return new Alignment(text, pattern, position, 0);
     }
 
-    public static Alignment with(Sequence text, Sequence pattern, int position, int distance) {
+    public static Alignment with(final Sequence text, final Sequence pattern, final int position, final int distance) {
         return new Alignment(text, pattern, position, distance);
     }
 
