@@ -17,7 +17,7 @@ import java.util.LinkedList;
  *
  * Created by John on 10/25/2016.
  */
-public class ReadGenerator implements ConditionalDistribution<Sequence, Sequence> {
+public final class ReadGenerator implements ConditionalDistribution<Sequence, Sequence> {
     /**
      * The maximum number of times we will try to generate a valid sample from the provided configuration before erroring out.
      */

@@ -15,7 +15,7 @@ import java.util.Optional;
  * @author John
  *
  */
-public class BasicSequence implements Sequence {
+public final class BasicSequence implements Sequence {
 	private byte[] sequence;
 	private final EncodingScheme encodingScheme;
     private String metadata;

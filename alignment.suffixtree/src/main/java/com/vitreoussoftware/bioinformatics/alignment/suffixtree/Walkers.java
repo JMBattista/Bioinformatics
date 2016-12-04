@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * Provided Walk implementations, see the CountedWalk class to get information on how the walk is used
  * Created by John on 12/19/13.
  */
-public class Walkers {
+public final class Walkers {
 
     /**
      * This class should never be instantiated, it is just a holder for a set of pre-provided walkers
