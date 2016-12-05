@@ -103,5 +103,10 @@ public final class ReadGenerator implements ConditionalDistribution<Sequence, Se
          */
         @SuppressWarnings({"unused", "FieldMayBeFinal"}) // Used by lombok
         private Distribution<Boolean> flipDistribution = () -> false;
+
+        public ReadGeneratorBuilder flipDistribution(final Distribution<Boolean> flipDistribution) {
+            this.flipDistribution = flipDistribution;
+            return this;
+        }
     }
 }

@@ -130,9 +130,16 @@ public final class BasicDnaEncodingScheme implements EncodingScheme {
     }
 
     @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
     public boolean equals(final Object obj) {
         if (obj == this)
             return true;
+        if (obj == null)
+            return false;
         return obj.getClass().equals(instance.getClass());
     }
 }

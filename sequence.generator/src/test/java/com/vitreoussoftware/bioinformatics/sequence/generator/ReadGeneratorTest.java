@@ -28,6 +28,8 @@ import static org.hamcrest.core.IsNull.nullValue;
 public class ReadGeneratorTest {
 
     public static final EncodingScheme SCHEME = BasicDnaEncodingScheme.instance;
+    public static final String SEQUENCE = "TT";
+    public static final String BASEPAIR = "T";
     @DataPoints
     public static List<Character> samples = ImmutableList.of('A', 'T', 'C', 'G');
 
@@ -74,7 +76,7 @@ public class ReadGeneratorTest {
      */
     @Test
     public void testSampleRepeatInBounds() {
-        val source = BasicSequence.create("TT", SCHEME).get();
+        val source = BasicSequence.create(SEQUENCE, SCHEME).get();
         val generator = ReadGenerator.builder()
                 .lengthDistribution(() -> (int) (Math.random() * 2))
                 .startPointDistribution(() -> (int) (Math.random() * 2))
@@ -82,7 +84,7 @@ public class ReadGeneratorTest {
 
         for (int i = 0; i < 100; i++) {
             val read = generator.sample(source);
-            assertThat(read.toString(), is("T"));
+            assertThat(read.toString(), is(BASEPAIR));
         }
     }
 
@@ -91,7 +93,7 @@ public class ReadGeneratorTest {
      */
     @Test
     public void testSampleRepeat() {
-        val source = BasicSequence.create("TT", SCHEME).get();
+        val source = BasicSequence.create(SEQUENCE, SCHEME).get();
         val generator = ReadGenerator.builder()
                 .lengthDistribution(() -> (int) (Math.random() * 4))
                 .startPointDistribution(() -> (int) (Math.random() * 4))
@@ -100,7 +102,7 @@ public class ReadGeneratorTest {
 
         for (int i = 0; i < 100; i++) {
             val read = generator.sample(source);
-            assertThat(read.toString(), anyOf(is("T"), is("TT")));
+            assertThat(read.toString(), anyOf(is(BASEPAIR), is(SEQUENCE)));
         }
     }
 
@@ -109,7 +111,7 @@ public class ReadGeneratorTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testSampleFailsInvalidLength() {
-        val source = BasicSequence.create("TT", SCHEME).get();
+        val source = BasicSequence.create(SEQUENCE, SCHEME).get();
         val generator = ReadGenerator.builder()
                 .lengthDistribution(() -> 0)
                 .startPointDistribution(() -> 1)
@@ -123,7 +125,7 @@ public class ReadGeneratorTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testSampleFailsInvalidStartPoint() {
-        val source = BasicSequence.create("TT", SCHEME).get();
+        val source = BasicSequence.create(SEQUENCE, SCHEME).get();
         val generator = ReadGenerator.builder()
                 .lengthDistribution(() -> 1)
                 .startPointDistribution(() -> 5)

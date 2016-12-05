@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import lombok.val;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.javatuples.Pair;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoint;
@@ -79,6 +80,15 @@ public class ExpandedIupacEncodingSchemeTest extends EncodingSchemeTestBase {
     @Override
     public EncodingScheme getOtherEncodingScheme() {
         return BasicDnaEncodingScheme.instance;
+    }
+
+    /**
+     * Test that the hashCode and equals functions are implemented properly
+     */
+    @Test
+    public void testEqualsContract() {
+        EqualsVerifier.forClass(IupacEncodingScheme.class)
+                .verify();
     }
 
     /**

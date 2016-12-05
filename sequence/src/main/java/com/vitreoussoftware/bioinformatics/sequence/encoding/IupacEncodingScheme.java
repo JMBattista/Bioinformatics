@@ -2,7 +2,6 @@ package com.vitreoussoftware.bioinformatics.sequence.encoding;
 
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
-import lombok.val;
 
 
 /**
@@ -22,14 +21,6 @@ public final class IupacEncodingScheme implements EncodingScheme {
      * Indicates that the nucleotides complement is just its self
      */
     private static final byte REFLECTED = 0b1_00_00_00;
-    /**
-     * Used to test if the byte contains higher order bits
-     */
-    private static final byte SHIFT_RIGHT = 0b0_00_10_10;
-    /**
-     * Used to test if the encoded nucleotide contains higher order bits or not
-     */
-    private static final byte LOWER_ORDER = 0b0_00_11_11;
 
     private static final byte NUCLEOTIDE_A = 0b0_00_00_10;
     private static final byte NUCLEOTIDE_T = 0b0_00_00_01;
@@ -291,30 +282,20 @@ public final class IupacEncodingScheme implements EncodingScheme {
 
     @Override
     public BasePair complement(final BasePair basePair) {
-        if (!basePair.getEncodingScheme().equals(this)) {
-            return complement(fromCharacter(basePair.toChar()));
-        }
+        return ExpandedIupacEncodingScheme.instance.complement(basePair);
+    }
 
-        val nucleotide = basePair.getValue();
-        if ((nucleotide & AMBIGUITY) == 0) {
-            if ((nucleotide & SHIFT_RIGHT) != 0)
-                return toBasePair((byte) (nucleotide >>> 1));
-            return toBasePair((byte) ((nucleotide & LOWER_ORDER) << 1));
-        } else if ((nucleotide & REFLECTED) != 0) {
-            return basePair;
-        } else if ((nucleotide & 0b0_10_11_11) > 0b0_10_11_00) {
-            return toBasePair((byte) (nucleotide ^ 0b0_01_00_11));
-        } else if ((nucleotide & 0b0_00_00_11) == 0b0_00_00_11) {
-            return toBasePair((byte) (nucleotide ^ 0b0_00_11_00));
-        } else {
-            return toBasePair((byte) (nucleotide ^ 0b0_01_11_11));
-        }
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 
     @Override
     public boolean equals(final Object obj) {
         if (obj == this)
             return true;
+        if (obj == null)
+            return false;
         return obj.getClass().equals(instance.getClass());
     }
 }

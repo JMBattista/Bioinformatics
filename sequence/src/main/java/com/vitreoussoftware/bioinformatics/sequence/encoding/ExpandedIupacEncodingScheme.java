@@ -19,17 +19,9 @@ public final class ExpandedIupacEncodingScheme implements EncodingScheme {
      */
     private static final byte AMBIGUITY = 0b0_10_00_00;
     /**
-     * Indicates that the nucleotides complement is just its self
+     * Indicates that the nucleotides complement is just its self.
      */
     private static final byte REFLECTED = 0b1_00_00_00;
-    /**
-     * Used to test if the byte contains higher order bits
-     */
-    private static final byte SHIFT_RIGHT = 0b0_00_10_10;
-    /**
-     * Used to test if the encoded nucleotide contains higher order bits or not
-     */
-    private static final byte LOWER_ORDER = 0b0_00_11_11;
 
     private static final byte NUCLEOTIDE_A = 0b0_00_00_10;
     private static final byte NUCLEOTIDE_T = 0b0_00_00_01;
@@ -47,8 +39,33 @@ public final class ExpandedIupacEncodingScheme implements EncodingScheme {
     private static final byte NUCLEOTIDE_H = NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_T | NUCLEOTIDE_U | AMBIGUITY;    // 0b0_11_10_11
     private static final byte NUCLEOTIDE_V = NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G | AMBIGUITY;                   // 0b0_10_11_10
     private static final byte NUCLEOTIDE_N = NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G | NUCLEOTIDE_T | NUCLEOTIDE_U | AMBIGUITY | REFLECTED;
-    private static final byte NUCLEOTIDE_X = 0b1_00_00_00 | AMBIGUITY;
+    private static final byte NUCLEOTIDE_X = REFLECTED | AMBIGUITY;
     private static final byte NUCLEOTIDE_GAP = 0b0_00_00_00;
+
+    /**
+     * Used to test if the encoded nucleotide contains higher order bits or not
+     */
+    private static final byte LOWER_ORDER = 0b0_00_11_11;
+    /**
+     * Used to test if the byte contains non ambiguous values that can be converted by a right shift
+     */
+    private static final byte SHIFT_RIGHT = NUCLEOTIDE_C | NUCLEOTIDE_A;
+    /**
+     * Indicates that the Nucleotide is ambiguous and could be both C and G
+     */
+    private static final int AMBIGUOUS_CG = AMBIGUITY | NUCLEOTIDE_C | NUCLEOTIDE_G;
+    /**
+     * Indicates that the Nucleotide is ambiguous and could be both A and T
+     */
+    private static final int AMBIGUOUS_AT = AMBIGUITY | NUCLEOTIDE_A | NUCLEOTIDE_T;
+    /**
+     * Indicates that the Nucleotide is ambiguous and could be A/T/U
+     */
+    public static final int AMBIGUOUS_ATU = AMBIGUOUS_AT | NUCLEOTIDE_U;
+    /**
+     * Indicates that the Nucleotide is ambiguous and any of A/T/C/G
+     */
+    public static final int AMBIGUITY_ANY = AMBIGUITY | NUCLEOTIDE_A | NUCLEOTIDE_T | NUCLEOTIDE_C | NUCLEOTIDE_G;
 
     public static final EncodingScheme instance = new ExpandedIupacEncodingScheme();
 
@@ -310,7 +327,9 @@ public final class ExpandedIupacEncodingScheme implements EncodingScheme {
 
     @Override
     public BasePair complement(final BasePair basePair) {
-        if (!basePair.getEncodingScheme().equals(this)) {
+        // Iupac and ExpandedIupac use the same conversion under the hood so share it.
+        if (!(basePair.getEncodingScheme().equals(this)
+                || basePair.getEncodingScheme().equals(IupacEncodingScheme.instance))) {
             return complement(fromCharacter(basePair.toChar()));
         }
 
@@ -321,19 +340,26 @@ public final class ExpandedIupacEncodingScheme implements EncodingScheme {
             return toBasePair((byte) ((nucleotide & LOWER_ORDER) << 1));
         } else if ((nucleotide & REFLECTED) != 0) {
             return basePair;
-        } else if ((nucleotide & 0b0_10_11_11) > 0b0_10_11_00) {
-            return toBasePair((byte) (nucleotide ^ 0b0_01_00_11));
-        } else if ((nucleotide & 0b0_00_00_11) == 0b0_00_00_11) {
-            return toBasePair((byte) (nucleotide ^ 0b0_00_11_00));
+        } else if ((nucleotide & AMBIGUITY_ANY) > AMBIGUOUS_CG) {
+            return toBasePair((byte) (nucleotide ^ (AMBIGUOUS_ATU ^ AMBIGUITY)));
+        } else if ((nucleotide & AMBIGUOUS_AT) == AMBIGUOUS_AT) {
+            return toBasePair((byte) (nucleotide ^ (AMBIGUOUS_CG ^ AMBIGUITY)));
         } else {
-            return toBasePair((byte) (nucleotide ^ 0b0_01_11_11));
+            return toBasePair((byte) (nucleotide ^ (LOWER_ORDER | NUCLEOTIDE_U)));
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 
     @Override
     public boolean equals(final Object obj) {
         if (obj == this)
             return true;
+        if (obj == null)
+            return false;
         return obj.getClass().equals(instance.getClass());
     }
 }

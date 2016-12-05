@@ -3,6 +3,7 @@ package com.vitreoussoftware.bioinformatics.sequence.encoding;
 import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.javatuples.Pair;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoint;
@@ -54,6 +55,13 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
     @Override
     public EncodingScheme getOtherEncodingScheme() {
         return IupacEncodingScheme.instance;
+    }
+
+
+    @Test
+    public void testEqualsContract() {
+        EqualsVerifier.forClass(BasicDnaEncodingScheme.class)
+                .verify();
     }
 
     /**
