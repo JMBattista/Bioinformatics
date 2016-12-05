@@ -17,8 +17,8 @@ import java.util.function.Predicate;
 public final class BufferFileStreamReader implements AutoCloseable {
     private static final int DEFAULT_BUFFER_SIZE = 64 * 1024; // 64 KB read size
 
-    private FileReader file;
-    private char[] buffer;
+    private final FileReader file;
+    private final char[] buffer;
     private int length;
     private int index;
 
@@ -43,6 +43,7 @@ public final class BufferFileStreamReader implements AutoCloseable {
      */
     @SuppressWarnings("unused") // Lombok @Builder
     public static class BufferFileStreamReaderBuilder {
+        @SuppressWarnings("FieldMayBeFinal")
         private int bufferSize = DEFAULT_BUFFER_SIZE;
     }
 

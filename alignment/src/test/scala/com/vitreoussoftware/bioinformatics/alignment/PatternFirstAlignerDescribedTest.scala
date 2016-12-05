@@ -4,13 +4,18 @@ import java.util
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection
-import com.vitreoussoftware.test.BehaviorSpec
+
+import scala.collection.JavaConversions._
 import org.junit.runner.RunWith
 import org.scalatest.Outcome
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.prop.PropertyChecks
+import java.util
 
-import scala.collection.JavaConversions._
+import org.scalatest.prop.PropertyChecks
+import com.vitreoussoftware.bioinformatics.sequence.Sequence
+import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence
+import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme
+import com.vitreoussoftware.test.BehaviorSpec
 
 /**
   * Created by John on 8/31/14.

@@ -16,7 +16,7 @@ public final class FastqFileStreamWriter implements SequenceStreamWriter {
     /**
      * The FASTQ file
      */
-    private FileWriter file;
+    private final FileWriter file;
 
     /**
      * Create a FASTQ File Stream Reader for the given file

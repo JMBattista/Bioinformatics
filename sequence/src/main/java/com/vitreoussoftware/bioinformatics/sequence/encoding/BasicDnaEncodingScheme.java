@@ -2,6 +2,7 @@ package com.vitreoussoftware.bioinformatics.sequence.encoding;
 
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import lombok.val;
 
 
 /**
@@ -18,7 +19,9 @@ public final class BasicDnaEncodingScheme implements EncodingScheme {
     private static final byte NUCLEOTIDE_G = 0b0_00_01_00;
     private static final byte NUCLEOTIDE_T = 0b0_00_00_01;
 
-    public static EncodingScheme instance = new BasicDnaEncodingScheme();
+    private static final byte SHIFT_RIGHT = NUCLEOTIDE_A | NUCLEOTIDE_C;
+
+    public static final EncodingScheme instance = new BasicDnaEncodingScheme();
 
     /**
      * Adenine
@@ -60,6 +63,19 @@ public final class BasicDnaEncodingScheme implements EncodingScheme {
     @Override
     public BasePair fromCharacter(final Character character) {
         return BasicDnaEncodingScheme.create(character);
+    }
+
+    @Override
+    public BasePair complement(final BasePair basePair) {
+        if (!basePair.getEncodingScheme().equals(this)) {
+            return complement(fromCharacter(basePair.toChar()));
+        }
+
+        val nucleotide = basePair.getValue();
+        if ((nucleotide & SHIFT_RIGHT) != 0)
+            return toBasePair((byte) (nucleotide >>> 1));
+
+        return toBasePair((byte) (nucleotide << 1));
     }
 
     @Override
@@ -112,5 +128,19 @@ public final class BasicDnaEncodingScheme implements EncodingScheme {
             default:
                 throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == this)
+            return true;
+        if (obj == null)
+            return false;
+        return obj.getClass().equals(instance.getClass());
     }
 }

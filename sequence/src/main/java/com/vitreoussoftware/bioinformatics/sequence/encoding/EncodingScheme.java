@@ -56,4 +56,12 @@ public interface EncodingScheme {
      * @throws InvalidDnaFormatException
      */
     BasePair fromCharacter(Character character);
+
+    /**
+     * Given a {@link BasePair} return the {@link BasePair} that represents its alternate
+     *
+     * @param basePair The input {@link BasePair}
+     * @return the flipped {@link BasePair}
+     */
+    BasePair complement(BasePair basePair);
 }

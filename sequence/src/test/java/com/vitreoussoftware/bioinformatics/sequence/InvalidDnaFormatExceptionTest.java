@@ -30,7 +30,7 @@ public class InvalidDnaFormatExceptionTest {
     @Test
     public void testGetCause() {
         val cause = new InvalidDnaFormatException("bar");
-        val exception = new InvalidDnaFormatException("foo",  cause);
+        val exception = new InvalidDnaFormatException("foo", cause);
 
         assertThat(exception.getMessage(), is("foo"));
         assertThat(exception.getCause(), is(cause));

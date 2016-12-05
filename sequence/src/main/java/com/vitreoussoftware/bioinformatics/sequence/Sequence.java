@@ -179,7 +179,7 @@ public interface Sequence extends Iterable<BasePair>, Streamable<BasePair> {
     class SequenceSpliterator implements Spliterator<BasePair> {
         private final Sequence sequence;
         int origin;
-        int fence;
+        final int fence;
 
         public SequenceSpliterator(final Sequence sequence, final int origin, final int fence) {
             this.sequence = sequence;

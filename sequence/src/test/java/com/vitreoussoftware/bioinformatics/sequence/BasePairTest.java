@@ -1,9 +1,9 @@
 package com.vitreoussoftware.bioinformatics.sequence;
 
-import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.BasicDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingSchemeTestBase;
+import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme;
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,16 +18,15 @@ import static org.hamcrest.core.IsNot.not;
  * @author John
  */
 public class BasePairTest {
-	private EncodingScheme scheme;
+    private EncodingScheme scheme;
     private EncodingScheme otherScheme;
 
     /**
      * Setup the test object
      */
     @Before
-    public void setup()
-    {
-        this.scheme = AcceptUnknownDnaEncodingScheme.instance;
+    public void setup() {
+        this.scheme = ExpandedIupacEncodingScheme.instance;
         this.otherScheme = BasicDnaEncodingScheme.instance;
     }
 

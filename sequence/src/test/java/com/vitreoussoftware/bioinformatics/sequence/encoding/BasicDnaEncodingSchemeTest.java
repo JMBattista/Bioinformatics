@@ -3,6 +3,8 @@ package com.vitreoussoftware.bioinformatics.sequence.encoding;
 import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import org.javatuples.Pair;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.DataPoints;
@@ -20,7 +22,7 @@ import static org.junit.Assert.assertThat;
  */
 @SuppressWarnings("AccessStaticViaInstance")
 public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
-    private BasicDnaEncodingScheme scheme = new BasicDnaEncodingScheme();
+    private final BasicDnaEncodingScheme scheme = new BasicDnaEncodingScheme();
 
     @DataPoints
     public static List<Character> getAcceptedCharacters() {
@@ -32,9 +34,34 @@ public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
         );
     }
 
+    @DataPoints
+    public static List<Pair<Character, Character>> getFlipPairs() {
+        return ImmutableList.of(
+                Pair.with('A', 'T'),
+                Pair.with('C', 'G')
+        );
+    }
+
     @DataPoint
-    public static EncodingScheme getEncodingScheme() {
+    public static EncodingScheme getEncodingSchemeDataPoint() {
         return new BasicDnaEncodingScheme();
+    }
+
+    @Override
+    public EncodingScheme getEncodingScheme() {
+        return getEncodingSchemeDataPoint();
+    }
+
+    @Override
+    public EncodingScheme getOtherEncodingScheme() {
+        return IupacEncodingScheme.instance;
+    }
+
+
+    @Test
+    public void testEqualsContract() {
+        EqualsVerifier.forClass(BasicDnaEncodingScheme.class)
+                .verify();
     }
 
     /**

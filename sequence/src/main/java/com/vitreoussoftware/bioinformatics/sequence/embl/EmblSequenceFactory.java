@@ -4,8 +4,8 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence;
-import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
+import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme;
 
 import java.util.Optional;
 
@@ -16,13 +16,13 @@ import java.util.Optional;
  */
 public class EmblSequenceFactory implements SequenceFactory {
 
-    private EncodingScheme encodingScheme;
+    private final EncodingScheme encodingScheme;
 
     /**
      * Initialize a new {@link EmblSequenceFactory} with default {@link EncodingScheme}
      */
     public EmblSequenceFactory() {
-        this(AcceptUnknownDnaEncodingScheme.instance);
+        this(ExpandedIupacEncodingScheme.instance);
     }
 
     /**

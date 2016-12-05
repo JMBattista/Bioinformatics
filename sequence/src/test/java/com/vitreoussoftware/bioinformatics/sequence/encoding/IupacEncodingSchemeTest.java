@@ -3,6 +3,9 @@ package com.vitreoussoftware.bioinformatics.sequence.encoding;
 import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import lombok.val;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import org.javatuples.Pair;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.DataPoints;
@@ -14,13 +17,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 /**
- * Tests the AcceptUnkownDnaEncodingScheme class
+ * Tests the {@link IupacEncodingScheme} class
  *
  * @author John
  */
 @SuppressWarnings("AccessStaticViaInstance")
 public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
-    private IupacEncodingScheme scheme = new IupacEncodingScheme();
+    private final IupacEncodingScheme scheme = new IupacEncodingScheme();
 
     @DataPoints
     public static List<Character> getAcceptedCharacters() {
@@ -44,9 +47,56 @@ public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
         );
     }
 
+
+    @DataPoints
+    public static List<Pair<Character, Character>> getFlipPairs() {
+        // See https://en.wikipedia.org/wiki/Complementarity_(molecular_biology)
+        return ImmutableList.of(
+                Pair.with('A', 'T'),
+                Pair.with('C', 'G'),
+                Pair.with('R', 'Y'),
+                Pair.with('S', 'S'),
+                Pair.with('W', 'W'),
+                Pair.with('K', 'M'),
+                Pair.with('B', 'V'), // Not A -> Not T
+                Pair.with('D', 'H'), // Not C -> Not G
+                Pair.with('N', 'N')
+        );
+    }
+
     @DataPoint
-    public static EncodingScheme getEncodingScheme() {
+    public static EncodingScheme getEncodingSchemeDataPoint() {
         return new IupacEncodingScheme();
+    }
+
+    @Override
+    public EncodingScheme getEncodingScheme() {
+        return getEncodingSchemeDataPoint();
+    }
+
+    @Override
+    public EncodingScheme getOtherEncodingScheme() {
+        return BasicDnaEncodingScheme.instance;
+    }
+
+    /**
+     * Test that the hashCode and equals functions are implemented properly
+     */
+    @Test
+    public void testEqualsContract() {
+        EqualsVerifier.forClass(IupacEncodingScheme.class)
+                .verify();
+    }
+
+    /**
+     * Demonstrate that A is the complement of U
+     */
+    @Test
+    public void theoryBasePairComplementUtoA() {
+        val initial = scheme.fromCharacter('U');
+        val complement = scheme.fromCharacter('A');
+
+        assertThat(initial.complement(), is(complement));
     }
 
     /**
@@ -120,5 +170,10 @@ public class IupacEncodingSchemeTest extends EncodingSchemeTestBase {
     @Test
     public void testEqualityTU() throws InvalidDnaFormatException {
         assertFalse(scheme.create('T').equals(scheme.create('U')));
+    }
+
+    @Test(expected = InvalidDnaFormatException.class)
+    public void testGetValueInvalidCharacter() {
+        scheme.getValue('&');
     }
 }

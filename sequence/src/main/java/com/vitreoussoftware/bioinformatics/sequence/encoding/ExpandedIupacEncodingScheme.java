@@ -2,15 +2,16 @@ package com.vitreoussoftware.bioinformatics.sequence.encoding;
 
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
+import lombok.val;
 
 
 /**
- * Represents a Nucleotide Base Pair based on the IUPAC encoding scheme
+ * Represents a Nucleotide Base Pair based on the IUPAC encoding scheme with support for Gaps and X
  * {@see http://www.bioinformatics.org/sms/iupac.html}
  *
  * @author John
  */
-public final class IupacEncodingScheme implements EncodingScheme {
+public final class ExpandedIupacEncodingScheme implements EncodingScheme {
     // Due to a quirk in the java language we have to use the negative sign to set the 8th bit to 1
     // We will restrict usage of the 8th bit to mean 'special thing happening here
     /**
@@ -18,7 +19,7 @@ public final class IupacEncodingScheme implements EncodingScheme {
      */
     private static final byte AMBIGUITY = 0b0_10_00_00;
     /**
-     * Indicates that the nucleotides complement is just its self
+     * Indicates that the nucleotides complement is just its self.
      */
     private static final byte REFLECTED = 0b1_00_00_00;
 
@@ -38,8 +39,35 @@ public final class IupacEncodingScheme implements EncodingScheme {
     private static final byte NUCLEOTIDE_H = NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_T | NUCLEOTIDE_U | AMBIGUITY;    // 0b0_11_10_11
     private static final byte NUCLEOTIDE_V = NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G | AMBIGUITY;                   // 0b0_10_11_10
     private static final byte NUCLEOTIDE_N = NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G | NUCLEOTIDE_T | NUCLEOTIDE_U | AMBIGUITY | REFLECTED;
+    private static final byte NUCLEOTIDE_X = REFLECTED | AMBIGUITY;
+    private static final byte NUCLEOTIDE_GAP = 0b0_00_00_00;
 
-    public static final EncodingScheme instance = new IupacEncodingScheme();
+    /**
+     * Used to test if the encoded nucleotide contains higher order bits or not
+     */
+    private static final byte LOWER_ORDER = 0b0_00_11_11;
+    /**
+     * Used to test if the byte contains non ambiguous values that can be converted by a right shift
+     */
+    private static final byte SHIFT_RIGHT = NUCLEOTIDE_C | NUCLEOTIDE_A;
+    /**
+     * Indicates that the Nucleotide is ambiguous and could be both C and G
+     */
+    private static final int AMBIGUOUS_CG = AMBIGUITY | NUCLEOTIDE_C | NUCLEOTIDE_G;
+    /**
+     * Indicates that the Nucleotide is ambiguous and could be both A and T
+     */
+    private static final int AMBIGUOUS_AT = AMBIGUITY | NUCLEOTIDE_A | NUCLEOTIDE_T;
+    /**
+     * Indicates that the Nucleotide is ambiguous and could be A/T/U
+     */
+    private static final int AMBIGUOUS_ATU = AMBIGUOUS_AT | NUCLEOTIDE_U;
+    /**
+     * Indicates that the Nucleotide is ambiguous and any of A/T/C/G
+     */
+    private static final int AMBIGUITY_ANY = AMBIGUITY | NUCLEOTIDE_A | NUCLEOTIDE_T | NUCLEOTIDE_C | NUCLEOTIDE_G;
+
+    public static final EncodingScheme instance = new ExpandedIupacEncodingScheme();
 
     /**
      * Adenine
@@ -122,10 +150,14 @@ public final class IupacEncodingScheme implements EncodingScheme {
     public static final BasePair N = create('N');
 
     /**
-     * Create an instance of the encoding scheme
+     * Masked
      */
-    public IupacEncodingScheme() {
-    }
+    public static final BasePair X = create('X');
+
+    /**
+     * Gap of indeterminate length
+     */
+    public static final BasePair GAP = create('-');
 
     /**
      * Create a new base pair from the given nucleotide
@@ -134,104 +166,32 @@ public final class IupacEncodingScheme implements EncodingScheme {
      * @return the base pair representation
      * @throws InvalidDnaFormatException The given nucleotide was not valid
      */
-    public static BasePair create(final char nucleotide) throws InvalidDnaFormatException {
-        return BasePair.create(nucleotide, IupacEncodingScheme.instance);
+    private static BasePair create(final char nucleotide) throws InvalidDnaFormatException {
+        return BasePair.create(nucleotide, ExpandedIupacEncodingScheme.instance);
     }
 
     @Override
     public byte getValue(final char nucleotide) throws InvalidDnaFormatException {
         switch (nucleotide) {
-            case 'a':
-            case 'A':
-                return NUCLEOTIDE_A;
-            case 't':
-            case 'T':
-                return NUCLEOTIDE_T;
-            case 'u':
-            case 'U':
-                return NUCLEOTIDE_U;
-            case 'c':
-            case 'C':
-                return NUCLEOTIDE_C;
-            case 'g':
-            case 'G':
-                return NUCLEOTIDE_G;
-            case 'n':
-            case 'N':
-                return NUCLEOTIDE_N;
-            case 'r':
-            case 'R':
-                return NUCLEOTIDE_R;
-            case 'y':
-            case 'Y':
-                return NUCLEOTIDE_Y;
-            case 'k':
-            case 'K':
-                return NUCLEOTIDE_K;
-            case 'm':
-            case 'M':
-                return NUCLEOTIDE_M;
-            case 's':
-            case 'S':
-                return NUCLEOTIDE_S;
-            case 'w':
-            case 'W':
-                return NUCLEOTIDE_W;
-            case 'b':
-            case 'B':
-                return NUCLEOTIDE_B;
-            case 'd':
-            case 'D':
-                return NUCLEOTIDE_D;
-            case 'h':
-            case 'H':
-                return NUCLEOTIDE_H;
-            case 'v':
-            case 'V':
-                return NUCLEOTIDE_V;
+            case 'x':
+            case 'X':
+                return NUCLEOTIDE_X;
+            case '-':
+                return NUCLEOTIDE_GAP;
             default:
-                throw new InvalidDnaFormatException("There was an invalid value for DnaSequecne " + nucleotide);
+                return IupacEncodingScheme.instance.getValue(nucleotide);
         }
     }
 
     @Override
     public char toChar(final byte nucleotide) throws InvalidDnaFormatException {
         switch (nucleotide) {
-            case NUCLEOTIDE_A:
-                return 'A';
-            case NUCLEOTIDE_T:
-                return 'T';
-            case NUCLEOTIDE_U:
-                return 'U';
-            case NUCLEOTIDE_C:
-                return 'C';
-            case NUCLEOTIDE_G:
-                return 'G';
-            case NUCLEOTIDE_N:
-                return 'N';
-            case NUCLEOTIDE_R:
-                return 'R';
-            case NUCLEOTIDE_Y:
-                return 'Y';
-            case NUCLEOTIDE_K:
-                return 'K';
-            case NUCLEOTIDE_M:
-                return 'M';
-            case NUCLEOTIDE_S:
-                return 'S';
-            case NUCLEOTIDE_W:
-                return 'W';
-            case NUCLEOTIDE_B:
-                return 'B';
-            case NUCLEOTIDE_D:
-                return 'D';
-            case NUCLEOTIDE_H:
-                return 'H';
-            case NUCLEOTIDE_V:
-                return 'V';
-
+            case NUCLEOTIDE_X:
+                return 'X';
+            case NUCLEOTIDE_GAP:
+                return '-';
             default:
-                throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
+                return IupacEncodingScheme.instance.toChar(nucleotide);
         }
     }
 
@@ -270,6 +230,10 @@ public final class IupacEncodingScheme implements EncodingScheme {
                 return H;
             case NUCLEOTIDE_V:
                 return V;
+            case NUCLEOTIDE_X:
+                return X;
+            case NUCLEOTIDE_GAP:
+                return GAP;
             default:
                 throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
         }
@@ -277,12 +241,31 @@ public final class IupacEncodingScheme implements EncodingScheme {
 
     @Override
     public BasePair fromCharacter(final Character character) {
-        return IupacEncodingScheme.create(character);
+        return ExpandedIupacEncodingScheme.create(character);
     }
 
     @Override
     public BasePair complement(final BasePair basePair) {
-        return ExpandedIupacEncodingScheme.instance.complement(basePair);
+        // Iupac and ExpandedIupac use the same conversion under the hood so share it.
+        if (!(basePair.getEncodingScheme().equals(this)
+                || basePair.getEncodingScheme().equals(IupacEncodingScheme.instance))) {
+            return complement(fromCharacter(basePair.toChar()));
+        }
+
+        val nucleotide = basePair.getValue();
+        if ((nucleotide & AMBIGUITY) == 0) {
+            if ((nucleotide & SHIFT_RIGHT) != 0)
+                return toBasePair((byte) (nucleotide >>> 1));
+            return toBasePair((byte) ((nucleotide & LOWER_ORDER) << 1));
+        } else if ((nucleotide & REFLECTED) != 0) {
+            return basePair;
+        } else if ((nucleotide & AMBIGUITY_ANY) > AMBIGUOUS_CG) {
+            return toBasePair((byte) (nucleotide ^ (AMBIGUOUS_ATU ^ AMBIGUITY)));
+        } else if ((nucleotide & AMBIGUOUS_AT) == AMBIGUOUS_AT) {
+            return toBasePair((byte) (nucleotide ^ (AMBIGUOUS_CG ^ AMBIGUITY)));
+        } else {
+            return toBasePair((byte) (nucleotide ^ (LOWER_ORDER | NUCLEOTIDE_U)));
+        }
     }
 
     @Override

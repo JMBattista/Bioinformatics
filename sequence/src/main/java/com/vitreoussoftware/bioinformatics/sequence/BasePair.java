@@ -2,6 +2,7 @@ package com.vitreoussoftware.bioinformatics.sequence;
 
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 import lombok.Getter;
+import lombok.val;
 
 /**
  * Represents a Nucleotide Base Pair
@@ -12,7 +13,7 @@ public class BasePair {
     private final byte nucleotide;
 
     @Getter
-    private EncodingScheme encodingScheme;
+    private final EncodingScheme encodingScheme;
 
     /**
      * Create a new base pair from the given nucleotide
@@ -38,12 +39,62 @@ public class BasePair {
         return new BasePair(value, encodingScheme);
     }
 
+    /**
+     * Return the complement of the current {@link BasePair}
+     *
+     * @return the complementary {@link BasePair}
+     */
+    public BasePair complement() {
+        return encodingScheme.complement(this);
+    }
+
     public int distance(final BasePair bp) {
         if (this.equals(bp))
             return 0;
         else
             return 1;
     }
+
+    /**
+     * Determines if the given byte representation is equal to this basepair
+     *
+     * @param nucleotide the byte representation
+     * @return the result
+     */
+    public boolean equals(final byte nucleotide) {
+        return nucleotide == this.nucleotide;
+    }
+
+    public char toChar() {
+        try {
+            return this.encodingScheme.toChar(this.nucleotide);
+        } catch (final InvalidDnaFormatException e) {
+            // this should never fail since the encoding came from the encapsulated BasePair
+            throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
+        }
+
+    }
+
+    /**
+     * Return the underlying byte representation of the BasePair
+     *
+     * @return the byte representation
+     */
+    public byte getValue() {
+        return nucleotide;
+    }
+
+
+    @Override
+    public String toString() {
+        try {
+            return this.encodingScheme.toString(this.nucleotide);
+        } catch (final InvalidDnaFormatException e) {
+            // this should never fail since the encoding came from the encapsulated BasePair
+            throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string", e);
+        }
+    }
+
 
     @Override
     public int hashCode() {
@@ -60,42 +111,12 @@ public class BasePair {
         if (basepair == null)
             return false;
         if (getClass() == basepair.getClass()) {
-            final BasePair other = (BasePair) basepair;
+            val other = (BasePair) basepair;
             return this.equals(other.nucleotide);
         } else if (basepair.getClass() == Byte.class) {
             return this.equals((byte) basepair);
         }
 
         return false;
-    }
-
-    /**
-     * Determines if the given byte representation is equal to this basepair
-     *
-     * @param nucleotide the byte representation
-     * @return the result
-     */
-    public boolean equals(final byte nucleotide) {
-        return nucleotide == this.nucleotide;
-    }
-
-
-    public String toString() {
-        try {
-            return this.encodingScheme.toString(this.nucleotide);
-        } catch (final InvalidDnaFormatException e) {
-            // this should never fail since the encoding came from the encapsulated BasePair
-            throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
-        }
-    }
-
-    public char toChar() {
-        try {
-            return this.encodingScheme.toChar(this.nucleotide);
-        } catch (final InvalidDnaFormatException e) {
-            // this should never fail since the encoding came from the encapsulated BasePair
-            throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
-        }
-
     }
 }
