@@ -61,11 +61,11 @@ public final class ExpandedIupacEncodingScheme implements EncodingScheme {
     /**
      * Indicates that the Nucleotide is ambiguous and could be A/T/U
      */
-    public static final int AMBIGUOUS_ATU = AMBIGUOUS_AT | NUCLEOTIDE_U;
+    private static final int AMBIGUOUS_ATU = AMBIGUOUS_AT | NUCLEOTIDE_U;
     /**
      * Indicates that the Nucleotide is ambiguous and any of A/T/C/G
      */
-    public static final int AMBIGUITY_ANY = AMBIGUITY | NUCLEOTIDE_A | NUCLEOTIDE_T | NUCLEOTIDE_C | NUCLEOTIDE_G;
+    private static final int AMBIGUITY_ANY = AMBIGUITY | NUCLEOTIDE_A | NUCLEOTIDE_T | NUCLEOTIDE_C | NUCLEOTIDE_G;
 
     public static final EncodingScheme instance = new ExpandedIupacEncodingScheme();
 
@@ -173,106 +173,25 @@ public final class ExpandedIupacEncodingScheme implements EncodingScheme {
     @Override
     public byte getValue(final char nucleotide) throws InvalidDnaFormatException {
         switch (nucleotide) {
-            case 'a':
-            case 'A':
-                return NUCLEOTIDE_A;
-            case 't':
-            case 'T':
-                return NUCLEOTIDE_T;
-            case 'u':
-            case 'U':
-                return NUCLEOTIDE_U;
-            case 'c':
-            case 'C':
-                return NUCLEOTIDE_C;
-            case 'g':
-            case 'G':
-                return NUCLEOTIDE_G;
-            case 'n':
-            case 'N':
-                return NUCLEOTIDE_N;
-            case 'r':
-            case 'R':
-                return NUCLEOTIDE_R;
-            case 'y':
-            case 'Y':
-                return NUCLEOTIDE_Y;
-            case 'k':
-            case 'K':
-                return NUCLEOTIDE_K;
-            case 'm':
-            case 'M':
-                return NUCLEOTIDE_M;
-            case 's':
-            case 'S':
-                return NUCLEOTIDE_S;
-            case 'w':
-            case 'W':
-                return NUCLEOTIDE_W;
-            case 'b':
-            case 'B':
-                return NUCLEOTIDE_B;
-            case 'd':
-            case 'D':
-                return NUCLEOTIDE_D;
-            case 'h':
-            case 'H':
-                return NUCLEOTIDE_H;
-            case 'v':
-            case 'V':
-                return NUCLEOTIDE_V;
             case 'x':
             case 'X':
                 return NUCLEOTIDE_X;
             case '-':
                 return NUCLEOTIDE_GAP;
             default:
-                throw new InvalidDnaFormatException("There was an invalid value for DnaSequecne " + nucleotide);
+                return IupacEncodingScheme.instance.getValue(nucleotide);
         }
     }
 
     @Override
     public char toChar(final byte nucleotide) throws InvalidDnaFormatException {
         switch (nucleotide) {
-            case NUCLEOTIDE_A:
-                return 'A';
-            case NUCLEOTIDE_T:
-                return 'T';
-            case NUCLEOTIDE_U:
-                return 'U';
-            case NUCLEOTIDE_C:
-                return 'C';
-            case NUCLEOTIDE_G:
-                return 'G';
-            case NUCLEOTIDE_N:
-                return 'N';
-            case NUCLEOTIDE_R:
-                return 'R';
-            case NUCLEOTIDE_Y:
-                return 'Y';
-            case NUCLEOTIDE_K:
-                return 'K';
-            case NUCLEOTIDE_M:
-                return 'M';
-            case NUCLEOTIDE_S:
-                return 'S';
-            case NUCLEOTIDE_W:
-                return 'W';
-            case NUCLEOTIDE_B:
-                return 'B';
-            case NUCLEOTIDE_D:
-                return 'D';
-            case NUCLEOTIDE_H:
-                return 'H';
-            case NUCLEOTIDE_V:
-                return 'V';
             case NUCLEOTIDE_X:
                 return 'X';
             case NUCLEOTIDE_GAP:
                 return '-';
-
             default:
-                throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
+                return IupacEncodingScheme.instance.toChar(nucleotide);
         }
     }
 

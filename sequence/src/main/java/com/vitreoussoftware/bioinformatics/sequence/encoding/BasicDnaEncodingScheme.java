@@ -74,6 +74,7 @@ public final class BasicDnaEncodingScheme implements EncodingScheme {
         val nucleotide = basePair.getValue();
         if ((nucleotide & SHIFT_RIGHT) != 0)
             return toBasePair((byte) (nucleotide >>> 1));
+
         return toBasePair((byte) (nucleotide << 1));
     }
 
