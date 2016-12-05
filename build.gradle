@@ -88,7 +88,7 @@ subprojects {
         compile 'com.google.guava:guava:19.0'
 
         // Lombok dependencies, must be both compile and testcompile
-        compileOnly "org.projectlombok:lombok:1.16.10"
+        compile "org.projectlombok:lombok:1.16.10" // TODO this should be compeileOnly, but fails in IntelliJ
         testCompileOnly "org.projectlombok:lombok:1.16.10"
 
         compile 'com.google.guava:guava:19.0'
