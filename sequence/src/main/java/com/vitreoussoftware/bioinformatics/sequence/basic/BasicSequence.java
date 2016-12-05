@@ -128,7 +128,7 @@ public final class BasicSequence implements Sequence {
         } catch (final InvalidDnaFormatException e) {
             // this should never fail since the encoding came from the encapsulated BasePair
             e.printStackTrace();
-            throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
+            throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string", e);
         }
         return sb.toString();
     }
