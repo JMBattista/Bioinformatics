@@ -43,7 +43,8 @@ public final class BufferFileStreamReader implements AutoCloseable {
      */
     @SuppressWarnings("unused") // Lombok @Builder
     public static class BufferFileStreamReaderBuilder {
-        private final int bufferSize = DEFAULT_BUFFER_SIZE;
+        @SuppressWarnings("FieldMayBeFinal")
+        private int bufferSize = DEFAULT_BUFFER_SIZE;
     }
 
 
