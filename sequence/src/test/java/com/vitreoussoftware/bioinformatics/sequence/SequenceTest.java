@@ -18,41 +18,43 @@ import static org.junit.Assert.*;
  * @author John
  */
 public class SequenceTest {
-	private FastaSequenceFactory factory;
+    private FastaSequenceFactory factory;
 
-	/**
-	 * Setup the test class
-	 */
-	@Before
-	public void setup() {
-		this.factory = new FastaSequenceFactory();
-	}
+    /**
+     * Setup the test class
+     */
+    @Before
+    public void setup() {
+        this.factory = new FastaSequenceFactory();
+    }
 
-	/**
-	 * Test that we can fromCharacter a new DnaSequence
-	 * @throws InvalidDnaFormatException 
-	 */
-	@Test
-	public void testCreationNominal() throws InvalidDnaFormatException {
-		final String basis = "AATT";
-		
-		val seq = this.factory.fromString(basis).get();
-		
-		assertEquals(basis, seq.toString());
-	}
-	
-	/**
-	 * Test that we can handle the full range of valid input
-	 * @throws InvalidDnaFormatException 
-	 */
-	@Test
-	public void testCreationFull() throws InvalidDnaFormatException {
-		final String basis = "AATTCCGGUU";
-		
-		val seq = this.factory.fromString(basis).orElseThrow(() -> new InvalidDnaFormatException("TODO update this exception"));
-		
-		assertEquals(basis, seq.toString());
-	}
+    /**
+     * Test that we can fromCharacter a new DnaSequence
+     *
+     * @throws InvalidDnaFormatException
+     */
+    @Test
+    public void testCreationNominal() throws InvalidDnaFormatException {
+        final String basis = "AATT";
+
+        val seq = this.factory.fromString(basis).get();
+
+        assertEquals(basis, seq.toString());
+    }
+
+    /**
+     * Test that we can handle the full range of valid input
+     *
+     * @throws InvalidDnaFormatException
+     */
+    @Test
+    public void testCreationFull() throws InvalidDnaFormatException {
+        final String basis = "AATTCCGGUU";
+
+        val seq = this.factory.fromString(basis).orElseThrow(() -> new InvalidDnaFormatException("TODO update this exception"));
+
+        assertEquals(basis, seq.toString());
+    }
 
     /**
      * Test that some basic invalid input is rejected
@@ -216,7 +218,7 @@ public class SequenceTest {
         final Sequence sequence = this.factory.fromString(sb.toString()).get();
 
         val actualLength = sequence.stream()
-                .map(bp -> 1)git 
+                .map(bp -> 1)
                 .count();
 
         assertThat(actualLength, is(expectedLength));
@@ -227,7 +229,7 @@ public class SequenceTest {
      */
     @Test
     public void testparallelStreamCount() {
-        val expectedLength = (long)(Math.random() * 100) + 1; // ensure we get a positive number
+        val expectedLength = (long) (Math.random() * 100) + 1; // ensure we get a positive number
         val sb = new StringBuilder();
         for (int i = 0; i < expectedLength; i++) {
             sb.append('A');

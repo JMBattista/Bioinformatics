@@ -85,6 +85,7 @@ public class FastaData extends TestData {
 
     /**
      * Get the string expression matching Alternate1 in {@link ExpandedIupacEncodingScheme} format
+     *
      * @return The Alternate1 string
      */
     public String getAlternateStartingCharacter1() {
@@ -93,6 +94,7 @@ public class FastaData extends TestData {
 
     /**
      * Get the string expression matching Alternate2 in {@link ExpandedIupacEncodingScheme} format
+     *
      * @return The Alternate2 string
      */
     public String getAlternateStartingCharacter2() {
@@ -101,6 +103,7 @@ public class FastaData extends TestData {
 
     /**
      * Get the string expression matching Alternate3 in {@link ExpandedIupacEncodingScheme} format
+     *
      * @return The Alternate3 string
      */
     public String getAlternateStartingCharacter3() {
@@ -160,16 +163,16 @@ public class FastaData extends TestData {
     }
 
     public Sequence getFastaMultiLineDescriptionSequence() {
-		return BasicSequence.create(fastaMultiLineDescriptionMetadata, fastaMultiLineDescriptionSequence, ExpandedIupacEncodingScheme.instance).get();
-	}
+        return BasicSequence.create(fastaMultiLineDescriptionMetadata, fastaMultiLineDescriptionSequence, ExpandedIupacEncodingScheme.instance).get();
+    }
 
     public Sequence getFastaTerminatedSequence() {
-		return BasicSequence.create(fastaTerminatedMetadata, fastaTerminatedSequence, ExpandedIupacEncodingScheme.instance).get();
-	}
+        return BasicSequence.create(fastaTerminatedMetadata, fastaTerminatedSequence, ExpandedIupacEncodingScheme.instance).get();
+    }
 
     public Sequence getFastaLargeHeaderSequence() {
-		return BasicSequence.create(fastaLargeHeaderMetadata, fastaLargeHeaderSequence, ExpandedIupacEncodingScheme.instance).get();
-	}
+        return BasicSequence.create(fastaLargeHeaderMetadata, fastaLargeHeaderSequence, ExpandedIupacEncodingScheme.instance).get();
+    }
 
     /**
      * Create a StringStreamReader for the Simple test file

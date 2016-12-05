@@ -39,13 +39,14 @@ public class BasePair {
         return new BasePair(value, encodingScheme);
     }
 
-	/**
-	 * Return the complement of the current {@link BasePair}
-	 * @return the complementary {@link BasePair}
-	 */
-	public BasePair complement() {
-		return encodingScheme.complement(this);
-	}
+    /**
+     * Return the complement of the current {@link BasePair}
+     *
+     * @return the complementary {@link BasePair}
+     */
+    public BasePair complement() {
+        return encodingScheme.complement(this);
+    }
 
     public int distance(final BasePair bp) {
         if (this.equals(bp))
@@ -74,15 +75,14 @@ public class BasePair {
 
     }
 
-	/**
-	 * Return the underlying byte representation of the BasePair
-	 *
-	 * @return the byte representation
-	 */
-	public byte getValue() {
-		return nucleotide;
-	}
-
+    /**
+     * Return the underlying byte representation of the BasePair
+     *
+     * @return the byte representation
+     */
+    public byte getValue() {
+        return nucleotide;
+    }
 
 
     @Override
@@ -111,14 +111,11 @@ public class BasePair {
             return true;
         if (basepair == null)
             return false;
-        if (getClass() == basepair.getClass())
-        {
+        if (getClass() == basepair.getClass()) {
             val other = (BasePair) basepair;
             return this.equals(other.nucleotide);
-        }
-        else if (basepair.getClass() == Byte.class)
-        {
-            return this.equals((byte)basepair);
+        } else if (basepair.getClass() == Byte.class) {
+            return this.equals((byte) basepair);
         }
 
         return false;

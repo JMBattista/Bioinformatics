@@ -293,12 +293,13 @@ public abstract class TestData {
     }
 
     /**
-<<<<<<< HEAD
+     * <<<<<<< HEAD
      * Get the string expression matching the simple record in {@link AcceptUnknownDnaEncodingScheme} format
-     *
-=======
+     * <p>
+     * =======
      * Get the string expression matching the simple record in {@link ExpandedIupacEncodingScheme} format
->>>>>>> a38137e... Fix naming of AcceptUnknownEncodingScheme
+     * >>>>>>> a38137e... Fix naming of AcceptUnknownEncodingScheme
+     *
      * @return The simple record string
      */
     public String getSimpleRecord() {
@@ -306,12 +307,13 @@ public abstract class TestData {
     }
 
     /**
-<<<<<<< HEAD
+     * <<<<<<< HEAD
      * Get the string expression matching Record1 in {@link AcceptUnknownDnaEncodingScheme} format
-     *
-=======
+     * <p>
+     * =======
      * Get the string expression matching Record1 in {@link ExpandedIupacEncodingScheme} format
->>>>>>> a38137e... Fix naming of AcceptUnknownEncodingScheme
+     * >>>>>>> a38137e... Fix naming of AcceptUnknownEncodingScheme
+     *
      * @return The Record1 string
      */
     public String getRealExample1() {
@@ -319,12 +321,13 @@ public abstract class TestData {
     }
 
     /**
-<<<<<<< HEAD
+     * <<<<<<< HEAD
      * Get the string expression matching Record2 in {@link AcceptUnknownDnaEncodingScheme} format
-     *
-=======
+     * <p>
+     * =======
      * Get the string expression matching Record2 in {@link ExpandedIupacEncodingScheme} format
->>>>>>> a38137e... Fix naming of AcceptUnknownEncodingScheme
+     * >>>>>>> a38137e... Fix naming of AcceptUnknownEncodingScheme
+     *
      * @return The Record2 string
      */
     public String getRealExample2() {
@@ -332,12 +335,13 @@ public abstract class TestData {
     }
 
     /**
-<<<<<<< HEAD
+     * <<<<<<< HEAD
      * Get the string expression matching Record2 in {@link AcceptUnknownDnaEncodingScheme} format
-     *
-=======
+     * <p>
+     * =======
      * Get the string expression matching Record2 in {@link ExpandedIupacEncodingScheme} format
->>>>>>> a38137e... Fix naming of AcceptUnknownEncodingScheme
+     * >>>>>>> a38137e... Fix naming of AcceptUnknownEncodingScheme
+     *
      * @return The Record2 string
      */
     public String getRealExample3() {

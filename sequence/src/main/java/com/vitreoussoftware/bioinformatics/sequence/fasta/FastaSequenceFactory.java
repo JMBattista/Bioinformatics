@@ -4,8 +4,8 @@ import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.SequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence;
-import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
+import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme;
 
 import java.util.Optional;
 
@@ -15,23 +15,23 @@ import java.util.Optional;
  * @author John
  */
 public class FastaSequenceFactory implements SequenceFactory {
-	private final EncodingScheme encodingSheme;
+    private final EncodingScheme encodingSheme;
 
-	/**
-	 * Initialize a new FastaSequenceFactory with default encoding scheme
-	 */
-	public FastaSequenceFactory() {
-		this.encodingSheme = new ExpandedIupacEncodingScheme();
-	}
-	
-	/**
-	 * Initialize a new FastaSequenceFactory with a custom encoding scheme
-	 * @param encodingScheme the encoding scheme to use
-	 */
-	public FastaSequenceFactory(final EncodingScheme encodingScheme)
-	{
-		this.encodingSheme = encodingScheme;
-	}
+    /**
+     * Initialize a new FastaSequenceFactory with default encoding scheme
+     */
+    public FastaSequenceFactory() {
+        this.encodingSheme = new ExpandedIupacEncodingScheme();
+    }
+
+    /**
+     * Initialize a new FastaSequenceFactory with a custom encoding scheme
+     *
+     * @param encodingScheme the encoding scheme to use
+     */
+    public FastaSequenceFactory(final EncodingScheme encodingScheme) {
+        this.encodingSheme = encodingScheme;
+    }
 
     @Override
     public Optional<Sequence> fromString(final String metadata, final String sequence) throws InvalidDnaFormatException {

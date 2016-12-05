@@ -20,6 +20,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(Theories.class)
 public abstract class EncodingSchemeTestBase {
     public abstract EncodingScheme getEncodingScheme();
+
     public abstract EncodingScheme getOtherEncodingScheme();
 
     /**

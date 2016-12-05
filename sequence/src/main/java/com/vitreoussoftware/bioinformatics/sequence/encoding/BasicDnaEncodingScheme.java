@@ -19,7 +19,7 @@ public final class BasicDnaEncodingScheme implements EncodingScheme {
     private static final byte NUCLEOTIDE_G = 0b0_00_01_00;
     private static final byte NUCLEOTIDE_T = 0b0_00_00_01;
 
-	private static final byte SHIFT_RIGHT = NUCLEOTIDE_A | NUCLEOTIDE_C;
+    private static final byte SHIFT_RIGHT = NUCLEOTIDE_A | NUCLEOTIDE_C;
 
     public static final EncodingScheme instance = new BasicDnaEncodingScheme();
 
@@ -65,70 +65,69 @@ public final class BasicDnaEncodingScheme implements EncodingScheme {
         return BasicDnaEncodingScheme.create(character);
     }
 
-	@Override
-	public BasePair complement(final BasePair basePair) {
-		if (!basePair.getEncodingScheme().equals(this)) {
-			return complement(fromCharacter(basePair.toChar()));
-		}
+    @Override
+    public BasePair complement(final BasePair basePair) {
+        if (!basePair.getEncodingScheme().equals(this)) {
+            return complement(fromCharacter(basePair.toChar()));
+        }
 
-		val nucleotide = basePair.getValue();
-		if ((nucleotide & SHIFT_RIGHT) != 0)
-			return toBasePair((byte) (nucleotide >>> 1));
+        val nucleotide = basePair.getValue();
+        if ((nucleotide & SHIFT_RIGHT) != 0)
+            return toBasePair((byte) (nucleotide >>> 1));
         return toBasePair((byte) (nucleotide << 1));
-	}
+    }
 
-	@Override
-	public byte getValue(final char nucleotide) throws InvalidDnaFormatException {
-		switch (nucleotide)
-		{
-			case 'a':
-			case 'A':
-				return NUCLEOTIDE_A;
-			case 't':
-			case 'T':
-				return NUCLEOTIDE_T;
-			case 'c':
-			case 'C':
-				return NUCLEOTIDE_C;
-			case 'g':
-			case 'G':
-				return NUCLEOTIDE_G;
+    @Override
+    public byte getValue(final char nucleotide) throws InvalidDnaFormatException {
+        switch (nucleotide) {
+            case 'a':
+            case 'A':
+                return NUCLEOTIDE_A;
+            case 't':
+            case 'T':
+                return NUCLEOTIDE_T;
+            case 'c':
+            case 'C':
+                return NUCLEOTIDE_C;
+            case 'g':
+            case 'G':
+                return NUCLEOTIDE_G;
             default:
-				throw new InvalidDnaFormatException("There was an invalid value for DnaSequecne " + nucleotide);
-		}
-	}
+                throw new InvalidDnaFormatException("There was an invalid value for DnaSequecne " + nucleotide);
+        }
+    }
 
-	@Override
-	public char toChar(final byte nucleotide) throws InvalidDnaFormatException{
-		switch (nucleotide) {
-		case NUCLEOTIDE_A:
-			return 'A';
-		case NUCLEOTIDE_T:
-			return 'T';
-		case NUCLEOTIDE_C:
-			return 'C';
-		case NUCLEOTIDE_G:
-			return 'G';
-		default:
-			throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
-		}	 
-	}
+    @Override
+    public char toChar(final byte nucleotide) throws InvalidDnaFormatException {
+        switch (nucleotide) {
+            case NUCLEOTIDE_A:
+                return 'A';
+            case NUCLEOTIDE_T:
+                return 'T';
+            case NUCLEOTIDE_C:
+                return 'C';
+            case NUCLEOTIDE_G:
+                return 'G';
+            default:
+                throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
+        }
+    }
 
-	@Override
-	public BasePair toBasePair(final byte nucleotide) throws InvalidDnaFormatException {
-		switch (nucleotide) {
-		case NUCLEOTIDE_A:
-			return A;
-		case NUCLEOTIDE_T:
-			return T;
-		case NUCLEOTIDE_C:
-			return C;
-		case NUCLEOTIDE_G:
-			return G;
-		default:
-			throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
-		}
-	}
+    @Override
+    public BasePair toBasePair(final byte nucleotide) throws InvalidDnaFormatException {
+        switch (nucleotide) {
+            case NUCLEOTIDE_A:
+                return A;
+            case NUCLEOTIDE_T:
+                return T;
+            case NUCLEOTIDE_C:
+                return C;
+            case NUCLEOTIDE_G:
+                return G;
+            default:
+                throw new InvalidDnaFormatException("There was an invalid conversion request with byte representation " + nucleotide);
+        }
+    }
 
     @Override
     public boolean equals(final Object obj) {
