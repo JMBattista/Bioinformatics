@@ -1,7 +1,7 @@
 package com.vitreoussoftware.bioinformatics.alignment;
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import lombok.experimental.Value;
+import lombok.Value;
 
 /**
  * Created by John on 12/23/13.

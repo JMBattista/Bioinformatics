@@ -1,25 +1,16 @@
 package com.vitreoussoftware.bioinformatics.sequence;
 
 import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
-<<<<<<< HEAD
 import com.vitreoussoftware.bioinformatics.sequence.encoding.BasicDnaEncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingSchemeTestBase;
-=======
-import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
->>>>>>> f658acc... Code reformat
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 
-<<<<<<< HEAD
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
-=======
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
->>>>>>> f658acc... Code reformat
 
 /**
  * Tests the BasePair class
@@ -27,28 +18,27 @@ import static org.junit.Assert.assertFalse;
  * @author John
  */
 public class BasePairTest {
-<<<<<<< HEAD
 	private EncodingScheme scheme;
-	private EncodingScheme otherScheme;
+    private EncodingScheme otherScheme;
 
-	/**
-	 * Setup the test object
-	 */
-	@Before
-	public void setup()
-	{
-		this.scheme = AcceptUnknownDnaEncodingScheme.instance;
-        this.otherScheme = BasicDnaEncodingScheme.instance;
-	}
-
-	/** 
-	 * Test Equality for BasePair, with same start
+    /**
+     * Setup the test object
      */
-	@Test
-	public void testEqualityToSelf() throws InvalidDnaFormatException {
-		val bp = BasePair.create('A', scheme);
-		assertThat(bp, is(bp));
-	}
+    @Before
+    public void setup()
+    {
+        this.scheme = AcceptUnknownDnaEncodingScheme.instance;
+        this.otherScheme = BasicDnaEncodingScheme.instance;
+    }
+
+    /**
+     * Test Equality for BasePair, with same start
+     */
+    @Test
+    public void testEqualityToSelf() throws InvalidDnaFormatException {
+        val bp = BasePair.create('A', scheme);
+        assertThat(bp, is(bp));
+    }
 
 
     /**
@@ -63,66 +53,11 @@ public class BasePairTest {
     }
 
     /**
-	 * Test Equality for BasePair, with same start
-     */
-	@Test
-	public void testEqualitySameStart() throws InvalidDnaFormatException {
-		assertThat(BasePair.create('A', scheme), is(BasePair.create('A', scheme)));
-	}
-	
-	/** 
-	 * Test Equality for BasePair, with different cases
-     */
-	@Test
-	public void testEqualityDifferentCase() throws InvalidDnaFormatException {
-		assertThat(BasePair.create('A', scheme), is(BasePair.create('a', scheme)));
-	}
-	
-	/** 
-	 * Test Equality for BasePair, different base pair
-     */
-	@Test
-	public void testEqualityNotSame() throws InvalidDnaFormatException {
-		assertThat(BasePair.create('A', scheme), is(not(BasePair.create('T', scheme))));
-	}
-
-	/**
-	 * Test that we can perform some creation. This is primarily covered via {@link EncodingSchemeTestBase}
-	 */
-	@Test
-	public void testCreation() throws InvalidDnaFormatException {
-		assertThat(BasePair.create('A', scheme).toString(), is("A"));
-	}
-
-    /**
-     * Test that we can fail at creating some {@link BasePair}
-	 */
-=======
-    private EncodingScheme scheme;
-
-    /**
-     * Setup the test object
-     */
-    @Before
-    public void setup() {
-        this.scheme = new AcceptUnknownDnaEncodingScheme();
-    }
-
-    /**
-     * Test Equality for BasePair, with same start
-     */
-    @Test
-    public void testEqualityToSelf() throws InvalidDnaFormatException {
-        val bp = BasePair.create('A', scheme);
-        assertEquals(bp, bp);
-    }
-
-    /**
      * Test Equality for BasePair, with same start
      */
     @Test
     public void testEqualitySameStart() throws InvalidDnaFormatException {
-        assertEquals(BasePair.create('A', scheme), BasePair.create('A', scheme));
+        assertThat(BasePair.create('A', scheme), is(BasePair.create('A', scheme)));
     }
 
     /**
@@ -130,96 +65,29 @@ public class BasePairTest {
      */
     @Test
     public void testEqualityDifferentCase() throws InvalidDnaFormatException {
-        assertEquals(BasePair.create('A', scheme), BasePair.create('a', scheme));
+        assertThat(BasePair.create('A', scheme), is(BasePair.create('a', scheme)));
     }
 
     /**
      * Test Equality for BasePair, different base pair
      */
+    @Test
     public void testEqualityNotSame() throws InvalidDnaFormatException {
-        assertFalse(BasePair.create('A', scheme).equals(BasePair.create('T', scheme)));
+        assertThat(BasePair.create('A', scheme), is(not(BasePair.create('T', scheme))));
     }
 
     /**
-     * Test Equality for BasePair, against N
-     */
-    public void testEqualityAgainstN() throws InvalidDnaFormatException {
-        assertFalse(BasePair.create('A', scheme).equals(BasePair.create('N', scheme)));
-    }
-
-    /**
+     * Test that we can perform some creation. This is primarily covered via {@link EncodingSchemeTestBase}
      */
     @Test
-    public void testCreationA() throws InvalidDnaFormatException {
-        assertEquals("A", BasePair.create('A', scheme).toString());
+    public void testCreation() throws InvalidDnaFormatException {
+        assertThat(BasePair.create('A', scheme).toString(), is("A"));
     }
 
     /**
+     * Test that we can fail at creating some {@link BasePair}
      */
-    @Test
-    public void testCreationLowerA() throws InvalidDnaFormatException {
-        assertEquals("A", BasePair.create('a', scheme).toString());
-    }
 
-    /**
-     */
-    @Test
-    public void testCreationT() throws InvalidDnaFormatException {
-        assertEquals("T", BasePair.create('T', scheme).toString());
-    }
-
-    /**
-     */
-    @Test
-    public void testCreationLowerT() throws InvalidDnaFormatException {
-        assertEquals("T", BasePair.create('t', scheme).toString());
-    }
-
-    /**
-     */
-    @Test
-    public void testCreationC() throws InvalidDnaFormatException {
-        assertEquals("C", BasePair.create('C', scheme).toString());
-    }
-
-    /**
-     */
-    @Test
-    public void testCreationLowerC() throws InvalidDnaFormatException {
-        assertEquals("C", BasePair.create('c', scheme).toString());
-    }
-
-    /**
-     */
-    @Test
-    public void testCreationG() throws InvalidDnaFormatException {
-        assertEquals("G", BasePair.create('G', scheme).toString());
-    }
-
-    /**
-     */
-    @Test
-    public void testCreationLowerG() throws InvalidDnaFormatException {
-        assertEquals("G", BasePair.create('g', scheme).toString());
-    }
-
-    /**
-     */
-    @Test
-    public void testCreationU() throws InvalidDnaFormatException {
-        assertEquals("U", BasePair.create('U', scheme).toString());
-    }
-
-    /**
-     */
-    @Test
-    public void testCreationLowerU() throws InvalidDnaFormatException {
-        assertEquals("U", BasePair.create('u', scheme).toString());
-    }
-
-    /**
-     */
->>>>>>> f658acc... Code reformat
     @Test(expected = InvalidDnaFormatException.class)
     public void testCreationCanFAil() throws InvalidDnaFormatException {
         BasePair.create('Q', scheme);
