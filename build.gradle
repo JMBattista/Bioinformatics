@@ -38,6 +38,7 @@ subprojects {
 
     //'pitest' for plugin versions <1.1.0
     apply plugin: 'info.solidsoft.pitest'
+    //noinspection GroovyMissingReturnStatement
     pitest {
         threads = 4
 

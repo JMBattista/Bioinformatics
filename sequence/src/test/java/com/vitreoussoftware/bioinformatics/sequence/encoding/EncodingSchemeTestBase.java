@@ -79,7 +79,7 @@ public abstract class EncodingSchemeTestBase {
      * Given the set of valid pairs ensure we can complement between them in the 'forward' direction
      */
     @Theory
-    public void theoryBasePairComplement0to1(EncodingScheme scheme, Pair<Character, Character> pair) {
+    public void theoryBasePairComplement0to1(final EncodingScheme scheme, final Pair<Character, Character> pair) {
         val basePair0 = scheme.fromCharacter(pair.getValue0());
         val basePair1 = scheme.fromCharacter(pair.getValue1());
 
@@ -90,7 +90,7 @@ public abstract class EncodingSchemeTestBase {
      * Given the set of valid pairs ensure we can complement between them in the 'backward' direction
      */
     @Theory
-    public void theoryBasePairComplement1to0(EncodingScheme scheme, Pair<Character, Character> pair) {
+    public void theoryBasePairComplement1to0(final EncodingScheme scheme, final Pair<Character, Character> pair) {
         val basePair0 = scheme.fromCharacter(pair.getValue0());
         val basePair1 = scheme.fromCharacter(pair.getValue1());
 

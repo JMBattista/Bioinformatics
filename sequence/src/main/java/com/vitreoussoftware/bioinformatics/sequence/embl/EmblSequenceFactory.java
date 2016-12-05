@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 public class EmblSequenceFactory implements SequenceFactory {
 
-    private EncodingScheme encodingScheme;
+    private final EncodingScheme encodingScheme;
 
 	/**
 	 * Initialize a new {@link EmblSequenceFactory} with default {@link EncodingScheme}

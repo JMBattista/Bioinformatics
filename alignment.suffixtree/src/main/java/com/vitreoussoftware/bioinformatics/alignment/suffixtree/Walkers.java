@@ -35,7 +35,7 @@ public final class Walkers {
      */
     public static Walk<Integer, Integer> size() {
         return new Walk<Integer, Integer>() {
-            AtomicInteger size = new AtomicInteger();
+            final AtomicInteger size = new AtomicInteger();
 
             @Override
             public boolean isFinished(final Integer metadata) {

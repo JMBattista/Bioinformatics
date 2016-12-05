@@ -216,7 +216,7 @@ public class SequenceTest {
         final Sequence sequence = this.factory.fromString(sb.toString()).get();
 
         val actualLength = sequence.stream()
-                .map(bp -> 1)
+                .map(bp -> 1)git 
                 .count();
 
         assertThat(actualLength, is(expectedLength));

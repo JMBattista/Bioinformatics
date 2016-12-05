@@ -102,6 +102,6 @@ public final class ReadGenerator implements ConditionalDistribution<Sequence, Se
          * Sets the default value of the flipDistribution
          */
         @SuppressWarnings("unused") // Used by lombok
-        private Distribution<Boolean> flipDistribution = () -> false;
+        private final Distribution<Boolean> flipDistribution = () -> false;
     }
 }

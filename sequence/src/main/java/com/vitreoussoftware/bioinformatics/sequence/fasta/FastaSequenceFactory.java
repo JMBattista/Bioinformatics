@@ -15,7 +15,7 @@ import java.util.Optional;
  * @author John
  */
 public class FastaSequenceFactory implements SequenceFactory {
-	private EncodingScheme encodingSheme;
+	private final EncodingScheme encodingSheme;
 
 	/**
 	 * Initialize a new FastaSequenceFactory with default encoding scheme

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * Created by John on 8/27/14.
  */
 public class KeywordMap implements PatternFirstAligner {
-    private KeywordNode root;
+    private final KeywordNode root;
 
     KeywordMap() {
         root = new KeywordNode(null);

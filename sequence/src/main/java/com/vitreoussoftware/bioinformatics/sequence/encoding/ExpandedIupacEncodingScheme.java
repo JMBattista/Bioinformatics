@@ -49,7 +49,7 @@ import lombok.val;
     private static final byte NUCLEOTIDE_X =  0b1_00_00_00 | AMBIGUITY;
     private static final byte NUCLEOTIDE_GAP = 0b0_00_00_00;
 
-    public static EncodingScheme instance = new ExpandedIupacEncodingScheme();
+    public static final EncodingScheme instance = new ExpandedIupacEncodingScheme();
 	
 	/**
 	 * Adenine
@@ -335,7 +335,7 @@ import lombok.val;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == this)
             return true;
         return obj.getClass().equals(instance.getClass());

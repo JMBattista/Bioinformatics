@@ -17,7 +17,7 @@ public final class FastaFileStreamWriter implements SequenceStreamWriter {
     /**
      * The FASTA file
      */
-    private FileWriter file;
+    private final FileWriter file;
 
     /**
      * Create a FASTA File Stream Reader for the given file

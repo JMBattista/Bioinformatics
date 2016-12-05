@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 public class FastqSequenceFactory implements SequenceFactory {
 
-    private EncodingScheme encodingSheme;
+    private final EncodingScheme encodingSheme;
 
 	/**
 	 * Initialize a new FastaSequenceFactory with default encoding scheme

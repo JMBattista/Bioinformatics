@@ -48,7 +48,7 @@ public final class IupacEncodingScheme implements EncodingScheme {
     private static final byte NUCLEOTIDE_V =  NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G | AMBIGUITY;                   // 0b0_10_11_10
     private static final byte NUCLEOTIDE_N =  NUCLEOTIDE_A | NUCLEOTIDE_C | NUCLEOTIDE_G | NUCLEOTIDE_T | NUCLEOTIDE_U | AMBIGUITY | REFLECTED;
 
-    public static EncodingScheme instance = new IupacEncodingScheme();
+    public static final EncodingScheme instance = new IupacEncodingScheme();
 
     /**
      * Adenine
@@ -316,7 +316,7 @@ public final class IupacEncodingScheme implements EncodingScheme {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == this)
             return true;
         return obj.getClass().equals(instance.getClass());

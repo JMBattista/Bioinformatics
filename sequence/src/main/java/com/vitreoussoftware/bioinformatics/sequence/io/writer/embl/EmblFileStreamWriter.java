@@ -47,7 +47,7 @@ public final class EmblFileStreamWriter implements SequenceStreamWriter {
     /**
      * The EMBL file we are writing to
      */
-    private FileWriter file;
+    private final FileWriter file;
 
     /**
      * Create a EMBL File Stream Reader for the given file

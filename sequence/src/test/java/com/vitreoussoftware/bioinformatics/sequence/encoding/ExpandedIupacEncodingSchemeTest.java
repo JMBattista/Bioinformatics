@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
  */
 @SuppressWarnings("AccessStaticViaInstance")
 public class ExpandedIupacEncodingSchemeTest extends EncodingSchemeTestBase {
-    private ExpandedIupacEncodingScheme scheme = new ExpandedIupacEncodingScheme();
+    private final ExpandedIupacEncodingScheme scheme = new ExpandedIupacEncodingScheme();
 
     @DataPoints
     public static List<Character> getAcceptedCharacters() {

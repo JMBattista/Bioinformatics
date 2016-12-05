@@ -21,7 +21,7 @@ public final class BasicDnaEncodingScheme implements EncodingScheme {
 
 	private static final byte SHIFT_RIGHT = NUCLEOTIDE_A | NUCLEOTIDE_C;
 
-    public static EncodingScheme instance = new BasicDnaEncodingScheme();
+    public static final EncodingScheme instance = new BasicDnaEncodingScheme();
 
     /**
      * Adenine
@@ -131,7 +131,7 @@ public final class BasicDnaEncodingScheme implements EncodingScheme {
 	}
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == this)
             return true;
         return obj.getClass().equals(instance.getClass());

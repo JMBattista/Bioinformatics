@@ -21,7 +21,7 @@ import static org.junit.Assert.assertThat;
  */
 @SuppressWarnings("AccessStaticViaInstance")
 public class BasicDnaEncodingSchemeTest extends EncodingSchemeTestBase {
-    private BasicDnaEncodingScheme scheme = new BasicDnaEncodingScheme();
+    private final BasicDnaEncodingScheme scheme = new BasicDnaEncodingScheme();
 
     @DataPoints
     public static List<Character> getAcceptedCharacters() {

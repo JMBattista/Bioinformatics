@@ -14,8 +14,8 @@ import java.util.Iterator;
  * @author John
  */
 public class BoundedSuffixTree extends BasicSuffixTree {
-    private int minLength;
-    private int maxLength;
+    private final int minLength;
+    private final int maxLength;
 
 
     /**

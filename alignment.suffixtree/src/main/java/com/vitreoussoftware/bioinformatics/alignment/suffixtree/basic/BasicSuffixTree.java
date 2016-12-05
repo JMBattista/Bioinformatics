@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
  */
 public class BasicSuffixTree implements SuffixTree {
 
-    protected SuffixTreeNode root;
-    private SequenceCollectionFactory factory;
+    protected final SuffixTreeNode root;
+    private final SequenceCollectionFactory factory;
 
     /**
      * Create the suffix tree

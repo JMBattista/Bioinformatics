@@ -12,7 +12,7 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceLis
  */
 public class BasicSuffixTreeFactory implements SuffixTreeFactory {
 
-    private SequenceCollectionFactory factory;
+    private final SequenceCollectionFactory factory;
 
     /**
      * Create a BasicSuffixTreeFactory with a custom SequenceCollectionFactory

@@ -12,9 +12,9 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.basic.SequenceLis
  */
 public class BoundedSuffixTreeFactory implements SuffixTreeFactory {
 
-    private SequenceCollectionFactory factory;
-    private int maxLength;
-    private int minLength;
+    private final SequenceCollectionFactory factory;
+    private final int maxLength;
+    private final int minLength;
 
     /**
      * Create a BasicSuffixTreeFactory with a custom SequenceCollectionFactory
