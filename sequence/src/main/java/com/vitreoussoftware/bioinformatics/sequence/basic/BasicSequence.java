@@ -18,17 +18,18 @@ import java.util.Optional;
  * @author John
  */
 public final class BasicSequence implements Sequence {
-	@NonNull private final byte[] sequence;
-    @NonNull private final EncodingScheme encodingScheme;
+    @NonNull
+    private final byte[] sequence;
+    @NonNull
+    private final EncodingScheme encodingScheme;
     private final String metadata;
 
-    private BasicSequence(final EncodingScheme encodingSheme, final int size, final String metadata)
-	{
+    private BasicSequence(final EncodingScheme encodingSheme, final int size, final String metadata) {
         Preconditions.checkArgument(size > 0, "Cannot construct an empty Sequence");
         this.sequence = new byte[size];
         this.encodingScheme = encodingSheme;
         this.metadata = metadata;
-	}
+    }
 
     /**
      * Create a new Sequence from a l{@link List<BasePair>}. We assume the first {@link BasePair} represents the
@@ -42,13 +43,13 @@ public final class BasicSequence implements Sequence {
         if (sequence == null || sequence.size() == 0)
             return Optional.empty();
 
-		val encodingSheme = sequence.get(0).getEncodingScheme();
+        val encodingSheme = sequence.get(0).getEncodingScheme();
         val seq = new BasicSequence(encodingSheme, sequence.size(), null);
 
-		val iter = sequence.iterator();
-		for (int i = 0; i < sequence.size(); i++) {
-			seq.sequence[i] = seq.encodingScheme.getValue(iter.next().toChar());
-		}
+        val iter = sequence.iterator();
+        for (int i = 0; i < sequence.size(); i++) {
+            seq.sequence[i] = seq.encodingScheme.getValue(iter.next().toChar());
+        }
 
         return Optional.of(seq);
     }
@@ -118,19 +119,19 @@ public final class BasicSequence implements Sequence {
     }
 
     @Override
-	public String toString() {
-		val sb = new StringBuilder();
-		try {
-			for (final byte bp : sequence) {
-				sb.append(this.encodingScheme.toString(bp));
-			}
-		} catch (final InvalidDnaFormatException e) {
-			// this should never fail since the encoding came from the encapsulated BasePair
-			e.printStackTrace();
-			throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
-		}
-		return sb.toString();
-	}
+    public String toString() {
+        val sb = new StringBuilder();
+        try {
+            for (final byte bp : sequence) {
+                sb.append(this.encodingScheme.toString(bp));
+            }
+        } catch (final InvalidDnaFormatException e) {
+            // this should never fail since the encoding came from the encapsulated BasePair
+            e.printStackTrace();
+            throw new InvalidDnaFormatException("We hit an unknown basepair encoding converting to string\n");
+        }
+        return sb.toString();
+    }
 
     @Override
     public int hashCode() {
