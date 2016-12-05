@@ -7,7 +7,7 @@ import lombok.Value;
  * Created by John on 8/31/14.
  */
 @Value
-public class Position {
+public final class Position {
     final private Sequence text;
     final private int position;
 

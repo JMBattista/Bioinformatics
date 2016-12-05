@@ -17,5 +17,13 @@ public class InvalidDnaFormatException extends RuntimeException {
         super(error);
     }
 
-
+    /**
+     * Create an InvalidDnaFormatException with an error message and cause
+     *
+     * @param error The error message
+     * @param cause The cause of the exception
+     */
+    public InvalidDnaFormatException(final String error, final Throwable cause) {
+        super(error, cause);
+    }
 }
