@@ -14,31 +14,31 @@ import static org.hamcrest.core.IsNot.not;
 
 /**
  * Tests the BasePair class
- * @author John
  *
+ * @author John
  */
 public class BasePairTest {
 	private EncodingScheme scheme;
-	private EncodingScheme otherScheme;
+    private EncodingScheme otherScheme;
 
-	/**
-	 * Setup the test object
-	 */
-	@Before
-	public void setup()
-	{
-		this.scheme = AcceptUnknownDnaEncodingScheme.instance;
-        this.otherScheme = BasicDnaEncodingScheme.instance;
-	}
-
-	/** 
-	 * Test Equality for BasePair, with same start
+    /**
+     * Setup the test object
      */
-	@Test
-	public void testEqualityToSelf() throws InvalidDnaFormatException {
-		val bp = BasePair.create('A', scheme);
-		assertThat(bp, is(bp));
-	}
+    @Before
+    public void setup()
+    {
+        this.scheme = AcceptUnknownDnaEncodingScheme.instance;
+        this.otherScheme = BasicDnaEncodingScheme.instance;
+    }
+
+    /**
+     * Test Equality for BasePair, with same start
+     */
+    @Test
+    public void testEqualityToSelf() throws InvalidDnaFormatException {
+        val bp = BasePair.create('A', scheme);
+        assertThat(bp, is(bp));
+    }
 
 
     /**
@@ -53,40 +53,41 @@ public class BasePairTest {
     }
 
     /**
-	 * Test Equality for BasePair, with same start
+     * Test Equality for BasePair, with same start
      */
-	@Test
-	public void testEqualitySameStart() throws InvalidDnaFormatException {
-		assertThat(BasePair.create('A', scheme), is(BasePair.create('A', scheme)));
-	}
-	
-	/** 
-	 * Test Equality for BasePair, with different cases
-     */
-	@Test
-	public void testEqualityDifferentCase() throws InvalidDnaFormatException {
-		assertThat(BasePair.create('A', scheme), is(BasePair.create('a', scheme)));
-	}
-	
-	/** 
-	 * Test Equality for BasePair, different base pair
-     */
-	@Test
-	public void testEqualityNotSame() throws InvalidDnaFormatException {
-		assertThat(BasePair.create('A', scheme), is(not(BasePair.create('T', scheme))));
-	}
+    @Test
+    public void testEqualitySameStart() throws InvalidDnaFormatException {
+        assertThat(BasePair.create('A', scheme), is(BasePair.create('A', scheme)));
+    }
 
-	/**
-	 * Test that we can perform some creation. This is primarily covered via {@link EncodingSchemeTestBase}
-	 */
-	@Test
-	public void testCreation() throws InvalidDnaFormatException {
-		assertThat(BasePair.create('A', scheme).toString(), is("A"));
-	}
+    /**
+     * Test Equality for BasePair, with different cases
+     */
+    @Test
+    public void testEqualityDifferentCase() throws InvalidDnaFormatException {
+        assertThat(BasePair.create('A', scheme), is(BasePair.create('a', scheme)));
+    }
+
+    /**
+     * Test Equality for BasePair, different base pair
+     */
+    @Test
+    public void testEqualityNotSame() throws InvalidDnaFormatException {
+        assertThat(BasePair.create('A', scheme), is(not(BasePair.create('T', scheme))));
+    }
+
+    /**
+     * Test that we can perform some creation. This is primarily covered via {@link EncodingSchemeTestBase}
+     */
+    @Test
+    public void testCreation() throws InvalidDnaFormatException {
+        assertThat(BasePair.create('A', scheme).toString(), is("A"));
+    }
 
     /**
      * Test that we can fail at creating some {@link BasePair}
-	 */
+     */
+
     @Test(expected = InvalidDnaFormatException.class)
     public void testCreationCanFAil() throws InvalidDnaFormatException {
         BasePair.create('Q', scheme);

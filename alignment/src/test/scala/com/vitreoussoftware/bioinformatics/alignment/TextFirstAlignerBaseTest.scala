@@ -1,16 +1,17 @@
 package com.vitreoussoftware.bioinformatics.alignment
 
-import com.vitreoussoftware.test._
 import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence
-import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import scala.collection.JavaConversions._
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection
-import org.scalatest.{Inside, Matchers}
-import com.vitreoussoftware.bioinformatics.sequence.{BasePair, Sequence}
-import org.scalacheck.{Gen, Arbitrary}
+import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme
 import com.vitreoussoftware.bioinformatics.sequence.io.FastaData
+import com.vitreoussoftware.bioinformatics.sequence.{BasePair, Sequence}
+import com.vitreoussoftware.test._
+import org.junit.runner.RunWith
+import org.scalacheck.{Arbitrary, Gen}
+import org.scalatest.Matchers
+import org.scalatest.junit.JUnitRunner
+
+import scala.collection.JavaConversions._
 
 trait AlignerTestData {
   val bases = List("A", "U", "C", "G")
@@ -37,11 +38,11 @@ trait AlignerTestData {
   def checkDistance(alignment: Alignment) = {
     val pattern = alignment.getPattern
     alignment.getText.drop(alignment.getPosition).take(pattern.length()).zip(pattern)
-      .map(value => value._1 distance  value._2).sum
+      .map(value => value._1 distance value._2).sum
   }
 
   def genSequence(): Gen[Sequence] = {
-    val genBasePair = for(bp <- Gen.frequency(
+    val genBasePair = for (bp <- Gen.frequency(
       (1, "A"),
       (1, "U"),
       (1, "C"),
@@ -70,7 +71,7 @@ trait AlignerTestData {
     Gen.sized(sz => sizedSequence(sz))
   }
 
-  val genBasePair = for(bp <- Gen.frequency(
+  val genBasePair = for (bp <- Gen.frequency(
     (1, 'A'),
     (1, 'U'),
     (1, 'C'),
@@ -83,31 +84,34 @@ trait AlignerTestData {
 
 trait AlignerHelpers extends Matchers {
   /**
-   * Perform any setup necessary to fromCharacter and return the aligner for use in tests
-   * @return the aligner to use for the tests
-   */
-  def getAligner() : TextFirstAligner
+    * Perform any setup necessary to fromCharacter and return the aligner for use in tests
+    *
+    * @return the aligner to use for the tests
+    */
+  def getAligner(): TextFirstAligner
 
   /**
-   * Perform any cleanup necessary to dispose of the aligner.
-   * By default no cleanup is performed
-   * @param aligner the aligner used by the test
-   * @return None
-   */
+    * Perform any cleanup necessary to dispose of the aligner.
+    * By default no cleanup is performed
+    *
+    * @param aligner the aligner used by the test
+    * @return None
+    */
   def destroyAligner(aligner: TextFirstAligner) = None
 }
 
 /**
- * Set of Basic Behavior tests for TextFirstAlginers
- *
- * Created by John on 8/23/14.
- */
+  * Set of Basic Behavior tests for TextFirstAlginers
+  *
+  * Created by John on 8/23/14.
+  */
 @RunWith(classOf[JUnitRunner])
 abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with AlignerTestData with AlignerHelpers {
   /**
-   * Perform the test with an aligner
-   * @param test the test to run
-   */
+    * Perform the test with an aligner
+    *
+    * @param test the test to run
+    */
   def withAligner(test: (TextFirstAligner) => Unit) = {
     val aligner = getAligner()
     test(aligner)
@@ -119,8 +123,8 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
     withAligner {
       (aligner) => {
         forAll(baseSeqs) { (seq) => {
-            aligner contains seq shouldBe false
-          }
+          aligner contains seq shouldBe false
+        }
         }
       }
     }
@@ -181,7 +185,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
         aligner.addText(seqSimple)
         val results = baseSeqs.map(x => (x, aligner.shortestDistance(x)))
 
-        results should have size(baseSeqs.size)
+        results should have size (baseSeqs.size)
 
         for ((pattern, alignments) <- results) {
           pattern should have length 1
@@ -203,7 +207,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
         aligner.addText(seqSimple)
         val results = aligner.shortestDistance(SequenceCollection.from(baseSeqs)).map(pair => (pair.getValue0, pair.getValue1))
 
-        results should have size(baseSeqs.size)
+        results should have size (baseSeqs.size)
 
         for ((pattern, alignments) <- results) {
           pattern should have length 1
@@ -233,8 +237,8 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
     withAligner(
       (aligner) => {
         aligner.addText(seqSimple)
-        aligner.contains(seqRecord1) should be (false)
-        aligner.getAlignments(seqRecord1) should contain theSameElementsAs  (List())
+        aligner.contains(seqRecord1) should be(false)
+        aligner.getAlignments(seqRecord1) should contain theSameElementsAs (List())
       }
     )
   }
@@ -260,8 +264,8 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
 
         val parentSets = baseSeqs.map(pattern => (pattern.toString, aligner.getAlignments(pattern).toList.map(p => p.getText).toSet))
 
-        forAll (parentSets) {
-          set => set._2 should contain theSameElementsAs  sourceSeqs
+        forAll(parentSets) {
+          set => set._2 should contain theSameElementsAs sourceSeqs
         }
       }
     )

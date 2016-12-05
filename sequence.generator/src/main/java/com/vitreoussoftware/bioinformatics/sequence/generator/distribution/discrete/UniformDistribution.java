@@ -1,8 +1,8 @@
 package com.vitreoussoftware.bioinformatics.sequence.generator.distribution.discrete;
 
 import com.vitreoussoftware.bioinformatics.sequence.generator.distribution.DiscreteDistribution;
-import lombok.NonNull;
 import lombok.Builder;
+import lombok.NonNull;
 
 /**
  * Uniform Distribution across whole numbers within a range
@@ -13,14 +13,14 @@ public class UniformDistribution implements DiscreteDistribution<Integer> {
 
     /**
      * Create an instance of {@link UniformDistribution} that can be used to generate outputs
+     *
      * @param lower lower bound of values returned by this distribution [inclusive]
      * @param upper upper boudn of values returned by this distribution (exclusive)
-     *
-     * @throws NullPointerException if the arguments are null or unset
+     * @throws NullPointerException     if the arguments are null or unset
      * @throws IllegalArgumentException if the lower bound is >= upper bound
      */
     @Builder
-    public UniformDistribution(@NonNull Double lower, @NonNull Double upper) {
+    public UniformDistribution(@NonNull final Double lower, @NonNull final Double upper) {
         this.distribution = com.vitreoussoftware.bioinformatics.sequence.generator.distribution.continuous.UniformDistribution
                 .builder()
                 .lower(lower)

@@ -41,6 +41,7 @@ public class SequenceGeneratorTest {
 
     /**
      * Create a {@link EnumeratedDistribution.DiscreteDistributionBuilder} with a default {@link EncodingScheme}
+     *
      * @return the {@link EnumeratedDistribution.DiscreteDistributionBuilder} instance
      */
     private EnumeratedDistribution.DiscreteDistributionBuilder<Character> getDistribution() {
@@ -143,13 +144,13 @@ public class SequenceGeneratorTest {
      * Test that we can generate a sequence from an {@link EnumeratedDistribution} containing only one element
      */
     @Theory
-    public void theorySampleCanGenerateFromSingleCharacter(Character sample) {
+    public void theorySampleCanGenerateFromSingleCharacter(final Character sample) {
         val generator = SequenceGenerator.builder()
                 .lengthDistribution(() -> 10)
                 .encodingScheme(AcceptUnknownDnaEncodingScheme.instance)
                 .basePairDistribution(getDistribution()
-                    .probability(sample, 1.0)
-                    .build())
+                        .probability(sample, 1.0)
+                        .build())
                 .build();
 
         val sequence = generator.sample();
@@ -179,8 +180,8 @@ public class SequenceGeneratorTest {
 
         assertThat("Sequence length is positive", sequence.length(), is(length));
 
-        int aCount = (int) sequence.stream().filter(bp -> bp.toChar() == 'A').count();
-        int tCount = (int) sequence.stream().filter(bp -> bp.toChar() == 'T').count();
+        final int aCount = (int) sequence.stream().filter(bp -> bp.toChar() == 'A').count();
+        final int tCount = (int) sequence.stream().filter(bp -> bp.toChar() == 'T').count();
 
         assertThat("No A's were found", aCount, is(greaterThan(0)));
         assertThat("No T's were found", tCount, is(greaterThan(0)));

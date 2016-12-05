@@ -1,16 +1,16 @@
 package com.vitreoussoftware.bioinformatics.sequence.collection;
 
-import java.util.Collection;
-
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
+
+import java.util.Collection;
 
 /**
  * A collection of Sequences
- * @author John
  *
+ * @author John
  */
 public interface SequenceCollection extends Collection<Sequence>, Iterable<Sequence> {
-    public static SequenceCollection from(Collection<Sequence> collection) {
+    public static SequenceCollection from(final Collection<Sequence> collection) {
         return new JavaCollectionWrapper(collection);
     }
 }

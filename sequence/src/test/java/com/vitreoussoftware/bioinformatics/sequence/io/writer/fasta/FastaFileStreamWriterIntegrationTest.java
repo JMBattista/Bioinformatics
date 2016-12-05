@@ -2,8 +2,8 @@ package com.vitreoussoftware.bioinformatics.sequence.io.writer.fasta;
 
 import com.vitreoussoftware.bioinformatics.sequence.fasta.FastaSequenceFactory;
 import com.vitreoussoftware.bioinformatics.sequence.io.FastaData;
-import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
+import com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.fasta.FastaStringFileStreamReader;
 import com.vitreoussoftware.bioinformatics.sequence.io.writer.SequenceStreamWriter;
 import com.vitreoussoftware.bioinformatics.sequence.io.writer.SequenceStreamWriterIntegrationTestBase;
@@ -11,8 +11,8 @@ import org.junit.Test;
 
 /**
  * Test the FastaFileStreamWriter class
- * @author John
  *
+ * @author John
  */
 public class FastaFileStreamWriterIntegrationTest extends SequenceStreamWriterIntegrationTestBase<FastaData> {
     private static final String WRITER_TEST_FILE = "build/fastatestwriter.fasta";
@@ -23,12 +23,12 @@ public class FastaFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
     }
 
     @Override
-    protected SequenceStreamWriter getWriter(String path) throws Exception {
+    protected SequenceStreamWriter getWriter(final String path) throws Exception {
         return FastaFileStreamWriter.create(path);
     }
 
     @Override
-    protected SequenceStreamReader getReader(String path) throws Exception {
+    protected SequenceStreamReader getReader(final String path) throws Exception {
         final StringStreamReader reader = FastaStringFileStreamReader.create(path);
         return SequenceStreamReader.builder()
                 .reader(reader)

@@ -13,13 +13,13 @@ public class FDistribution implements DiscreteDistribution<Integer> {
 
     /**
      * Create an instance of {@link FDistribution} that can be used to generate outputs
-     * @param numeratorDegreesOfFreedom Numberator degrees of freedom
-     * @param denominatorDegreesOfFreedom Denominator degrees of freedom
      *
+     * @param numeratorDegreesOfFreedom   Numberator degrees of freedom
+     * @param denominatorDegreesOfFreedom Denominator degrees of freedom
      * @throws NullPointerException if the arguments are null or unset
      */
     @Builder
-    public FDistribution(@NonNull Double numeratorDegreesOfFreedom, @NonNull Double denominatorDegreesOfFreedom) {
+    public FDistribution(@NonNull final Double numeratorDegreesOfFreedom, @NonNull final Double denominatorDegreesOfFreedom) {
         this.distribution = com.vitreoussoftware.bioinformatics.sequence.generator.distribution.continuous.FDistribution
                 .builder()
                 .numeratorDegreesOfFreedom(numeratorDegreesOfFreedom)

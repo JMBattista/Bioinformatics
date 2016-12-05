@@ -64,12 +64,12 @@ public class FastaData extends TestData {
     private static final String NO_ENDING_SPACE = PATH + "NoEndingSpace.fasta";
 
     @Override
-    protected StringStreamReader createReader(String path) throws FileNotFoundException {
+    protected StringStreamReader createReader(final String path) throws FileNotFoundException {
         return FastaStringFileStreamReader.create(path);
     }
 
     @Override
-    protected StringStreamReader createReader(String path, int pagingSize) throws FileNotFoundException {
+    protected StringStreamReader createReader(final String path, final int pagingSize) throws FileNotFoundException {
         return FastaStringFileStreamReader.create(path, pagingSize);
     }
 
@@ -85,6 +85,7 @@ public class FastaData extends TestData {
 
     /**
      * Get the string expression matching Alternate1 in {@link AcceptUnknownDnaEncodingScheme} format
+     *
      * @return The Alternate1 string
      */
     public String getAlternateStartingCharacter1() {
@@ -93,6 +94,7 @@ public class FastaData extends TestData {
 
     /**
      * Get the string expression matching Alternate2 in {@link AcceptUnknownDnaEncodingScheme} format
+     *
      * @return The Alternate2 string
      */
     public String getAlternateStartingCharacter2() {
@@ -101,6 +103,7 @@ public class FastaData extends TestData {
 
     /**
      * Get the string expression matching Alternate3 in {@link AcceptUnknownDnaEncodingScheme} format
+     *
      * @return The Alternate3 string
      */
     public String getAlternateStartingCharacter3() {
@@ -134,6 +137,7 @@ public class FastaData extends TestData {
 
     /**
      * Get the {@link Sequence} that corresponds to {@see getAlternateStartingCharacter1}
+     *
      * @return The sequence
      */
     public Sequence getAlternateStartingCharacter1Sequence() {
@@ -142,6 +146,7 @@ public class FastaData extends TestData {
 
     /**
      * Get the {@link Sequence} that corresponds to {@see getAlternateStartingCharacter2}
+     *
      * @return The sequence
      */
     public Sequence getAlternateStartingCharacter2Sequence() {
@@ -150,6 +155,7 @@ public class FastaData extends TestData {
 
     /**
      * Get the {@link Sequence} that corresponds to {@see getAlternateStartingCharacter3}
+     *
      * @return The sequence
      */
     public Sequence getAlternateStartingCharacter3Sequence() {
@@ -157,19 +163,20 @@ public class FastaData extends TestData {
     }
 
     public Sequence getFastaMultiLineDescriptionSequence() {
-		return BasicSequence.create(fastaMultiLineDescriptionMetadata, fastaMultiLineDescriptionSequence, AcceptUnknownDnaEncodingScheme.instance).get();
-	}
+        return BasicSequence.create(fastaMultiLineDescriptionMetadata, fastaMultiLineDescriptionSequence, AcceptUnknownDnaEncodingScheme.instance).get();
+    }
 
     public Sequence getFastaTerminatedSequence() {
-		return BasicSequence.create(fastaTerminatedMetadata, fastaTerminatedSequence, AcceptUnknownDnaEncodingScheme.instance).get();
-	}
+        return BasicSequence.create(fastaTerminatedMetadata, fastaTerminatedSequence, AcceptUnknownDnaEncodingScheme.instance).get();
+    }
 
     public Sequence getFastaLargeHeaderSequence() {
-		return BasicSequence.create(fastaLargeHeaderMetadata, fastaLargeHeaderSequence, AcceptUnknownDnaEncodingScheme.instance).get();
-	}
+        return BasicSequence.create(fastaLargeHeaderMetadata, fastaLargeHeaderSequence, AcceptUnknownDnaEncodingScheme.instance).get();
+    }
 
     /**
      * Create a StringStreamReader for the Simple test file
+     *
      * @return the StringStreamReader
      * @throws FileNotFoundException the test file could not be found
      */
@@ -180,6 +187,7 @@ public class FastaData extends TestData {
 
     /**
      * Create a StringStreamReader for the NoSpace FASTA test file
+     *
      * @return the StringStreamReader
      * @throws FileNotFoundException the test file could not be found
      */

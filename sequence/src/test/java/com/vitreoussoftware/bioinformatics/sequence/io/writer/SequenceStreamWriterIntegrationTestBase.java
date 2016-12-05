@@ -15,8 +15,8 @@ import static org.junit.Assert.*;
 
 /**
  * Base tests for the {@link SequenceStreamWriter} class
- * @author John 2016/10/15
  *
+ * @author John 2016/10/15
  */
 public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData> {
     protected T testData;
@@ -28,12 +28,14 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
 
     /**
      * Get the {@link TestData} instance to use with this {@link SequenceStreamWriter}
+     *
      * @return The {@link TestData} instance to use
      */
     protected abstract T getTestData();
 
     /**
      * Get the {@link SequenceStreamWriter} instance to use for these tests
+     *
      * @param path The file path to use
      * @return The {@link SequenceStreamWriter}
      */
@@ -41,6 +43,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
 
     /**
      * Get the {@link SequenceStreamReader} instance to use with this {@link SequenceStreamWriter}
+     *
      * @param path The file path to use
      * @return The {@link SequenceStreamReader}
      */
@@ -48,12 +51,14 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
 
     /**
      * Get the location of the test file to be used for these tests
+     *
      * @return
      */
     protected abstract String getTestFile();
 
     /**
      * Gets the {@link SequenceStreamWriter} for the test file
+     *
      * @return The {@link SequenceStreamWriter}
      */
     private SequenceStreamWriter getWriter() throws Exception {
@@ -62,6 +67,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
 
     /**
      * Gets the {@link SequenceStreamReader} for the test file
+     *
      * @return The {@link SequenceStreamReader}
      */
     private SequenceStreamReader getReader() throws Exception {
@@ -70,13 +76,14 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
 
     /**
      * Create a SequenceStreamWriter for the Big FASTA test file
+     *
      * @return the SequenceStreamReader
      * @throws java.io.IOException the test file could not be found
      */
-    protected File writeSequence(Sequence sequence) throws Exception {
+    protected File writeSequence(final Sequence sequence) throws Exception {
         try (SequenceStreamWriter writer = getWriter()) {
             writer.write(sequence);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
             fail();
         }
@@ -86,13 +93,14 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
 
     /**
      * Create a SequenceStreamWriter for the Big FASTA test file
+     *
      * @return the SequenceStreamReader
      */
-    protected void writeAndCheckSequence(Sequence expected) throws Exception {
+    protected void writeAndCheckSequence(final Sequence expected) throws Exception {
         writeSequence(expected);
-        SequenceStreamReader reader = getReader();
+        final SequenceStreamReader reader = getReader();
 
-        Optional<Sequence> result = reader.next();
+        final Optional<Sequence> result = reader.next();
         assertTrue("Failed to read the written result", result.isPresent());
         assertEquals("The sequence was not the same once read back", expected, result.get());
         reader.close();
@@ -109,7 +117,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
     /**
      * Create a FastaFileStreamWriter
      */
-    @Test(expected=IOException.class)
+    @Test(expected = IOException.class)
     public void testCreateNotFound() throws Exception {
         FastaFileStreamWriter.create("Z:/bobtheexamplefileisnothere.fasta");
     }
@@ -124,6 +132,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
 
     /**
      * Read a record from the writer
+     *
      * @throws java.io.IOException
      */
     @Test
@@ -133,6 +142,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
 
     /**
      * Read a second record from the writer
+     *
      * @throws java.io.IOException
      */
     @Test
@@ -142,6 +152,7 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
 
     /**
      * Read a third record from the writer
+     *
      * @throws java.io.IOException
      */
     @Test
@@ -151,17 +162,17 @@ public abstract class SequenceStreamWriterIntegrationTestBase<T extends TestData
 
     /**
      * Read a third record from the writer
+     *
      * @throws Exception
      */
     @Test
     public void testReadRecordAutoCloseable() throws Exception {
-        try (SequenceStreamWriter writer = getWriter())
-        {
+        try (SequenceStreamWriter writer = getWriter()) {
             writer.write(testData.getRealExample1Sequence());
             writer.write(testData.getRealExample2Sequence());
             writer.write(testData.getRealExample3Sequence());
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail("Exception writing the files");
         }
 

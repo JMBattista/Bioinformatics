@@ -9,12 +9,13 @@ import java.io.IOException;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 /**
  * Tests for {@link SequenceStreamReader}. We also include tests for this in
- *   the {@link StringFileStreamReaderIntegrationTestBase}, to ensure that each implementation works with the
- *   {@link SequenceStreamReader}
+ * the {@link StringFileStreamReaderIntegrationTestBase}, to ensure that each implementation works with the
+ * {@link SequenceStreamReader}
  * Created by John on 2016/10/15
  */
 
@@ -31,12 +32,11 @@ public class SequenceStreamReaderIntegrationTest {
      */
     @Test
     public void testReadRecordAutoCloseable() throws Exception {
-        try (SequenceStreamReader reader = getReader(testData.getRealExamplesReader()))
-        {
+        try (SequenceStreamReader reader = getReader(testData.getRealExamplesReader())) {
             assertThat("First record could not be parsed", reader.next().isPresent(), is(true));
             assertThat("Second record could not be parsed", reader.next().isPresent(), is(true));
             assertThat("Third record could not be parsed", reader.next().isPresent(), is(true));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail("Should not have hit an exception from the three");
         }
     }
@@ -46,12 +46,11 @@ public class SequenceStreamReaderIntegrationTest {
      */
     @Test
     public void testReadRecordsGapped() throws Exception {
-        try (SequenceStreamReader reader = getReader(testData.getExtraNewlineReader()))
-        {
+        try (SequenceStreamReader reader = getReader(testData.getExtraNewlineReader())) {
             assertThat("First record could not be parsed", reader.next().isPresent(), is(true));
             assertThat("Second record could not be parsed", reader.next().isPresent(), is(true));
             assertThat("Third record could not be parsed", reader.next().isPresent(), is(true));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail("Should not have hit an exception from reading three records from gapped");
         }
     }
@@ -62,11 +61,10 @@ public class SequenceStreamReaderIntegrationTest {
     @Test
     public void testReadRecordPaged() throws IOException {
 
-        SequenceStreamReader reader = getReader(testData.getPagingRequiredReader());
+        final SequenceStreamReader reader = getReader(testData.getPagingRequiredReader());
 
         int i = 0;
-        while (reader.hasNext())
-        {
+        while (reader.hasNext()) {
             i++;
             assertThat("First record could not be parsed", reader.next().isPresent(), is(true));
             assertThat("Second record could not be parsed", reader.next().isPresent(), is(true));
@@ -79,10 +77,11 @@ public class SequenceStreamReaderIntegrationTest {
 
     /**
      * Create the {@link SequenceStreamReader} from the given {@link StringStreamReader}
+     *
      * @param reader The {@link StringStreamReader} to wrap
      * @return The {@link SequenceStreamReader} to test
      */
-    private SequenceStreamReader getReader(StringStreamReader reader) {
+    private SequenceStreamReader getReader(final StringStreamReader reader) {
         return SequenceStreamReader.builder()
                 .reader(reader)
                 .factory(new FastqSequenceFactory())

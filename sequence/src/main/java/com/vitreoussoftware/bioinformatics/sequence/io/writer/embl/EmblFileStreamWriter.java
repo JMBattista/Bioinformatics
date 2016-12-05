@@ -8,8 +8,8 @@ import java.io.IOException;
 
 /**
  * File stream reader for EMBL data files
- * @author John 2016/10/16
  *
+ * @author John 2016/10/16
  */
 public final class EmblFileStreamWriter implements SequenceStreamWriter {
 
@@ -51,29 +51,29 @@ public final class EmblFileStreamWriter implements SequenceStreamWriter {
 
     /**
      * Create a EMBL File Stream Reader for the given file
+     *
      * @param file the file to run on
      */
-    private EmblFileStreamWriter(FileWriter file)
-    {
+    private EmblFileStreamWriter(final FileWriter file) {
         this.file = file;
     }
 
     /**
      * Create an input stream for EMBL file format
+     *
      * @param fileName the EMBL file
      * @return the input stream
      * @throws java.io.FileNotFoundException the specified file was not found
      */
-    public static SequenceStreamWriter create(String fileName) throws IOException
-    {
-        FileWriter file = new FileWriter(fileName);
+    public static SequenceStreamWriter create(final String fileName) throws IOException {
+        final FileWriter file = new FileWriter(fileName);
         return new EmblFileStreamWriter(file);
     }
 
     @Override
-    public int write(Sequence sequence) throws IOException {
+    public int write(final Sequence sequence) throws IOException {
         int charactersWritten = 0;
-        String sequenceString = sequence.toString();
+        final String sequenceString = sequence.toString();
         charactersWritten += writeMetadata(sequence.getMetadata());
         charactersWritten += writeSequenceStart(sequenceString.length());
         charactersWritten += writeSequenceData(sequenceString);
@@ -82,8 +82,8 @@ public final class EmblFileStreamWriter implements SequenceStreamWriter {
         return charactersWritten;
     }
 
-    private int writeSequenceStart(int length) throws IOException {
-        String sequenceLength = String.format(METADATA_SEQUENCE_LENGTH, length);
+    private int writeSequenceStart(final int length) throws IOException {
+        final String sequenceLength = String.format(METADATA_SEQUENCE_LENGTH, length);
         file.write(METADATA_SEQUENCE_START);
         file.write(METADATA_SPACER);
         file.write(sequenceLength);
@@ -104,7 +104,7 @@ public final class EmblFileStreamWriter implements SequenceStreamWriter {
         this.file.close();
     }
 
-    private int writeMetadata(String metadata) throws IOException {
+    private int writeMetadata(final String metadata) throws IOException {
         file.write(METADATA_ID);
         file.write(METADATA_SPACER);
         file.write(metadata);
@@ -113,7 +113,7 @@ public final class EmblFileStreamWriter implements SequenceStreamWriter {
         return metadata.length() + 2;
     }
 
-    private int writeSequenceData(String sequenceData) throws IOException {
+    private int writeSequenceData(final String sequenceData) throws IOException {
         int charactersWritten = 0;
         int start = 0;
         // Write the rows
@@ -130,7 +130,7 @@ public final class EmblFileStreamWriter implements SequenceStreamWriter {
                 if (start + 10 > sequenceData.length())
                     dist = sequenceData.length() - start;
 
-                String blockString = sequenceData.substring(start, start + dist);
+                final String blockString = sequenceData.substring(start, start + dist);
                 file.write(blockString);
                 file.write(' ');
 
@@ -140,7 +140,7 @@ public final class EmblFileStreamWriter implements SequenceStreamWriter {
             // determine how many characters were written for this row to write the count
             final int written = start - priorStart;
             // the cumulative count of items written
-            String cumulativeCount = String.format(BASE_PAIR_COUNT, start);
+            final String cumulativeCount = String.format(BASE_PAIR_COUNT, start);
 
             // Pad out the row for missing characters
             final int gap = MAX_ROW_LENGTH - written - block - SEQUENCE_SPACER.length() - cumulativeCount.length();

@@ -71,9 +71,9 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
     public void testCreateNotFoundAutoCloseable() throws FileNotFoundException {
         try (StringStreamReader reader = getReader(getNonExistantPath())) {
             fail("This should not be reachable");
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             // do nothing since this means we passed
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail("We should have been caught by the more specific exception in front of this.");
         }
     }
@@ -83,7 +83,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      */
     @Test
     public void testReadRecordSimple() throws IOException {
-        StringStreamReader reader = testData.getSimpleExampleReader();
+        final StringStreamReader reader = testData.getSimpleExampleReader();
 
         assertThat(reader.next().getValue1(), is(testData.getSimpleRecord()));
     }
@@ -93,7 +93,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      */
     @Test
     public void testReadRecordExample1() throws IOException {
-        StringStreamReader reader = testData.getRealExamplesReader();
+        final StringStreamReader reader = testData.getRealExamplesReader();
 
         assertThat(reader.next().getValue1(), is(testData.getRealExample1()));
     }
@@ -103,7 +103,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      */
     @Test
     public void testReadRecordExample2() throws IOException {
-        StringStreamReader reader = testData.getRealExamplesReader();
+        final StringStreamReader reader = testData.getRealExamplesReader();
 
         assertThat(reader.next().getValue1(), is(testData.getRealExample1()));
         assertThat(reader.next().getValue1(), is(testData.getRealExample2()));
@@ -114,7 +114,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      */
     @Test
     public void testReadRecordExample3() throws IOException {
-        StringStreamReader reader = testData.getRealExamplesReader();
+        final StringStreamReader reader = testData.getRealExamplesReader();
 
         assertThat(reader.next().getValue1(), is(testData.getRealExample1()));
         assertThat(reader.next().getValue1(), is(testData.getRealExample2()));
@@ -130,7 +130,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
             assertThat(reader.next().getValue1(), is(testData.getRealExample1()));
             assertThat(reader.next().getValue1(), is(testData.getRealExample2()));
             assertThat(reader.next().getValue1(), is(testData.getRealExample3()));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail("Should not have hit an exception from the three");
         }
     }
@@ -144,7 +144,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
             assertNotNull(reader.next().getValue1());
             assertNotNull(reader.next().getValue1());
             assertNotNull(reader.next().getValue1());
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail("Should not have hit an exception from reading three records from gapped");
         }
     }
@@ -154,7 +154,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      */
     @Test
     public void testHasNextEmpty() throws Exception {
-        StringStreamReader reader = testData.getEmptyReader();
+        final StringStreamReader reader = testData.getEmptyReader();
 
         assertThat(reader.hasNext(), is(false));
     }
@@ -164,7 +164,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      */
     @Test
     public void testHasNextWhiteSpace() throws Exception {
-        StringStreamReader reader = testData.getEmptyWhiteSpaceReader();
+        final StringStreamReader reader = testData.getEmptyWhiteSpaceReader();
 
         assertThat(reader.hasNext(), is(false));
     }
@@ -174,7 +174,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      */
     @Test
     public void testReadRecordPaged() throws IOException {
-        StringStreamReader reader = testData.getPagingRequiredReader();
+        final StringStreamReader reader = testData.getPagingRequiredReader();
 
         int index = 0;
         while (reader.hasNext()) {
@@ -192,23 +192,23 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      */
     @Test
     public void testReadRecordsPaged1() throws IOException {
-        StringStreamReader reader = testData.getPagingRequiredReader(1);
+        final StringStreamReader reader = testData.getPagingRequiredReader(1);
 
         int index = 0;
         while (reader.hasNext()) {
             try {
                 assertThat(index + 0 + " failed to parse", reader.next().getValue1(), is(testData.getRealExample1()));
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new RuntimeException("Failed at " + (index), e);
             }
             try {
                 assertThat(index + 1 + " failed to parse", reader.next().getValue1(), is(testData.getRealExample2()));
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new RuntimeException("Failed at " + (index + 1), e);
             }
             try {
                 assertThat(index + 2 + " failed to parse", reader.next().getValue1(), is(testData.getRealExample3()));
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new RuntimeException("Failed at " + (index + 2), e);
             }
             index += 3;
@@ -222,7 +222,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      */
     @Test
     public void testReadRecordsPaged10() throws IOException {
-        StringStreamReader reader = testData.getPagingRequiredReader(10);
+        final StringStreamReader reader = testData.getPagingRequiredReader(10);
 
         int index = 0;
         while (reader.hasNext()) {
@@ -240,7 +240,7 @@ public abstract class StringFileStreamReaderIntegrationTestBase<T extends TestDa
      */
     @Test
     public void testReadRecordsPaged100() throws IOException {
-        StringStreamReader reader = testData.getPagingRequiredReader(100);
+        final StringStreamReader reader = testData.getPagingRequiredReader(100);
 
         int index = 0;
         while (reader.hasNext()) {

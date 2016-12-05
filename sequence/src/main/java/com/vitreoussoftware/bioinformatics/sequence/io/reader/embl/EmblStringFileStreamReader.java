@@ -11,67 +11,70 @@ import java.io.IOException;
 
 /**
  * File stream reader for EMBL data files
- * @author John
  *
+ * @author John
  */
-public final class EmblStringFileStreamReader implements StringStreamReader
-{
-	/**
-	 * The EMBL file wrapped in a {@link BufferFileStreamReader}
-	 */
-	private final BufferFileStreamReader reader;
-
-	/**
-	 * Create a EMBL File Stream Reader for the given file
-	 * @param reader the {@link BufferFileStreamReader} to read from
-	 */
-	private EmblStringFileStreamReader(@NonNull final BufferFileStreamReader reader)
-	{
-		this.reader = reader;
-	}
+public final class EmblStringFileStreamReader implements StringStreamReader {
+    /**
+     * The EMBL file wrapped in a {@link BufferFileStreamReader}
+     */
+    private final BufferFileStreamReader reader;
 
     /**
-     * Create an input stream for EMBL file format
-     * @param filePath the EMBL file
-     * @return the input stream
-     * @throws FileNotFoundException the specified file was not found
+     * Create a EMBL File Stream Reader for the given file
+     *
+     * @param reader the {@link BufferFileStreamReader} to read from
      */
-    public static StringStreamReader create(String filePath) throws FileNotFoundException {
-        return new EmblStringFileStreamReader(
-                BufferFileStreamReader.builder()
-                    .filePath(filePath)
-                    .build());
+    private EmblStringFileStreamReader(@NonNull final BufferFileStreamReader reader) {
+        this.reader = reader;
     }
 
     /**
      * Create an input stream for EMBL file format
+     *
      * @param filePath the EMBL file
+     * @return the input stream
+     * @throws FileNotFoundException the specified file was not found
+     */
+    public static StringStreamReader create(final String filePath) throws FileNotFoundException {
+        return new EmblStringFileStreamReader(
+                BufferFileStreamReader.builder()
+                        .filePath(filePath)
+                        .build());
+    }
+
+    /**
+     * Create an input stream for EMBL file format
+     *
+     * @param filePath   the EMBL file
      * @param pagingSize the size of the buffer for paging data from disk
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
      */
-    public static StringStreamReader create(String filePath, int pagingSize) throws FileNotFoundException {
+    public static StringStreamReader create(final String filePath, final int pagingSize) throws FileNotFoundException {
         return new EmblStringFileStreamReader(
                 BufferFileStreamReader.builder()
-                    .filePath(filePath)
-                    .bufferSize(pagingSize)
-                    .build());
+                        .filePath(filePath)
+                        .bufferSize(pagingSize)
+                        .build());
     }
 
-	/**
+    /**
      * Reads a record from the file
-	 * @return the record
-	 */
-	@Override
-	public Pair<String,String> next() {
-        String metadata = readMetadata();
-        String data = readSequenceData();
+     *
+     * @return the record
+     */
+    @Override
+    public Pair<String, String> next() {
+        final String metadata = readMetadata();
+        final String data = readSequenceData();
 
         return Pair.with(metadata, data);
     }
 
     /**
      * Does the stream reader still have a record?
+     *
      * @return boolean indicator
      * @throws IOException If the file cannot be accessed it may fail
      */
@@ -83,16 +86,16 @@ public final class EmblStringFileStreamReader implements StringStreamReader
         return !reader.isEof();
     }
 
-	@Override
-	protected void finalize() throws Throwable {
-		this.reader.close();
-		super.finalize();
-	}
+    @Override
+    protected void finalize() throws Throwable {
+        this.reader.close();
+        super.finalize();
+    }
 
-	@Override
-	public void close() throws IOException {
-		this.reader.close();
-	}
+    @Override
+    public void close() throws IOException {
+        this.reader.close();
+    }
 
     private String readMetadata() {
         // Find the Start flag
@@ -106,7 +109,7 @@ public final class EmblStringFileStreamReader implements StringStreamReader
     }
 
     private String readSequenceData() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         boolean readingSequence = true;
 
         // Seek for the flag that starts the Sequence
@@ -123,7 +126,6 @@ public final class EmblStringFileStreamReader implements StringStreamReader
             sb.append(readDataRow());
 
 
-
             // If our cursor is currently on the '/' character we've either at a valid termination or a fault
             if (reader.is(x -> x == '/')) {
                 // Advance one character and recheck
@@ -131,17 +133,16 @@ public final class EmblStringFileStreamReader implements StringStreamReader
                 if (reader.is(x -> x == '/')) {
                     readingSequence = false;
                     reader.drop();
-                }
-                else
+                } else
                     throw new InvalidDnaFormatException("Malformed sequence, found partial terminator '/' only, not '//'.");
             }
         } while (readingSequence);
 
-        return  sb.toString();
+        return sb.toString();
     }
 
     private String readDataRow() {
-        StringBuilder row = new StringBuilder();
+        final StringBuilder row = new StringBuilder();
         boolean readingRow = true;
 
         reader.dropWhileWhitespace();

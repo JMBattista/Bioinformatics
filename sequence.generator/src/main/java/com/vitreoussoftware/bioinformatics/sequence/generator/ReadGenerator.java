@@ -14,10 +14,10 @@ import java.util.LinkedList;
 
 /**
  * Generate {@link Sequence} reads from some sample {@link Sequence} based on user configuration.
- *
+ * <p>
  * Created by John on 10/25/2016.
  */
-public class ReadGenerator implements ConditionalDistribution<Sequence, Sequence> {
+public final class ReadGenerator implements ConditionalDistribution<Sequence, Sequence> {
     /**
      * The maximum number of times we will try to generate a valid sample from the provided configuration before erroring out.
      */
@@ -44,7 +44,7 @@ public class ReadGenerator implements ConditionalDistribution<Sequence, Sequence
     }
 
     @Override
-    public Sequence sample(Sequence source) {
+    public Sequence sample(final Sequence source) {
         int length = 0;
         int startPoint = 0;
         int attempts = 0;

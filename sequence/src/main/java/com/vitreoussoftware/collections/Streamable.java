@@ -10,23 +10,26 @@ import java.util.stream.Stream;
 public interface Streamable<T> {
     /**
      * Create a stream from this object
+     *
      * @return a Stream
      */
     public Stream<T> stream();
 
     /**
      * Create a parallel stream from this object
+     *
      * @return a parallel Stream
      */
     public Stream<T> parallelStream();
 
     /**
      * Create a Streamable from a java collection implicitly, as it already implements the required methods.
+     *
      * @param collection the java collection
-     * @param <T> The type of the collection
+     * @param <T>        The type of the collection
      * @return the streamable object
      */
-    public static <T> Streamable<T> from(Collection<T> collection) {
+    public static <T> Streamable<T> from(final Collection<T> collection) {
         return (Streamable<T>) collection;
     }
 }

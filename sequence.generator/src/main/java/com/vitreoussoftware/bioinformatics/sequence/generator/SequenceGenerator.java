@@ -5,14 +5,14 @@ import com.vitreoussoftware.bioinformatics.sequence.basic.BasicSequence;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 import com.vitreoussoftware.bioinformatics.sequence.generator.distribution.Distribution;
 import com.vitreoussoftware.bioinformatics.sequence.generator.distribution.EnumeratedDistribution;
-import lombok.NonNull;
 import lombok.Builder;
+import lombok.NonNull;
 import lombok.val;
 
 /**
  * Generate sample {@link Sequence} instances based on user configuration values
- *
- *
+ * <p>
+ * <p>
  * Created by John on 10/16/2016.
  */
 @Builder
@@ -41,7 +41,7 @@ public class SequenceGenerator implements Distribution<Sequence> {
     private final EncodingScheme encodingScheme;
 
     /**
-     * Partial implementation for {@link Builder} to support default values
+     * Partial implementation for Builder to support default values
      */
     @SuppressWarnings("unused")
     public static class SequenceGeneratorBuilder {
@@ -49,6 +49,7 @@ public class SequenceGenerator implements Distribution<Sequence> {
 
     /**
      * Get the sample {@link Sequence}
+     *
      * @return a generated {@link Sequence}
      */
     public Sequence sample() {
@@ -65,9 +66,9 @@ public class SequenceGenerator implements Distribution<Sequence> {
         int length = 0;
         int counter = 0;
 
-        while(length == 0 && counter < MAX_ATTEMPTS) {
+        while (length == 0 && counter < MAX_ATTEMPTS) {
             length = lengthDistribution.sample();
-            counter ++;
+            counter++;
         }
 
         if (length == 0)

@@ -10,8 +10,8 @@ import org.junit.Test;
 
 /**
  * Test the FastqFileStreamWriter class
- * @author John
  *
+ * @author John
  */
 public class FastqFileStreamWriterIntegrationTest extends SequenceStreamWriterIntegrationTestBase<FastqData> {
     private static final String WRITER_TEST_FILE = "build/fastqtestwriter.fastq";
@@ -22,12 +22,12 @@ public class FastqFileStreamWriterIntegrationTest extends SequenceStreamWriterIn
     }
 
     @Override
-    protected SequenceStreamWriter getWriter(String path) throws Exception {
+    protected SequenceStreamWriter getWriter(final String path) throws Exception {
         return FastqFileStreamWriter.create(path);
     }
 
     @Override
-    protected SequenceStreamReader getReader(String path) throws Exception {
+    protected SequenceStreamReader getReader(final String path) throws Exception {
         final com.vitreoussoftware.bioinformatics.sequence.io.reader.StringStreamReader reader = FastqStringFileStreamReader.create(path);
         return SequenceStreamReader.builder()
                 .reader(reader)

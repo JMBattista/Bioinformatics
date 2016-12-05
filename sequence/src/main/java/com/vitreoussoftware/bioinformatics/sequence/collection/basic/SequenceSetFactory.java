@@ -5,13 +5,13 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectio
 
 /**
  * Creates instances of SequenceSet collections
- * @author John
  *
+ * @author John
  */
 public class SequenceSetFactory implements SequenceCollectionFactory {
 
-	@Override
-	public SequenceCollection getSequenceCollection() {
-		return new SequenceSet();
-	}
+    @Override
+    public SequenceCollection getSequenceCollection() {
+        return new SequenceSet();
+    }
 }

@@ -11,11 +11,10 @@ import java.io.IOException;
 
 /**
  * File stream reader for FASTA data files
- * @author John
  *
+ * @author John
  */
-public final class FastqStringFileStreamReader implements StringStreamReader
-{
+public final class FastqStringFileStreamReader implements StringStreamReader {
     /**
      * The FASTQ file wrapped in a {@link BufferFileStreamReader}
      */
@@ -23,20 +22,21 @@ public final class FastqStringFileStreamReader implements StringStreamReader
 
     /**
      * Create a FASTQ File Stream Reader for the given file
+     *
      * @param reader the {@link BufferFileStreamReader} to read from
      */
-    private FastqStringFileStreamReader(@NonNull final BufferFileStreamReader reader)
-    {
+    private FastqStringFileStreamReader(@NonNull final BufferFileStreamReader reader) {
         this.reader = reader;
     }
 
     /**
      * Create an input stream for FASTQ file format
+     *
      * @param filePath the FASTQ file
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
      */
-    public static StringStreamReader create(String filePath) throws FileNotFoundException {
+    public static StringStreamReader create(final String filePath) throws FileNotFoundException {
         return new FastqStringFileStreamReader(
                 BufferFileStreamReader.builder()
                         .filePath(filePath)
@@ -45,12 +45,13 @@ public final class FastqStringFileStreamReader implements StringStreamReader
 
     /**
      * Create an input stream for FASTQ file format
-     * @param filePath the FASTQ file
+     *
+     * @param filePath   the FASTQ file
      * @param pagingSize the size of the buffer for paging data from disk
      * @return the input stream
      * @throws FileNotFoundException the specified file was not found
      */
-    public static StringStreamReader create(String filePath, int pagingSize) throws FileNotFoundException {
+    public static StringStreamReader create(final String filePath, final int pagingSize) throws FileNotFoundException {
         return new FastqStringFileStreamReader(
                 BufferFileStreamReader.builder()
                         .filePath(filePath)
@@ -58,16 +59,17 @@ public final class FastqStringFileStreamReader implements StringStreamReader
                         .build());
     }
 
-	/**
+    /**
      * Reads a record from the file
-	 * @return the record
-	 */
-	@Override
-	public Pair<String,String> next() {
-        String metadata = readMetadata();
-        String data = readSequenceData();
-        String comments = readComments();
-        String quality = readQuality(data.length());
+     *
+     * @return the record
+     */
+    @Override
+    public Pair<String, String> next() {
+        final String metadata = readMetadata();
+        final String data = readSequenceData();
+        final String comments = readComments();
+        final String quality = readQuality(data.length());
 
         return Pair.with(metadata, data);
     }
@@ -101,7 +103,7 @@ public final class FastqStringFileStreamReader implements StringStreamReader
     }
 
     private String readSequenceData() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         boolean readingSequence = true;
 
         do {
@@ -115,12 +117,12 @@ public final class FastqStringFileStreamReader implements StringStreamReader
             if (reader.isEof())
                 throw new InvalidDnaFormatException("Invalid file format, FASTQ requires quality data to accompany sequence data");
 
-            if (reader.is(x -> x  == '+')) {
+            if (reader.is(x -> x == '+')) {
                 readingSequence = false;
             }
         } while (readingSequence);
 
-        return  sb.toString();
+        return sb.toString();
     }
 
     private String readComments() {
@@ -131,8 +133,8 @@ public final class FastqStringFileStreamReader implements StringStreamReader
         return reader.takeUntil(c -> c == '\n' || c == '\r');
     }
 
-    private String readQuality(int sequenceLength) {
-        StringBuilder sb = new StringBuilder();
+    private String readQuality(final int sequenceLength) {
+        final StringBuilder sb = new StringBuilder();
         boolean readingQuaility = true;
 
         do {
@@ -152,13 +154,13 @@ public final class FastqStringFileStreamReader implements StringStreamReader
                 readingQuaility = false;
         } while (readingQuaility);
 
-        assert(sequenceLength == sb.length());
-        return  sb.toString();
+        assert (sequenceLength == sb.length());
+        return sb.toString();
     }
 
-	@Override
-	protected void finalize() throws Throwable {
-		this.reader.close();
-		super.finalize();
-	}
+    @Override
+    protected void finalize() throws Throwable {
+        this.reader.close();
+        super.finalize();
+    }
 }

@@ -13,13 +13,13 @@ public class NormalDistribution implements ContinuousDistribution<Double> {
 
     /**
      * Create an instance of {@link NormalDistribution} that can be used to generate outputs
-     * @param mean Average value of the distribution
-     * @param standardDeviation Standard Deviation of the value
      *
+     * @param mean              Average value of the distribution
+     * @param standardDeviation Standard Deviation of the value
      * @throws NullPointerException if the arguments are null or unset
      */
     @Builder
-    public NormalDistribution(@NonNull Double mean, @NonNull Double standardDeviation) {
+    public NormalDistribution(@NonNull final Double mean, @NonNull final Double standardDeviation) {
         this.distribution = new org.apache.commons.math3.distribution.NormalDistribution(mean, standardDeviation);
     }
 

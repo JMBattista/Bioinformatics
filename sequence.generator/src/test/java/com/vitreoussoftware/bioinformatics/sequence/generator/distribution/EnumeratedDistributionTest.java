@@ -150,7 +150,7 @@ public class EnumeratedDistributionTest {
     @Test
     public void testNextMixed() {
         val trials = 10000; // 1,000
-        EnumeratedDistribution<Character> distribution = EnumeratedDistribution.<Character>builder()
+        final EnumeratedDistribution<Character> distribution = EnumeratedDistribution.<Character>builder()
                 .probability('A', 0.5)
                 .probability('T', 0.5)
                 .build();
@@ -162,7 +162,7 @@ public class EnumeratedDistributionTest {
 
 
         assertThat(multiset.elementSet().toString(), multiset.elementSet().size(), is(2));
-        assertThat(multiset.count('A'), is(both(greaterThan((int)(trials*.45))).and(lessThan((int)(trials*.55)))));
-        assertThat(multiset.count('T'), is(both(greaterThan((int)(trials*.45))).and(lessThan((int)(trials*.55)))));
+        assertThat(multiset.count('A'), is(both(greaterThan((int) (trials * .45))).and(lessThan((int) (trials * .55)))));
+        assertThat(multiset.count('T'), is(both(greaterThan((int) (trials * .45))).and(lessThan((int) (trials * .55)))));
     }
 }
