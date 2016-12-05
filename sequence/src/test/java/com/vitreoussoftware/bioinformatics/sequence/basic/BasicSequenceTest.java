@@ -3,12 +3,7 @@ package com.vitreoussoftware.bioinformatics.sequence.basic;
 import com.google.common.collect.ImmutableList;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.encoding.AcceptUnknownDnaEncodingScheme;
-import com.vitreoussoftware.bioinformatics.sequence.encoding.BasicDnaEncodingScheme;
-import com.vitreoussoftware.bioinformatics.sequence.encoding.EncodingScheme;
 import lombok.val;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -20,22 +15,6 @@ import static org.hamcrest.core.Is.is;
  * Created by John on 10/26/2016.
  */
 public class BasicSequenceTest {
-    private EncodingScheme encodingScheme;
-
-    @Before
-    public void setup() {
-        encodingScheme = AcceptUnknownDnaEncodingScheme.instance;
-    }
-
-
-    @Test
-    public void equalsContract() {
-        EqualsVerifier.forClass(BasicSequence.class)
-                .suppress(Warning.STRICT_INHERITANCE)
-                .withPrefabValues(EncodingScheme.class, BasicDnaEncodingScheme.instance, encodingScheme)
-                .verify();
-    }
-
     @Test
     public void testCreateListBasePair() {
         val sequence = BasicSequence.create(ImmutableList.of(AcceptUnknownDnaEncodingScheme.A));
@@ -58,5 +37,4 @@ public class BasicSequenceTest {
 
         assertThat(sequence.isPresent(), is(false));
     }
-
 }

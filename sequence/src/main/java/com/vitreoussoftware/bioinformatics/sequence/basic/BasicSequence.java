@@ -12,8 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static javax.swing.text.html.HTML.Tag.HEAD;
-
 /**
  * A DNA Sequence representation
  *
@@ -24,7 +22,7 @@ public final class BasicSequence implements Sequence {
     @NonNull private final EncodingScheme encodingScheme;
     private final String metadata;
 
-    private BasicSequence(EncodingScheme encodingSheme, int size, String metadata)
+    private BasicSequence(final EncodingScheme encodingSheme, final int size, final String metadata)
 	{
         Preconditions.checkArgument(size > 0, "Cannot construct an empty Sequence");
         this.sequence = new byte[size];
