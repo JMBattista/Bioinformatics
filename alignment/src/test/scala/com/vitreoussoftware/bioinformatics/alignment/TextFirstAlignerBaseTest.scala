@@ -7,7 +7,6 @@ import org.scalatest.Matchers
 import org.scalatest.junit.JUnitRunner
 
 import scala.collection.JavaConversions._
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection
 import com.vitreoussoftware.bioinformatics.sequence.encoding.ExpandedIupacEncodingScheme
 import org.scalatest.{Inside, Matchers}
 import com.vitreoussoftware.bioinformatics.sequence.{BasePair, Sequence}
@@ -207,7 +206,7 @@ abstract class TextFirstAlignerBaseTest(anAligner: String) extends UnitSpec with
     withAligner {
       (aligner) => {
         aligner.addText(seqSimple)
-        val results = aligner.shortestDistance(SequenceCollection.from(baseSeqs)).map(pair => (pair.getValue0, pair.getValue1))
+        val results = aligner.shortestDistance(baseSeqs).map(pair => (pair.getValue0, pair.getValue1))
 
         results should have size (baseSeqs.size)
 

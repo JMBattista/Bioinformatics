@@ -1,6 +1,9 @@
 package com.vitreoussoftware.bioinformatics.sequence.collection;
 
+import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import org.junit.Test;
+
+import java.util.Collection;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -38,7 +41,7 @@ public abstract class SequenceCollectionFactoryTest {
     public void testGetCollection() {
         final SequenceCollectionFactory collectionFactory = getFactory();
         assertNotNull("The collectionFactory initialized to null", collectionFactory);
-        final SequenceCollection collection = collectionFactory.getSequenceCollection();
+        final Collection<Sequence> collection = collectionFactory.getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
     }
 }

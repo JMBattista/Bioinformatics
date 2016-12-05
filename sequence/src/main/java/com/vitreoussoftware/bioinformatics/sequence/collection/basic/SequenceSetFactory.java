@@ -1,7 +1,9 @@
 package com.vitreoussoftware.bioinformatics.sequence.collection.basic;
 
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
+import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
+
+import java.util.Collection;
 
 /**
  * Creates instances of SequenceSet collections
@@ -11,7 +13,7 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectio
 public class SequenceSetFactory implements SequenceCollectionFactory {
 
     @Override
-    public SequenceCollection getSequenceCollection() {
+    public Collection<Sequence> getSequenceCollection() {
         return new SequenceSet();
     }
 }

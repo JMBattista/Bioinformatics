@@ -9,10 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -43,7 +40,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testClearCollection() throws UnknownHostException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -57,7 +54,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testAddSequence() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -76,7 +73,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testAddAllSequences() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -96,7 +93,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testAddAllSequencesMany() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -121,7 +118,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testContainsSingle() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -142,7 +139,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testContainsCanFailShorter() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -164,7 +161,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testContainsCanFailLonger() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -186,7 +183,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testContainsAllSingle() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -209,7 +206,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testContainsAllSingleCanFail() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -233,7 +230,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testContainsAllMultiple() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -262,7 +259,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testContainsAllMultipleCanFail() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -294,7 +291,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testIsEmtpy() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -318,7 +315,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testIterator() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -355,7 +352,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testIteratorRemove() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -398,7 +395,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testIteratorForEachRemaining() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -436,7 +433,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testRemove() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -472,7 +469,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testRemoveAll() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -511,7 +508,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testRemoveIf() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());
@@ -551,7 +548,7 @@ public abstract class SequenceCollectionTest {
      */
     @Test
     public void testRetainAll() throws UnknownHostException, InvalidDnaFormatException {
-        final SequenceCollection collection = getFactory().getSequenceCollection();
+        final Collection<Sequence> collection = getFactory().getSequenceCollection();
         assertNotNull("The collection returned was nulll", collection);
         collection.clear();
         assertEquals("The collection was not empty after a drop", 0, collection.size());

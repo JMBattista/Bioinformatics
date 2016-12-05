@@ -17,7 +17,7 @@ public interface SequenceCollectionFactory {
      *
      * @return A new sequence collection
      */
-    public SequenceCollection getSequenceCollection();
+    public Collection<Sequence> getSequenceCollection();
 
     /**
      * Creates a Sequence collection from the given SequenceStreamReader
@@ -27,8 +27,8 @@ public interface SequenceCollectionFactory {
      * @throws IOException               errors reading from the stream
      * @throws InvalidDnaFormatException
      */
-    public default SequenceCollection getSequenceCollection(final SequenceStreamReader reader) throws IOException, InvalidDnaFormatException {
-        final SequenceCollection sequenceCollection = getSequenceCollection();
+    public default Collection<Sequence> getSequenceCollection(final SequenceStreamReader reader) throws IOException, InvalidDnaFormatException {
+        final Collection<Sequence> sequenceCollection = getSequenceCollection();
         while (reader.hasNext()) {
             sequenceCollection.add(reader.next().orElseThrow(() -> new RuntimeException("TODO use reason Optional")));
         }
@@ -37,23 +37,13 @@ public interface SequenceCollectionFactory {
     }
 
     /**
-     * Create a SequenceCollection from another SequenceCollection
-     *
-     * @param collection the other SequenceCollection
-     * @return the new collection
-     */
-    public default SequenceCollection getSequenceCollection(final SequenceCollection collection) {
-        return getSequenceCollection((Collection<Sequence>) collection);
-    }
-
-    /**
      * Create a SequenceCollection from another Collection<Sequence> object
      *
      * @param collection the Collection of sequences
      * @return the new collection
      */
-    public default SequenceCollection getSequenceCollection(final Collection<Sequence> collection) {
-        final SequenceCollection sequenceCollection = getSequenceCollection();
+    public default Collection<Sequence> getSequenceCollection(final Collection<Sequence> collection) {
+        final Collection<Sequence> sequenceCollection = getSequenceCollection();
         for (final Sequence seq : collection) {
             sequenceCollection.add(seq);
         }

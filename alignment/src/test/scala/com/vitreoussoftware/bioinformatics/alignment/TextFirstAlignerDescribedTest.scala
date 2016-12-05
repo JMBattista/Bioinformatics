@@ -3,7 +3,6 @@ package com.vitreoussoftware.bioinformatics.alignment
 import java.util
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection
 import com.vitreoussoftware.test.BehaviorSpec
 import org.junit.runner.RunWith
 import org.scalatest.Outcome
@@ -37,7 +36,7 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
           }
           }
 
-          forAll(aligner contains SequenceCollection.from(baseSeqs)) { result => {
+          forAll(aligner contains baseSeqs) { result => {
             result.getValue1 shouldBe false
           }
           }
@@ -55,7 +54,7 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
           }
           }
 
-          forAll(aligner getAlignments SequenceCollection.from(baseSeqs)) { result => {
+          forAll(aligner getAlignments baseSeqs) { result => {
             assert(result.getValue1)
           }
           }
@@ -76,7 +75,7 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
               }
               }
 
-              forAll(aligner contains SequenceCollection.from(baseSeqs)) { result => {
+              forAll(aligner contains baseSeqs) { result => {
                 result.getValue1 shouldBe true
               }
               }
@@ -101,7 +100,7 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
               }
               }
 
-              forAll(aligner shortestDistance SequenceCollection.from(offByNSeqs)) { result => {
+              forAll(aligner shortestDistance offByNSeqs) { result => {
                 assert(result.getValue1)
               }
               }
@@ -126,7 +125,7 @@ abstract class TextFirstAlignerDescribedTest(anAligner: String) extends Behavior
               }
               }
 
-              forAll(aligner shortestDistance SequenceCollection.from(offByNSeqsLong)) { result => {
+              forAll(aligner shortestDistance offByNSeqsLong) { result => {
                 assert(result.getValue1)
               }
               }
