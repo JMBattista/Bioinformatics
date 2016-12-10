@@ -1,7 +1,6 @@
 package com.vitreoussoftware.bioinformatics.alignment;
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import org.javatuples.Pair;
 
 import java.util.Collection;
@@ -42,7 +41,7 @@ public interface TextFirstAligner {
      * @param patterns collection of sequnces to search for in the Text
      * @return List of (Pattern, contained?) pairs.
      */
-    default public Collection<Pair<Sequence, Boolean>> contains(final SequenceCollection patterns) {
+    default public Collection<Pair<Sequence, Boolean>> contains(final Collection<Sequence> patterns) {
         return patterns.stream().map(pattern -> Pair.with(pattern, this.contains(pattern))).collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -60,7 +59,7 @@ public interface TextFirstAligner {
      * @param patterns to find alignments for
      * @return List of (Pattern, Collection<Alignment) pairs.
      */
-    default public Collection<Pair<Sequence, Collection<Alignment>>> getAlignments(final SequenceCollection patterns) {
+    default public Collection<Pair<Sequence, Collection<Alignment>>> getAlignments(final Collection<Sequence> patterns) {
         return patterns.stream().map(pattern -> Pair.with(pattern, this.getAlignments(pattern))).collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -81,7 +80,7 @@ public interface TextFirstAligner {
      * @param patterns the DNA patterns to check shortestDistance for
      * @return The collection of tuples showing the shortestDistance and the collection of sequences for that shortestDistance
      */
-    default public Collection<Pair<Sequence, Collection<Alignment>>> shortestDistance(final SequenceCollection patterns) {
+    default public Collection<Pair<Sequence, Collection<Alignment>>> shortestDistance(final Collection<Sequence> patterns) {
         // Negative number used to indicate no distance cap
         return shortestDistance(patterns, -1);
     }
@@ -102,7 +101,7 @@ public interface TextFirstAligner {
      * @param maxDistance the maximum shortestDistance before which we give up
      * @return The collection of tuples showing the shortestDistance and the collection of sequences for that shortestDistance
      */
-    default public Collection<Pair<Sequence, Collection<Alignment>>> shortestDistance(final SequenceCollection patterns, final int maxDistance) {
+    default public Collection<Pair<Sequence, Collection<Alignment>>> shortestDistance(final Collection<Sequence> patterns, final int maxDistance) {
         return patterns.stream().map(pattern -> Pair.with(pattern, shortestDistance(pattern, maxDistance))).collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -123,7 +122,7 @@ public interface TextFirstAligner {
      * @param patterns the target Sequence
      * @return the tuples of parent Sequences and the shortestDistance lists
      */
-    default public Collection<Pair<Sequence, Collection<Alignment>>> distances(final SequenceCollection patterns) {
+    default public Collection<Pair<Sequence, Collection<Alignment>>> distances(final Collection<Sequence> patterns) {
         // Negative number used to indicate no distance cap
         return distances(patterns, -1);
     }
@@ -144,7 +143,7 @@ public interface TextFirstAligner {
      * @param maxDistance the maximum shortestDistance that will be considered
      * @return the tuples of parent Sequences and the shortestDistance lists
      */
-    default public Collection<Pair<Sequence, Collection<Alignment>>> distances(final SequenceCollection patterns, final int maxDistance) {
+    default public Collection<Pair<Sequence, Collection<Alignment>>> distances(final Collection<Sequence> patterns, final int maxDistance) {
         return patterns.stream().map(pattern -> Pair.with(pattern, distances(pattern, maxDistance))).collect(Collectors.toCollection(LinkedList::new));
     }
 }

@@ -2,10 +2,10 @@ package com.vitreoussoftware.bioinformatics.alignment.suffixtree;
 
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
 
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * Create an instance of a Suffix Tree for use.
@@ -38,7 +38,7 @@ public interface SuffixTreeFactory {
      * @param texts the collection of sequences
      * @return the SuffixTree for that collection of Sequences
      */
-    default public SuffixTree create(final SequenceCollection texts) {
+    default public SuffixTree create(final Collection<Sequence> texts) {
         final SuffixTree tree = create();
         texts.forEach(tree::addText);
         return tree;

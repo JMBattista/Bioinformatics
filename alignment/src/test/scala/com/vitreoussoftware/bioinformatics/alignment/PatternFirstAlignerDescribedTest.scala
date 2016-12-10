@@ -3,7 +3,6 @@ package com.vitreoussoftware.bioinformatics.alignment
 import java.util
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection
 
 import scala.collection.JavaConversions._
 import org.junit.runner.RunWith
@@ -51,7 +50,7 @@ abstract class PatternFirstAlignerDescribedTest(anAligner: String) extends Behav
           }
           }
 
-          forAll(aligner contained SequenceCollection.from(baseSeqs)) { result => {
+          forAll(aligner contained (baseSeqs)) { result => {
             result.getValue1 shouldBe false
           }
           }
@@ -69,7 +68,7 @@ abstract class PatternFirstAlignerDescribedTest(anAligner: String) extends Behav
           }
           }
 
-          forAll(aligner getAlignments SequenceCollection.from(baseSeqs)) { result => {
+          forAll(aligner getAlignments baseSeqs) { result => {
             assert(result.getValue1)
           }
           }

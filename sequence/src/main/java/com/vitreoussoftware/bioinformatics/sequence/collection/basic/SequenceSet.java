@@ -1,8 +1,8 @@
 package com.vitreoussoftware.bioinformatics.sequence.collection.basic;
 
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 /**
@@ -11,7 +11,7 @@ import java.util.HashSet;
  *
  * @author John
  */
-public class SequenceSet extends HashSet<Sequence> implements SequenceCollection {
+public class SequenceSet extends HashSet<Sequence> implements Collection<Sequence> {
 
     /**
      *

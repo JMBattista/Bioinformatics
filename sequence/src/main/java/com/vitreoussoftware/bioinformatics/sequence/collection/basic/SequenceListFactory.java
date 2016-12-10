@@ -1,7 +1,10 @@
 package com.vitreoussoftware.bioinformatics.sequence.collection.basic;
 
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
+import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Create instances of SequenceList
@@ -11,7 +14,7 @@ import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectio
 public class SequenceListFactory implements SequenceCollectionFactory {
 
     @Override
-    public SequenceCollection getSequenceCollection() {
-        return new SequenceList();
+    public Collection<Sequence> getSequenceCollection() {
+        return new ArrayList<>();
     }
 }

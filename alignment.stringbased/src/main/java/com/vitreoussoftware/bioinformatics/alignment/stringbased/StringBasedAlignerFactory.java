@@ -3,10 +3,10 @@ package com.vitreoussoftware.bioinformatics.alignment.stringbased;
 import com.vitreoussoftware.bioinformatics.alignment.PatternFirstAligner;
 import com.vitreoussoftware.bioinformatics.sequence.InvalidDnaFormatException;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
-import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollection;
 import com.vitreoussoftware.bioinformatics.sequence.io.reader.SequenceStreamReader;
 
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * Created by John on 9/9/14.
@@ -37,7 +37,7 @@ public interface StringBasedAlignerFactory {
      * @param texts the collection of sequences
      * @return the StringBasedAlignerFactory for that collection of Sequences
      */
-    default public PatternFirstAligner create(final SequenceCollection texts) {
+    default public PatternFirstAligner create(final Collection<Sequence> texts) {
         final PatternFirstAligner aligner = create();
         texts.forEach(aligner::addPattern);
         return aligner;
