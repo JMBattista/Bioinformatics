@@ -43,16 +43,6 @@ public class BasicSuffixTree implements SuffixTree {
     }
 
     /**
-     * Returns the depth of the suffix tree.
-     *
-     * @return the depth
-     */
-    public int depth() {
-        // The root is a null element
-        return root.depth() - 1;
-    }
-
-    /**
      * Find the set of parents for the sequence of interest
      *
      * @param pattern the sequence to find parents for
@@ -184,7 +174,7 @@ public class BasicSuffixTree implements SuffixTree {
                 // We add the position the sequence started from, not its current point
                 //  to better support alignment algorithms which will be interested in finding a partial
                 //  alignment and then knowing what its starting point was
-                current.addPosition(text, offset);
+                current.addPosition(Position.with(text, offset));
             }
         }
     }

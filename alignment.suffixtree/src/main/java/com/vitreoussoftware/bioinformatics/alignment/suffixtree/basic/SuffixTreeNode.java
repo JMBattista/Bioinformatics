@@ -2,7 +2,6 @@ package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 
 import com.vitreoussoftware.bioinformatics.alignment.Position;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
-import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -69,6 +68,11 @@ class SuffixTreeNode {
         return this.children.keySet();
     }
 
+    /**
+     * Determine the depth of the tree rooted at this node.
+     *
+     * @return The depth (starts with 1 for the root node).
+     */
     int depth() {
         int max = 0;
         for (final SuffixTreeNode node : this.children.values()) {
@@ -82,8 +86,8 @@ class SuffixTreeNode {
         return this.texts;
     }
 
-    void addPosition(final Sequence sequence, final int index) {
-        this.texts.add(Position.with(sequence, index));
+    void addPosition(final Position position) {
+        this.texts.add(position);
     }
 
     public BasePair getBasePair() {

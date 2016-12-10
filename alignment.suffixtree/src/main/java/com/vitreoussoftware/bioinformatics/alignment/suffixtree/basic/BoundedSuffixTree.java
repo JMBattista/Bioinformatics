@@ -1,6 +1,7 @@
 package com.vitreoussoftware.bioinformatics.alignment.suffixtree.basic;
 
 
+import com.vitreoussoftware.bioinformatics.alignment.Position;
 import com.vitreoussoftware.bioinformatics.sequence.BasePair;
 import com.vitreoussoftware.bioinformatics.sequence.Sequence;
 import com.vitreoussoftware.bioinformatics.sequence.collection.SequenceCollectionFactory;
@@ -51,7 +52,7 @@ public class BoundedSuffixTree extends BasicSuffixTree {
 
                 // Only add the starting position, not the position of the current node.
                 if (offset >= this.minLength)
-                    current.addPosition(text, startPos);
+                    current.addPosition(Position.with(text, startPos));
             }
 
             // iterate forward and update the position

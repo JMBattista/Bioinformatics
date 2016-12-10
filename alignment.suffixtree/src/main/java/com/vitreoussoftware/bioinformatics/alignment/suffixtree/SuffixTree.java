@@ -10,13 +10,6 @@ import com.vitreoussoftware.bioinformatics.alignment.TextFirstAligner;
  */
 public interface SuffixTree extends TextFirstAligner {
     /**
-     * Returns the depth of the suffix tree.
-     *
-     * @return the depth
-     */
-    public int depth();
-
-    /**
      * Walk the tree to build up a result
      *
      * @param walker the walk to perform
