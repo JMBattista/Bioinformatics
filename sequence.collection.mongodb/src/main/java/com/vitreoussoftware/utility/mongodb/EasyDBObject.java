@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Created by John on 12/7/13.
  */
-public class EasyDBObject {
+public final class EasyDBObject {
     public static final String EXISTS = "$exists";
     public static final String SET = "$set";
     public static final String NOT_EQUALS = "$ne";
