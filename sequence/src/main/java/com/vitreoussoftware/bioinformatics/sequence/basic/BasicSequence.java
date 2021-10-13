@@ -40,7 +40,7 @@ public final class BasicSequence implements Sequence {
      * @return the encoded {@link Sequence} created from the {@see sequence}
      */
     public static Optional<Sequence> create(final List<BasePair> sequence) {
-        if (sequence == null || sequence.size() == 0)
+        if (sequence == null || sequence.isEmpty())
             return Optional.empty();
 
         val encodingSheme = sequence.get(0).getEncodingScheme();

@@ -1,9 +1,0 @@
-
-description = 'MongoDB Sequence Collection'
-dependencies {
-  compile project(':Sequence')
-  compile group: 'org.mongodb', name: 'mongo-java-driver', version:'2.11.3'
-
-  testCompile project(':Sequence')
-  testCompile project(':ScalaTestSpec')
-}
